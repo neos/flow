@@ -12,10 +12,15 @@ namespace TYPO3\Flow\Cache\Backend;
  */
 
 /**
- * A contract for a cache backend which provides Iterator functionality.
+ * Marker interface to denote backends that use the
+ * Flow specific constructor for backends and must
+ * be instantiated differently than the new standalone
+ * backends.
+ * As this interface is just to help transition it is
+ * deprecated right away.
  *
- * @api
+ * @deprecated
  */
-interface IterableBackendInterface extends BackendInterface, \Iterator
+interface FlowSpecificBackendInterface
 {
 }
