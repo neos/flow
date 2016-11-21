@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Cache\Backend;
+namespace TYPO3\Flow\Tests\Unit\Mvc\View\Fixtures;
 
 /*
  * This file is part of the TYPO3.Flow package.
@@ -11,11 +11,21 @@ namespace TYPO3\Flow\Cache\Backend;
  * source code.
  */
 
-/**
- * A contract for a cache backend which provides Iterator functionality.
- *
- * @api
- */
-interface IterableBackendInterface extends BackendInterface, \Iterator
+class NestedTestObject
 {
+    public function getName()
+    {
+    }
+
+    public function getPath()
+    {
+    }
+
+    public function getProperties()
+    {
+    }
+
+    public function getOther()
+    {
+    }
 }

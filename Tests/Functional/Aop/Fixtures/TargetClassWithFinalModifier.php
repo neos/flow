@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Cache\Exception;
+namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
  * This file is part of the TYPO3.Flow package.
@@ -11,11 +11,13 @@ namespace TYPO3\Flow\Cache\Exception;
  * source code.
  */
 
-/**
- * A "No Such Cache" exception
- *
- * @api
- */
-class NoSuchCacheException extends \TYPO3\Flow\Cache\Exception
+final class TargetClassWithFinalModifier
 {
+    /**
+     * @return string
+     */
+    public function someMethod()
+    {
+        return 'final';
+    }
 }

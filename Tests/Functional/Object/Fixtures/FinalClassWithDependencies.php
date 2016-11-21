@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Cache\Exception;
+namespace TYPO3\Flow\Tests\Functional\Object\Fixtures;
 
 /*
  * This file is part of the TYPO3.Flow package.
@@ -11,11 +11,16 @@ namespace TYPO3\Flow\Cache\Exception;
  * source code.
  */
 
+use TYPO3\Flow\Annotations as Flow;
+
 /**
- * An "Invalid Data" exception
- *
- * @api
+ * A final class with dependencies
  */
-class InvalidDataException extends \TYPO3\Flow\Cache\Exception
+final class FinalClassWithDependencies
 {
+    /**
+     * @Flow\Inject(lazy=FALSE)
+     * @var SingletonClassA
+     */
+    public $dependency;
 }

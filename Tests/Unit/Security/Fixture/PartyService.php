@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Cache\Exception;
+namespace TYPO3\Flow\Tests\Unit\Security\Fixture;
 
 /*
  * This file is part of the TYPO3.Flow package.
@@ -11,11 +11,15 @@ namespace TYPO3\Flow\Cache\Exception;
  * source code.
  */
 
-/**
- * A "Duplicate Identifier" exception
- *
- * @api
- */
-class DuplicateIdentifierException extends \TYPO3\Flow\Cache\Exception
+use TYPO3\Flow\Security\Account;
+
+class PartyService
 {
+    public function getAssignedPartyOfAccount(Account $account)
+    {
+    }
+
+    public function assignAccountToParty(Account $account, $party)
+    {
+    }
 }

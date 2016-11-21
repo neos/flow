@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Cache;
+namespace TYPO3\Flow\Tests\Unit\Aop\Advice\Fixtures;
 
 /*
  * This file is part of the TYPO3.Flow package.
@@ -11,11 +11,9 @@ namespace TYPO3\Flow\Cache;
  * source code.
  */
 
-/**
- * A generic Cache exception
- *
- * @api
- */
-class Exception extends \TYPO3\Flow\Exception
+class SomeClass
 {
+    public function someMethod()
+    {
+    }
 }
