@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
+namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\RequestInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security;
+use Neos\Flow\Mvc\RequestInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security;
 
 /**
  * Testcase for request filters

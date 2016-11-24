@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Tests\Reflection\Fixture\Model;
+namespace Neos\Flow\Tests\Reflection\Fixture\Model;
 
 /**
  * A class that is a Doctrine proxy

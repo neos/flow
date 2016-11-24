@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
+namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,18 @@ namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Fixtures\ClassWithSetters;
-use TYPO3\Flow\Fixtures\ClassWithSettersAndConstructor;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Persistence;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\Error\TargetNotFoundError;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Property\TypeConverterInterface;
-use TYPO3\Flow\Reflection\ClassSchema;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Fixtures\ClassWithSetters;
+use Neos\Flow\Fixtures\ClassWithSettersAndConstructor;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Persistence;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\Error\TargetNotFoundError;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Property\TypeConverterInterface;
+use Neos\Flow\Reflection\ClassSchema;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Annotations as Flow;
 
 require_once(__DIR__ . '/../../Fixtures/ClassWithSetters.php');
 require_once(__DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php');
@@ -244,7 +244,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidPropertyMappingConfigurationException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     public function convertFromShouldThrowExceptionIfObjectNeedsToBeModifiedButConfigurationIsNotSet()
     {
@@ -347,7 +347,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidSourceException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidSourceException
      */
     public function convertFromShouldThrowExceptionIfIdentityIsOfInvalidType()
     {
@@ -359,7 +359,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\DuplicateObjectException
+     * @expectedException \Neos\Flow\Property\Exception\DuplicateObjectException
      */
     public function convertFromShouldThrowExceptionIfMoreThanOneObjectWasFound()
     {
@@ -373,7 +373,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidPropertyMappingConfigurationException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidPropertyMappingConfigurationException
      */
     public function convertFromShouldThrowExceptionIfObjectNeedsToBeCreatedButConfigurationIsNotSet()
     {
@@ -406,7 +406,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidTargetException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidTargetException
      */
     public function convertFromShouldThrowExceptionIfPropertyOnTargetObjectCouldNotBeSet()
     {
@@ -473,7 +473,7 @@ class PersistentObjectConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidTargetException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidTargetException
      */
     public function convertFromShouldThrowExceptionIfRequiredConstructorParameterWasNotFound()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\EntryPoint;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\EntryPoint;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\EntryPoint;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Response;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\Routing\UriBuilder;
-use TYPO3\Flow\Security\Authentication\EntryPoint\WebRedirect;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\Routing\UriBuilder;
+use Neos\Flow\Security\Authentication\EntryPoint\WebRedirect;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for web redirect authentication entry point
@@ -25,7 +25,7 @@ class WebRedirectTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\MissingConfigurationException
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
      */
     public function startAuthenticationThrowsAnExceptionIfTheConfigurationOptionsAreMissing()
     {
@@ -73,7 +73,7 @@ class WebRedirectTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\MissingConfigurationException
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
      */
     public function startAuthenticationThrowsAnExceptionIfTheConfiguredRoutePartsAreInvalid()
     {

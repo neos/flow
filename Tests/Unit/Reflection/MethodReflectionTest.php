@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Reflection;
+namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Reflection;
  * source code.
  */
 
-use TYPO3\Flow\Reflection;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Reflection;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for MethodReflection

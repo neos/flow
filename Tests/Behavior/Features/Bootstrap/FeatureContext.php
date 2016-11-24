@@ -2,10 +2,10 @@
 use Behat\Behat\Context\BehatContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Flowpack\Behat\Tests\Behat\FlowContext;
-use TYPO3\Flow\Tests\Behavior\Features\Bootstrap\IsolatedBehatStepsTrait;
-use TYPO3\Flow\Tests\Behavior\Features\Bootstrap\SecurityOperationsTrait;
-use TYPO3\Flow\Tests\Functional\Command\BehatTestHelper;
-use TYPO3\Flow\Utility\Environment;
+use Neos\Flow\Tests\Behavior\Features\Bootstrap\IsolatedBehatStepsTrait;
+use Neos\Flow\Tests\Behavior\Features\Bootstrap\SecurityOperationsTrait;
+use Neos\Flow\Tests\Functional\Command\BehatTestHelper;
+use Neos\Flow\Utility\Environment;
 
 require_once(__DIR__ . '/../../../../../../Application/Flowpack.Behat/Tests/Behat/FlowContext.php');
 require_once(__DIR__ . '/IsolatedBehatStepsTrait.php');

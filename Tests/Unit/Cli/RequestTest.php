@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cli;
+namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Cli;
  * source code.
  */
 
-use TYPO3\Flow\Cli\Request;
-use TYPO3\Flow\Command\CacheCommandController;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli\Request;
+use Neos\Flow\Command\CacheCommandController;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the CLI Request class
@@ -30,7 +30,7 @@ class RequestTest extends UnitTestCase
         $request->setControllerCommandName('flush');
 
         $command = $request->getCommand();
-        $this->assertEquals('typo3.flow:cache:flush', $command->getCommandIdentifier());
+        $this->assertEquals('neos.flow:cache:flush', $command->getCommandIdentifier());
     }
 
     /**

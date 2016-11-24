@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
+namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\TypeConverter\DateTimeConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Error\Error as FlowError;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Error\Messages\Error as FlowError;
 
 /**
  * Testcase for the DateTime converter
  *
- * @covers \TYPO3\Flow\Property\TypeConverter\DateTimeConverter<extended>
+ * @covers \Neos\Flow\Property\TypeConverter\DateTimeConverter<extended>
  */
 class DateTimeConverterTest extends UnitTestCase
 {
@@ -244,7 +244,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate()
     {
@@ -280,7 +280,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      * @dataProvider invalidDatePartKeyValuesDataProvider
      */
     public function convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified($source)
@@ -345,7 +345,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid()
     {
@@ -359,7 +359,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromArrayThrowsExceptionForEmptyArray()
     {

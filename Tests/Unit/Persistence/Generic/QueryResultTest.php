@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
+namespace Neos\Flow\Tests\Unit\Persistence\Generic;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Generic\PersistenceManager;
-use TYPO3\Flow\Persistence\Generic\DataMapper;
-use TYPO3\Flow\Persistence\Generic\QueryResult;
-use TYPO3\Flow\Persistence\QueryInterface;
-use TYPO3\Flow\Persistence;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence\Generic\PersistenceManager;
+use Neos\Flow\Persistence\Generic\DataMapper;
+use Neos\Flow\Persistence\Generic\QueryResult;
+use Neos\Flow\Persistence\QueryInterface;
+use Neos\Flow\Persistence;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\Flow\Persistence\QueryResult
+ * Testcase for \Neos\Flow\Persistence\QueryResult
  *
  */
 class QueryResultTest extends UnitTestCase

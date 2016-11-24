@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+namespace Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * An aspect for testing the basic functionality of the AOP framework
@@ -21,19 +21,19 @@ use TYPO3\Flow\Annotations as Flow;
 class PropertyIntroductionTestingAspect
 {
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
      * @var string
      */
     protected $introducedProtectedProperty;
 
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
      * @var array
      */
     public $introducedPublicProperty;
 
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04)")
      * @Flow\Transient
      * @var string
      */

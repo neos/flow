@@ -1,9 +1,9 @@
 <?php
-namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use TYPO3\Flow\Utility\Files;
+use Neos\Utility\Files;
 
 /**
  * Adjust tables for Role handling
@@ -11,8 +11,8 @@ use TYPO3\Flow\Utility\Files;
 class Version20130319131400 extends AbstractMigration
 {
     /**
-     * @\TYPO3\Flow\Annotations\Inject
-     * @var \TYPO3\Flow\Configuration\ConfigurationManager
+     * @\Neos\Flow\Annotations\Inject
+     * @var \Neos\Flow\Configuration\ConfigurationManager
      */
     protected $configurationManager;
 
@@ -159,7 +159,7 @@ class Version20130319131400 extends AbstractMigration
             }
         );
 
-        $yamlSource = new \TYPO3\Flow\Configuration\Source\YamlSource();
+        $yamlSource = new \Neos\Flow\Configuration\Source\YamlSource();
         foreach ($configurationPathsAndFilenames as $pathAndFilename) {
             if (preg_match('%Packages/.+/([^/]+)/Configuration/(?:Development|Production|Policy).+%', $pathAndFilename, $matches) === 0) {
                 continue;

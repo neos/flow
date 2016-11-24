@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Core;
+namespace Neos\Flow\Tests\Unit\Core;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Core;
  * source code.
  */
 
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Bootstrap class
@@ -25,15 +25,15 @@ class BootstrapTest extends UnitTestCase
     public function commandIdentifiersAndCompiletimeControllerInfo()
     {
         return [
-            [['typo3.flow:core:shell', 'typo3.flow:cache:flush'], 'typo3.flow:core:shell', true],
-            [['typo3.flow:core:shell', 'typo3.flow:cache:flush'], 'flow:core:shell', true],
-            [['typo3.flow:core:shell', 'typo3.flow:cache:flush'], 'core:shell', false],
-            [['typo3.flow:core:*', 'typo3.flow:cache:flush'], 'typo3.flow:core:shell', true],
-            [['typo3.flow:core:*', 'typo3.flow:cache:flush'], 'flow:core:shell', true],
-            [['typo3.flow:core:shell', 'typo3.flow:cache:flush'], 'typo3.flow:help:help', false],
-            [['typo3.flow:core:*', 'typo3.flow:cache:*'], 'flow:cache:flush', true],
-            [['typo3.flow:core:*', 'typo3.flow:cache:*'], 'flow5:core:shell', false],
-            [['typo3.flow:core:*', 'typo3.flow:cache:*'], 'typo3:core:shell', false],
+            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true],
+            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'flow:core:shell', true],
+            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'core:shell', false],
+            [['neos.flow:core:*', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true],
+            [['neos.flow:core:*', 'neos.flow:cache:flush'], 'flow:core:shell', true],
+            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:help:help', false],
+            [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow:cache:flush', true],
+            [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow5:core:shell', false],
+            [['neos.flow:core:*', 'neos.flow:cache:*'], 'typo3:core:shell', false],
         ];
     }
 
@@ -53,7 +53,7 @@ class BootstrapTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      */
     public function resolveRequestHandlerThrowsUsefulExceptionIfNoRequestHandlerFound()
     {

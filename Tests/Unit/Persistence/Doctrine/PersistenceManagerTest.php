@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,10 +14,10 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Error as FlowError;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Error as FlowError;
 
 /**
  * Testcase for the doctrine persistence manager
@@ -51,7 +51,7 @@ class PersistenceManagerTest extends UnitTestCase
 
     public function setUp()
     {
-        $this->persistenceManager = $this->getMockBuilder(\TYPO3\Flow\Persistence\Doctrine\PersistenceManager::class)->setMethods(['emitAllObjectsPersisted'])->getMock();
+        $this->persistenceManager = $this->getMockBuilder(\Neos\Flow\Persistence\Doctrine\PersistenceManager::class)->setMethods(['emitAllObjectsPersisted'])->getMock();
 
         $this->mockEntityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
         $this->mockEntityManager->expects($this->any())->method('isOpen')->will($this->returnValue(true));
@@ -63,7 +63,7 @@ class PersistenceManagerTest extends UnitTestCase
         $this->mockConnection = $this->getMockBuilder(\Doctrine\DBAL\Connection::class)->disableOriginalConstructor()->getMock();
         $this->mockEntityManager->expects($this->any())->method('getConnection')->will($this->returnValue($this->mockConnection));
 
-        $this->mockSystemLogger = $this->createMock(\TYPO3\Flow\Log\SystemLoggerInterface::class);
+        $this->mockSystemLogger = $this->createMock(\Neos\Flow\Log\SystemLoggerInterface::class);
         $this->inject($this->persistenceManager, 'systemLogger', $this->mockSystemLogger);
     }
 
@@ -84,7 +84,7 @@ class PersistenceManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception
+     * @expectedException \Neos\Flow\Persistence\Exception
      * @expectedExceptionMessageRegExp /^Detected modified or new objects/
      */
     public function persistAllThrowsExceptionIfTryingToPersistNonWhitelistedObjectsAndOnlyWhitelistedObjectsFlagIsTrue()
@@ -147,7 +147,7 @@ class PersistenceManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Error\Exception
+     * @expectedException \Neos\Flow\Error\Exception
      */
     public function persistAllReconnectsConnectionOnFailure()
     {

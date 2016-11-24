@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Token;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Token;
  * source code.
  */
 
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Authentication\Token\PasswordToken;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Authentication\Token\PasswordToken;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for password authentication token

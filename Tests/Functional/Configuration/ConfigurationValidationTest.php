@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Configuration;
+namespace Neos\Flow\Tests\Functional\Configuration;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Functional\Configuration;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Configuration\ConfigurationSchemaValidator;
-use TYPO3\Flow\Package\PackageManagerInterface;
-use TYPO3\Flow\Package\PackageManager;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Error\Error;
-use TYPO3\Flow\Error\Result;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\ConfigurationSchemaValidator;
+use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Error\Messages\Error;
+use Neos\Error\Messages\Result;
+use Neos\Utility\ObjectAccess;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for Configuration Validation
@@ -41,12 +41,12 @@ class ConfigurationValidationTest extends FunctionalTestCase
     /**
      * @var array<string>
      */
-    protected $schemaPackageKeys = ['TYPO3.Flow'];
+    protected $schemaPackageKeys = ['Neos.Flow'];
 
     /**
      * @var array<string>
      */
-    protected $configurationPackageKeys = ['TYPO3.Flow', 'Neos.FluidAdaptor', 'TYPO3.Eel', 'TYPO3.Kickstart'];
+    protected $configurationPackageKeys = ['Neos.Flow', 'Neos.FluidAdaptor', 'Neos.Eel', 'Neos.Kickstart'];
 
     /**
      *
@@ -103,7 +103,7 @@ class ConfigurationValidationTest extends FunctionalTestCase
 
         $this->originalConfigurationManager = $this->objectManager->get(ConfigurationManager::class);
 
-        $yamlConfigurationSource = $this->objectManager->get(\TYPO3\Flow\Tests\Functional\Configuration\Fixtures\RootDirectoryIgnoringYamlSource::class);
+        $yamlConfigurationSource = $this->objectManager->get(\Neos\Flow\Tests\Functional\Configuration\Fixtures\RootDirectoryIgnoringYamlSource::class);
 
         $this->mockConfigurationManager = clone ($this->originalConfigurationManager);
         $this->mockConfigurationManager->setPackages($configurationPackages);

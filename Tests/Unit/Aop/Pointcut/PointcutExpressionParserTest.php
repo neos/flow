@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
+namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use TYPO3\Flow\Aop\Pointcut\PointcutExpressionParser;
-use TYPO3\Flow\Aop\Pointcut\PointcutFilterComposite;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Aop;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Aop\Pointcut\PointcutExpressionParser;
+use Neos\Flow\Aop\Pointcut\PointcutFilterComposite;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Utility\ObjectAccess;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Testcase for the default AOP Pointcut Expression Parser implementation
@@ -49,7 +49,7 @@ class PointcutExpressionParserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseThrowsExceptionIfPointcutExpressionIsNotAString()
     {
@@ -59,7 +59,7 @@ class PointcutExpressionParserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseThrowsExceptionIfThePointcutExpressionContainsNoDesignator()
     {
@@ -87,9 +87,9 @@ class PointcutExpressionParserTest extends UnitTestCase
         $parser->expects($this->once())->method('parseRuntimeEvaluations')->with('&&', 'Foo.Bar.baz == "test"');
 
         $parser->parse('\Foo\Bar->baz', 'Unit Test');
-        $parser->parse('classAnnotatedWith(TYPO3\Flow\Annotations\Aspect)', 'Unit Test');
+        $parser->parse('classAnnotatedWith(Neos\Flow\Annotations\Aspect)', 'Unit Test');
         $parser->parse('class(Foo)', 'Unit Test');
-        $parser->parse('methodAnnotatedWith(TYPO3\Flow\Annotations\Session)', 'Unit Test');
+        $parser->parse('methodAnnotatedWith(Neos\Flow\Annotations\Session)', 'Unit Test');
         $parser->parse('method(Foo->Bar())', 'Unit Test');
         $parser->parse('within(Bar)', 'Unit Test');
         $parser->parse('filter(\Foo\Bar\Baz)', 'Unit Test');
@@ -177,7 +177,7 @@ class PointcutExpressionParserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseDesignatorMethodThrowsAnExceptionIfTheExpressionLacksTheClassMethodArrow()
     {
@@ -262,7 +262,7 @@ class PointcutExpressionParserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseDesignatorPointcutThrowsAnExceptionIfTheExpressionLacksTheAspectClassMethodArrow()
     {
@@ -290,7 +290,7 @@ class PointcutExpressionParserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseDesignatorFilterThrowsAnExceptionIfACustomFilterDoesNotImplementThePointcutFilterInterface()
     {

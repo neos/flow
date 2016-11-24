@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Controller\Arguments;
-use TYPO3\Flow\Mvc\Controller\Argument;
-use TYPO3\Flow\Mvc\Exception\NoSuchArgumentException;
-use TYPO3\Flow\Error as FlowError;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Mvc\Controller\Argument;
+use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
+use Neos\Error\Messages as FlowError;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Controller Arguments

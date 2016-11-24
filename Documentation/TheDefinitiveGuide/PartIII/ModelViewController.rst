@@ -167,7 +167,7 @@ The most simple way to implement an action is to extend the ActionController cla
 declare an action method and return a plain string as the response::
 
 	namespace Acme\Demo\Controller;
-	use TYPO3\Flow\Mvc\Controller\ActionController;
+	use Neos\Flow\Mvc\Controller\ActionController;
 
 	class HelloWorldController extends ActionController {
 
@@ -418,7 +418,7 @@ Action Request.
 	a specific media type. For example, the format for ``text/html`` is "html" and
 	the format corresponding to the media type ``application/json`` would be "json".
 	For a complete list of supported media types and their corresponding formats
-	please refer to the class ``TYPO3\Flow\Utility\MediaTypes``.
+	please refer to the class ``Neos\Utility\MediaTypes``.
 
 The controller implementation must take care of the actual media type support by
 supplying a corresponding view or template.
@@ -474,7 +474,7 @@ in the concrete Action Controller implementation::
 		/**
 		 * @var string
 		 */
-		protected $defaultViewObjectName = \TYPO3\Flow\Mvc\View\JsonView::class;
+		protected $defaultViewObjectName = \Neos\Flow\Mvc\View\JsonView::class;
 
 		# …
 	}
@@ -489,7 +489,7 @@ to view mapping feature can be used::
 		 */
 		protected $viewFormatToObjectNameMap = array(
 			'html' => \Neos\FluidAdaptor\View\TemplateView::class,
-			'json' => \TYPO3\Flow\Mvc\View\JsonView::class
+			'json' => \Neos\Flow\Mvc\View\JsonView::class
 		);
 
 		/**
@@ -601,7 +601,7 @@ Custom View
 
 Similar to the Fluid Template View and the JSON View, packages can provide their
 own custom views. The only requirement for such a view is the implementation of
-all methods defined in the ``TYPO3\Flow\Mvc\View\ViewInterface``.
+all methods defined in the ``Neos\Flow\Mvc\View\ViewInterface``.
 
 An Action Controller can be configured to use a custom view through the
 ``$defaultViewObjectName`` and ``$viewFormatToObjectNameMap`` properties, as
@@ -872,7 +872,7 @@ which expects the following arguments:
 * ``$messageBody`` (required): The message which should be shown
 * ``$messageTitle``: The title of the message
 * ``$severity``: The severity of the message; by default "OK" is used. Needs to be one
-  of TYPO3\Flow\Error\Message::SEVERITY_* constants (OK, NOTICE, WARNING, ERROR)
+  of Neos\Error\Messages\Message::SEVERITY_* constants (OK, NOTICE, WARNING, ERROR)
 * ``$messageArguments`` (array): If the message contains any placeholders, these can be
   filled here. See the PHP function ``printf`` for details on the placeholder format.
 * ``$messageCode`` (integer): unique code of this message, can be used f.e. for localization.
@@ -882,7 +882,7 @@ which expects the following arguments:
 Creating a Flash Messages is a matter of a single line of code::
 
 	$this->addFlashMessage('Everything is all right.');
-	$this->addFlashMessage('Sorry, I messed it all up!', 'My Fault', \TYPO3\Flow\Error\Message::SEVERITY_ERROR);
+	$this->addFlashMessage('Sorry, I messed it all up!', 'My Fault', \Neos\Error\Messages\Message::SEVERITY_ERROR);
 
 The flash messages can be rendered inside the template using the ``<f:flashMessages />``
 ViewHelper. Please consult the ViewHelper for a full reference.

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Provider;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\Provider;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Provider;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for username/password authentication provider. The account are stored in the CR.
@@ -88,9 +88,9 @@ class PersistedUsernamePasswordProviderTest extends UnitTestCase
         $this->mockAccountRepository->expects($this->once())->method('findActiveByAccountIdentifierAndAuthenticationProviderName')->with('admin', 'myProvider')->will($this->returnValue($this->mockAccount));
 
         $this->mockToken->expects($this->once())->method('getCredentials')->will($this->returnValue(['username' => 'admin', 'password' => 'password']));
-        $this->mockToken->expects($this->at(2))->method('setAuthenticationStatus')->with(\TYPO3\Flow\Security\Authentication\TokenInterface::NO_CREDENTIALS_GIVEN);
-        $this->mockToken->expects($this->at(3))->method('setAuthenticationStatus')->with(\TYPO3\Flow\Security\Authentication\TokenInterface::WRONG_CREDENTIALS);
-        $this->mockToken->expects($this->at(4))->method('setAuthenticationStatus')->with(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
+        $this->mockToken->expects($this->at(2))->method('setAuthenticationStatus')->with(\Neos\Flow\Security\Authentication\TokenInterface::NO_CREDENTIALS_GIVEN);
+        $this->mockToken->expects($this->at(3))->method('setAuthenticationStatus')->with(\Neos\Flow\Security\Authentication\TokenInterface::WRONG_CREDENTIALS);
+        $this->mockToken->expects($this->at(4))->method('setAuthenticationStatus')->with(\Neos\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
         $this->mockToken->expects($this->once())->method('setAccount')->with($this->mockAccount);
 
         $this->persistedUsernamePasswordProvider->authenticate($this->mockToken);
@@ -118,15 +118,15 @@ class PersistedUsernamePasswordProviderTest extends UnitTestCase
         $this->mockAccountRepository->expects($this->once())->method('findActiveByAccountIdentifierAndAuthenticationProviderName')->with('admin', 'myProvider')->will($this->returnValue($this->mockAccount));
 
         $this->mockToken->expects($this->once())->method('getCredentials')->will($this->returnValue(['username' => 'admin', 'password' => 'wrong password']));
-        $this->mockToken->expects($this->at(2))->method('setAuthenticationStatus')->with(\TYPO3\Flow\Security\Authentication\TokenInterface::NO_CREDENTIALS_GIVEN);
-        $this->mockToken->expects($this->at(3))->method('setAuthenticationStatus')->with(\TYPO3\Flow\Security\Authentication\TokenInterface::WRONG_CREDENTIALS);
+        $this->mockToken->expects($this->at(2))->method('setAuthenticationStatus')->with(\Neos\Flow\Security\Authentication\TokenInterface::NO_CREDENTIALS_GIVEN);
+        $this->mockToken->expects($this->at(3))->method('setAuthenticationStatus')->with(\Neos\Flow\Security\Authentication\TokenInterface::WRONG_CREDENTIALS);
 
         $this->persistedUsernamePasswordProvider->authenticate($this->mockToken);
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\UnsupportedAuthenticationTokenException
+     * @expectedException \Neos\Flow\Security\Exception\UnsupportedAuthenticationTokenException
      */
     public function authenticatingAnUnsupportedTokenThrowsAnException()
     {

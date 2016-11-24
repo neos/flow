@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+namespace Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * An aspect for testing trait introduction
  *
- * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01)", traitName="TYPO3\Flow\Tests\Functional\Aop\Fixtures\Introduced01Trait")
+ * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01)", traitName="Neos\Flow\Tests\Functional\Aop\Fixtures\Introduced01Trait")
  * @Flow\Aspect
  */
 class TraitIntroductionTestingAspect

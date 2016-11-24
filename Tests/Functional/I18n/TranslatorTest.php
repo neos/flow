@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\I18n;
+namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\I18n;
  * source code.
  */
 
-use TYPO3\Flow\I18n;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\I18n;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for the I18N translations
@@ -53,7 +53,7 @@ class TranslatorTest extends FunctionalTestCase
      */
     public function simpleTranslationByIdWorks($id, $locale, $translation)
     {
-        $result = $this->translator->translateById($id, [], null, $locale, 'Main', 'TYPO3.Flow');
+        $result = $this->translator->translateById($id, [], null, $locale, 'Main', 'Neos.Flow');
         $this->assertEquals($translation, $result);
     }
 
@@ -74,7 +74,7 @@ class TranslatorTest extends FunctionalTestCase
      */
     public function simpleTranslationByLabelWorks($label, $locale, $translation)
     {
-        $result = $this->translator->translateByOriginalLabel($label, [], null, $locale, 'Main', 'TYPO3.Flow');
+        $result = $this->translator->translateByOriginalLabel($label, [], null, $locale, 'Main', 'Neos.Flow');
         $this->assertEquals($translation, $result);
     }
 

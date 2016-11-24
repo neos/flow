@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
+namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\I18n\Locale;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\FloatConverter;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Error\Error as FlowError;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\FloatConverter;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Error\Messages\Error as FlowError;
 
 /**
  * Testcase for the Float converter
@@ -31,7 +31,7 @@ class FloatConverterTest extends FunctionalTestCase
     public function setUp()
     {
         parent::setUp();
-        $this->converter = $this->objectManager->get(\TYPO3\Flow\Property\TypeConverter\FloatConverter::class);
+        $this->converter = $this->objectManager->get(\Neos\Flow\Property\TypeConverter\FloatConverter::class);
     }
 
     /**
@@ -83,7 +83,7 @@ class FloatConverterTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\I18n\Exception\InvalidLocaleIdentifierException
+     * @expectedException \Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException
      */
     public function convertFromThrowsExceptionIfLocaleIsInvalid()
     {

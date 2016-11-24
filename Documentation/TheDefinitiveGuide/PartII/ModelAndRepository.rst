@@ -67,7 +67,7 @@ The resulting code should look like this:
 
 	use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\Common\Collections\Collection;
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 	use Doctrine\ORM\Mapping as ORM;
 
 	/**
@@ -196,7 +196,7 @@ This namespace declaration must be the very first code in your file.
 
 	use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\Common\Collections\Collection;
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 	use Doctrine\ORM\Mapping as ORM;
 
 These `use` statements import PHP namespaces to the current scope. They are not required but
@@ -316,7 +316,7 @@ Adjust the generated code as follows:
 	 *                                                                        *
 	 *                                                                        */
 
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 	use Doctrine\ORM\Mapping as ORM;
 
 	/**
@@ -479,8 +479,8 @@ This will generate a vanilla repository for blogs containing this code:
 	 *                                                                        *
 	 *                                                                        */
 
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Persistence\Repository;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Persistence\Repository;
 
 	/**
 	 * @Flow\Scope("singleton")
@@ -507,8 +507,8 @@ add a ``findActive()`` method that - for now - just returns the first blog in th
 	 *                                                                        */
 
 	use Acme\Blog\Domain\Model\Blog;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Persistence\Repository;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Persistence\Repository;
 
 	/**
 	 * @Flow\Scope("singleton")
@@ -559,10 +559,10 @@ The resulting code should look like:
 
 	use Acme\Blog\Domain\Model\Blog;
 	use Acme\Blog\Domain\Model\Post;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Persistence\QueryInterface;
-	use TYPO3\Flow\Persistence\QueryResultInterface;
-	use TYPO3\Flow\Persistence\Repository;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Persistence\QueryInterface;
+	use Neos\Flow\Persistence\QueryResultInterface;
+	use Neos\Flow\Persistence\Repository;
 
 	/**
 	 * @Flow\Scope("singleton")

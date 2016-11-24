@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,8 +10,8 @@
  * source code.
  */
 
-use TYPO3\Flow\Core\Migrations\AbstractMigration;
-use TYPO3\Flow\Core\Migrations\Manager;
+use Neos\Flow\Core\Migrations\AbstractMigration;
+use Neos\Flow\Core\Migrations\Manager;
 
 require(__DIR__ . '/../../../Libraries/autoload.php');
 
@@ -39,7 +39,7 @@ if (flagIsSet('packages-path')) {
     define('FLOW_PATH_PACKAGES', FLOW_PATH_ROOT . 'Packages/');
 }
 
-if (\TYPO3\Flow\Core\Migrations\Git::isGitAvailable() === false) {
+if (\Neos\Flow\Core\Migrations\Git::isGitAvailable() === false) {
     outputLine('No executable git binary found, exiting.');
     exit(255);
 }

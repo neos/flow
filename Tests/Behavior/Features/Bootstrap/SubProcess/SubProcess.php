@@ -1,7 +1,7 @@
 <?php
-namespace TYPO3\Flow\Tests\Features\Bootstrap\SubProcess;
+namespace Neos\Flow\Tests\Features\Bootstrap\SubProcess;
 
-use TYPO3\Flow\Core\ApplicationContext;
+use Neos\Flow\Core\ApplicationContext;
 
 /**
  * A wrapper for a flow sub process that allows for sending arbitrary commands to the same request

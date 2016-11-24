@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Aspect;
+namespace Neos\Flow\Tests\Unit\Persistence\Aspect;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Aspect;
  * source code.
  */
 
-use TYPO3\Flow\Aop\JoinPointInterface;
-use TYPO3\Flow\Persistence\Aspect\PersistenceMagicAspect;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Persistence\Aspect\PersistenceMagicAspect;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the PersistenceMagicAspect
@@ -69,7 +69,7 @@ class PersistenceMagicAspectTest extends UnitTestCase
     public function generateUuidGeneratesUuidAndRegistersProxyAsNewObject()
     {
         $className = 'Class' . md5(uniqid(mt_rand(), true));
-        eval('class ' . $className . ' implements \TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface { public $Persistence_Object_Identifier = NULL; }');
+        eval('class ' . $className . ' implements \Neos\Flow\Persistence\Aspect\PersistenceMagicInterface { public $Persistence_Object_Identifier = NULL; }');
         $object = new $className();
 
         $this->mockJoinPoint->expects($this->atLeastOnce())->method('getProxy')->will($this->returnValue($object));

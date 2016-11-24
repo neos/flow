@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
+namespace Neos\Flow\Tests\Unit\Persistence\Generic;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -16,10 +16,10 @@ require_once(__DIR__ . '/../Fixture/Model/Entity3.php');
 require_once(__DIR__ . '/../Fixture/Model/DirtyEntity.php');
 require_once(__DIR__ . '/../Fixture/Model/CleanEntity.php');
 
-use TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface;
-use TYPO3\Flow\Persistence\Generic;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Tests\Persistence\Fixture;
+use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
+use Neos\Flow\Persistence\Generic;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Tests\Persistence\Fixture;
 
 /**
  * Testcase for the Persistence Manager
@@ -235,7 +235,7 @@ class PersistenceManagerTest extends UnitTestCase
     public function updateSchedulesAnObjectForPersistence()
     {
         $object = new \ArrayObject(array('val' => '1'));
-        $persistenceManager = $this->getMockBuilder(\TYPO3\Flow\Persistence\Generic\PersistenceManager::class)->setMethods(array('isNewObject'))->getMock();
+        $persistenceManager = $this->getMockBuilder(\Neos\Flow\Persistence\Generic\PersistenceManager::class)->setMethods(array('isNewObject'))->getMock();
         $persistenceManager->expects($this->any())->method('isNewObject')->willReturn(false);
 
         $this->assertAttributeNotContains($object, 'changedObjects', $persistenceManager);

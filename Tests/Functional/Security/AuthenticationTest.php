@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security;
+namespace Neos\Flow\Tests\Functional\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Security;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Security\AccountFactory;
-use TYPO3\Flow\Security\AccountRepository;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Security\AccountFactory;
+use Neos\Flow\Security\AccountRepository;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for Authentication
@@ -55,7 +55,7 @@ class AuthenticationTest extends FunctionalTestCase
         $route->setName('Functional Test - Security::Restricted');
         $route->setUriPattern('test/security/restricted(/{@action})');
         $route->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'Restricted',
             '@action' => 'public',
@@ -68,7 +68,7 @@ class AuthenticationTest extends FunctionalTestCase
         $route2->setName('Functional Test - Security::Authentication');
         $route2->setUriPattern('test/security/authentication(/{@action})');
         $route2->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'Authentication',
             '@action' => 'authenticate',
@@ -81,7 +81,7 @@ class AuthenticationTest extends FunctionalTestCase
         $route3->setName('Functional Test - Security::HttpBasicAuthentication');
         $route3->setUriPattern('test/security/authentication/httpbasic(/{@action})');
         $route3->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'HttpBasicTest',
             '@action' => 'authenticate',
@@ -94,7 +94,7 @@ class AuthenticationTest extends FunctionalTestCase
         $route4->setName('Functional Test - Security::UsernamePasswordAuthentication');
         $route4->setUriPattern('test/security/authentication/usernamepassword(/{@action})');
         $route4->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'UsernamePasswordTest',
             '@action' => 'authenticate',

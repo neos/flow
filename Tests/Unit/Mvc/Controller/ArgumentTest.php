@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Mvc;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
-use TYPO3\Flow\Error as FLowError;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Error\Messages as FLowError;
 
 /**
  * Testcase for the MVC Controller Argument

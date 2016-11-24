@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -19,27 +19,27 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-if (isset($argv[1]) && ($argv[1] === 'typo3.flow:core:setfilepermissions' || $argv[1] === 'flow:core:setfilepermissions' || $argv[1] === 'core:setfilepermissions')) {
+if (isset($argv[1]) && ($argv[1] === 'neos.flow:core:setfilepermissions' || $argv[1] === 'flow:core:setfilepermissions' || $argv[1] === 'core:setfilepermissions')) {
     if (DIRECTORY_SEPARATOR !== '/') {
         exit('The core:setfilepermissions command is only available on UNIX platforms.' . PHP_EOL);
     }
-    
+
     $filePermissions = decoct(fileperms(__DIR__ . '/setfilepermissions.sh') & 0777);
     if ($filePermissions !== '700') {
         chmod(__DIR__ . '/setfilepermissions.sh', 0700);
     }
-    
+
     array_shift($argv);
     array_shift($argv);
     $returnValue = 0;
     system(__DIR__ . '/setfilepermissions.sh ' . implode($argv, ' '), $returnValue);
     exit($returnValue);
-} elseif (isset($argv[1]) && ($argv[1] === 'typo3.flow:core:migrate' || $argv[1] === 'flow:core:migrate' || $argv[1] === 'core:migrate')) {
+} elseif (isset($argv[1]) && ($argv[1] === 'neos.flow:core:migrate' || $argv[1] === 'flow:core:migrate' || $argv[1] === 'core:migrate')) {
     array_shift($argv);
     array_shift($argv);
     require(__DIR__ . '/migrate.php');
 } else {
-    require(__DIR__ . '/../Classes/TYPO3/Flow/Core/Bootstrap.php');
+    require(__DIR__ . '/../Classes/Core/Bootstrap.php');
 
     if (DIRECTORY_SEPARATOR !== '/' && trim(getenv('FLOW_ROOTPATH'), '"\' ') === '') {
         $absoluteRootpath = dirname(realpath(__DIR__ . '/../../../'));
@@ -55,8 +55,8 @@ if (isset($argv[1]) && ($argv[1] === 'typo3.flow:core:setfilepermissions' || $ar
         $_SERVER['FLOW_ROOTPATH'] = trim(getenv('FLOW_ROOTPATH'), '"\' ') ?: dirname($_SERVER['PHP_SELF']);
     }
 
-    $context = trim(\TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT'), '"\' ') ?: 'Development';
+    $context = trim(\Neos\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT'), '"\' ') ?: 'Development';
 
-    $bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
+    $bootstrap = new \Neos\Flow\Core\Bootstrap($context);
     $bootstrap->run();
 }

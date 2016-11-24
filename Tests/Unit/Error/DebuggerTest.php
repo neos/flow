@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Error;
+namespace Neos\Flow\Tests\Unit\Error;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Error;
  * source code.
  */
 
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Error\Debugger;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Error\Debugger;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Debugger
@@ -52,7 +52,7 @@ class DebuggerTest extends UnitTestCase
     public function ignoredClassesRegexContainsFallback()
     {
         $ignoredClassesRegex = Debugger::getIgnoredClassesRegex();
-        $this->assertContains('TYPO3\\\\Flow\\\\Core\\\\.*', $ignoredClassesRegex);
+        $this->assertContains('Neos\\\\Flow\\\\Core\\\\.*', $ignoredClassesRegex);
     }
 
     /**
@@ -61,6 +61,6 @@ class DebuggerTest extends UnitTestCase
     public function ignoredClassesAreNotRendered()
     {
         $object = new ApplicationContext('Development');
-        $this->assertEquals('TYPO3\Flow\Core\ApplicationContext object', Debugger::renderDump($object, 10, true));
+        $this->assertEquals('Neos\Flow\Core\ApplicationContext object', Debugger::renderDump($object, 10, true));
     }
 }

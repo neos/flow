@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests;
+namespace Neos\Flow\Tests;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -21,6 +21,6 @@ namespace TYPO3\Flow\Tests;
  *
  * @api
  */
-abstract class UnitTestCase extends \TYPO3\Flow\Tests\BaseTestCase
+abstract class UnitTestCase extends \Neos\Flow\Tests\BaseTestCase
 {
 }

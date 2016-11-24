@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Mvc;
-use TYPO3\Flow\Utility;
+use Neos\Flow\Http;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc;
+use Neos\Utility;
 
 /**
  * Testcase for the URI Helper
@@ -118,8 +118,8 @@ class UriBuilderTest extends UnitTestCase
     public function uriForRecursivelyMergesAndOverrulesControllerArgumentsWithArguments()
     {
         $arguments = ['foo' => 'bar', 'additionalParam' => 'additionalValue'];
-        $controllerArguments = ['foo' => 'overruled', 'baz' => ['TYPO3.Flow' => 'fluid']];
-        $expectedArguments = ['foo' => 'overruled', 'additionalParam' => 'additionalValue', 'baz' => ['TYPO3.Flow' => 'fluid'], '@action' => 'index', '@controller' => 'somecontroller', '@package' => 'somepackage'];
+        $controllerArguments = ['foo' => 'overruled', 'baz' => ['Neos.Flow' => 'fluid']];
+        $expectedArguments = ['foo' => 'overruled', 'additionalParam' => 'additionalValue', 'baz' => ['Neos.Flow' => 'fluid'], '@action' => 'index', '@controller' => 'somecontroller', '@package' => 'somepackage'];
 
         $this->uriBuilder->setArguments($arguments);
         $this->uriBuilder->uriFor('index', $controllerArguments, 'SomeController', 'SomePackage');
@@ -128,7 +128,7 @@ class UriBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Routing\Exception\MissingActionNameException
+     * @expectedException \Neos\Flow\Mvc\Routing\Exception\MissingActionNameException
      */
     public function uriForThrowsExceptionIfActionNameIsNotSpecified()
     {

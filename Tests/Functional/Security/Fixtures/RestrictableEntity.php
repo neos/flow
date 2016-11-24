@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Fixtures;
+namespace Neos\Flow\Tests\Functional\Security\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,8 +12,8 @@ namespace TYPO3\Flow\Tests\Functional\Security\Fixtures;
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Security;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Security;
 
 /**
  * A restrictable entity for tests

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Configuration\Source;
+namespace Neos\Flow\Tests\Unit\Configuration\Source;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,8 +12,8 @@ namespace TYPO3\Flow\Tests\Unit\Configuration\Source;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Configuration\Source\YamlSource;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Configuration\Source\YamlSource;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the YAML configuration source
@@ -113,7 +113,7 @@ class YamlSourceTest extends UnitTestCase
     {
         $expectedConfiguration = [
             'configurationFileHasBeenLoaded' => true,
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'something' => 'foo',
                     '@bar' => 1,
@@ -135,7 +135,7 @@ class YamlSourceTest extends UnitTestCase
     {
         $expectedConfiguration = [
             'configurationFileHasBeenLoaded' => true,
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'default' => 'test',
                     'toBeOverwritten' => 2,
