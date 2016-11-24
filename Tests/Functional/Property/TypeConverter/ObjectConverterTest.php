@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
+namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\Exception\InvalidTargetException;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\ObjectConverter;
+use Neos\Flow\Property\Exception\InvalidTargetException;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\ObjectConverter;
 use Neos\Utility\ObjectAccess;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Property\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Property\Fixtures;
 
 /**
  */
@@ -133,20 +133,20 @@ class ObjectConverterTest extends FunctionalTestCase
     {
         $convertedObject = $this->converter->convertFrom(
             'irrelevant',
-            \TYPO3\Flow\Tests\Functional\Property\Fixtures\TestClassWithSingletonConstructorInjection::class
+            \Neos\Flow\Tests\Functional\Property\Fixtures\TestClassWithSingletonConstructorInjection::class
         );
-        $this->assertInstanceOf(\TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation::class, $convertedObject->getSingletonClass());
+        $this->assertInstanceOf(\Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation::class, $convertedObject->getSingletonClass());
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidTargetException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidTargetException
      */
     public function convertFromThrowsMeaningfulExceptionWhenTheTargetExpectsAnUnknownDependencyThatIsNotSpecifiedInTheSource()
     {
         $this->converter->convertFrom(
             'irrelevant',
-            \TYPO3\Flow\Tests\Functional\Property\Fixtures\TestClassWithThirdPartyClassConstructorInjection::class
+            \Neos\Flow\Tests\Functional\Property\Fixtures\TestClassWithThirdPartyClassConstructorInjection::class
         );
     }
 }

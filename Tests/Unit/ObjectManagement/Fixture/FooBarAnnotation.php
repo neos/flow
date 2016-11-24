@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 
 /**
  * fixture "annotation" for the above test case

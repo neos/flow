@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
+namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Validation\Validator\ConjunctionValidator;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Validation\Validator\ConjunctionValidator;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
 use Neos\Error\Messages as Error;
 
 /**
@@ -115,7 +115,7 @@ class ConjunctionValidatorTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\NoSuchValidatorException
+     * @expectedException \Neos\Flow\Validation\Exception\NoSuchValidatorException
      */
     public function removingANotExistingValidatorIndexThrowsException()
     {

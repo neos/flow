@@ -17,6 +17,6 @@ in Flow. Please see the API documentation for a full reference:
 * ``Neos\Utility\MediaTypes`` contains a list of internet media types and
   their corresponding file types, and can be used to map between them.
 
-* ``TYPO3\Flow\Utility\Now`` is a singleton ``DateTime`` class containing
+* ``Neos\Flow\Utility\Now`` is a singleton ``DateTime`` class containing
   the current time. It should always be used when you need access to the current
   time.

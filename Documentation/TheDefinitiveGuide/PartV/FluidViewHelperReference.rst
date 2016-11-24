@@ -262,7 +262,7 @@ Expected result::
 f:debug
 -------
 
-View helper that outputs its child nodes with \TYPO3\Flow\var_dump()
+View helper that outputs its child nodes with \Neos\Flow\var_dump()
 
 :Implementation: TYPO3\\Fluid\\ViewHelpers\\DebugViewHelper
 
@@ -1775,7 +1775,7 @@ Formats a given float to a currency representation.
 Arguments
 *********
 
-* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \TYPO3\Flow\I18n\Locale
+* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \Neos\Flow\I18n\Locale
 
 * ``currencySign`` (string, *optional*): (optional) The currency sign, eg $ or €.
 
@@ -1859,15 +1859,15 @@ Formats a \DateTime object.
 Arguments
 *********
 
-* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \TYPO3\Flow\I18n\Locale
+* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \Neos\Flow\I18n\Locale
 
 * ``date`` (mixed, *optional*): either a \DateTime object or a string that is accepted by \DateTime constructor
 
 * ``format`` (string, *optional*): Format String which is taken to format the Date/Time if none of the locale options are set.
 
-* ``localeFormatType`` (string, *optional*): Whether to format (according to locale set in $forceLocale) date, time or datetime. Must be one of TYPO3\Flow\I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_*'s constants.
+* ``localeFormatType`` (string, *optional*): Whether to format (according to locale set in $forceLocale) date, time or datetime. Must be one of Neos\Flow\I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_*'s constants.
 
-* ``localeFormatLength`` (string, *optional*): Format length if locale set in $forceLocale. Must be one of TYPO3\Flow\I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_*'s constants.
+* ``localeFormatLength`` (string, *optional*): Format length if locale set in $forceLocale. Must be one of Neos\Flow\I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_*'s constants.
 
 * ``cldrFormat`` (string, *optional*): Format string in CLDR format (see http://cldr.unicode.org/translation/date-time)
 
@@ -2158,7 +2158,7 @@ Formats a number with custom precision, decimal point and grouped thousands.
 Arguments
 *********
 
-* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \TYPO3\Flow\I18n\Locale
+* ``forceLocale`` (mixed, *optional*): Whether if, and what, Locale should be used. May be boolean, string or \Neos\Flow\I18n\Locale
 
 * ``decimals`` (integer, *optional*): The number of digits after the decimal point
 
@@ -2166,7 +2166,7 @@ Arguments
 
 * ``thousandsSeparator`` (string, *optional*): The character for grouping the thousand digits
 
-* ``localeFormatLength`` (string, *optional*): Format length if locale set in $forceLocale. Must be one of TYPO3\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_LENGTH_*'s constants.
+* ``localeFormatLength`` (string, *optional*): Format length if locale set in $forceLocale. Must be one of Neos\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_LENGTH_*'s constants.
 
 
 
@@ -3123,7 +3123,7 @@ Arguments
 
 * ``packageKey`` (string, *optional*): PackageKey of the package defining the role
 
-* ``account`` (TYPO3\Flow\Security\Account, *optional*): If specified, this subject of this check is the given Account instead of the currently authenticated account
+* ``account`` (Neos\Flow\Security\Account, *optional*): If specified, this subject of this check is the given Account instead of the currently authenticated account
 
 
 
@@ -3444,7 +3444,7 @@ Arguments
 
 * ``package`` (string, *optional*): Target package key. If not set, the current package key will be used
 
-* ``resource`` (TYPO3\Flow\Resource\Resource, *optional*): If specified, this resource object is used instead of the path and package information
+* ``resource`` (Neos\Flow\Resource\Resource, *optional*): If specified, this resource object is used instead of the path and package information
 
 * ``localize`` (boolean, *optional*): Whether resource localization should be attempted or not
 
@@ -3620,7 +3620,7 @@ Make sure to include jQuery and jQuery UI in the HTML, like that:
 Arguments
 *********
 
-* ``objects`` (TYPO3\Flow\Persistence\QueryResultInterface)
+* ``objects`` (Neos\Flow\Persistence\QueryResultInterface)
 
 * ``for`` (string)
 
@@ -3709,7 +3709,7 @@ This ViewHelper renders a Pagination of objects.
 Arguments
 *********
 
-* ``objects`` (TYPO3\Flow\Persistence\QueryResultInterface)
+* ``objects`` (Neos\Flow\Persistence\QueryResultInterface)
 
 * ``as`` (string)
 

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Doctrine\EntityManagerFactory;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence\Doctrine\EntityManagerFactory;
+use Neos\Flow\Tests\UnitTestCase;
 
 class EntityManagerFactoryTest extends UnitTestCase
 {

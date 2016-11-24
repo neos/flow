@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\I18n\EelHelper;
+namespace Neos\Flow\Tests\Unit\I18n\EelHelper;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\I18n\EelHelper;
  * source code.
  */
 
-use TYPO3\Flow\I18n\EelHelper\TranslationHelper;
-use TYPO3\Flow\I18n\EelHelper\TranslationParameterToken;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\I18n\EelHelper\TranslationHelper;
+use Neos\Flow\I18n\EelHelper\TranslationParameterToken;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Tests for TranslateHelper

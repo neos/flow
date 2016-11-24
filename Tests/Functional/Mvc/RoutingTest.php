@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc;
+namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Functional\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Http\Client;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Routing\Router;
-use TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestAController;
-use TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\RoutingTestAController;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\Client;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Routing\Router;
+use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestAController;
+use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\RoutingTestAController;
+use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\Arrays;
 
 /**
@@ -121,12 +121,12 @@ class RoutingTest extends FunctionalTestCase
 
             // dynamic route parts are case insensitive
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/TYPO3.Flow/ActionControllerTestA/index.html',
+                'requestUri' => 'http://localhost/typo3/flow/test/Neos.Flow/ActionControllerTestA/index.html',
                 'expectedMatchingRouteName' => 'controller route parts are case insensitive',
                 'expectedControllerObjectName' => ActionControllerTestAController::class
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/typo3.flow/actioncontrollertesta/index.HTML',
+                'requestUri' => 'http://localhost/typo3/flow/test/neos.flow/actioncontrollertesta/index.HTML',
                 'expectedMatchingRouteName' => 'controller route parts are case insensitive',
                 'expectedControllerObjectName' => ActionControllerTestAController::class
             ],
@@ -225,7 +225,7 @@ class RoutingTest extends FunctionalTestCase
      */
     public function resolveTestsDataProvider()
     {
-        $defaults = ['@package' => 'TYPO3.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
+        $defaults = ['@package' => 'Neos.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
         return [
             // route resolves no matter if defaults are equal to route values
             [
@@ -320,7 +320,7 @@ class RoutingTest extends FunctionalTestCase
             'HTTP Method Test',
             'http-method-test',
             [
-                '@package' => 'TYPO3.Flow',
+                '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
                 '@controller' => 'ActionControllerTestA',
                 '@action' => 'second',
@@ -340,7 +340,7 @@ class RoutingTest extends FunctionalTestCase
     public function routerInitializesRoutesIfNotInjectedExplicitly()
     {
         $routeValues = [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Http\Fixtures',
             '@controller' => 'Foo',
             '@action' => 'index',
@@ -357,7 +357,7 @@ class RoutingTest extends FunctionalTestCase
     public function explicitlySpecifiedRoutesOverruleConfiguredRoutes()
     {
         $routeValues = [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Http\Fixtures',
             '@controller' => 'Foo',
             '@action' => 'index',
@@ -367,7 +367,7 @@ class RoutingTest extends FunctionalTestCase
             [
                 'uriPattern' => 'custom/uri/pattern',
                 'defaults' => [
-                    '@package' => 'TYPO3.Flow',
+                    '@package' => 'Neos.Flow',
                     '@subpackage' => 'Tests\Functional\Http\Fixtures',
                     '@controller' => 'Foo',
                     '@action' => 'index',

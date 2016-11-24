@@ -14,11 +14,6 @@ Note, the object management features of Flow are by default only enabled for cla
 packages belonging to one of the `neos-*`` package types. All other classes are not
 considered by default. If you need that (see :ref:`sect-enabling-non-flow-packages`).
 
-.. note::
-
-   Older versions also used `typo3-flow-*` as package types. This has been deprecated with
-   Flow 4.0 and while still supported should no longer be used.
-
 .. tip::
 
 	A very good start to understand the idea of Inversion of Control and Dependency
@@ -110,7 +105,7 @@ The recommended way to specify the scope is the ``@scope`` annotation::
 
 	namespace MyCompany\MyPackage;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * A sample class
@@ -165,7 +160,7 @@ is dependency injection.
 	class SampleClass {
 
 		/**
-		 * @var \TYPO3\Flow\ObjectManagement\ObjectManagerInterface
+		 * @var \Neos\Flow\ObjectManagement\ObjectManagerInterface
 		 */
 		protected $objectManager;
 
@@ -174,9 +169,9 @@ is dependency injection.
 		 * The Object Manager will automatically be passed (injected) by the object
 		 * framework on instantiating this class.
 		 *
-		 * @param \TYPO3\Flow\ObjectManagement\ObjectManagerInterface $objectManager
+		 * @param \Neos\Flow\ObjectManagement\ObjectManagerInterface $objectManager
 		 */
-		public function __construct(\TYPO3\Flow\ObjectManagement\ObjectManagerInterface $objectManager) {
+		public function __construct(\Neos\Flow\ObjectManagement\ObjectManagerInterface $objectManager) {
 			$this->objectManager = $objectManager;
 		}
 	}
@@ -193,7 +188,7 @@ to retrieve object instances directly. The ``ObjectManager`` provides methods fo
 retrieving object instances for these rare situations. First, you need an instance of the
 ``ObjectManager`` itself, again by taking advantage of constructor injection::
 
-	public function __construct(\TYPO3\Flow\ObjectManagement\ObjectManagerInterface $objectManager) {
+	public function __construct(\Neos\Flow\ObjectManagement\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
 
@@ -294,7 +289,7 @@ at all aware of the framework it is working in. Calls to the Object Manager shou
 therefore be the exception.
 
 For a list of available methods please refer to the API documentation of the interface
-``TYPO3\Flow\ObjectManagement\ObjectManagerInterface``.
+``Neos\Flow\ObjectManagement\ObjectManagerInterface``.
 
 Object Names vs. Class Names
 ----------------------------
@@ -364,7 +359,7 @@ cohesion --- or in short: It makes you a better programmer.
 
 In the context of the previous example it means that the authentication object announces
 that it needs a logger which implements a certain PHP interface (for example the
-``TYPO3\Flow\Log\LoggerInterface``).
+``Neos\Flow\Log\LoggerInterface``).
 The object itself has no control over what kind of logger (file-logger,
 sms-logger, ...) it finally gets and it doesn't have to care about it anyway as long as it
 matches the expected API. As soon as the authentication object is instantiated, the object
@@ -555,7 +550,7 @@ For these cases Flow provides support for *Property Injection*:
 
 	namespace MyCompany\MyPackage;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	class Foo {
 
@@ -613,7 +608,7 @@ dependencies to other objects:
 
 	namespace MyCompany\MyPackage;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	class Foo {
 
@@ -655,7 +650,7 @@ There are two ways to solve this:
 
 	namespace MyCompany\MyPackage;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	class Foo {
 
@@ -670,7 +665,7 @@ There are two ways to solve this:
 		...
 
 		public function doSomething() {
-			if ($this->bar instanceof \TYPO3\Flow\ObjectManagement\DependencyInjection\DependencyProxy) {
+			if ($this->bar instanceof \Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy) {
 				$this->bar->_activateDependency();
 			}
 			$this->baz->doSomethingElse($this->bar);
@@ -686,7 +681,7 @@ calling ``_activateDependency()`` will fail.
 
 	namespace MyCompany\MyPackage;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	class Foo {
 
@@ -745,7 +740,7 @@ setting value into a class property:
 
 	namespace Acme\Demo;
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	class SomeClass {
 
@@ -858,7 +853,7 @@ stick to Flow's general rules for YAML-based configuration.
 	    1:
 	      object: 'MyCompany\MyPackage\Baz'
 	    2:
-	      value: "some string"
+	      value: "some string"
 	    3:
 	      value: false
 	  properties:
@@ -1204,11 +1199,11 @@ Custom Factories
 Complex objects might require a custom factory which takes care of all important settings
 and dependencies. As we have seen previously, a logger consists of a frontend, a backend
 and configuration options for that backend. Instead of creating and configuring these
-objects on your own, you can use the ``TYPO3\Flow\Log\LoggerFactory`` which provides a
+objects on your own, you can use the ``Neos\Flow\Log\LoggerFactory`` which provides a
 convenient ``create`` method taking care of all the rest::
 
-	$myCache = $loggerFactory->create('Flow_System', \TYPO3\Flow\Log\Logger::class,
-	    \TYPO3\Flow\Log\Backend\FileBackend::class, array( … ));
+	$myCache = $loggerFactory->create('Flow_System', \Neos\Flow\Log\Logger::class,
+	    \Neos\Flow\Log\Backend\FileBackend::class, array( … ));
 
 It is possible to specify for each object if it should be created by a custom factory
 rather than the Object Builder. Consider the following configuration:
@@ -1217,9 +1212,9 @@ rather than the Object Builder. Consider the following configuration:
 
 .. code-block:: yaml
 
-	TYPO3\Flow\Log\SystemLoggerInterface:
+	Neos\Flow\Log\SystemLoggerInterface:
 	  scope: singleton
-	  factoryObjectName: TYPO3\Flow\Log\LoggerFactory
+	  factoryObjectName: Neos\Flow\Log\LoggerFactory
 	  factoryMethodName: create
 
 From now on the LoggerFactory's ``create`` method will be called each time an object of
@@ -1231,24 +1226,24 @@ passed through to the custom factory method:
 
 .. code-block:: yaml
 
-	TYPO3\Flow\Log\SystemLoggerInterface:
+	Neos\Flow\Log\SystemLoggerInterface:
 	  scope: singleton
-	  factoryObjectName: TYPO3\Flow\Log\LoggerFactory
+	  factoryObjectName: Neos\Flow\Log\LoggerFactory
 	  arguments:
 	    1:
 	      value: 'Flow_System'
 	    2:
-	      value: 'TYPO3\Flow\Log\Logger'
+	      value: 'Neos\Flow\Log\Logger'
 	    3:
-	      value: 'TYPO3\Flow\Log\Backend\FileBackend'
+	      value: 'Neos\Flow\Log\Backend\FileBackend'
 	    4:
 	      setting: TYPO3.Flow.log.systemLogger.backendOptions
 
 *Example: PHP code using the custom factory* ::
 
-	$myCache = $objectManager->get(\TYPO3\Flow\Log\SystemLoggerInterface::class);
+	$myCache = $objectManager->get(\Neos\Flow\Log\SystemLoggerInterface::class);
 
-``$objectManager`` is a reference to the ``TYPO3\Flow\ObjectManagement\ObjectManager``.
+``$objectManager`` is a reference to the ``Neos\Flow\ObjectManagement\ObjectManager``.
 The required arguments are automatically built from the values defined in the
 object configuration.
 
@@ -1263,11 +1258,11 @@ called before the Object Manager quits its service.
 As the initialization method is being called after creating an object *and* after
 recreating/reconstituting an object, there are cases where different code should be
 executed. That is why the initialization method gets a parameter, which is one of the
-``\TYPO3\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_*`` constants:
+``\Neos\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_*`` constants:
 
-``\TYPO3\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_CREATED``
+``\Neos\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_CREATED``
   If the object is newly created (i.e. the constructor has been called)
-``\TYPO3\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_RECREATED``
+``\Neos\Flow\ObjectManagement\ObjectManagerInterface::INITIALIZATIONCAUSE_RECREATED``
   If the object has been recreated/reconstituted (i.e. the constructor has not been
   called)
 
@@ -1322,12 +1317,12 @@ and so on, the performance in production context can be improved::
 	/**
 	 * Returns a map of action method names and their parameters.
 	 *
-	 * @param \TYPO3\Flow\ObjectManagement\ObjectManagerInterface $objectManager
+	 * @param \Neos\Flow\ObjectManagement\ObjectManagerInterface $objectManager
 	 * @return array Array of method parameters by action name
 	 * @Flow\CompileStatic
 	 */
 	static protected function getActionMethodParameters($objectManager) {
-		$reflectionService = $objectManager->get\TYPO3\Flow\Reflection\ReflectionService::class);
+		$reflectionService = $objectManager->get(\Neos\Flow\Reflection\ReflectionService::class);
 		$className = get_called_class();
 		$methodParameters = $reflectionService->getMethodParameters($className, get_class_methods($className));
 		foreach ($methodParameters as $parameterName => $parameterInfo) {
@@ -1351,7 +1346,7 @@ those classes via configuration in settings. The configuration consists of a map
 arrays of expressions which match classes to be included. In the following example we include all
 classes of the ``Acme.Objects`` package::
 
-  TYPO3:
+  Neos:
     Flow:
       object:
         includeClasses:

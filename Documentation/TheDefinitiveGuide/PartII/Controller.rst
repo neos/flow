@@ -33,12 +33,12 @@ The kickstarter created a very basic command controller containing only one comm
 	 *                                                                        *
 	 *                                                                        */
 
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * @Flow\Scope("singleton")
 	 */
-	class BlogCommandController extends \TYPO3\Flow\Cli\CommandController {
+	class BlogCommandController extends \Neos\Flow\Cli\CommandController {
 
 		/**
 		 * An example command
@@ -79,8 +79,8 @@ Let's replace the example with a ``setupCommand`` that can be used to create the
 	use Acme\Blog\Domain\Model\Post;
 	use Acme\Blog\Domain\Repository\BlogRepository;
 	use Acme\Blog\Domain\Repository\PostRepository;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Cli\CommandController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Cli\CommandController;
 
 	/**
 	 * @Flow\Scope("singleton")
@@ -194,7 +194,7 @@ to apply. In this case the migration should look like this:
 .. code-block:: php
 
 	<?php
-	namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+	namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 	use Doctrine\DBAL\Migrations\AbstractMigration,
 		Doctrine\DBAL\Schema\Schema;
@@ -267,8 +267,8 @@ Now let us add some more code to *.../Classes/Acme/Blog/Controller/PostControlle
 
 	use Acme\Blog\Domain\Repository\BlogRepository;
 	use Acme\Blog\Domain\Repository\PostRepository;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Mvc\Controller\ActionController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Mvc\Controller\ActionController;
 	use Acme\Blog\Domain\Model\Post;
 
 	class PostController extends ActionController {

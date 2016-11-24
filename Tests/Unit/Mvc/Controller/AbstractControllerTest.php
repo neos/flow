@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,20 +11,20 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\Controller\AbstractController;
-use TYPO3\Flow\Mvc\Controller\Arguments;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Response;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\Exception\ForwardException;
-use TYPO3\Flow\Mvc\Exception\StopActionException;
-use TYPO3\Flow\Mvc\FlashMessageContainer;
-use TYPO3\Flow\Mvc\Routing\UriBuilder;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Cli;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Controller\AbstractController;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\Exception\ForwardException;
+use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\Mvc\FlashMessageContainer;
+use Neos\Flow\Mvc\Routing\UriBuilder;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli;
 use Neos\Error\Messages as FlowError;
 
 /**
@@ -60,7 +60,7 @@ class AbstractControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\UnsupportedRequestTypeException
+     * @expectedException \Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function initializeControllerWillThrowAnExceptionIfTheGivenRequestIsNotSupported()
     {
@@ -315,7 +315,7 @@ class AbstractControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @expectedException \Neos\Flow\Mvc\Exception\StopActionException
      */
     public function redirectToUriThrowsStopActionException()
     {
@@ -379,7 +379,7 @@ class AbstractControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\StopActionException
+     * @expectedException \Neos\Flow\Mvc\Exception\StopActionException
      */
     public function throwStatusSetsThrowsStopActionException()
     {
@@ -458,7 +458,7 @@ class AbstractControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\RequiredArgumentMissingException
+     * @expectedException \Neos\Flow\Mvc\Exception\RequiredArgumentMissingException
      */
     public function mapRequestArgumentsToControllerArgumentsThrowsExceptionIfRequiredArgumentWasNotSet()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
+namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use TYPO3\Flow\Validation\Validator\GenericObjectValidator;
+use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Error\Messages as Error;
-use TYPO3\Flow\Validation\Validator\IntegerValidator;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Flow\Validation\Validator\IntegerValidator;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
 
 require_once('AbstractValidatorTestcase.php');
 

@@ -1,10 +1,10 @@
 <?php
-namespace TYPO3\Flow\Tests\Object\Fixture;
+namespace Neos\Flow\Tests\Object\Fixture;
 
-use TYPO3\Flow\Aop\JoinPointInterface;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\ObjectManagement\Proxy\ProxyInterface;
-use TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
+use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
 
 class ReconstitutableClassWithSimpleProperties implements PersistenceMagicInterface, ProxyInterface
 {

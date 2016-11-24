@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Http\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Functional\Http\Fixtures\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Controller\AbstractController;
-use TYPO3\Flow\Mvc\RequestInterface;
-use TYPO3\Flow\Mvc\ResponseInterface;
+use Neos\Flow\Mvc\Controller\AbstractController;
+use Neos\Flow\Mvc\RequestInterface;
+use Neos\Flow\Mvc\ResponseInterface;
 
 class FooController extends AbstractController
 {

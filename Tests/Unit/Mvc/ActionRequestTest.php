@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc;
+namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests\Unit\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Http;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Package\PackageManager;
-use TYPO3\Flow\Package\PackageManagerInterface;
-use TYPO3\Flow\Security\Cryptography\HashService;
-use TYPO3\Flow\Security\Exception\InvalidHashException;
-use TYPO3\Flow\SignalSlot\Dispatcher;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Http;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Security\Cryptography\HashService;
+use Neos\Flow\Security\Exception\InvalidHashException;
+use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC ActionRequest class
@@ -238,7 +238,7 @@ class ActionRequestTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ObjectManagement\Exception\UnknownObjectException
+     * @expectedException \Neos\Flow\ObjectManagement\Exception\UnknownObjectException
      */
     public function setControllerObjectNameThrowsExceptionOnUnknownObjectName()
     {
@@ -348,7 +348,7 @@ class ActionRequestTest extends UnitTestCase
      * @test
      * @param mixed $invalidControllerName
      * @dataProvider invalidControllerNames
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidControllerNameException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidControllerNameException
      */
     public function setControllerNameThrowsExceptionOnInvalidControllerNames($invalidControllerName)
     {
@@ -384,7 +384,7 @@ class ActionRequestTest extends UnitTestCase
      * @test
      * @param mixed $invalidActionName
      * @dataProvider invalidActionNames
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidActionNameException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidActionNameException
      */
     public function setControllerActionNameThrowsExceptionOnInvalidActionNames($invalidActionName)
     {
@@ -398,7 +398,7 @@ class ActionRequestTest extends UnitTestCase
     {
         $mockControllerClassName = 'Mock' . md5(uniqid(mt_rand(), true));
         eval('
-			class ' . $mockControllerClassName . ' extends \TYPO3\Flow\Mvc\Controller\ActionController {
+			class ' . $mockControllerClassName . ' extends \Neos\Flow\Mvc\Controller\ActionController {
 				public function someGreatAction() {}
 			}
 		');
@@ -430,7 +430,7 @@ class ActionRequestTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidArgumentNameException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidArgumentNameException
      */
     public function setArgumentThrowsAnExceptionOnInvalidArgumentNames()
     {
@@ -439,7 +439,7 @@ class ActionRequestTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidArgumentTypeException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidArgumentTypeException
      */
     public function setArgumentDoesNotAllowObjectValuesForRegularArguments()
     {
@@ -534,7 +534,7 @@ class ActionRequestTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidHashException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidHashException
      */
     public function getReferringRequestThrowsAnExceptionIfTheHmacOfTheArgumentsCouldNotBeValid()
     {

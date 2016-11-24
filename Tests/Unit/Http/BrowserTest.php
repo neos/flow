@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Http;
+namespace Neos\Flow\Tests\Unit\Http;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Http;
  * source code.
  */
 
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Http\Client;
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Http\Client;
+use Neos\Flow\Http;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Http Cookie class
@@ -143,7 +143,7 @@ class BrowserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Http\Client\InfiniteRedirectionException
+     * @expectedException \Neos\Flow\Http\Client\InfiniteRedirectionException
      */
     public function browserHaltsOnAttemptedInfiniteRedirectionLoop()
     {
@@ -175,7 +175,7 @@ class BrowserTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Http\Client\InfiniteRedirectionException
+     * @expectedException \Neos\Flow\Http\Client\InfiniteRedirectionException
      */
     public function browserHaltsOnExceedingMaximumRedirections()
     {

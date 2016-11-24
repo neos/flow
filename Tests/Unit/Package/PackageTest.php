@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Package;
+namespace Neos\Flow\Tests\Unit\Package;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Package;
  * source code.
  */
 
-use TYPO3\Flow\Composer\ComposerUtility;
-use TYPO3\Flow\Package\Package;
+use Neos\Flow\Composer\ComposerUtility;
+use Neos\Flow\Package\Package;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Package\PackageManager;
+use Neos\Flow\Package\PackageManager;
 use Neos\Utility\ObjectAccess;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the package class
@@ -35,7 +35,7 @@ class PackageTest extends UnitTestCase
     {
         ComposerUtility::flushCaches();
         vfsStream::setup('Packages');
-        $this->mockPackageManager = $this->getMockBuilder(\TYPO3\Flow\Package\PackageManager::class)->disableOriginalConstructor()->getMock();
+        $this->mockPackageManager = $this->getMockBuilder(\Neos\Flow\Package\PackageManager::class)->disableOriginalConstructor()->getMock();
         ObjectAccess::setProperty($this->mockPackageManager, 'composerManifestData', array(), true);
     }
 
@@ -101,7 +101,7 @@ class PackageTest extends UnitTestCase
     /**
      * @test
      */
-    public function packageMetaDataContainsPackageType()
+    public function packageManifestContainsPackageType()
     {
         $packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
         mkdir($packagePath, 0777, true);
@@ -115,7 +115,7 @@ class PackageTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Composer\Exception\MissingPackageManifestException
+     * @expectedException \Neos\Flow\Composer\Exception\MissingPackageManifestException
      */
     public function throwExceptionWhenSpecifyingAPathWithMissingComposerManifest()
     {
@@ -131,7 +131,7 @@ class PackageTest extends UnitTestCase
     public function getInstalledVersionReturnsFallback()
     {
         /** @var Package|\PHPUnit_Framework_MockObject_MockObject $package */
-        $package = $this->getMockBuilder(\TYPO3\Flow\Package\Package::class)->setMethods(['getComposerManifest'])->setConstructorArgs(['Some.Package', 'some/package', 'vfs://Packages/Some/Path/Some.Package/', []])->getMock();
+        $package = $this->getMockBuilder(\Neos\Flow\Package\Package::class)->setMethods(['getComposerManifest'])->setConstructorArgs(['Some.Package', 'some/package', 'vfs://Packages/Some/Path/Some.Package/', []])->getMock();
         $package->method('getComposerManifest')->willReturn('1.2.3');
 
         $this->assertEquals('1.2.3', $package->getInstalledVersion('some/package'));

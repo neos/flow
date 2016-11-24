@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures;
+namespace Neos\Flow\Tests\Functional\Reflection\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,17 +12,17 @@ namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures;
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * @ORM\Entity
- * @Flow\Introduce("TYPO3\Flow\Persistence\Aspect\PersistenceMagicAspect->isEntityOrValueObject", interfaceName="TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface")
+ * @Flow\Introduce("Neos\Flow\Persistence\Aspect\PersistenceMagicAspect->isEntityOrValueObject", interfaceName="Neos\Flow\Persistence\Aspect\PersistenceMagicInterface")
  */
 class AnnotatedClass
 {
     /**
      * @param string
-     * @Flow\Introduce("within(TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface)")
+     * @Flow\Introduce("within(Neos\Flow\Persistence\Aspect\PersistenceMagicInterface)")
      */
     protected $introducedProperty;
 

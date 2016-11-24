@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -409,7 +409,7 @@ class Manager
             /** @noinspection PhpIncludeInspection */
             require_once($filenameAndPath);
             $baseFilename = basename($filenameAndPath, '.php');
-            $className = '\\TYPO3\\Flow\\Core\\Migrations\\' . $baseFilename;
+            $className = '\\Neos\\Flow\\Core\\Migrations\\' . $baseFilename;
             /** @var AbstractMigration $migration */
             $migration = new $className($this, $packageKey);
             $this->migrations[$migration->getVersionNumber()] = $migration;

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Log\Backend;
+namespace Neos\Flow\Tests\Unit\Log\Backend;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,8 +13,8 @@ namespace TYPO3\Flow\Tests\Unit\Log\Backend;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
-use TYPO3\Flow\Log\Backend\FileBackend;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Log\Backend\FileBackend;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the File Backend
@@ -41,7 +41,7 @@ class FileBackendTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Log\Exception\CouldNotOpenResourceException
+     * @expectedException \Neos\Flow\Log\Exception\CouldNotOpenResourceException
      */
     public function openDoesNotCreateParentDirectoriesByDefault()
     {

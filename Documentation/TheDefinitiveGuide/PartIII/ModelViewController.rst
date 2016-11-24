@@ -167,7 +167,7 @@ The most simple way to implement an action is to extend the ActionController cla
 declare an action method and return a plain string as the response::
 
 	namespace Acme\Demo\Controller;
-	use TYPO3\Flow\Mvc\Controller\ActionController;
+	use Neos\Flow\Mvc\Controller\ActionController;
 
 	class HelloWorldController extends ActionController {
 
@@ -474,7 +474,7 @@ in the concrete Action Controller implementation::
 		/**
 		 * @var string
 		 */
-		protected $defaultViewObjectName = \TYPO3\Flow\Mvc\View\JsonView::class;
+		protected $defaultViewObjectName = \Neos\Flow\Mvc\View\JsonView::class;
 
 		# …
 	}
@@ -489,7 +489,7 @@ to view mapping feature can be used::
 		 */
 		protected $viewFormatToObjectNameMap = array(
 			'html' => \Neos\FluidAdaptor\View\TemplateView::class,
-			'json' => \TYPO3\Flow\Mvc\View\JsonView::class
+			'json' => \Neos\Flow\Mvc\View\JsonView::class
 		);
 
 		/**
@@ -601,7 +601,7 @@ Custom View
 
 Similar to the Fluid Template View and the JSON View, packages can provide their
 own custom views. The only requirement for such a view is the implementation of
-all methods defined in the ``TYPO3\Flow\Mvc\View\ViewInterface``.
+all methods defined in the ``Neos\Flow\Mvc\View\ViewInterface``.
 
 An Action Controller can be configured to use a custom view through the
 ``$defaultViewObjectName`` and ``$viewFormatToObjectNameMap`` properties, as

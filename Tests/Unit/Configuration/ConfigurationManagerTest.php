@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Configuration;
+namespace Neos\Flow\Tests\Unit\Configuration;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Unit\Configuration;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Configuration\Source\YamlSource;
-use TYPO3\Flow\Core\ApplicationContext;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\Source\YamlSource;
+use Neos\Flow\Core\ApplicationContext;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Package\Package;
-use TYPO3\Flow\Package\PackageInterface;
-use TYPO3\Flow\SomeClass;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Environment;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Package\Package;
+use Neos\Flow\Package\PackageInterface;
+use Neos\Flow\SomeClass;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Utility\Environment;
 
 /**
  * Testcase for the configuration manager
@@ -147,7 +147,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Configuration\Exception\InvalidConfigurationTypeException
+     * @expectedException \Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function gettingUnregisteredConfigurationTypeFails()
     {
@@ -189,7 +189,7 @@ class ConfigurationManagerTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Configuration\Exception\InvalidConfigurationTypeException
+     * @expectedException \Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException
      * @test
      */
     public function getConfigurationThrowsExceptionOnInvalidConfigurationType()
@@ -252,7 +252,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $actualConfigurations = $configurationManager->_get('configurations');
         $expectedSettings = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'ex1' => 'global',
                     'foo' => 'quux',
@@ -277,7 +277,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $filenameAndPath = func_get_arg(0);
 
         $settingsFlow = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'ex1' => 'global',
                     'foo' => 'global stuff'
@@ -291,7 +291,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $settingsFlowTesting = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'foo' => 'quux',
                     'example' => 'fromTesting'
@@ -303,7 +303,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $settingsFlowTestingSystem1 = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'foo' => 'quux',
                     'example' => 'fromTestingSystem1'
@@ -344,7 +344,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $globalSettings = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'foo' => 'bar'
                 ]
@@ -388,7 +388,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $actualConfigurations = $configurationManager->_get('configurations');
         $expectedSettings = [
-            'TYPO3.Flow' => [
+            'Neos.Flow' => [
                 SomeClass::class => [
                     'className' => 'Bar',
                     'configPackageObjects' => 'correct',
@@ -502,7 +502,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         $actualConfigurations = $configurationManager->_get('configurations');
         $expectedCachesConfiguration = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configPackageCaches' => 'correct',
                 'configGlobalCaches' => 'correct',
                 'configPackageContextCaches' => 'correct',
@@ -530,7 +530,7 @@ class ConfigurationManagerTest extends UnitTestCase
         // - $packageSubContextCaches
         // - $globalSubContextCaches
         $packageCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configPackageCaches' => 'correct',
 
                 'configGlobalCaches' => 'overriddenWronglyFromPackageCaches',
@@ -542,7 +542,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $globalCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configGlobalCaches' => 'correct',
 
                 'configPackageContextCaches' => 'overriddenWronglyFromGlobalCaches',
@@ -553,7 +553,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $packageContextCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configPackageContextCaches' => 'correct',
 
                 'configGlobalContextCaches' => 'overriddenWronglyFromPackageContextCaches',
@@ -563,7 +563,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $globalContextCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configGlobalContextCaches' => 'correct',
 
                 'configPackageSubContextCaches' => 'overriddenWronglyFromGlobalContextCaches',
@@ -572,7 +572,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $packageSubContextCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configPackageSubContextCaches' => 'correct',
 
                 'configGlobalSubContextCaches' => 'overriddenWronglyFromPackageSubContextCaches',
@@ -580,7 +580,7 @@ class ConfigurationManagerTest extends UnitTestCase
         ];
 
         $globalSubContextCaches = [
-            \TYPO3_Flow_SomeCache::class => [
+            \Neos_Flow_SomeCache::class => [
                 'configGlobalSubContextCaches' => 'correct',
             ]
         ];
@@ -638,7 +638,7 @@ EOD;
 
         $actualConfigurations = $configurationManager->_get('configurations');
         $expectedConfiguration = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'foo' => 'bar',
                     'core' => ['context' => 'Testing']
@@ -744,11 +744,11 @@ EOD;
     {
         $settings = [
             'foo' => 'bar',
-            'baz' => '%TYPO3\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_POLICY%',
+            'baz' => '%Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_POLICY%',
             'inspiring' => [
                 'people' => [
-                    'to' => '%TYPO3\Flow\Core\Bootstrap::MINIMUM_PHP_VERSION%',
-                    'share' => '%TYPO3\Flow\Package\PackageInterface::DIRECTORY_CLASSES%'
+                    'to' => '%Neos\Flow\Core\Bootstrap::MINIMUM_PHP_VERSION%',
+                    'share' => '%Neos\Flow\Package\PackageInterface::DIRECTORY_CLASSES%'
                 ]
             ]
         ];
@@ -766,8 +766,8 @@ EOD;
      */
     public function postProcessConfigurationReplacesEnvMarkersWithEnvironmentValues()
     {
-        $envVarName = 'TYPO3_FLOW_TESTS_UNIT_CONFIGURATION_CONFIGURATIONMANAGERTEST_MOCKENVVAR';
-        $envVarValue = 'TYPO3_Flow_Tests_Unit_Configuration_ConfigurationManagerTest_MockEnvValue';
+        $envVarName = 'NEOS_FLOW_TESTS_UNIT_CONFIGURATION_CONFIGURATIONMANAGERTEST_MOCKENVVAR';
+        $envVarValue = 'NEOS_Flow_Tests_Unit_Configuration_ConfigurationManagerTest_MockEnvValue';
 
         putenv($envVarName . '=' . $envVarValue);
 
@@ -782,7 +782,7 @@ EOD;
             )
         );
 
-        $configurationManager = $this->getAccessibleMock(\TYPO3\Flow\Configuration\ConfigurationManager::class, array('dummy'), array(), '', false);
+        $configurationManager = $this->getAccessibleMock(\Neos\Flow\Configuration\ConfigurationManager::class, array('dummy'), array(), '', false);
         $configurationManager->_callRef('postProcessConfiguration', $settings);
 
         $this->assertSame($envVarValue, $settings['baz']);
@@ -919,7 +919,7 @@ EOD;
                 'uriPattern' => 'globalContextRoute1/<PackageSubroutes>',
                 'subRoutes' => [
                     'PackageSubroutes' => [
-                        'package' => 'TYPO3.Flow'
+                        'package' => 'Neos.Flow'
                     ]
                 ],
             ],
@@ -1007,11 +1007,11 @@ EOD;
                 'uriPattern' => 'a/<b>/<c>',
                 'subRoutes' => [
                     'b' => [
-                        'package' => 'TYPO3.Flow',
+                        'package' => 'Neos.Flow',
                         'suffix' => 'b'
                     ],
                     'c' => [
-                        'package' => 'TYPO3.Flow',
+                        'package' => 'Neos.Flow',
                         'suffix' => 'c'
                     ]
                 ]
@@ -1028,7 +1028,7 @@ EOD;
                 'uriPattern' => 'b2/<d>',
                 'subRoutes' => [
                     'd' => [
-                        'package' => 'TYPO3.Flow',
+                        'package' => 'Neos.Flow',
                         'suffix' => 'd'
                     ]
                 ]
@@ -1045,7 +1045,7 @@ EOD;
                 'uriPattern' => 'c2/<e>',
                 'subRoutes' => [
                     'e' => [
-                        'package' => 'TYPO3.Flow',
+                        'package' => 'Neos.Flow',
                         'suffix' => 'e'
                     ]
                 ]
@@ -1116,11 +1116,11 @@ EOD;
             ],
             // MERGED SUBROUTES FROM SETTINGS
             [
-                'name' => 'TYPO3.Flow :: PackageRoute1',
+                'name' => 'Neos.Flow :: PackageRoute1',
                 'uriPattern' => 'packageRoute1/some-value'
             ],
             [
-                'name' => 'TYPO3.Flow :: PackageRoute2',
+                'name' => 'Neos.Flow :: PackageRoute2',
                 'uriPattern' => 'packageRoute2'
             ],
         ];
@@ -1159,11 +1159,11 @@ EOD;
         ];
 
         $globalSettings = [
-            'TYPO3' => [
+            'Neos' => [
                 'Flow' => [
                     'mvc' => [
                         'routes' => [
-                            'TYPO3.Flow' => [
+                            'Neos.Flow' => [
                                 'position' => 'start',
                                 'suffix' => 'SomeSuffix',
                                 'variables' => [
@@ -1193,7 +1193,7 @@ EOD;
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Configuration\Exception\RecursionException
+     * @expectedException \Neos\Flow\Configuration\Exception\RecursionException
      */
     public function loadConfigurationForRoutesThrowsExceptionIfSubRoutesContainCircularReferences()
     {
@@ -1203,7 +1203,7 @@ EOD;
                 'uriPattern' => '<PackageSubroutes>',
                 'subRoutes' => [
                     'PackageSubroutes' => [
-                        'package' => 'TYPO3.Flow'
+                        'package' => 'Neos.Flow'
                     ]
                 ],
             ];
@@ -1220,7 +1220,7 @@ EOD;
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Configuration\Exception\ParseErrorException
+     * @expectedException \Neos\Flow\Configuration\Exception\ParseErrorException
      */
     public function mergeRoutesWithSubRoutesThrowsExceptionIfRouteRefersToNonExistingOrInactivePackages()
     {
@@ -1252,7 +1252,7 @@ EOD;
                 'uriPattern' => '<PackageSubroutes>',
                 'subRoutes' => [
                     'PackageSubroutes' => [
-                        'package' => 'TYPO3.Flow',
+                        'package' => 'Neos.Flow',
                         'suffix' => 'Foo'
                     ]
                 ],
@@ -1552,10 +1552,10 @@ EOD;
     {
         $mockPackageFlow = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
         $mockPackageFlow->expects($this->any())->method('getConfigurationPath')->will($this->returnValue('Flow/Configuration/'));
-        $mockPackageFlow->expects($this->any())->method('getPackageKey')->will($this->returnValue('TYPO3.Flow'));
+        $mockPackageFlow->expects($this->any())->method('getPackageKey')->will($this->returnValue('Neos.Flow'));
 
         $mockPackages = [
-            'TYPO3.Flow' => $mockPackageFlow
+            'Neos.Flow' => $mockPackageFlow
         ];
 
         return $mockPackages;

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\View;
+namespace Neos\Flow\Tests\Unit\Mvc\View;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\View;
  * source code.
  */
 
-use TYPO3\Flow\Mvc;
-use TYPO3\Flow\Persistence\Generic\PersistenceManager;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Http;
+use Neos\Flow\Mvc;
+use Neos\Flow\Persistence\Generic\PersistenceManager;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
 
 /**
  * Testcase for the JSON view
@@ -212,7 +212,7 @@ class JsonViewTest extends UnitTestCase
     public function exposeClassNameSettingsAndResults()
     {
         $className = 'DummyClass' . md5(uniqid(mt_rand(), true));
-        $namespace = 'TYPO3\Flow\Tests\Unit\Mvc\View\\' . $className;
+        $namespace = 'Neos\Flow\Tests\Unit\Mvc\View\\' . $className;
         return [
             [
                 Mvc\View\JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,

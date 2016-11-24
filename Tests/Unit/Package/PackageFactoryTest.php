@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Package;
+namespace Neos\Flow\Tests\Unit\Package;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,12 +12,12 @@ namespace TYPO3\Flow\Tests\Unit\Package;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Composer\ComposerUtility;
-use TYPO3\Flow\Package\Package;
-use TYPO3\Flow\Package\PackageFactory;
-use TYPO3\Flow\Package\PackageManager;
+use Neos\Flow\Composer\ComposerUtility;
+use Neos\Flow\Package\Package;
+use Neos\Flow\Package\PackageFactory;
+use Neos\Flow\Package\PackageManager;
 use Neos\Utility\ObjectAccess;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the package factory
@@ -48,7 +48,7 @@ class PackageFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\InvalidPackagePathException
+     * @expectedException \Neos\Flow\Package\Exception\InvalidPackagePathException
      */
     public function createThrowsExceptionWhenSpecifyingANonExistingPackagePath()
     {
@@ -57,7 +57,7 @@ class PackageFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\CorruptPackageException
+     * @expectedException \Neos\Flow\Package\Exception\CorruptPackageException
      */
     public function createThrowsExceptionIfCustomPackageFileCantBeAnalyzed()
     {
@@ -72,7 +72,7 @@ class PackageFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\CorruptPackageException
+     * @expectedException \Neos\Flow\Package\Exception\CorruptPackageException
      */
     public function createThrowsExceptionIfCustomPackageDoesNotImplementPackageInterface()
     {
@@ -80,7 +80,7 @@ class PackageFactoryTest extends UnitTestCase
         $packageFilePath = $packagePath . 'Classes/Some/Package/Package.php';
         mkdir(dirname($packageFilePath), 0777, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "some/package", "type": "neos-test", "autoload": { "psr-0": { "Foo": "bar" }}}');
-        file_put_contents($packageFilePath, '<?php namespace TYPO3\\Flow\\Fixtures { class CustomPackage1 {}}');
+        file_put_contents($packageFilePath, '<?php namespace Neos\\Flow\\Fixtures { class CustomPackage1 {}}');
 
         require($packageFilePath);
 
@@ -96,7 +96,7 @@ class PackageFactoryTest extends UnitTestCase
         $packageFilePath = $packagePath . 'Classes/Some/Package/Package.php';
         mkdir(dirname($packageFilePath), 0777, true);
         file_put_contents($packagePath . 'composer.json', '{"name": "some/package", "type": "neos-test", "autoload": { "psr-0": { "Foo": "bar" }}}');
-        file_put_contents($packageFilePath, '<?php namespace Neos\\Flow\\Fixtures { class CustomPackage2 extends \\TYPO3\\Flow\\Package\\Package {}}');
+        file_put_contents($packageFilePath, '<?php namespace Neos\\Flow\\Fixtures { class CustomPackage2 extends \\Neos\\Flow\\Package\\Package {}}');
 
         require($packageFilePath);
 
@@ -115,7 +115,7 @@ class PackageFactoryTest extends UnitTestCase
         $rawComposerManifest = '{"name": "some/package", "type": "neos-test", "autoload": { "psr-4": { "Foo": "bar" }}}';
         $composerManifest = json_decode($rawComposerManifest, true);
         file_put_contents($packagePath . 'composer.json', $rawComposerManifest);
-        file_put_contents($packageFilePath, '<?php namespace Neos\\Flow\\Fixtures { class CustomPackage3 extends \\TYPO3\\Flow\\Package\\Package {}}');
+        file_put_contents($packageFilePath, '<?php namespace Neos\\Flow\\Fixtures { class CustomPackage3 extends \\Neos\\Flow\\Package\\Package {}}');
 
         require($packageFilePath);
 

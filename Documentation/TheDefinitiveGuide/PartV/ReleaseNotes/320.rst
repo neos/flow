@@ -92,13 +92,13 @@ Trait introduction via AOP
 
 This allows to introduce traits in generated proxy classes via AOP. You can use the ``Introduce`` annotation with the argument ``traitName`` to introdue the given trait into generated proxy classes matching the pointcut.
 
-The following example would introduce the trait ``\Vendor\Package\Service\Traits\ExampleTrait`` into all proxies that either are the class or extend the class ``TYPO3\Flow\Mvc\Controller\ActionController``.
+The following example would introduce the trait ``\Vendor\Package\Service\Traits\ExampleTrait`` into all proxies that either are the class or extend the class ``Neos\Flow\Mvc\Controller\ActionController``.
 
 .. code-block:: php
 
   @Flow\\Introduce(
     traitName="Vendor\Package\Service\Traits\ExampleTrait"
-    pointcutExpression="class(TYPO3\Flow\Mvc\Controller\ActionController)"
+    pointcutExpression="class(Neos\Flow\Mvc\Controller\ActionController)"
   )
 
 Redirect handling

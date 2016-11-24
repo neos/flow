@@ -1,5 +1,5 @@
 <?php
-namespace TYPO3\Flow\Tests\Object\Fixture;
+namespace Neos\Flow\Tests\Object\Fixture;
 
 class SomeImplementation implements SomeInterface
 {

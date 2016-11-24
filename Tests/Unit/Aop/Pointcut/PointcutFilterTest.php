@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
+namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Aop;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop;
 
 /**
  * Testcase for the Pointcut Filter
@@ -21,7 +21,7 @@ class PointcutFilterTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\UnknownPointcutException
+     * @expectedException \Neos\Flow\Aop\Exception\UnknownPointcutException
      */
     public function matchesThrowsAnExceptionIfTheSpecifiedPointcutDoesNotExist()
     {

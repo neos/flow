@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\I18n\Cldr;
+namespace Neos\Flow\Tests\Unit\I18n\Cldr;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\I18n\Cldr;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\I18n;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\I18n;
 
 /**
  * Testcase for the CldrParser

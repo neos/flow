@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Configuration;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Configuration;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\ObjectManagement\Configuration;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\Configuration;
 
 /**
  * Testcase for the object configuration class
@@ -37,7 +37,7 @@ class ConfigurationTest extends UnitTestCase
      * Checks if setProperties accepts only valid values
      *
      * @test
-     * @expectedException \TYPO3\Flow\Configuration\Exception\InvalidConfigurationException
+     * @expectedException \Neos\Flow\Configuration\Exception\InvalidConfigurationException
      */
     public function setPropertiesOnlyAcceptsValidValues()
     {
@@ -69,7 +69,7 @@ class ConfigurationTest extends UnitTestCase
      * Checks if setArguments accepts only valid values
      *
      * @test
-     * @expectedException \TYPO3\Flow\Configuration\Exception\InvalidConfigurationException
+     * @expectedException \Neos\Flow\Configuration\Exception\InvalidConfigurationException
      */
     public function setArgumentsOnlyAcceptsValidValues()
     {

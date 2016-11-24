@@ -51,7 +51,7 @@ the process is as follows:
 Furthermore, it is also possible to execute *additional validators* only for specific action
 arguments using ``@Flow\Validate`` inside a controller action::
 
-	class CommentController extends \TYPO3\Flow\Mvc\Controller\ActionController {
+	class CommentController extends \Neos\Flow\Mvc\Controller\ActionController {
 
 		/**
 		 * @param \YourPackage\Domain\Model\Comment $comment
@@ -75,12 +75,12 @@ Using Validators & The ValidatorResolver
 A validator is a PHP class being responsible for checking validity of a certain object or
 simple type.
 
-All validators implement ``\TYPO3\Flow\Validation\Validator\ValidatorInterface``, and
+All validators implement ``\Neos\Flow\Validation\Validator\ValidatorInterface``, and
 the API of every validator is demonstrated in the following code example::
 
 		// NOTE: you should always use the ValidatorResolver to create new
 		// validators, as it is demonstrated in the next section.
-	$validator = new \TYPO3\Flow\Validation\Validator\StringLengthValidator(array(
+	$validator = new \Neos\Flow\Validation\Validator\StringLengthValidator(array(
 		'minimum' => 10,
 		'maximum' => 20
 	));
@@ -109,7 +109,7 @@ Creating Validator Instances: The ValidatorResolver
 
 As validators can be both singleton or prototype objects (depending if they have internal state),
 you should not instantiate them directly as it has been done in the above example. Instead,
-you should use the ``\TYPO3\Flow\Validation\ValidatorResolver`` singleton to get a new instance
+you should use the ``\Neos\Flow\Validation\ValidatorResolver`` singleton to get a new instance
 of a certain validator::
 
 	$validatorResolver->createValidator($validatorType, array $validatorOptions);
@@ -122,7 +122,7 @@ of a certain validator::
 
   **This is the recommended way for custom validators.**
 * For the standard validators inside the ``TYPO3.Flow`` package, you can leave out the package key,
-  so you can use ``EmailAddress`` to fetch ``TYPO3\Flow\Validation\Validator\EmailAddressValidator``
+  so you can use ``EmailAddress`` to fetch ``Neos\Flow\Validation\Validator\EmailAddressValidator``
 
 The ``$validatorOptions`` parameter is an associative array of validator options. See the validator
 reference in the appendix for the configuration options of the built-in validators.
@@ -169,7 +169,7 @@ The returned validator checks the following things:
   .. code-block:: php
 
   	namespace YourPackage\Domain\Model;
-  	use TYPO3\Flow\Annotations as Flow;
+  	use Neos\Flow\Annotations as Flow;
 
   	class Comment {
 
@@ -264,7 +264,7 @@ The following example demonstrates this::
 		protected $prop5;
 	}
 
-	class CommentController extends \TYPO3\Flow\Mvc\Controller\ActionController {
+	class CommentController extends \Neos\Flow\Mvc\Controller\ActionController {
 
 		/**
 		 * @param Comment $comment
@@ -312,7 +312,7 @@ implement the ``isValid()`` method then::
 	/**
 	 * A validator for checking items against foos.
 	 */
-	class MySpecialValidator extends \TYPO3\Flow\Validation\Validator\AbstractValidator {
+	class MySpecialValidator extends \Neos\Flow\Validation\Validator\AbstractValidator {
 
 		/**
 		 * @var array
@@ -330,7 +330,7 @@ implement the ``isValid()`` method then::
 		 */
 		protected function isValid($value) {
 			if (!isset($this->options['foo'])) {
-				throw new \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException(
+				throw new \Neos\Flow\Validation\Exception\InvalidValidationOptionsException(
 					'The option "foo" for this validator needs to be specified', 12346788
 				);
 			}

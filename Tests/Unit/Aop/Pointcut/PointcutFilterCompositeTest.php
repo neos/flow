@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
+namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Aop\Pointcut;
-use TYPO3\Flow\Aop;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\Pointcut;
+use Neos\Flow\Aop;
 
 /**
  * Testcase for the Pointcut Filter Composite
@@ -262,9 +262,9 @@ class PointcutFilterCompositeTest extends UnitTestCase
                                                         'value' => ['42']
                                                     ]]]]];
 
-        $expectedResult = "\n\t\t\t\t\t\tfunction(\\TYPO3\\Flow\\Aop\\JoinPointInterface \$joinPoint, \$objectManager) {\n" .
+        $expectedResult = "\n\t\t\t\t\t\tfunction(\\Neos\\Flow\\Aop\\JoinPointInterface \$joinPoint, \$objectManager) {\n" .
                                 "\t\t\t\t\t\t\t\$currentObject = \$joinPoint->getProxy();\n" .
-                                "\t\t\t\t\t\t\t\$globalObjectNames = \$objectManager->getSettingsByPath(array('TYPO3', 'Flow', 'aop', 'globalObjects'));\n" .
+                                "\t\t\t\t\t\t\t\$globalObjectNames = \$objectManager->getSettingsByPath(array('Neos', 'Flow', 'aop', 'globalObjects'));\n" .
                                 "\t\t\t\t\t\t\t\$globalObjects = array_map(function(\$objectName) use (\$objectManager) { return \$objectManager->get(\$objectName); }, \$globalObjectNames);\n" .
                                 "\t\t\t\t\t\t\treturn (((\Neos\Utility\ObjectAccess::getPropertyPath(\$currentObject, 'some.thing') != \Neos\Utility\ObjectAccess::getPropertyPath(\$globalObjects['party'], 'name')) && (\$joinPoint->getMethodArgument('identifier') > 3 && \$joinPoint->getMethodArgument('identifier') <= 5)) || (\$joinPoint->getMethodArgument('identifier') == 42));\n" .
                                 "\t\t\t\t\t\t}";
@@ -312,9 +312,9 @@ class PointcutFilterCompositeTest extends UnitTestCase
                                                         'value' => ['42']
                                                     ]]]]];
 
-        $expectedResult = "\n\t\t\t\t\t\tfunction(\\TYPO3\\Flow\\Aop\\JoinPointInterface \$joinPoint, \$objectManager) {\n" .
+        $expectedResult = "\n\t\t\t\t\t\tfunction(\\Neos\\Flow\\Aop\\JoinPointInterface \$joinPoint, \$objectManager) {\n" .
                                 "\t\t\t\t\t\t\t\$currentObject = \$joinPoint->getProxy();\n" .
-                                "\t\t\t\t\t\t\t\$globalObjectNames = \$objectManager->getSettingsByPath(array('TYPO3', 'Flow', 'aop', 'globalObjects'));\n" .
+                                "\t\t\t\t\t\t\t\$globalObjectNames = \$objectManager->getSettingsByPath(array('Neos', 'Flow', 'aop', 'globalObjects'));\n" .
                                 "\t\t\t\t\t\t\t\$globalObjects = array_map(function(\$objectName) use (\$objectManager) { return \$objectManager->get(\$objectName); }, \$globalObjectNames);\n" .
                                 "\t\t\t\t\t\t\treturn (((\Neos\Utility\ObjectAccess::getPropertyPath(\$currentObject, 'some.thing') != \Neos\Utility\ObjectAccess::getPropertyPath(\$globalObjects['party'], 'name')) && (!(\$joinPoint->getMethodArgument('identifier') > 3 && \$joinPoint->getMethodArgument('identifier') <= 5))) || (!(\$joinPoint->getMethodArgument('identifier') == 42)));\n" .
                                 "\t\t\t\t\t\t}";

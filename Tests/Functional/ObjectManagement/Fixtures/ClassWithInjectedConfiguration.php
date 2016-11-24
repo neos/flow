@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures;
+namespace Neos\Flow\Tests\Functional\ObjectManagement\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * A class for testing setting injection
@@ -31,19 +31,19 @@ class ClassWithInjectedConfiguration
     protected $injectedSettingA;
 
     /**
-     * @Flow\InjectConfiguration(path="tests.functional.settingInjection.someSetting", package="TYPO3.Flow")
+     * @Flow\InjectConfiguration(path="tests.functional.settingInjection.someSetting", package="Neos.Flow")
      * @var string
      */
     protected $injectedSettingB;
 
     /**
-     * @Flow\InjectConfiguration(path="tests.functional.settingInjection.someSetting", package="TYPO3.Flow")
+     * @Flow\InjectConfiguration(path="tests.functional.settingInjection.someSetting", package="Neos.Flow")
      * @var string
      */
     protected $injectedSettingWithSetter;
 
     /**
-     * @Flow\InjectConfiguration(package="TYPO3.Flow")
+     * @Flow\InjectConfiguration(package="Neos.Flow")
      * @var array
      */
     protected $injectedSpecifiedPackageSettings;

@@ -44,7 +44,7 @@
   name: 'fallback'
   uriPattern: ''
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Mvc'
     '@controller': 'Standard'
     '@action':     'index'

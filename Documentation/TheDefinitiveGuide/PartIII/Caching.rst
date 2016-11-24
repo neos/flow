@@ -97,10 +97,10 @@ System Architecture
 
 The caching framework architecture is based on these classes:
 
-``TYPO3\Flow\Cache\CacheFactory``
+``Neos\Flow\Cache\CacheFactory``
 	Factory class to instantiate caches.
 
-``TYPO3\Flow\Cache\CacheManager``
+``Neos\Flow\Cache\CacheManager``
 	Returns the cache frontend of a specific cache. Implements methods to handle cache
 	instances.
 
@@ -683,7 +683,7 @@ configuration given above. First you need to configure the injection in *Objects
 	  properties:
 	    fooCache:
 	      object:
-	        factoryObjectName: TYPO3\Flow\Cache\CacheManager
+	        factoryObjectName: Neos\Flow\Cache\CacheManager
 	        factoryMethodName: getCache
 	        arguments:
 	          1:

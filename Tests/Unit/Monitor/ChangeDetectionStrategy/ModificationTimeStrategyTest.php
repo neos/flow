@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Monitor\ChangeDetectionStrategy;
+namespace Neos\Flow\Tests\Unit\Monitor\ChangeDetectionStrategy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -18,10 +18,10 @@ use org\bovigo\vfs\vfsStreamWrapper;
  * Testcase for the Modification Time Change Detection Strategy
  *
  */
-class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
+class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
-     * @var \TYPO3\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy
+     * @var \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy
      */
     protected $strategy;
 
@@ -38,7 +38,7 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
 
         $this->cache = $this->getMockBuilder(\Neos\Cache\Frontend\StringFrontend::class)->disableOriginalConstructor()->getMock();
 
-        $this->strategy = new \TYPO3\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy();
+        $this->strategy = new \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy();
         $this->strategy->injectCache($this->cache);
     }
 
@@ -50,7 +50,7 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
 
         $status = $this->strategy->getFileStatus($fileUrl);
-        $this->assertSame(\TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
+        $this->assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
     }
 
     /**
@@ -65,7 +65,7 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
         clearstatcache();
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        $this->assertSame(\TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
+        $this->assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
     }
 
     /**
@@ -77,7 +77,7 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
         file_put_contents($fileUrl, 'test data');
 
         $status = $this->strategy->getFileStatus($fileUrl);
-        $this->assertSame(\TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CREATED, $status);
+        $this->assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CREATED, $status);
     }
 
     /**
@@ -92,7 +92,7 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
         unlink($fileUrl);
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        $this->assertSame(\TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_DELETED, $status);
+        $this->assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_DELETED, $status);
     }
 
     /**
@@ -108,6 +108,6 @@ class ModificationTimeStrategyTest extends \TYPO3\Flow\Tests\UnitTestCase
         clearstatcache();
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        $this->assertSame(\TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CHANGED, $status);
+        $this->assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CHANGED, $status);
     }
 }

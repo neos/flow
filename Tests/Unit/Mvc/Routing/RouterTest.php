@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Mvc\Routing\Router;
-use TYPO3\Flow\Mvc\Routing\RouterCachingService;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Mvc\Routing\Router;
+use Neos\Flow\Mvc\Routing\RouterCachingService;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Web Router
@@ -135,7 +135,7 @@ class RouterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRouteSetupException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRouteSetupException
      */
     public function createRoutesFromConfigurationThrowsExceptionIfOnlySomeRoutesWithTheSameUriPatternHaveHttpMethodConstraints()
     {
@@ -183,7 +183,7 @@ class RouterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\NoMatchingRouteException
+     * @expectedException \Neos\Flow\Mvc\Exception\NoMatchingRouteException
      */
     public function resolveThrowsExceptionIfNoMatchingRouteWasFound()
     {

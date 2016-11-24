@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,13 +10,13 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Mvc\Routing\IdentityRoutePart;
-use TYPO3\Flow\Mvc\Routing\ObjectPathMapping;
-use TYPO3\Flow\Mvc\Routing\ObjectPathMappingRepository;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Reflection\ClassSchema;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\Routing\IdentityRoutePart;
+use Neos\Flow\Mvc\Routing\ObjectPathMapping;
+use Neos\Flow\Mvc\Routing\ObjectPathMappingRepository;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Reflection\ClassSchema;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Web Routing IdentityRoutePart Class
@@ -466,7 +466,7 @@ class IdentityRoutePartTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InfiniteLoopException
+     * @expectedException \Neos\Flow\Mvc\Exception\InfiniteLoopException
      */
     public function resolveValueThrowsInfiniteLoopExceptionIfNoUniquePathSegmentCantBeFound()
     {
@@ -534,7 +534,7 @@ class IdentityRoutePartTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function createPathSegmentForObjectThrowsInvalidUriPatterExceptionIfItSpecifiedPropertiesContainObjects()
     {

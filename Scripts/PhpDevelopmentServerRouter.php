@@ -23,6 +23,6 @@ putenv('FLOW_REWRITEURLS=1');
 
 
 
-$context = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
-$bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
+$context = \Neos\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
+$bootstrap = new \Neos\Flow\Core\Bootstrap($context);
 $bootstrap->run();

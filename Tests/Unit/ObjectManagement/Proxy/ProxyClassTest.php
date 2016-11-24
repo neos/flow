@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\Proxy\Compiler;
-use TYPO3\Flow\ObjectManagement\Proxy\ProxyClass;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\Proxy\Compiler;
+use Neos\Flow\ObjectManagement\Proxy\ProxyClass;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 class ProxyClassTest extends UnitTestCase
 {
@@ -32,9 +32,9 @@ class ProxyClassTest extends UnitTestCase
                 'expectedProxyCode' => "namespace \\Acme\\Namespace;\n" .
                     "\n" .
                     "use Doctrine\\ORM\\Mapping as ORM;\n" .
-                    "use TYPO3\\Flow\\Annotations as Flow;\n" .
+                    "use Neos\\Flow\\Annotations as Flow;\n" .
                     "\n" .
-                    'class ClassName extends ClassName' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\TYPO3\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
+                    'class ClassName extends ClassName' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\Neos\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
                     "    const TEST_CONSTANT = 1;\n\n" .
                     '}',
             ],
@@ -45,9 +45,9 @@ class ProxyClassTest extends UnitTestCase
                 'originalClassConstants' => [['name' => 'TEST_CONSTANT', 'value' => '1']],
                 'expectedProxyCode' =>
                     "use Doctrine\\ORM\\Mapping as ORM;\n" .
-                    "use TYPO3\\Flow\\Annotations as Flow;\n" .
+                    "use Neos\\Flow\\Annotations as Flow;\n" .
                     "\n" .
-                    'class ClassWithoutNamespace extends ClassWithoutNamespace' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\TYPO3\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
+                    'class ClassWithoutNamespace extends ClassWithoutNamespace' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\Neos\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
                     "    const TEST_CONSTANT = 1;\n\n" .
                     '}',
             ],
@@ -58,9 +58,9 @@ class ProxyClassTest extends UnitTestCase
                 'originalClassConstants' => [['name' => 'TEST_CONSTANT', 'value' => '1']],
                 'expectedProxyCode' =>
                     "use Doctrine\\ORM\\Mapping as ORM;\n" .
-                    "use TYPO3\\Flow\\Annotations as Flow;\n" .
+                    "use Neos\\Flow\\Annotations as Flow;\n" .
                     "\n" .
-                    'class ClassWithoutNamespace extends ClassWithoutNamespace' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\TYPO3\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
+                    'class ClassWithoutNamespace extends ClassWithoutNamespace' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . " implements \\Neos\\Flow\\ObjectManagement\\Proxy\\ProxyInterface {\n\n" .
                     "    const TEST_CONSTANT = 1;\n\n" .
                     '}',
             ],

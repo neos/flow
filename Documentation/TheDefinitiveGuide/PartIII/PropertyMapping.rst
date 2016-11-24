@@ -26,7 +26,7 @@ Example Usage
 The most simple usage is to convert simple types to different simple types, i.e.
 converting a numeric ``string`` to a ``float`` number::
 
-	// $propertyMapper is of class TYPO3\Flow\Property\PropertyMapper
+	// $propertyMapper is of class Neos\Flow\Property\PropertyMapper
 	$result = $propertyMapper->convert('12.5', 'float');
 	// $result == (float)12.5
 
@@ -148,7 +148,7 @@ In most cases, you should use the ``PropertyMappingConfigurationBuilder`` to cre
 PropertyMappingConfiguration, so that you get a convenient default configuration::
 
 		// Here $propertyMappingConfigurationBuilder is an instance of
-		// \TYPO3\Flow\Property\PropertyMappingConfigurationBuilder
+		// \Neos\Flow\Property\PropertyMappingConfigurationBuilder
 	$propertyMappingConfiguration = $propertyMappingConfigurationBuilder->build();
 
 		// modify $propertyMappingConfiguration here
@@ -176,8 +176,8 @@ The following configuration options exist:
   date format::
 
 	$propertyMappingConfiguration->setTypeConverterOption(
-		\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-		\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+		\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+		\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 		'Y-m-d'
 	);
 
@@ -206,8 +206,8 @@ configures the ``DateTime`` converter for the ``birthDate`` property::
 	$propertyMappingConfiguration
 		->forProperty('birthDate')
 		->setTypeConverterOption(
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 			'Y-m-d'
 		);
 
@@ -220,8 +220,8 @@ the path syntax supports an asterisk as a placeholder::
 	$propertyMappingConfiguration
 		->forProperty('items.*')
 		->setTypeConverterOption(
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+			\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class,
+			\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
 			TRUE
 		);
 
@@ -231,8 +231,8 @@ on large collections::
 	$propertyMappingConfiguration
 		->forProperty('persons.*.birthDate')
 		->setTypeConvertOption(
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 			'Y-m-d'
 		);
 
@@ -243,7 +243,7 @@ on large collections::
 
 	If you use Fluid forms, normally no adjustments are needed. However, when programming
 	a web service or an ajax endpoint, you might need to set the ``PropertyMappingConfiguration``
-	manually. You can access them using the ``\TYPO3\Flow\Mvc\Controller\Argument``
+	manually. You can access them using the ``\Neos\Flow\Mvc\Controller\Argument``
 	object -- and this configuration takes place inside the corresponding ``initialize*Action``
 	of the controller, as in the following example:
 
@@ -254,8 +254,8 @@ on large collections::
 			$commentConfiguration->allowAllProperties();
 			$commentConfiguration
 				->setTypeConverterOption(
-				\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class,
-				\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+				\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class,
+				\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
 				TRUE
 			);
 		}
@@ -402,7 +402,7 @@ Automatic resolving of type converters
 Automatic Resolving of Type Converters
 --------------------------------------
 
-All type converters which implement ``TYPO3\Flow\Property\TypeConverterInterface``
+All type converters which implement ``Neos\Flow\Property\TypeConverterInterface``
 are automatically found in the resolving process. There are four API methods in
 each ``TypeConverter`` which influence the resolving process:
 
@@ -452,7 +452,7 @@ Writing Your Own TypeConverters
 -------------------------------
 
 Often, it is enough to subclass
-``TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter``
+``Neos\Flow\Property\TypeConverter\AbstractTypeConverter``
 instead of implementing ``TypeConverterInterface``.
 
 Besides, good starting points for own type converters are the ``DateTimeConverter``
@@ -490,7 +490,7 @@ possibilities what can be returned in ``convertFrom()``:
 .. warning::
 
 	Inside a type converter it is not allowed to use an (injected) instance
-	of ``TYPO3\Flow\Property\PropertyMapper`` because it can lead to an
+	of ``Neos\Flow\Property\PropertyMapper`` because it can lead to an
 	infinite recursive invocation.
 
 .. note::

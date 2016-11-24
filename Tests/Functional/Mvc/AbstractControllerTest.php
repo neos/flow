@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc;
+namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 class AbstractControllerTest extends FunctionalTestCase
 {
@@ -32,7 +32,7 @@ class AbstractControllerTest extends FunctionalTestCase
         $route->setName('AbstractControllerTest Route 1');
         $route->setUriPattern('test/mvc/abstractcontrollertesta/{@action}');
         $route->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'AbstractControllerTestA',
             '@format' =>'html'

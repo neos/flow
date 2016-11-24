@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Configuration;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Configuration;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\ObjectManagement\Configuration\Configuration;
-use TYPO3\Flow\ObjectManagement\Configuration\ConfigurationArgument;
-use TYPO3\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
-use TYPO3\Flow\ObjectManagement\Configuration\ConfigurationProperty;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\ObjectManagement\Configuration\Configuration;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Testcase for the object configuration builder
@@ -117,7 +117,7 @@ class ConfigurationBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException
+     * @expectedException \Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException
      */
     public function invalidOptionResultsInException()
     {
@@ -128,7 +128,7 @@ class ConfigurationBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ObjectManagement\Exception
+     * @expectedException \Neos\Flow\ObjectManagement\Exception
      */
     public function privatePropertyAnnotatedForInjectionThrowsException()
     {
@@ -158,7 +158,7 @@ class ConfigurationBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ObjectManagement\Exception\UnknownClassException
+     * @expectedException \Neos\Flow\ObjectManagement\Exception\UnknownClassException
      */
     public function errorOnGetClassMethodsThrowsException()
     {

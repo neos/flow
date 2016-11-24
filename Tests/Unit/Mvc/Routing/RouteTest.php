@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException;
-use TYPO3\Flow\Mvc\Routing\Fixtures\MockRoutePartHandler;
-use TYPO3\Flow\Mvc\Routing;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
+use Neos\Flow\Mvc\Exception\InvalidRoutePartValueException;
+use Neos\Flow\Mvc\Routing\Fixtures\MockRoutePartHandler;
+use Neos\Flow\Mvc\Routing;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 require_once(__DIR__ . '/Fixtures/MockRoutePartHandler.php');
 
@@ -136,7 +136,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartHandlerException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartHandlerException
      */
     public function settingInvalidRoutePartHandlerThrowsException()
     {
@@ -196,7 +196,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithTrailingSlashThrowsException()
     {
@@ -206,7 +206,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithLeadingSlashThrowsException()
     {
@@ -216,7 +216,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithSuccessiveDynamicRoutepartsThrowsException()
     {
@@ -226,7 +226,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithSuccessiveOptionalSectionsThrowsException()
     {
@@ -236,7 +236,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithUnterminatedOptionalSectionsThrowsException()
     {
@@ -246,7 +246,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithUnopenedOptionalSectionsThrowsException()
     {
@@ -559,7 +559,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRouteSetupException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRouteSetupException
      */
     public function routeThrowsExceptionIfUriPatternContainsOneOptionalDynamicRoutePartWithoutDefaultValue()
     {
@@ -1045,7 +1045,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartValueException
      */
     public function resolvesThrowsExceptionIfRoutePartValueIsNoString()
     {
@@ -1062,7 +1062,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartValueException
      */
     public function resolvesThrowsExceptionIfRoutePartDefaultValueIsNoString()
     {

@@ -93,7 +93,7 @@ The Flow session scope handles persistent objects and dependency injection corre
 Low-level session handling
 ==========================
 
-It is possible to inject the ``TYPO3\Flow\Session\SessionInterface`` and interact
+It is possible to inject the ``Neos\Flow\Session\SessionInterface`` and interact
 with the session on a low level, by using ``start()``, ``getData()`` and ``putData()``.
 
 That should rarely be needed, though. Instead of manually serializing objects object into

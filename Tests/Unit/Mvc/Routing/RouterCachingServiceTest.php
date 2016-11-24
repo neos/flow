@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,14 +14,14 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
 use Neos\Cache\CacheAwareInterface;
 use Neos\Cache\Frontend\StringFrontend;
 use Neos\Cache\Frontend\VariableFrontend;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Mvc\Routing\RouterCachingService;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Mvc\Routing\RouterCachingService;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Router Caching Service
@@ -100,10 +100,10 @@ class RouterCachingServiceTest extends UnitTestCase
 
         $this->inject($this->routerCachingService, 'objectManager', $this->mockObjectManager);
 
-        $this->mockHttpRequest = $this->getMockBuilder(\TYPO3\Flow\Http\Request::class)->disableOriginalConstructor()->getMock();
+        $this->mockHttpRequest = $this->getMockBuilder(\Neos\Flow\Http\Request::class)->disableOriginalConstructor()->getMock();
         $this->mockHttpRequest->expects($this->any())->method('getMethod')->will($this->returnValue('GET'));
         $this->mockHttpRequest->expects($this->any())->method('getRelativePath')->will($this->returnValue('some/route/path'));
-        $this->mockUri = $this->getMockBuilder(\TYPO3\Flow\Http\Uri::class)->disableOriginalConstructor()->getMock();
+        $this->mockUri = $this->getMockBuilder(\Neos\Flow\Http\Uri::class)->disableOriginalConstructor()->getMock();
         $this->mockUri->expects($this->any())->method('getHost')->will($this->returnValue('subdomain.domain.com'));
         $this->mockHttpRequest->expects($this->any())->method('getUri')->will($this->returnValue($this->mockUri));
     }

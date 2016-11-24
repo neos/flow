@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Error;
+namespace Neos\Flow\Tests\Functional\Error;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Error;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Core\ApplicationContext;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Core\ApplicationContext;
 use Neos\Utility\ObjectAccess;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Error\Debugger;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Error\Debugger;
 use Neos\Utility\Arrays;
 
 /**
@@ -47,7 +47,7 @@ class DebuggerTest extends FunctionalTestCase
         Debugger::clearState();
 
         $currentConfiguration = ObjectAccess::getProperty($this->configurationManager, 'configurations', true);
-        $configurationOverwrite['Settings']['TYPO3']['Flow']['error']['debugger']['ignoredClasses']['TYPO3\\\\Flow\\\\Core\\\\.*'] = false;
+        $configurationOverwrite['Settings']['Neos']['Flow']['error']['debugger']['ignoredClasses']['Neos\\\\Flow\\\\Core\\\\.*'] = false;
         $newConfiguration = Arrays::arrayMergeRecursiveOverrule($currentConfiguration, $configurationOverwrite);
         ObjectAccess::setProperty($this->configurationManager, 'configurations', $newConfiguration, true);
 
