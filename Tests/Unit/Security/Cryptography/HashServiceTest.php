@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
+namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
  * source code.
  */
 
-use TYPO3\Flow\Cache\Backend\TransientMemoryBackend;
-use TYPO3\Flow\Cache\Frontend\StringFrontend;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Security\Cryptography\HashService;
-use TYPO3\Flow\Security\Cryptography\PasswordHashingStrategyInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Cache\Backend\TransientMemoryBackend;
+use Neos\Cache\EnvironmentConfiguration;
+use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Cryptography\HashService;
+use Neos\Flow\Security\Cryptography\PasswordHashingStrategyInterface;
+use Neos\Flow\Tests\Unit\Cryptography\Fixture\TestHashingStrategy;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Hash Service
@@ -36,17 +36,40 @@ class HashServiceTest extends UnitTestCase
     protected $cache;
 
     /**
+     * @var ObjectManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $mockObjectManager;
+
+    /**
+     * @var array
+     */
+    protected $mockSettings = [
+        'security' => [
+            'cryptography' => [
+                'hashingStrategies' => [
+                    'default' => 'TestStrategy',
+                    'TestStrategy' => TestHashingStrategy::class,
+                ]
+            ]
+        ]
+    ];
+
+    /**
      * Set up test dependencies
      *
      * @return void
      */
     public function setUp()
     {
-        $this->cache = new StringFrontend('TestCache', new TransientMemoryBackend(new ApplicationContext('Testing')));
+        $this->cache = new StringFrontend('TestCache', new TransientMemoryBackend(new EnvironmentConfiguration('Hash Testing', '/some/path', PHP_MAXPATHLEN)));
         $this->cache->initializeObject();
+
+        $this->mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
 
         $this->hashService = new HashService();
         $this->inject($this->hashService, 'cache', $this->cache);
+        $this->inject($this->hashService, 'objectManager', $this->mockObjectManager);
+        $this->hashService->injectSettings($this->mockSettings);
     }
 
     /**
@@ -79,7 +102,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function generateHmacThrowsExceptionIfNoStringGiven()
     {
@@ -111,54 +134,22 @@ class HashServiceTest extends UnitTestCase
      */
     public function hashPasswordWithoutStrategyIdentifierUsesConfiguredDefaultStrategy()
     {
-        $settings = [
-            'security' => [
-                'cryptography' => [
-                    'hashingStrategies' => [
-                        'default' => 'TestStrategy',
-                        'fallback' => 'LegacyStrategy',
-                        'TestStrategy' => 'TYPO3\Flow\Test\TestStrategy',
-                        'LegacyStrategy' => 'TYPO3\Flow\Test\LegacyStrategy'
-                    ]
-                ]
-            ]
-        ];
-        $this->hashService->injectSettings($settings);
-
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        ObjectAccess::setProperty($this->hashService, 'objectManager', $mockObjectManager, true);
 
-        $mockObjectManager->expects($this->atLeastOnce())->method('get')->with(\TYPO3\Flow\Test\TestStrategy::class)->will($this->returnValue($mockStrategy));
+        $this->mockObjectManager->expects($this->atLeastOnce())->method('get')->with(TestHashingStrategy::class)->will($this->returnValue($mockStrategy));
         $mockStrategy->expects($this->atLeastOnce())->method('hashPassword')->will($this->returnValue('---hashed-password---'));
 
         $this->hashService->hashPassword('myTestPassword');
     }
 
     /**
-     * @test
+     * test
      */
-    public function validatePasswordWithoutStrategyIdentifierAndConfiguredFallbackUsesFallbackStrategy()
+    public function validatePasswordWithoutStrategyIdentifierUsesDefaultStrategy()
     {
-        $settings = [
-            'security' => [
-                'cryptography' => [
-                    'hashingStrategies' => [
-                        'default' => 'TestStrategy',
-                        'fallback' => 'LegacyStrategy',
-                        'TestStrategy' => 'TYPO3\Flow\Test\TestStrategy',
-                        'LegacyStrategy' => 'TYPO3\Flow\Test\LegacyStrategy'
-                    ]
-                ]
-            ]
-        ];
-        $this->hashService->injectSettings($settings);
-
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        ObjectAccess::setProperty($this->hashService, 'objectManager', $mockObjectManager, true);
 
-        $mockObjectManager->expects($this->atLeastOnce())->method('get')->with(\TYPO3\Flow\Test\LegacyStrategy::class)->will($this->returnValue($mockStrategy));
+        $this->mockObjectManager->expects($this->atLeastOnce())->method('get')->with(TestHashingStrategy::class)->will($this->returnValue($mockStrategy));
         $mockStrategy->expects($this->atLeastOnce())->method('validatePassword')->will($this->returnValue(true));
 
         $this->hashService->validatePassword('myTestPassword', '---hashed-password---');
@@ -169,22 +160,9 @@ class HashServiceTest extends UnitTestCase
      */
     public function hashPasswordWillIncludeStrategyIdentifierInHashedPassword()
     {
-        $settings = [
-            'security' => [
-                'cryptography' => [
-                    'hashingStrategies' => [
-                        'TestStrategy' => 'TYPO3\Flow\Test\TestStrategy'
-                    ]
-                ]
-            ]
-        ];
-        $this->hashService->injectSettings($settings);
-
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
         $mockStrategy->expects($this->any())->method('hashPassword')->will($this->returnValue('---hashed-password---'));
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->any())->method('get')->will($this->returnValue($mockStrategy));
-        ObjectAccess::setProperty($this->hashService, 'objectManager', $mockObjectManager, true);
+        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnValue($mockStrategy));
 
         $result = $this->hashService->hashPassword('myTestPassword', 'TestStrategy');
         $this->assertEquals('TestStrategy=>---hashed-password---', $result);
@@ -192,24 +170,40 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
      */
-    public function validatePasswordWillUseStrategyIdentifierFromHashedPassword()
+    public function hashPasswordThrowsExceptionIfTheGivenHashingStrategyIsNotConfigured()
     {
-        $settings = [
+        $this->hashService->hashPassword('myTestPassword', 'nonExistingHashingStrategy');
+    }
+
+
+    /**
+     * @test
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
+     */
+    public function hashPasswordThrowsExceptionIfNoDefaultHashingStrategyIsConfigured()
+    {
+        $mockSettings = [
             'security' => [
                 'cryptography' => [
                     'hashingStrategies' => [
-                        'TestStrategy' => 'TYPO3\Flow\Test\TestStrategy'
+                        'TestStrategy' => TestHashingStrategy::class,
                     ]
                 ]
             ]
         ];
-        $this->hashService->injectSettings($settings);
+        $this->hashService->injectSettings($mockSettings);
+        $this->hashService->hashPassword('myTestPassword');
+    }
 
+    /**
+     * @test
+     */
+    public function validatePasswordWillUseStrategyIdentifierFromHashedPassword()
+    {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->any())->method('get')->will($this->returnValue($mockStrategy));
-        ObjectAccess::setProperty($this->hashService, 'objectManager', $mockObjectManager, true);
+        $this->mockObjectManager->expects($this->any())->method('get')->will($this->returnValue($mockStrategy));
 
         $mockStrategy->expects($this->atLeastOnce())->method('validatePassword')->with('myTestPassword', '---hashed-password---')->will($this->returnValue(true));
 
@@ -228,7 +222,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function appendHmacThrowsExceptionIfNoStringGiven()
     {
@@ -247,7 +241,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function validateAndStripHmacThrowsExceptionIfNoStringGiven()
     {
@@ -256,7 +250,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort()
     {
@@ -265,7 +259,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidHashException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidHashException
      */
     public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended()
     {
@@ -274,7 +268,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidHashException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidHashException
      */
     public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Http;
+namespace Neos\Flow\Tests\Unit\Http;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Http;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Http Request class
@@ -54,7 +54,7 @@ class RequestTest extends UnitTestCase
             'HTTP_CONNECTION' => 'keep-alive',
             'PATH' => '/usr/bin:/bin:/usr/sbin:/sbin',
             'SERVER_SIGNATURE' => '',
-            'SERVER_SOFTWARE' => 'Apache/2.2.21 (Unix) mod_ssl/2.2.21 OpenSSL/1.0.0e DAV/2 PHP/5.5.1',
+            'SERVER_SOFTWARE' => 'Apache/2.2.21 (Unix) mod_ssl/2.2.21 OpenSSL/1.0.0e DAV/2 PHP/7.0.12',
             'SERVER_NAME' => 'dev.blog.rob',
             'SERVER_ADDR' => '127.0.0.1',
             'SERVER_PORT' => '80',
@@ -341,7 +341,7 @@ class RequestTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Http\Exception
+     * @expectedException \Neos\Flow\Http\Exception
      */
     public function getContentThrowsAnExceptionOnTryingToRetrieveContentAsResourceAlthoughItHasBeenRetrievedPreviously()
     {

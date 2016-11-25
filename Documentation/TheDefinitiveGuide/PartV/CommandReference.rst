@@ -28,9 +28,9 @@ Package *TYPO3.FLOW*
 --------------------
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:cache:flush`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:cache:flush`:
 
-``typo3.flow:cache:flush``
+``neos.flow:cache:flush``
 **************************
 
 **Flush all caches**
@@ -58,18 +58,18 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:cache:warmup``
+``neos.flow:cache:warmup``
   Warm up caches
-``typo3.flow:package:freeze``
+``neos.flow:package:freeze``
   Freeze a package
-``typo3.flow:package:refreeze``
+``neos.flow:package:refreeze``
   Refreeze a package
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:cache:flushone`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:cache:flushone`:
 
-``typo3.flow:cache:flushone``
+``neos.flow:cache:flushone``
 *****************************
 
 **Flushes a particular cache by its identifier**
@@ -95,16 +95,16 @@ Arguments
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:cache:flush``
+``neos.flow:cache:flush``
   Flush all caches
-``typo3.flow:configuration:show``
+``neos.flow:configuration:show``
   Show the active configuration settings
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:cache:warmup`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:cache:warmup`:
 
-``typo3.flow:cache:warmup``
+``neos.flow:cache:warmup``
 ***************************
 
 **Warm up caches**
@@ -122,14 +122,14 @@ rush.
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:cache:flush``
+``neos.flow:cache:flush``
   Flush all caches
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:configuration:generateschema`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:configuration:generateschema`:
 
-``typo3.flow:configuration:generateschema``
+``neos.flow:configuration:generateschema``
 *******************************************
 
 **Generate a schema for the given configuration or YAML file.**
@@ -154,9 +154,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:configuration:listtypes`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:configuration:listtypes`:
 
-``typo3.flow:configuration:listtypes``
+``neos.flow:configuration:listtypes``
 **************************************
 
 **List registered configuration types**
@@ -169,9 +169,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:configuration:show`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:configuration:show`:
 
-``typo3.flow:configuration:show``
+``neos.flow:configuration:show``
 *********************************
 
 **Show the active configuration settings**
@@ -195,9 +195,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:configuration:validate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:configuration:validate`:
 
-``typo3.flow:configuration:validate``
+``neos.flow:configuration:validate``
 *************************************
 
 **Validate the given configuration**
@@ -227,9 +227,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:core:migrate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:core:migrate`:
 
-``typo3.flow:core:migrate``
+``neos.flow:core:migrate``
 ***************************
 
 **Migrate source files as needed**
@@ -268,14 +268,14 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:core:setfilepermissions`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:core:setfilepermissions`:
 
-``typo3.flow:core:setfilepermissions``
+``neos.flow:core:setfilepermissions``
 **************************************
 
 **Adjust file permissions for CLI and web server access**
@@ -299,9 +299,9 @@ Arguments
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:core:shell`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:core:shell`:
 
-``typo3.flow:core:shell``
+``neos.flow:core:shell``
 *************************
 
 **Run the interactive Shell**
@@ -316,9 +316,9 @@ additionally supports autocompletion and a user-based command history.
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:database:setcharset`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:database:setcharset`:
 
-``typo3.flow:database:setcharset``
+``neos.flow:database:setcharset``
 **********************************
 
 **Convert the database schema to use the given character set and collation (defaults to utf8 and utf8_unicode_ci).**
@@ -369,9 +369,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:create`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:create`:
 
-``typo3.flow:doctrine:create``
+``neos.flow:doctrine:create``
 ******************************
 
 **Create the database schema**
@@ -394,23 +394,23 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:update``
+``neos.flow:doctrine:update``
   Update the database schema
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:dql`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:dql`:
 
-``typo3.flow:doctrine:dql``
+``neos.flow:doctrine:dql``
 ***************************
 
 **Run arbitrary DQL and display results**
 
 Any DQL queries passed after the parameters will be executed, the results will be output:
 
-doctrine:dql --limit 10 'SELECT a FROM TYPO3\Flow\Security\Account a'
+doctrine:dql --limit 10 'SELECT a FROM Neos\Flow\Security\Account a'
 
 
 
@@ -430,9 +430,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:entitystatus`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:entitystatus`:
 
-``typo3.flow:doctrine:entitystatus``
+``neos.flow:doctrine:entitystatus``
 ************************************
 
 **Show the current status of entities and mappings**
@@ -457,14 +457,14 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:validate``
+``neos.flow:doctrine:validate``
   Validate the class/table mappings
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:migrate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:migrate`:
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
 *******************************
 
 **Migrate the database schema**
@@ -491,20 +491,20 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrationstatus``
+``neos.flow:doctrine:migrationstatus``
   Show the current migration status
-``typo3.flow:doctrine:migrationexecute``
+``neos.flow:doctrine:migrationexecute``
   Execute a single migration
-``typo3.flow:doctrine:migrationgenerate``
+``neos.flow:doctrine:migrationgenerate``
   Generate a new migration
-``typo3.flow:doctrine:migrationversion``
+``neos.flow:doctrine:migrationversion``
   Mark/unmark migrations as migrated
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:migrationexecute`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:migrationexecute`:
 
-``typo3.flow:doctrine:migrationexecute``
+``neos.flow:doctrine:migrationexecute``
 ****************************************
 
 **Execute a single migration**
@@ -534,20 +534,20 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
-``typo3.flow:doctrine:migrationstatus``
+``neos.flow:doctrine:migrationstatus``
   Show the current migration status
-``typo3.flow:doctrine:migrationgenerate``
+``neos.flow:doctrine:migrationgenerate``
   Generate a new migration
-``typo3.flow:doctrine:migrationversion``
+``neos.flow:doctrine:migrationversion``
   Mark/unmark migrations as migrated
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:migrationgenerate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:migrationgenerate`:
 
-``typo3.flow:doctrine:migrationgenerate``
+``neos.flow:doctrine:migrationgenerate``
 *****************************************
 
 **Generate a new migration**
@@ -582,20 +582,20 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
-``typo3.flow:doctrine:migrationstatus``
+``neos.flow:doctrine:migrationstatus``
   Show the current migration status
-``typo3.flow:doctrine:migrationexecute``
+``neos.flow:doctrine:migrationexecute``
   Execute a single migration
-``typo3.flow:doctrine:migrationversion``
+``neos.flow:doctrine:migrationversion``
   Mark/unmark migrations as migrated
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:migrationstatus`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:migrationstatus`:
 
-``typo3.flow:doctrine:migrationstatus``
+``neos.flow:doctrine:migrationstatus``
 ***************************************
 
 **Show the current migration status**
@@ -618,20 +618,20 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
-``typo3.flow:doctrine:migrationexecute``
+``neos.flow:doctrine:migrationexecute``
   Execute a single migration
-``typo3.flow:doctrine:migrationgenerate``
+``neos.flow:doctrine:migrationgenerate``
   Generate a new migration
-``typo3.flow:doctrine:migrationversion``
+``neos.flow:doctrine:migrationversion``
   Mark/unmark migrations as migrated
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:migrationversion`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:migrationversion`:
 
-``typo3.flow:doctrine:migrationversion``
+``neos.flow:doctrine:migrationversion``
 ****************************************
 
 **Mark/unmark migrations as migrated**
@@ -660,20 +660,20 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
-``typo3.flow:doctrine:migrationstatus``
+``neos.flow:doctrine:migrationstatus``
   Show the current migration status
-``typo3.flow:doctrine:migrationexecute``
+``neos.flow:doctrine:migrationexecute``
   Execute a single migration
-``typo3.flow:doctrine:migrationgenerate``
+``neos.flow:doctrine:migrationgenerate``
   Generate a new migration
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:update`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:update`:
 
-``typo3.flow:doctrine:update``
+``neos.flow:doctrine:update``
 ******************************
 
 **Update the database schema**
@@ -697,16 +697,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:create``
+``neos.flow:doctrine:create``
   Create the database schema
-``typo3.flow:doctrine:migrate``
+``neos.flow:doctrine:migrate``
   Migrate the database schema
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:doctrine:validate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:doctrine:validate`:
 
-``typo3.flow:doctrine:validate``
+``neos.flow:doctrine:validate``
 ********************************
 
 **Validate the class/table mappings**
@@ -725,14 +725,14 @@ any way.
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:doctrine:entitystatus``
+``neos.flow:doctrine:entitystatus``
   Show the current status of entities and mappings
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:help:help`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:help:help`:
 
-``typo3.flow:help:help``
+``neos.flow:help:help``
 ************************
 
 **Display help for a command**
@@ -752,9 +752,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:activate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:activate`:
 
-``typo3.flow:package:activate``
+``neos.flow:package:activate``
 *******************************
 
 **Activate an available package**
@@ -774,14 +774,14 @@ Arguments
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:deactivate``
+``neos.flow:package:deactivate``
   Deactivate a package
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:create`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:create`:
 
-``typo3.flow:package:create``
+``neos.flow:package:create``
 *****************************
 
 **Create a new package**
@@ -813,9 +813,9 @@ Related commands
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:deactivate`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:deactivate`:
 
-``typo3.flow:package:deactivate``
+``neos.flow:package:deactivate``
 *********************************
 
 **Deactivate a package**
@@ -835,14 +835,14 @@ Arguments
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:activate``
+``neos.flow:package:activate``
   Activate an available package
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:delete`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:delete`:
 
-``typo3.flow:package:delete``
+``neos.flow:package:delete``
 *****************************
 
 **Delete an existing package**
@@ -861,9 +861,9 @@ Arguments
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:freeze`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:freeze`:
 
-``typo3.flow:package:freeze``
+``neos.flow:package:freeze``
 *****************************
 
 **Freeze a package**
@@ -894,16 +894,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:unfreeze``
+``neos.flow:package:unfreeze``
   Unfreeze a package
-``typo3.flow:package:refreeze``
+``neos.flow:package:refreeze``
   Refreeze a package
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:list`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:list`:
 
-``typo3.flow:package:list``
+``neos.flow:package:list``
 ***************************
 
 **List available packages**
@@ -924,16 +924,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:activate``
+``neos.flow:package:activate``
   Activate an available package
-``typo3.flow:package:deactivate``
+``neos.flow:package:deactivate``
   Deactivate a package
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:refreeze`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:refreeze`:
 
-``typo3.flow:package:refreeze``
+``neos.flow:package:refreeze``
 *******************************
 
 **Refreeze a package**
@@ -959,16 +959,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:freeze``
+``neos.flow:package:freeze``
   Freeze a package
-``typo3.flow:cache:flush``
+``neos.flow:cache:flush``
   Flush all caches
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:rescan`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:rescan`:
 
-``typo3.flow:package:rescan``
+``neos.flow:package:rescan``
 *****************************
 
 **Rescan package availability and recreates the PackageStates configuration.**
@@ -981,9 +981,9 @@ Related commands
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:package:unfreeze`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:package:unfreeze`:
 
-``typo3.flow:package:unfreeze``
+``neos.flow:package:unfreeze``
 *******************************
 
 **Unfreeze a package**
@@ -1008,16 +1008,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:freeze``
+``neos.flow:package:freeze``
   Freeze a package
-``typo3.flow:cache:flush``
+``neos.flow:cache:flush``
   Flush all caches
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:resource:clean`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:resource:clean`:
 
-``typo3.flow:resource:clean``
+``neos.flow:resource:clean``
 *****************************
 
 **Clean up resource registry**
@@ -1037,9 +1037,9 @@ This command will ask you interactively what to do before deleting anything.
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:resource:copy`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:resource:copy`:
 
-``typo3.flow:resource:copy``
+``neos.flow:resource:copy``
 ****************************
 
 **Copy resources**
@@ -1072,9 +1072,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:resource:publish`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:resource:publish`:
 
-``typo3.flow:resource:publish``
+``neos.flow:resource:publish``
 *******************************
 
 **Publish resources**
@@ -1094,9 +1094,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:routing:getpath`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:routing:getpath`:
 
-``typo3.flow:routing:getpath``
+``neos.flow:routing:getpath``
 ******************************
 
 **Generate a route path**
@@ -1128,9 +1128,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:routing:list`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:routing:list`:
 
-``typo3.flow:routing:list``
+``neos.flow:routing:list``
 ***************************
 
 **List the known routes**
@@ -1143,9 +1143,9 @@ This command displays a list of all currently registered routes.
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:routing:routepath`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:routing:routepath`:
 
-``typo3.flow:routing:routepath``
+``neos.flow:routing:routepath``
 ********************************
 
 **Route the given route path**
@@ -1171,9 +1171,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:routing:show`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:routing:show`:
 
-``typo3.flow:routing:show``
+``neos.flow:routing:show``
 ***************************
 
 **Show information for a route**
@@ -1192,9 +1192,9 @@ Arguments
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:generatekeypair`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:generatekeypair`:
 
-``typo3.flow:security:generatekeypair``
+``neos.flow:security:generatekeypair``
 ***************************************
 
 **Generate a public/private key pair and add it to the RSAWalletService**
@@ -1214,14 +1214,14 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:security:importprivatekey``
+``neos.flow:security:importprivatekey``
   Import a private key
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:importprivatekey`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:importprivatekey`:
 
-``typo3.flow:security:importprivatekey``
+``neos.flow:security:importprivatekey``
 ****************************************
 
 **Import a private key**
@@ -1257,16 +1257,16 @@ Options
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:security:importpublickey``
+``neos.flow:security:importpublickey``
   Import a public key
-``typo3.flow:security:generatekeypair``
+``neos.flow:security:generatekeypair``
   Generate a public/private key pair and add it to the RSAWalletService
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:importpublickey`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:importpublickey`:
 
-``typo3.flow:security:importpublickey``
+``neos.flow:security:importpublickey``
 ***************************************
 
 **Import a public key**
@@ -1281,14 +1281,14 @@ RSAWalletService.
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:security:importprivatekey``
+``neos.flow:security:importprivatekey``
   Import a private key
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:showeffectivepolicy`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:showeffectivepolicy`:
 
-``typo3.flow:security:showeffectivepolicy``
+``neos.flow:security:showeffectivepolicy``
 *******************************************
 
 **Shows a list of all defined privilege targets and the effective permissions**
@@ -1313,9 +1313,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:showmethodsforprivilegetarget`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:showmethodsforprivilegetarget`:
 
-``typo3.flow:security:showmethodsforprivilegetarget``
+``neos.flow:security:showmethodsforprivilegetarget``
 *****************************************************
 
 **Shows the methods represented by the given security privilege target**
@@ -1336,9 +1336,9 @@ Arguments
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:security:showunprotectedactions`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:security:showunprotectedactions`:
 
-``typo3.flow:security:showunprotectedactions``
+``neos.flow:security:showunprotectedactions``
 **********************************************
 
 **Lists all public controller actions not covered by the active security policy**
@@ -1351,9 +1351,9 @@ Arguments
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:server:run`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:server:run`:
 
-``typo3.flow:server:run``
+``neos.flow:server:run``
 *************************
 
 **Run a standalone development server**
@@ -1378,9 +1378,9 @@ Options
 
 
 
-.. _`Flow Command Reference: TYPO3.FLOW typo3.flow:typeconverter:list`:
+.. _`Flow Command Reference: TYPO3.FLOW neos.flow:typeconverter:list`:
 
-``typo3.flow:typeconverter:list``
+``neos.flow:typeconverter:list``
 *********************************
 
 **Lists all currently active and registered type converters**
@@ -1417,7 +1417,7 @@ Arguments
 ^^^^^^^^^
 
 ``--php-namespace``
-  Namespace of the Fluid ViewHelpers without leading backslash (for example 'TYPO3\Fluid\ViewHelpers'). NOTE: Quote and/or escape this argument as needed to avoid backslashes from being interpreted!
+  Namespace of the Fluid ViewHelpers without leading backslash (for example 'Neos\FluidAdaptor\ViewHelpers'). NOTE: Quote and/or escape this argument as needed to avoid backslashes from being interpreted!
 
 
 
@@ -1617,7 +1617,7 @@ Arguments
 Related commands
 ^^^^^^^^^^^^^^^^
 
-``typo3.flow:package:create``
+``neos.flow:package:create``
   Create a new package
 
 

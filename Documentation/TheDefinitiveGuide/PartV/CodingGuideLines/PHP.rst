@@ -138,8 +138,8 @@ Vendor namespaces
 The base for namespaces as well as package keys is the vendor namespace. Since Flow started
 as part of the TYPO3 project, the core team decided to choose "TYPO3" as our vendor
 namespace (at some point this will change). The Object Manager for example is known under
-the class name ``TYPO3\Flow\Object\ObjectManager``. In our examples you will find the ``Acme``
-vendor namespace.
+the class name ``Neos\Flow\ObjectManagement\ObjectManager``. In our examples you will find
+the ``Acme`` vendor namespace.
 
 Why do we use vendor namespaces? This has two great benefits: first of all we don't need a
 central package key registry and secondly, it allows anyone to seamlessly integrate third-party
@@ -243,8 +243,8 @@ characters.
 All interface names are written in ``UpperCamelCase``. Interface names must be adjectives
 or nouns and have the Interface suffix. A few examples follow:
 
-* ``\TYPO3\Flow\Object\ObjectInterface``
-* ``\TYPO3\Flow\Object\ObjectManagerInterface``
+* ``\Neos\Flow\ObjectManagement\ObjectInterface``
+* ``\Neos\Flow\ObjectManagement\ObjectManagerInterface``
 * ``\MyCompany\MyPackage\MyObject\MySubObjectInterface``
 * ``\MyCompany\MyPackage\MyObject\MyHtmlParserInterface``
 
@@ -256,8 +256,8 @@ types of exceptions: generic exceptions and specific exceptions. Generic excepti
 be named "Exception" preceded by their namespace. Specific exceptions should reside in
 their own sub-namespace end with the word ``Exception``.
 
-* ``\TYPO3\Flow\Object\Exception``
-* ``\TYPO3\Flow\Object\Exception\InvalidClassNameException``
+* ``\Neos\Flow\ObjectManagement\Exception``
+* ``\Neos\Flow\ObjectManagement\Exception\InvalidClassNameException``
 * ``\MyCompany\MyPackage\MyObject\Exception``
 * ``\MyCompany\MyPackage\MyObject\Exception\OutOfCoffeeException``
 
@@ -384,7 +384,7 @@ These are the rules for naming files:
   of the package *TYPO3.TemplateEngine*
 
 ``TYPO3.Flow/Classes/TYPO3/Flow/Error/RuntimeException.php``
-  Contains the ``\TYPO3\Flow\Error\RuntimeException`` being a part of the package
+  Contains the ``\Neos\Error\Messages\RuntimeException`` being a part of the package
   *TYPO3.Flow*
 
 ``Acme.DataAccess/Classes/Acme/DataAccess/CustomQuery.php``
@@ -392,7 +392,7 @@ These are the rules for naming files:
   *Acme.DataAccess*
 
 ``TYPO3.Flow/Tests/Unit/Package/PackageManagerTest.php``
-    Contains the class ``\TYPO3\Flow\\Tests\Unit\Package\PackageManagerTest`` which
+    Contains the class ``\Neos\Flow\\Tests\Unit\Package\PackageManagerTest`` which
     is a PHPUnit testcase for ``Package\PackageManager``.
 
 
@@ -833,9 +833,9 @@ exception). This all works because we have the following hierarchy:
 
 .. code-block:: text
 
- + \TYPO3\Flow\Exception
- + \TYPO3\Flow\Object\Exception
- + \TYPO3\Flow\Object\Exception\InvalidObjectNameException
+ + \Neos\Flow\Exception
+ + \Neos\Flow\ObjectManagement\Exception
+ + \Neos\Flow\ObjectManagement\Exception\InvalidObjectNameException
 
 Throwing an exception
 ---------------------
@@ -859,7 +859,7 @@ Cross Platform Coding
 ---------------------
 
 * When concatenating paths, always use
-  ``\TYPO3\Flow\Utility\Files::concatenatePaths()`` to avoid trouble.
+  ``\Neos\Utility\Files::concatenatePaths()`` to avoid trouble.
 
 PHP in General
 --------------

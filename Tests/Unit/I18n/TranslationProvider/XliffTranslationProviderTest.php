@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\I18n\TranslationProvider;
+namespace Neos\Flow\Tests\Unit\I18n\TranslationProvider;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\I18n\TranslationProvider;
  * source code.
  */
 
-use TYPO3\Flow\I18n;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\I18n;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the XliffTranslationProvider
@@ -45,7 +45,7 @@ class XliffTranslationProviderTest extends UnitTestCase
     public function setUp()
     {
         $this->sampleSourceName = 'foo';
-        $this->samplePackageKey = 'TYPO3.Flow';
+        $this->samplePackageKey = 'Neos.Flow';
         $this->sampleLocale = new I18n\Locale('en_GB');
 
         $this->mockPluralsReader = $this->createMock(I18n\Cldr\Reader\PluralsReader::class);
@@ -89,7 +89,7 @@ class XliffTranslationProviderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\I18n\TranslationProvider\Exception\InvalidPluralFormException
+     * @expectedException \Neos\Flow\I18n\TranslationProvider\Exception\InvalidPluralFormException
      */
     public function getTranslationByOriginalLabelThrowsExceptionWhenInvalidPluralFormProvided()
     {
@@ -103,7 +103,7 @@ class XliffTranslationProviderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\I18n\TranslationProvider\Exception\InvalidPluralFormException
+     * @expectedException \Neos\Flow\I18n\TranslationProvider\Exception\InvalidPluralFormException
      */
     public function getTranslationByIdThrowsExceptionWhenInvalidPluralFormProvided()
     {

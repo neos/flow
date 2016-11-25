@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Provider;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\Provider;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Provider;
  * source code.
  */
 
-use TYPO3\Flow\Security\Authentication\Provider\FileBasedSimpleKeyProvider;
-use TYPO3\Flow\Security\Authentication\Token\PasswordToken;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Cryptography\FileBasedSimpleKeyService;
-use TYPO3\Flow\Security\Cryptography\HashService;
-use TYPO3\Flow\Security\Policy\PolicyService;
-use TYPO3\Flow\Security\Policy\Role;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Authentication\Provider\FileBasedSimpleKeyProvider;
+use Neos\Flow\Security\Authentication\Token\PasswordToken;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Cryptography\FileBasedSimpleKeyService;
+use Neos\Flow\Security\Cryptography\HashService;
+use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Flow\Security\Policy\Role;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for file based simple key authentication provider.
@@ -161,7 +161,7 @@ class FileBasedSimpleKeyProviderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\UnsupportedAuthenticationTokenException
+     * @expectedException \Neos\Flow\Security\Exception\UnsupportedAuthenticationTokenException
      */
     public function authenticatingAnUnsupportedTokenThrowsAnException()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Session;
+namespace Neos\Flow\Tests\Functional\Session;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,10 @@ namespace TYPO3\Flow\Tests\Functional\Session;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Session;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Session;
 
 class SessionManagementTest extends FunctionalTestCase
 {
@@ -28,7 +29,7 @@ class SessionManagementTest extends FunctionalTestCase
         $route->setName('Functional Test - Session::SessionTest');
         $route->setUriPattern('test/session(/{@action})');
         $route->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Session\Fixtures',
             '@controller' => 'SessionTest',
             '@action' => 'sessionStart',
@@ -101,9 +102,9 @@ class SessionManagementTest extends FunctionalTestCase
     public function aSessionUsedInAFunctionalTestVirtualBrowserSendsCookiesOnEachRequest()
     {
         $response = $this->browser->request('http://localhost/test/session');
-        $this->assertTrue($response->hasCookie('TYPO3_Flow_Session'), 'Available Cookies are: ' . implode(', ', array_keys($response->getCookies())));
+        $this->assertTrue($response->hasCookie('Flow_Testing_Session'), 'Available Cookies are: ' . implode(', ', array_keys($response->getCookies())));
 
         $response = $this->browser->request('http://localhost/test/session');
-        $this->assertTrue($response->hasCookie('TYPO3_Flow_Session'), 'Available Cookies are: ' . implode(', ', array_keys($response->getCookies())));
+        $this->assertTrue($response->hasCookie('Flow_Testing_Session'), 'Available Cookies are: ' . implode(', ', array_keys($response->getCookies())));
     }
 }

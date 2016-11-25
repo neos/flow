@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\ActionController;
-use TYPO3\Flow\Property\TypeConverter\DateTimeConverter;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
 
 /**
  * A TestEntity controller fixture

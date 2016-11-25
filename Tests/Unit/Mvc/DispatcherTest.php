@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc;
+namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,23 +11,23 @@ namespace TYPO3\Flow\Tests\Unit\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Cli\Request;
-use TYPO3\Flow\Http\Response as HttpResponse;
-use TYPO3\Flow\Http\Request as HttpRequest;
-use TYPO3\Flow\Log\SecurityLoggerInterface;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\Controller\ControllerInterface;
-use TYPO3\Flow\Mvc\Dispatcher;
-use TYPO3\Flow\Mvc\Exception\ForwardException;
-use TYPO3\Flow\Mvc\Exception\StopActionException;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Security\Authentication\EntryPointInterface;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Authorization\FirewallInterface;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Security\Exception\AccessDeniedException;
-use TYPO3\Flow\Security\Exception\AuthenticationRequiredException;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli\Request;
+use Neos\Flow\Http\Response as HttpResponse;
+use Neos\Flow\Http\Request as HttpRequest;
+use Neos\Flow\Log\SecurityLoggerInterface;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Controller\ControllerInterface;
+use Neos\Flow\Mvc\Dispatcher;
+use Neos\Flow\Mvc\Exception\ForwardException;
+use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Authentication\EntryPointInterface;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Authorization\FirewallInterface;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Exception\AccessDeniedException;
+use Neos\Flow\Security\Exception\AuthenticationRequiredException;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Dispatcher
@@ -196,7 +196,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InfiniteLoopException
+     * @expectedException \Neos\Flow\Mvc\Exception\InfiniteLoopException
      */
     public function dispatchThrowsAnInfiniteLoopExceptionIfTheRequestCouldNotBeDispachedAfter99Iterations()
     {
@@ -251,7 +251,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\AuthenticationRequiredException
+     * @expectedException \Neos\Flow\Security\Exception\AuthenticationRequiredException
      */
     public function dispatchRethrowsAuthenticationRequiredExceptionIfSecurityContextDoesNotContainAnyAuthenticationToken()
     {
@@ -338,7 +338,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\AccessDeniedException
+     * @expectedException \Neos\Flow\Security\Exception\AccessDeniedException
      */
     public function dispatchRethrowsAccessDeniedException()
     {
@@ -372,7 +372,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Controller\Exception\InvalidControllerException
+     * @expectedException \Neos\Flow\Mvc\Controller\Exception\InvalidControllerException
      */
     public function resolveControllerThrowsAnInvalidControllerExceptionIfTheResolvedControllerDoesNotImplementTheControllerInterface()
     {
@@ -394,7 +394,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Controller\Exception\InvalidControllerException
+     * @expectedException \Neos\Flow\Mvc\Controller\Exception\InvalidControllerException
      */
     public function resolveControllerThrowsAnInvalidControllerExceptionIfTheResolvedControllerDoesNotExist()
     {

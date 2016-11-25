@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\SignalSlot;
+namespace Neos\Flow\Tests\Unit\SignalSlot;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\SignalSlot;
  * source code.
  */
 
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\SignalSlot\Dispatcher;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Signal Dispatcher Class
@@ -159,7 +159,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\SignalSlot\Exception\InvalidSlotException
+     * @expectedException \Neos\Flow\SignalSlot\Exception\InvalidSlotException
      */
     public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown()
     {
@@ -174,7 +174,7 @@ class DispatcherTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\SignalSlot\Exception\InvalidSlotException
+     * @expectedException \Neos\Flow\SignalSlot\Exception\InvalidSlotException
      */
     public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist()
     {

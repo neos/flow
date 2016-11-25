@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures\Controller
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
 
 /**
  * A controller fixture
@@ -46,7 +46,7 @@ class ViewsConfigurationTestAController extends ActionController
      */
     public function renderOtherAction()
     {
-        $this->view->setTemplatePathAndFilename('resource://TYPO3.Flow/Private/Templates/Tests/Functional/Mvc/Fixtures/ViewsConfigurationTest/First.html');
+        $this->view->setTemplatePathAndFilename('resource://Neos.Flow/Private/Templates/Tests/Functional/Mvc/Fixtures/ViewsConfigurationTest/First.html');
     }
 
     /**

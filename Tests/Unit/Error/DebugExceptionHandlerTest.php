@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Error;
+namespace Neos\Flow\Tests\Unit\Error;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Error;
  * source code.
  */
 
-use TYPO3\Flow\Error\DebugExceptionHandler;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Error\DebugExceptionHandler;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Debug Exception Handler

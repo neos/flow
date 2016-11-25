@@ -460,7 +460,7 @@ A simple domain object being marked as entity, and validation::
 
 A simple repository::
 
-	class AccountRepository extends \TYPO3\Flow\Persistence\Repository {
+	class AccountRepository extends \Neos\Flow\Persistence\Repository {
 
 			// by extending from the base repository, there is automatically a
 			// findBy* method available for every property, i.e. findByFirstName("Sebastian")

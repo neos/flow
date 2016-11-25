@@ -11,21 +11,21 @@
 #
 # For functional tests we are going to use the InternalRequestEngine by default:
 #
-TYPO3\Flow\Http\Client\Browser:
+Neos\Flow\Http\Client\Browser:
   properties:
     requestEngine:
-      object: TYPO3\Flow\Http\Client\InternalRequestEngine
+      object: Neos\Flow\Http\Client\InternalRequestEngine
 
 #
-# Security and Resource handling need specialized testing classes:
+# Security and PersistentResource handling need specialized testing classes:
 #
-TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface:
-  className: TYPO3\Flow\Security\Authorization\TestingPrivilegeManager
+Neos\Flow\Security\Authorization\PrivilegeManagerInterface:
+  className: Neos\Flow\Security\Authorization\TestingPrivilegeManager
 
 #
 # Configuration of fixture classes:
 #
-TYPO3\Flow\Tests\Functional\Object\Fixtures\SingletonClassC:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassC:
   properties:
     protectedStringPropertySetViaObjectsYaml:
       value: 'a defined string'
@@ -43,22 +43,22 @@ TYPO3\Flow\Tests\Functional\Object\Fixtures\SingletonClassC:
     1:
       value: 'this is required'
     3:
-      setting: TYPO3.Flow.tests.functional.dependencyInjection.singletonConstructorArgument
+      setting: Neos.Flow.tests.functional.dependencyInjection.singletonConstructorArgument
     6:
       value: { 'thisIs': { 'anArray': 'asProperty' } }
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassAishInterface:
-  factoryObjectName: TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassAFactory
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassAishInterface:
+  factoryObjectName: Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassAFactory
   arguments:
     1:
       value: 'value defined in Objects.yaml'
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassC:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassC:
   arguments:
     1:
-      setting: TYPO3.Flow.tests.functional.dependencyInjection.prototypeConstructorArgument
+      setting: Neos.Flow.tests.functional.dependencyInjection.prototypeConstructorArgument
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassD:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassD:
   properties:
     'objectE':
       object:
@@ -66,22 +66,22 @@ TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassD:
           1:
             value: 'The constructor set value'
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\SingletonClassF:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassF:
   arguments:
     1:
       value: ~
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\SingletonClassG:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassG:
   arguments:
     1:
       object:
-        factoryObjectName: TYPO3\Flow\Tests\Functional\Object\Fixtures\PrototypeClassAFactory
+        factoryObjectName: Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassAFactory
         arguments:
           1:
             value: 'Constructor injection with factory'
 
-TYPO3\Flow\Tests\Functional\Object\Fixtures\Flow175\OuterPrototype:
+Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\OuterPrototype:
   arguments:
     1:
       object:
-        name: TYPO3\Flow\Tests\Functional\Object\Fixtures\Flow175\Greeter
+        name: Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\Greeter

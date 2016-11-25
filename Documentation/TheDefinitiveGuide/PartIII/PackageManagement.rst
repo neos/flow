@@ -53,7 +53,7 @@ The location for Flow packages installed via Composer (as opposed to manually
 placing them in a *Packages/* sub folder) is determined by looking at the package
 type in the manifest file. This would place a package into *Packages/Acme*::
 
- "type": "typo3-flow-acme"
+ "type": "neos-acme"
 
 If you would like to use ``package:create`` to create packages of this type in
 *Packages/Acme* instead of the default location *Packages/Application*, add an
@@ -63,7 +63,7 @@ entry in the *Settings.yaml* of the package that expects packages of that type::
     Flow:
       package:
         packagesPathByType:
-          'typo3-flow-acme': 'Acme'
+          'neos-acme': 'Acme'
 
 Package Directory Layout
 ========================
@@ -125,7 +125,7 @@ Resources
 
   Public
     Contains public resources for the package. All files in this directory
-    will be mirrored into Flow's *Web* directory by the Resource Manager
+    will be mirrored into Flow's *Web* directory by the ResourceManager
     (and therefore become accessible from the web). They will be delivered to
     the client directly without further processing.
 
@@ -171,11 +171,37 @@ and maintained by the Neos and Flow core teams start with ``TYPO3.*`` (for histo
 reasons) or ``Neos.*``. In your company we suggest that you use your company name as vendor
 namespace.
 
+To define the package key for your package we recommend you set the "extra.neos.package-key"
+option in your composer.json as in the following example:
+
+*composer.json*::
+
+ "extra": {
+     "neos": {
+         "package-key": "Vendor.PackageKey"
+     }
+ }
+
+
 Loading Order
 =============
 
 The loading order of packages follows the dependency chain as defined in the composer
-manifests involved.
+manifests involved, solely taking the "require" part into consideration.
+Additionally you can configure packages that should be loaded before by adding an array
+of composer package names to "extra.neos.loading-order.after" as in this example:
+
+*composer.json*::
+
+ "extra": {
+     "neos": {
+         "loading-order": {
+             "after": [
+                  "some/package"
+             ]
+         }
+     }
+ }
 
 Activating and Deactivating Packages
 ====================================
@@ -285,7 +311,7 @@ it does not need to exist.
 	<?php
 	namespace Acme\Demo;
 
-	use TYPO3\Flow\Package\Package as BasePackage;
+	use Neos\Flow\Package\Package as BasePackage;
 
 	/**
 	 * The Acme.Demo Package
@@ -296,14 +322,14 @@ it does not need to exist.
 		/**
 		* Invokes custom PHP code directly after the package manager has been initialized.
 		*
-		* @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
+		* @param \Neos\Flow\Core\Bootstrap $bootstrap The current bootstrap
 		* @return void
 		*/
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Demo\Quux\RequestHandler($bootstrap));
 
 			$dispatcher = $bootstrap->getSignalSlotDispatcher();
-			$dispatcher->connect('TYPO3\Flow\Mvc\Dispatcher', 'afterControllerInvocation', 'Acme\Demo\Baz', 'fooBar');
+			$dispatcher->connect(\Neos\Flow\Mvc\Dispatcher::class, 'afterControllerInvocation', \Acme\Demo\Baz::class, 'fooBar');
 		}
 	}
 	?>

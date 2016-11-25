@@ -108,7 +108,7 @@ the ``Package`` class of the package containing the request handler::
 
 	class Package extends BasePackage {
 
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Foo\BarRequestHandler($bootstrap));
 		}
 
@@ -121,8 +121,8 @@ Instead of registering a new RequestHandler the application workflow can also be
 A HTTP component must implement the :abbr:`Component interface (\\TYPO3\\Flow\\Http\\Component\\ComponentInterface)`
 that defines the ``handle()`` method::
 
-	use TYPO3\Flow\Http\Component\ComponentInterface;
-	use TYPO3\Flow\Http\Component\ComponentContext;
+	use Neos\Flow\Http\Component\ComponentInterface;
+	use Neos\Flow\Http\Component\ComponentContext;
 
 	/**
 	 * A sample HTTP component that intercepts the default handling and returns "bar" if the request contains an argument "foo"
@@ -172,7 +172,7 @@ To activate a component, it must be configured in the ``Settings.yaml``::
 	                'someOption': 'someValue'
 
 With the ``position`` directive the order of a component within the chain can be defined. In this case the new component
-will be handled before the routing component that is configured in the TYPO3.Flow package.
+will be handled before the routing component that is configured in the Neos.Flow package.
 ``componentOptions`` is an optional key/value array with options that will be passed to the component's constructor.
 
 Interrupting the chain
@@ -189,7 +189,7 @@ For example if one wants to handle an AJAX request and prevent the default dispa
 	public function handle(ComponentContext $componentContext) {
 		// check if the request should be handled and return otherwise
 
-		$componentContext->setParameter('TYPO3\Flow\Http\Component\ComponentChain', 'cancel', TRUE);
+		$componentContext->setParameter(\Neos\Flow\Http\Component\ComponentChain::class, 'cancel', TRUE);
 	}
 
 Note that component chains can be nested. By default the three sub chains ``preprocess``, ``process`` and ``postprocess``
@@ -200,7 +200,7 @@ still handled even if the new component cancels the current chain.
 Request
 -------
 
-The ``TYPO3\Flow\Http\Request`` class is, like most other classes in the ``Http`` sub package, a relatively close match
+The ``Neos\Flow\Http\Request`` class is, like most other classes in the ``Http`` sub package, a relatively close match
 of a request according to the HTTP 1.1 specification. You'll be best off studying the API of the class and reading the
 respective comments for getting an idea about the available functions. That being said, we'll pick a few important
 methods which may need some further explanation.
@@ -463,13 +463,13 @@ Sending a request and processing the response is a matter of a few lines::
 
 		/**
 		 * @Flow\Inject
-		 * @var \TYPO3\Flow\Http\Client\Browser
+		 * @var \Neos\Flow\Http\Client\Browser
 		 */
 		protected $browser;
 
 		/**
 		 * @Flow\Inject
-		 * @var \TYPO3\Flow\Http\Client\CurlEngine
+		 * @var \Neos\Flow\Http\Client\CurlEngine
 		 */
 		protected $browserRequestEngine;
 
@@ -510,7 +510,7 @@ other application parts which are accessible via HTTP. This browser has the ``In
 	/**
 	 * Some functional tests
 	 */
-	class SomeTest extends \TYPO3\Flow\Tests\FunctionalTestCase {
+	class SomeTest extends \Neos\Flow\Tests\FunctionalTestCase {
 
 		/**
 		 * @var boolean

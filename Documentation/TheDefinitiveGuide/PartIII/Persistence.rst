@@ -111,14 +111,14 @@ Let's conclude by taking a look at the BlogRepository code:
 
 *Example: Code of a simple BlogRepository* ::
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * A BlogRepository
 	 *
 	 * @Flow\Scope("singleton")
 	 */
-	class BlogRepository extends \TYPO3\Flow\Persistence\Repository {
+	class BlogRepository extends \Neos\Flow\Persistence\Repository {
 	}
 
 As you can see we get away with very little code by simply extending the Flow-provided
@@ -131,14 +131,14 @@ methods in our repository, we can make use of the query building API:
 	/**
 	 * A PostRepository
 	 */
-	class PostRepository extends \TYPO3\Flow\Persistence\Repository {
+	class PostRepository extends \Neos\Flow\Persistence\Repository {
 
 	    /**
 	     * Finds posts by the specified tag and blog
 	     *
 	     * @param \TYPO3\Blog\Domain\Model\Tag $tag
 	     * @param \TYPO3\Blog\Domain\Model\Blog $blog The blog the post must refer to
-	     * @return \TYPO3\Flow\Persistence\QueryResultInterface The posts
+	     * @return \Neos\Flow\Persistence\QueryResultInterface The posts
 	     */
 	    public function findByTagAndBlog(\TYPO3\Blog\Domain\Model\Tag $tag,
 	      \TYPO3\Blog\Domain\Model\Blog $blog) {
@@ -150,14 +150,14 @@ methods in our repository, we can make use of the query building API:
 	            )
 	        )
 	        ->setOrderings(array(
-	            'date' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING)
+	            'date' => \Neos\Flow\Persistence\QueryInterface::ORDER_DESCENDING)
 	        )
 	        ->execute();
 	    }
 	}
 
 If you like to do things the hard way you can get away with implementing
-``\TYPO3\Flow\Persistence\RepositoryInterface`` yourself, though that is
+``\Neos\Flow\Persistence\RepositoryInterface`` yourself, though that is
 something the normal developer never has to do.
 
 Basics of Persistence in Flow
@@ -240,7 +240,7 @@ Whitelisted objects
 
 There are rare cases which still justify persisting objects during safe requests. For example,
 your application might want to generate thumbnails of images during a GET request and persist
-the resulting Resource objects.
+the resulting PersistentResource instances.
 
 For these cases it is possible to whitelist specific objects via the Persistence Manager::
 
@@ -261,9 +261,9 @@ conventions need to be followed:
   ``<ModelName>Repository``
 * Aside from ``Model`` versus ``Repository`` the qualified class class names should be the
   same for corresponding classes
-* Repositories must implement ``\TYPO3\Flow\Persistence\RepositoryInterface`` (which is
-  already the case when extending ``\TYPO3\Flow\Persistence\Repository`` or
-  ``\TYPO3\Flow\Persistence\Doctrine\Repository``)
+* Repositories must implement ``\Neos\Flow\Persistence\RepositoryInterface`` (which is
+  already the case when extending ``\Neos\Flow\Persistence\Repository`` or
+  ``\Neos\Flow\Persistence\Doctrine\Repository``)
 
 *Example: Conventions for model and repository naming*
 
@@ -565,6 +565,32 @@ functions.
 
 .. [#doctrineDqlFunctions] http://docs.doctrine-project.org/projects/doctrine-orm/en/latest/reference/dql-doctrine-query-language.html#adding-your-own-functions-to-the-dql-language
 
+Using Doctrine's Second Level Cache
+-----------------------------------
+
+Since 2.5, Doctrine provides a second level cache that further improves performance of relation queries
+beyond the result query cache.
+
+See the Doctrine documentation ([#doctrineSecondLevelCache]_) for more information on the second level cache.
+Flow allows you to enable and configure the second level cache through the configuration setting
+``TYPO3.Flow.persistence.doctrine.secondLevelCache``.
+
+*Example: Configuration for Doctrine second level cache*:
+
+.. code-block:: yaml
+
+  TYPO3:
+    Flow:
+      persistence:
+        doctrine:
+          secondLevelCache:
+            enable: true
+            defaultLifetime: 3600
+            regions:
+              'my_entity_region': 7200
+
+.. [#doctrineSecondLevelCache] http://docs.doctrine-project.org/en/latest/reference/second-level-cache.html
+
 Differences between Flow and plain Doctrine
 -------------------------------------------
 
@@ -760,7 +786,7 @@ actual state of schema and active packages:
 	    >> Database Name:                                      flow
 	    >> Configuration Source:                               manually configured
 	    >> Version Table Name:                                 flow_doctrine_migrationstatus
-	    >> Migrations Namespace:                               TYPO3\Flow\Persistence\Doctrine\Migrations
+	    >> Migrations Namespace:                               Neos\Flow\Persistence\Doctrine\Migrations
 	    >> Migrations Target Directory:                        /path/to/Data/DoctrineMigrations
 	    >> Current Version:                                    0
 	    >> Latest Version:                                     2011-06-13 22:38:37 (20110613223837)
@@ -938,7 +964,7 @@ detected between the current schema and the current models in the system:
 
 *Example: Migration generated based on schema/model differences* ::
 
-	namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+	namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 	use Doctrine\DBAL\Migrations\AbstractMigration,
 	  Doctrine\DBAL\Schema\Schema;
@@ -1128,12 +1154,12 @@ To switch to Generic persistence you need to configure Flow like this.
 
 .. code-block:: yaml
 
-	TYPO3\Flow\Persistence\PersistenceManagerInterface:
-	  className: 'TYPO3\Flow\Persistence\Generic\PersistenceManager'
+	Neos\Flow\Persistence\PersistenceManagerInterface:
+	  className: 'Neos\Flow\Persistence\Generic\PersistenceManager'
 
-	TYPO3\Flow\Persistence\QueryResultInterface:
+	Neos\Flow\Persistence\QueryResultInterface:
 	  scope: prototype
-	  className: 'TYPO3\Flow\Persistence\Generic\QueryResult'
+	  className: 'Neos\Flow\Persistence\Generic\QueryResult'
 
 *Settings.yaml*:
 
@@ -1245,7 +1271,7 @@ Persisting a Domain Object
 
 After an object has been added to a repository it will be seen when Flow calls
 ``persistAll()`` at the end of a script run. Internally all instances implementing the
-``\TYPO3\Flow\Persistence\RepositoryInterface`` will be fetched and asked for the objects
+``\Neos\Flow\Persistence\RepositoryInterface`` will be fetched and asked for the objects
 they hold. Those will then be handed to the persistence backend in use and processed by
 it.
 

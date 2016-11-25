@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Monitor;
+namespace Neos\Flow\Tests\Unit\Monitor;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Monitor;
  * source code.
  */
 
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Monitor\FileMonitor;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Files;
-use TYPO3\Flow\Cache;
+use Neos\Flow\Monitor\FileMonitor;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\Files;
+use Neos\Cache;
 
 /**
  * Testcase for the File Monitor class
@@ -134,7 +134,7 @@ class FileMonitorTest extends UnitTestCase
      */
     public function detectChangedFilesFetchesTheStatusOfGivenFilesAndReturnsAListOfChangeFilesAndTheirStatus()
     {
-        $mockStrategy = $this->createMock('TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface');
+        $mockStrategy = $this->createMock(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::class);
         $mockStrategy->expects($this->exactly(2))->method('getFileStatus')->will($this->onConsecutiveCalls(ChangeDetectionStrategyInterface::STATUS_CREATED, ChangeDetectionStrategyInterface::STATUS_UNCHANGED));
 
         $mockMonitor = $this->getAccessibleMock(FileMonitor::class, ['dummy'], ['Flow_Test'], '', true, true);

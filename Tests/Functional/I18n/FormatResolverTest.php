@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\I18n;
+namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Functional\I18n;
  * source code.
  */
 
-use TYPO3\Flow\I18n\FormatResolver;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use \TYPO3\Flow\I18n;
+use Neos\Flow\I18n\FormatResolver;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\I18n;
 
 /**
  * Testcase for the I18N placeholder replacing

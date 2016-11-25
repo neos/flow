@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Http\Component\ComponentContext;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Mvc\Routing\Router;
-use TYPO3\Flow\Mvc\Routing\RoutingComponent;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Http\Component\ComponentContext;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Mvc\Routing\Router;
+use Neos\Flow\Mvc\Routing\RoutingComponent;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC RoutingComponent

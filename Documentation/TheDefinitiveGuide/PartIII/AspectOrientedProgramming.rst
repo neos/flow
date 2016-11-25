@@ -116,11 +116,11 @@ and has many possibilities, even for complex scenarios.
 		/**
 		 * Log a message if a post is deleted
 		 *
-		 * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint
+		 * @param \Neos\Flow\AOP\JoinPointInterface $joinPoint
 		 * @Flow\Before("method(Examples\Forum\Domain\Model\Forum->deletePost())")
 		 * @return void
 		 */
-		public function logDeletePost(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+		public function logDeletePost(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 			$post = $joinPoint->getMethodArgument('post');
 			$this->applicationLogger->log('Removing post ' . $post->getTitle(), LOG_INFO);
 		}
@@ -147,7 +147,7 @@ Aspect
 Join point
 	A join point is a point in the flow of a program. Examples are the execution
 	of a method or the throw of an exception. In Flow, join points are
-	represented by the ``TYPO3\Flow\AOP\JoinPoint`` object which contains more
+	represented by the ``Neos\Flow\AOP\JoinPoint`` object which contains more
 	information about the circumstances like name of the called method, the
 	passed arguments or type of the exception thrown. A join point is an event
 	which occurs during the program flow, not a definition which defines that
@@ -293,6 +293,12 @@ aspect.
 	A void aspect class doesn't make any sense and if you try to run the above
 	example, the AOP framework will throw an exception complaining that no
 	advice, introduction or pointcut has been defined.
+
+.. Note::
+	With Flow 4.0+ classes that are marked ``final`` can now be targeted by AOP advices
+	by default.
+	This can be explicitly disabled with a ``@Flow\Proxy(false)`` annotation on the
+	class in question.
 
 Pointcuts
 =========
@@ -477,7 +483,7 @@ arguments of the annotation cannot be specified:
 
 Matches all classes which are tagged with Flow's ``Entity`` annotation:
 
-``classAnnotatedWith(TYPO3\Flow\Annotations\Entity)``
+``classAnnotatedWith(Neos\Flow\Annotations\Entity)``
 
 Matches all classes which are tagged with a custom annotation:
 
@@ -588,7 +594,7 @@ filter()
 
 If the built-in filters don't suit your needs you can even define your own
 custom filters. All you need to do is create a class implementing the
-``TYPO3\Flow\AOP\Pointcut\PointcutFilterInterface`` and develop your own logic
+``Neos\Flow\AOP\Pointcut\PointcutFilterInterface`` and develop your own logic
 for the ``matches()`` method. The custom filter can then be invoked by using
 the ``filter()`` designator:
 
@@ -663,7 +669,7 @@ conveniently in advice declarations:
 		 * A pointcut which matches any method from the BasicClass and all classes
 		 * from the service layer
 		 *
-		 * @Flow\Pointcut("method(Example\TestPackage\Basic.*->.*()) || within(TYPO3\Flow\Service.*)")
+		 * @Flow\Pointcut("method(Example\TestPackage\Basic.*->.*()) || within(Neos\Flow\Service.*)")
 		 */
 		public function basicClassOrServiceLayerClasses() {}
 	}
@@ -698,7 +704,7 @@ can it take influence on other before advices at the same join point.
 	 *
 	 * @Flow\Before("class(Example\News\.*->.*())")
 	 */
-	public function myBeforeAdvice(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function myBeforeAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 	}
 
 
@@ -716,7 +722,7 @@ advices may read the result of the target method, but can't modify it.
 	 *
 	 * @Flow\AfterReturning("method(public Example\News\FeedAgregator->[import|update].*()) || Example\MyPackage\MyAspect->someOtherPointcut")
 	 */
-	public function myAfterReturningAdvice(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function myAfterReturningAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 	}
 
 
@@ -733,7 +739,7 @@ after method execution, but only if an exception was thrown.
 	 *
 	 * @Flow\AfterThrowing("within(Example\News\ImportantLayer)")
 	 */
-	public function myAfterThrowingAdvice(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function myAfterThrowingAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 	}
 
 
@@ -751,7 +757,7 @@ was thrown or not.
 	 *
 	 * @Flow\After("Example\MyPackage\MyAspect->justAPointcut")
 	 */
-	public function myAfterAdvice(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function myAfterAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 	}
 
 
@@ -772,7 +778,7 @@ You might already guess how an around advice is declared:
 	 *
 	 * @Flow\Around("Example\MyPackage\MyAspect->justAPointcut")
 	 */
-	public function myAroundAdvice(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function myAroundAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 	}
 
 
@@ -789,7 +795,7 @@ Accessing join points
 ---------------------
 
 As you have seen in the previous section, advice methods always expect an
-argument of the type ``TYPO3\Flow\AOP\JoinPointInterface``. This join point object
+argument of the type ``Neos\Flow\AOP\JoinPointInterface``. This join point object
 contains all important information about the current join point. Methods like
 getClassName() or getMethodArguments() let the advice method classify the
 current context and enable you to implement advices in a way that they can be
@@ -830,7 +836,7 @@ code will just do that:
 	class LoggingAspect {
 
 		/**
-		 * @var \TYPO3\Flow\Log\LoggerInterface A logger implementation
+		 * @var \Neos\Flow\Log\LoggerInterface A logger implementation
 		 */
 		protected $logger;
 
@@ -838,21 +844,21 @@ code will just do that:
 		 * For logging we need a logger, which we will get injected automatically by
 		 * the Object Manager
 		 *
-		 * @param \TYPO3\Flow\Log\SystemLoggerInterface $logger The System Logger
+		 * @param \Neos\Flow\Log\SystemLoggerInterface $logger The System Logger
 		 * @return void
 		 */
-		public function injectSystemLogger(\TYPO3\Flow\Log\SystemLoggerInterface $systemLogger) {
+		public function injectSystemLogger(\Neos\Flow\Log\SystemLoggerInterface $systemLogger) {
 			$this->logger = $systemLogger;
 		}
 
 		/**
 		 * Before advice, logs all access to public methods of our package
 		 *
-		 * @param  \TYPO3\Flow\AOP\JoinPointInterface $joinPoint: The current join point
+		 * @param  \Neos\Flow\AOP\JoinPointInterface $joinPoint: The current join point
 		 * @return void
 		 * @Flow\Before("method(public Example\MyPackage\.*->.*())")
 		 */
-		public function logMethodExecution(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+		public function logMethodExecution(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 			$logMessage = 'The method ' . $joinPoint->getMethodName() . ' in class ' .
 				$joinPoint->getClassName() . ' has been called.';
 			$this->logger->log($logMessage);
@@ -892,11 +898,11 @@ place but refer to a named pointcut.
 		/**
 		 * Around advice, rejects the last name "Sarkosh"
 		 *
-		 * @param  \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current join point
+		 * @param  \Neos\Flow\AOP\JoinPointInterface $joinPoint The current join point
 		 * @return mixed Result of the target method
 		 * @Flow\Around("Example\Guestbook\LastNameRejectionAspect->guestbookSubmissionPointcut")
 		 */
-		public function rejectLastName(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+		public function rejectLastName(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 			if ($joinPoint->getMethodArgument('lastName') === 'Sarkosh') {
 				throw new \Exception('Sarkosh is not a valid last name - should be Skårhøj!');
 			}
@@ -956,11 +962,11 @@ The following example introduces a new interface ``NewInterface`` to the class
 		 * Around advice, implements the new method "newMethod" of the
 		 * "NewInterface" interface
 		 *
-		 * @param  \TYPO3\Flow\AOP\JoinPointInterface $joinPoint The current join point
+		 * @param  \Neos\Flow\AOP\JoinPointInterface $joinPoint The current join point
 		 * @return void
 		 * @Flow\Around("method(Example\MyPackage\OldClass->newMethod())")
 		 */
-		public function newMethodImplementation(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+		public function newMethodImplementation(\Neos\Flow\AOP\JoinPointInterface $joinPoint) {
 				// We call the advice chain, in case any other advice is declared for
 				// this method, but we don't care about the result.
 			$someResult = $joinPoint->getAdviceChain()->proceed($joinPoint);

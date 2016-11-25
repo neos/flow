@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Policy;
+namespace Neos\Flow\Tests\Functional\Security\Policy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,7 +10,7 @@ namespace TYPO3\Flow\Tests\Functional\Security\Policy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for the security policy behavior

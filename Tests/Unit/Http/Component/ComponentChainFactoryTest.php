@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Http\Component;
+namespace Neos\Flow\Tests\Unit\Http\Component;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Http\Component;
  * source code.
  */
 
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Http Component Chain Factory
@@ -73,7 +73,7 @@ class ComponentChainFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Http\Component\Exception
+     * @expectedException \Neos\Flow\Http\Component\Exception
      */
     public function createThrowsExceptionIfComponentClassNameIsNotConfigured()
     {
@@ -88,7 +88,7 @@ class ComponentChainFactoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Http\Component\Exception
+     * @expectedException \Neos\Flow\Http\Component\Exception
      */
     public function createThrowsExceptionIfComponentClassNameDoesNotImplementComponentInterface()
     {

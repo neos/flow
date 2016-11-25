@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Token;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\Token;
  * source code.
  */
 
-use TYPO3\Flow\Security\Authentication\EntryPoint\WebRedirect;
-use TYPO3\Flow\Security\Authentication\Token\AbstractToken;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\RequestPattern\Uri as UriRequestPattern;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Authentication\EntryPoint\WebRedirect;
+use Neos\Flow\Security\Authentication\Token\AbstractToken;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\RequestPattern\Uri as UriRequestPattern;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for abstract authentication token
@@ -91,7 +91,7 @@ class AbstractTokenTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidAuthenticationStatusException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidAuthenticationStatusException
      */
     public function setAuthenticationStatusThrowsAnExceptionForAnInvalidStatus()
     {

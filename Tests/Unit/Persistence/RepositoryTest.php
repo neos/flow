@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence;
+namespace Neos\Flow\Tests\Unit\Persistence;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Persistence;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Persistence;
-use TYPO3\Flow\Tests\Persistence\Fixture;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence;
+use Neos\Flow\Tests\Persistence\Fixture;
 
 require_once('Fixture/Repository/NonstandardEntityRepository.php');
 
@@ -51,7 +51,7 @@ class RepositoryTest extends UnitTestCase
     public function constructSetsObjectTypeFromClassName($repositoryNamespace, $repositoryClassName, $modelClassName)
     {
         $mockClassName = $repositoryNamespace . '\\' . $repositoryClassName;
-        eval('namespace ' . $repositoryNamespace . '; class ' . $repositoryClassName . ' extends \TYPO3\Flow\Persistence\Repository {}');
+        eval('namespace ' . $repositoryNamespace . '; class ' . $repositoryClassName . ' extends \Neos\Flow\Persistence\Repository {}');
 
         $repository = new $mockClassName();
         $this->assertEquals($modelClassName, $repository->getEntityClassName());
@@ -62,7 +62,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function constructSetsObjectTypeFromClassConstant()
     {
-        $repositoryNamespace = 'TYPO3\Flow\Tests\Persistence\Fixture\Repository';
+        $repositoryNamespace = \Neos\Flow\Tests\Persistence\Fixture\Repository::class;
         $repositoryClassName = 'NonstandardEntityRepository';
         $modelClassName = Fixture\Model\Entity::class;
         $fullRepositorClassName = $repositoryNamespace . '\\' . $repositoryClassName;
@@ -247,7 +247,7 @@ class RepositoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @expectedException \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
     public function addChecksObjectType()
     {
@@ -259,7 +259,7 @@ class RepositoryTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @expectedException \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
     public function removeChecksObjectType()
     {
@@ -270,7 +270,7 @@ class RepositoryTest extends UnitTestCase
     }
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @expectedException \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
     public function updateChecksObjectType()
     {

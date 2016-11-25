@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests;
+namespace Neos\Flow\Tests;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Http\Component\ComponentContext;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Utility\Arrays;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Http\Component\ComponentContext;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Utility\Arrays;
+use Neos\Utility\Files;
 
 /**
  * A base test case for functional tests
@@ -29,12 +29,12 @@ use TYPO3\Flow\Utility\Files;
  *
  * @api
  */
-abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
+abstract class FunctionalTestCase extends \Neos\Flow\Tests\BaseTestCase
 {
     /**
      * A functional instance of the Object Manager, for use in concrete test cases.
      *
-     * @var \TYPO3\Flow\Object\ObjectManagerInterface
+     * @var \Neos\Flow\ObjectManagement\ObjectManagerInterface
      * @api
      */
     protected $objectManager;
@@ -69,7 +69,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
     /**
      * Contains a virtual, preinitialized browser
      *
-     * @var \TYPO3\Flow\Http\Client\Browser
+     * @var \Neos\Flow\Http\Client\Browser
      * @api
      */
     protected $browser;
@@ -77,38 +77,38 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
     /**
      * Contains the router instance used in the browser's request engine
      *
-     * @var \TYPO3\Flow\Mvc\Routing\Router
+     * @var \Neos\Flow\Mvc\Routing\Router
      * @api
      */
     protected $router;
 
     /**
-     * @var \TYPO3\Flow\Security\Context
+     * @var \Neos\Flow\Security\Context
      */
     protected $securityContext;
 
     /**
-     * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
+     * @var \Neos\Flow\Security\Authentication\AuthenticationManagerInterface
      */
     protected $authenticationManager;
 
     /**
-     * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+     * @var \Neos\Flow\Persistence\PersistenceManagerInterface
      */
     protected $persistenceManager;
 
     /**
-     * @var \TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface
+     * @var \Neos\Flow\Security\Authorization\PrivilegeManagerInterface
      */
     protected $privilegeManager;
 
     /**
-     * @var \TYPO3\Flow\Security\Policy\PolicyService
+     * @var \Neos\Flow\Security\Policy\PolicyService
      */
     protected $policyService;
 
     /**
-     * @var \TYPO3\Flow\Security\Authentication\Provider\TestingProvider
+     * @var \Neos\Flow\Security\Authentication\Provider\TestingProvider
      */
     protected $testingProvider;
 
@@ -119,7 +119,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
      */
     public static function setUpBeforeClass()
     {
-        self::$bootstrap = \TYPO3\Flow\Core\Bootstrap::$staticObjectManager->get(\TYPO3\Flow\Core\Bootstrap::class);
+        self::$bootstrap = \Neos\Flow\Core\Bootstrap::$staticObjectManager->get(\Neos\Flow\Core\Bootstrap::class);
         self::setupSuperGlobals();
     }
 
@@ -136,22 +136,22 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
         $this->objectManager = self::$bootstrap->getObjectManager();
 
         $this->cleanupPersistentResourcesDirectory();
-        self::$bootstrap->getObjectManager()->forgetInstance(\TYPO3\Flow\Resource\ResourceManager::class);
-        $session = $this->objectManager->get(\TYPO3\Flow\Session\SessionInterface::class);
+        self::$bootstrap->getObjectManager()->forgetInstance(\Neos\Flow\ResourceManagement\ResourceManager::class);
+        $session = $this->objectManager->get(\Neos\Flow\Session\SessionInterface::class);
         if ($session->isStarted()) {
             $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->getName()));
         }
 
         if ($this->testableSecurityEnabled === true || static::$testablePersistenceEnabled === true) {
-            if (is_callable(array(self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Persistence\PersistenceManagerInterface::class), 'compile'))) {
-                $result = self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Persistence\PersistenceManagerInterface::class)->compile();
+            if (is_callable(array(self::$bootstrap->getObjectManager()->get(\Neos\Flow\Persistence\PersistenceManagerInterface::class), 'compile'))) {
+                $result = self::$bootstrap->getObjectManager()->get(\Neos\Flow\Persistence\PersistenceManagerInterface::class)->compile();
                 if ($result === false) {
                     self::markTestSkipped('Test skipped because setting up the persistence failed.');
                 }
             }
-            $this->persistenceManager = $this->objectManager->get(\TYPO3\Flow\Persistence\PersistenceManagerInterface::class);
+            $this->persistenceManager = $this->objectManager->get(\Neos\Flow\Persistence\PersistenceManagerInterface::class);
         } else {
-            $privilegeManager = $this->objectManager->get(\TYPO3\Flow\Security\Authorization\TestingPrivilegeManager::class);
+            $privilegeManager = $this->objectManager->get(\Neos\Flow\Security\Authorization\TestingPrivilegeManager::class);
             $privilegeManager->setOverrideDecision(true);
         }
 
@@ -159,7 +159,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
         // on an HTTP request being available via the request handler:
         $this->setupHttp();
 
-        $session = $this->objectManager->get(\TYPO3\Flow\Session\SessionInterface::class);
+        $session = $this->objectManager->get(\Neos\Flow\Session\SessionInterface::class);
         if ($session->isStarted()) {
             $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->getName()));
         }
@@ -176,20 +176,20 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
      */
     protected function setupSecurity()
     {
-        $this->securityContext = $this->objectManager->get(\TYPO3\Flow\Security\Context::class);
+        $this->securityContext = $this->objectManager->get(\Neos\Flow\Security\Context::class);
         if ($this->testableSecurityEnabled) {
-            $this->privilegeManager = $this->objectManager->get(\TYPO3\Flow\Security\Authorization\TestingPrivilegeManager::class);
+            $this->privilegeManager = $this->objectManager->get(\Neos\Flow\Security\Authorization\TestingPrivilegeManager::class);
             $this->privilegeManager->setOverrideDecision(null);
 
-            $this->policyService = $this->objectManager->get(\TYPO3\Flow\Security\Policy\PolicyService::class);
+            $this->policyService = $this->objectManager->get(\Neos\Flow\Security\Policy\PolicyService::class);
 
-            $this->authenticationManager = $this->objectManager->get(\TYPO3\Flow\Security\Authentication\AuthenticationProviderManager::class);
+            $this->authenticationManager = $this->objectManager->get(\Neos\Flow\Security\Authentication\AuthenticationProviderManager::class);
 
-            $this->testingProvider = $this->objectManager->get(\TYPO3\Flow\Security\Authentication\Provider\TestingProvider::class);
+            $this->testingProvider = $this->objectManager->get(\Neos\Flow\Security\Authentication\Provider\TestingProvider::class);
             $this->testingProvider->setName('TestingProvider');
 
             $this->registerRoute('functionaltestroute', 'typo3/flow/test', array(
-                '@package' => 'TYPO3.Flow',
+                '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
                 '@controller' => 'Standard',
                 '@action' => 'index',
@@ -202,7 +202,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
             $this->securityContext->clearContext();
             $this->securityContext->setRequest($actionRequest);
         } else {
-            \TYPO3\Flow\Reflection\ObjectAccess::setProperty($this->securityContext, 'authorizationChecksDisabled', true, true);
+            \Neos\Utility\ObjectAccess::setProperty($this->securityContext, 'authorizationChecksDisabled', true, true);
         }
     }
 
@@ -236,7 +236,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
     {
         $this->tearDownSecurity();
 
-        $persistenceManager = self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Persistence\PersistenceManagerInterface::class);
+        $persistenceManager = self::$bootstrap->getObjectManager()->get(\Neos\Flow\Persistence\PersistenceManagerInterface::class);
 
         // Explicitly call persistAll() so that the "allObjectsPersisted" signal is sent even if persistAll()
         // has not been called during a test. This makes sure that for example certain repositories can clear
@@ -251,11 +251,11 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
             $persistenceManager->tearDown();
         }
 
-        self::$bootstrap->getObjectManager()->forgetInstance(\TYPO3\Flow\Http\Client\InternalRequestEngine::class);
-        self::$bootstrap->getObjectManager()->forgetInstance(\TYPO3\Flow\Persistence\Aspect\PersistenceMagicAspect::class);
-        $this->inject(self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Resource\ResourceRepository::class), 'addedResources', new \SplObjectStorage());
-        $this->inject(self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Resource\ResourceRepository::class), 'removedResources', new \SplObjectStorage());
-        $this->inject(self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Resource\ResourceTypeConverter::class), 'convertedResources', array());
+        self::$bootstrap->getObjectManager()->forgetInstance(\Neos\Flow\Http\Client\InternalRequestEngine::class);
+        self::$bootstrap->getObjectManager()->forgetInstance(\Neos\Flow\Persistence\Aspect\PersistenceMagicAspect::class);
+        $this->inject(self::$bootstrap->getObjectManager()->get(\Neos\Flow\ResourceManagement\ResourceRepository::class), 'addedResources', new \SplObjectStorage());
+        $this->inject(self::$bootstrap->getObjectManager()->get(\Neos\Flow\ResourceManagement\ResourceRepository::class), 'removedResources', new \SplObjectStorage());
+        $this->inject(self::$bootstrap->getObjectManager()->get(\Neos\Flow\ResourceManagement\ResourceTypeConverter::class), 'convertedResources', array());
 
         $this->cleanupPersistentResourcesDirectory();
         $this->emitFunctionalTestTearDown();
@@ -281,7 +281,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
             $this->securityContext->clearContext();
         }
         if ($this->authenticationManager !== null) {
-            \TYPO3\Flow\Reflection\ObjectAccess::setProperty($this->authenticationManager, 'isAuthenticated', null, true);
+            \Neos\Utility\ObjectAccess::setProperty($this->authenticationManager, 'isAuthenticated', null, true);
         }
     }
 
@@ -290,12 +290,12 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
      * The created account is returned for further modification, for example for attaching a Party object to it.
      *
      * @param array $roleNames A list of roles the new account should have
-     * @return \TYPO3\Flow\Security\Account The created account
+     * @return \Neos\Flow\Security\Account The created account
      * @api
      */
     protected function authenticateRoles(array $roleNames)
     {
-        $account = new \TYPO3\Flow\Security\Account();
+        $account = new \Neos\Flow\Security\Account();
         $roles = array();
         foreach ($roleNames as $roleName) {
             $roles[] = $this->policyService->getRole($roleName);
@@ -309,13 +309,13 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
     /**
      * Prepares the environment for and conducts an account authentication
      *
-     * @param \TYPO3\Flow\Security\Account $account
+     * @param \Neos\Flow\Security\Account $account
      * @return void
      * @api
      */
-    protected function authenticateAccount(\TYPO3\Flow\Security\Account $account)
+    protected function authenticateAccount(\Neos\Flow\Security\Account $account)
     {
-        $this->testingProvider->setAuthenticationStatus(\TYPO3\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
+        $this->testingProvider->setAuthenticationStatus(\Neos\Flow\Security\Authentication\TokenInterface::AUTHENTICATION_SUCCESSFUL);
         $this->testingProvider->setAccount($account);
 
         $this->securityContext->clearContext();
@@ -387,7 +387,7 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
             'HTTP_CONNECTION' => 'keep-alive',
             'PATH' => '/usr/bin:/bin:/usr/sbin:/sbin',
             'SERVER_SIGNATURE' => '',
-            'SERVER_SOFTWARE' => 'Apache/2.2.21 (Unix) mod_ssl/2.2.21 OpenSSL/1.0.0e DAV/2 PHP/5.5.1',
+            'SERVER_SOFTWARE' => 'Apache/2.2.21 (Unix) mod_ssl/2.2.21 OpenSSL/1.0.0e DAV/2 PHP/7.0.12',
             'SERVER_NAME' => 'localhost',
             'SERVER_ADDR' => '127.0.0.1',
             'SERVER_PORT' => '80',
@@ -417,13 +417,14 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
      */
     protected function setupHttp()
     {
-        $this->browser = new \TYPO3\Flow\Http\Client\Browser();
-        $this->browser->setRequestEngine(new \TYPO3\Flow\Http\Client\InternalRequestEngine());
+        $this->browser = new \Neos\Flow\Http\Client\Browser();
+        $this->browser->setRequestEngine(new \Neos\Flow\Http\Client\InternalRequestEngine());
         $this->router = $this->browser->getRequestEngine()->getRouter();
+        $this->router->setRoutesConfiguration(null);
 
         $requestHandler = self::$bootstrap->getActiveRequestHandler();
-        $request = Request::create(new \TYPO3\Flow\Http\Uri('http://localhost/typo3/flow/test'));
-        $componentContext = new ComponentContext($request, new \TYPO3\Flow\Http\Response());
+        $request = Request::create(new \Neos\Flow\Http\Uri('http://localhost/typo3/flow/test'));
+        $componentContext = new ComponentContext($request, new \Neos\Flow\Http\Response());
         $requestHandler->setComponentContext($componentContext);
     }
 
@@ -435,8 +436,8 @@ abstract class FunctionalTestCase extends \TYPO3\Flow\Tests\BaseTestCase
      */
     protected function cleanupPersistentResourcesDirectory()
     {
-        $settings = self::$bootstrap->getObjectManager()->get(\TYPO3\Flow\Configuration\ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
-        $resourcesStoragePath = $settings['TYPO3']['Flow']['resource']['storages']['defaultPersistentResourcesStorage']['storageOptions']['path'];
+        $settings = self::$bootstrap->getObjectManager()->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
+        $resourcesStoragePath = $settings['Neos']['Flow']['resource']['storages']['defaultPersistentResourcesStorage']['storageOptions']['path'];
         if (strpos($resourcesStoragePath, FLOW_PATH_DATA) === false) {
             throw new \Exception(sprintf('The storage path for persistent resources for the Testing context is "%s" but it must point to a directory below "%s". Please check the Flow settings for the Testing context.', $resourcesStoragePath, FLOW_PATH_DATA), 1382018388);
         }

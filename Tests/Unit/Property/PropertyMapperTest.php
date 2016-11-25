@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property;
+namespace Neos\Flow\Tests\Unit\Property;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,18 @@ namespace TYPO3\Flow\Tests\Unit\Property;
  * source code.
  */
 
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Property\Exception\DuplicateTypeConverterException;
-use TYPO3\Flow\Property\Exception\InvalidTargetException;
-use TYPO3\Flow\Property\Exception\TypeConverterException;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\PropertyMappingConfigurationBuilder;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Property\TypeConverterInterface;
-use TYPO3\Flow\Security\Exception;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\TypeHandling;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Property\Exception\DuplicateTypeConverterException;
+use Neos\Flow\Property\Exception\InvalidTargetException;
+use Neos\Flow\Property\Exception\TypeConverterException;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\PropertyMappingConfigurationBuilder;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\TypeConverterInterface;
+use Neos\Flow\Security\Exception;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\TypeHandling;
 
 require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
 
@@ -84,7 +84,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidSourceTypes
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidSourceException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidSourceException
      */
     public function sourceWhichIsNoSimpleTypeOrObjectThrowsException($source)
     {
@@ -175,6 +175,49 @@ class PropertyMapperTest extends UnitTestCase
         $propertyMapper->_set('typeConverters', $typeConverters);
         $actualTypeConverter = $propertyMapper->_call('findTypeConverter', $source, $targetType, $this->mockConfiguration);
         $this->assertSame($expectedTypeConverter, $actualTypeConverter->_name);
+    }
+
+    /**
+     * @test
+     */
+    public function findEligibleConverterWithHighestPrioritySkipsConvertersWithNegativePriorities()
+    {
+        $internalTypeConverter1 = $this->getMockTypeConverter('string2string,prio-1');
+        $internalTypeConverter1->expects($this->atLeastOnce())->method('getPriority')->will($this->returnValue(-1));
+
+        $internalTypeConverter2 = $this->getMockTypeConverter('string2string,prio-1');
+        $internalTypeConverter2->expects($this->atLeastOnce())->method('getPriority')->will($this->returnValue(-2));
+
+        $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, ['dummy']);
+        $mockTypeConverters = [
+            $internalTypeConverter1,
+            $internalTypeConverter2,
+        ];
+        $this->assertNull($propertyMapper->_call('findEligibleConverterWithHighestPriority', $mockTypeConverters, 'foo', 'string'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
+     */
+    public function findTypeConverterThrowsExceptionIfAllMatchingConvertersHaveNegativePriorities()
+    {
+        $internalTypeConverter1 = $this->getMockTypeConverter('string2string,prio-1');
+        $internalTypeConverter1->expects($this->atLeastOnce())->method('getPriority')->will($this->returnValue(-1));
+
+        $internalTypeConverter2 = $this->getMockTypeConverter('string2string,prio-1');
+        $internalTypeConverter2->expects($this->atLeastOnce())->method('getPriority')->will($this->returnValue(-2));
+
+        $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, ['dummy']);
+        $propertyMapper->_set('typeConverters', [
+            'string' => [
+                'string' => [
+                    -1 => $internalTypeConverter1,
+                    -2 => $internalTypeConverter2
+                ],
+            ],
+        ]);
+        $propertyMapper->_call('findTypeConverter', 'foo', 'string', $this->mockConfiguration);
     }
 
     /**

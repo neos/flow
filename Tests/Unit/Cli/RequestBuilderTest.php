@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cli;
+namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Cli;
  * source code.
  */
 
-use TYPO3\Flow\Command\HelpCommandController;
-use TYPO3\Flow\Mvc\Exception\NoSuchCommandException;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Cli;
+use Neos\Flow\Command\HelpCommandController;
+use Neos\Flow\Mvc\Exception\NoSuchCommandException;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli;
 
 /**
  * Testcase for the MVC CLI Request Builder
@@ -299,7 +299,7 @@ class RequestBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidArgumentMixingException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidArgumentMixingException
      */
     public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed()
     {
@@ -314,7 +314,7 @@ class RequestBuilderTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidArgumentMixingException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidArgumentMixingException
      */
     public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed()
     {

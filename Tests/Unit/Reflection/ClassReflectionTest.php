@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Reflection;
+namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,11 +14,11 @@ namespace TYPO3\Flow\Tests\Unit\Reflection;
 require_once('Fixture/DummyInterface1.php');
 require_once('Fixture/DummyInterface2.php');
 
-use TYPO3\Flow\Reflection\ClassReflection;
-use TYPO3\Flow\Reflection\MethodReflection;
-use TYPO3\Flow\Reflection\PropertyReflection;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Tests\Reflection\Fixture;
+use Neos\Flow\Reflection\ClassReflection;
+use Neos\Flow\Reflection\MethodReflection;
+use Neos\Flow\Reflection\PropertyReflection;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Tests\Reflection\Fixture;
 
 /**
  * Testcase for ClassReflection
@@ -44,7 +44,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         $properties = $class->getProperties();
 
         $this->assertTrue(is_array($properties), 'The returned value is no array.');
-        $this->assertInstanceOf(PropertyReflection::class, array_pop($properties), 'The returned properties are not of type \TYPO3\Flow\Reflection\PropertyReflection.');
+        $this->assertInstanceOf(PropertyReflection::class, array_pop($properties), 'The returned properties are not of type \Neos\Flow\Reflection\PropertyReflection.');
     }
 
     /**
@@ -53,7 +53,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
     public function getPropertyReturnsFlowsPropertyReflection()
     {
         $class = new ClassReflection(__CLASS__);
-        $this->assertInstanceOf(PropertyReflection::class, $class->getProperty('someProperty'), 'The returned property is not of type \TYPO3\Flow\Reflection\PropertyReflection.');
+        $this->assertInstanceOf(PropertyReflection::class, $class->getProperty('someProperty'), 'The returned property is not of type \Neos\Flow\Reflection\PropertyReflection.');
         $this->assertEquals('someProperty', $class->getProperty('someProperty')->getName(), 'The returned property seems not to be the right one.');
     }
 
@@ -65,7 +65,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         $class = new ClassReflection(__CLASS__);
         $methods = $class->getMethods();
         foreach ($methods as $method) {
-            $this->assertInstanceOf(MethodReflection::class, $method, 'The returned methods are not of type \TYPO3\Flow\Reflection\MethodReflection.');
+            $this->assertInstanceOf(MethodReflection::class, $method, 'The returned methods are not of type \Neos\Flow\Reflection\MethodReflection.');
         }
     }
 
@@ -88,7 +88,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
     {
         $class = new ClassReflection(__CLASS__);
         $method = $class->getMethod('getMethodReturnsFlowsMethodReflection');
-        $this->assertInstanceOf(MethodReflection::class, $method, 'The returned method is not of type \TYPO3\Flow\Reflection\MethodReflection.');
+        $this->assertInstanceOf(MethodReflection::class, $method, 'The returned method is not of type \Neos\Flow\Reflection\MethodReflection.');
     }
 
     /**
@@ -98,7 +98,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
     {
         $class = new ClassReflection(__CLASS__);
         $constructor = $class->getConstructor();
-        $this->assertInstanceOf(MethodReflection::class, $constructor, 'The returned method is not of type \TYPO3\Flow\Reflection\MethodReflection.');
+        $this->assertInstanceOf(MethodReflection::class, $constructor, 'The returned method is not of type \Neos\Flow\Reflection\MethodReflection.');
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -20,8 +20,8 @@ if ($rootPath === false) {
     $rootPath .= '/';
 }
 
-require($rootPath . 'Packages/Framework/TYPO3.Flow/Classes/TYPO3/Flow/Core/Bootstrap.php');
+require($rootPath . 'Packages/Framework/Neos.Flow/Classes/Core/Bootstrap.php');
 
-$context = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
-$bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
+$context = \Neos\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
+$bootstrap = new \Neos\Flow\Core\Bootstrap($context);
 $bootstrap->run();

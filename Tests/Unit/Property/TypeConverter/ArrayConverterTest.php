@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
+namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\ArrayConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Resource\Resource as ResourceObject;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\ArrayConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\ResourceManagement\PersistentResource;
 
 /**
  * Testcase for the Array converter
@@ -36,7 +36,7 @@ class ArrayConverterTest extends UnitTestCase
      */
     public function checkMetadata()
     {
-        $this->assertEquals(['array', 'string', ResourceObject::class], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
+        $this->assertEquals(['array', 'string', PersistentResource::class], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
         $this->assertEquals('array', $this->converter->getSupportedTargetType(), 'Target type does not match');
         $this->assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }

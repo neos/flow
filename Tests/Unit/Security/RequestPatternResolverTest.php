@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security;
+namespace Neos\Flow\Tests\Unit\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Security;
  * source code.
  */
 
-use TYPO3\Flow\Object\ObjectManager;
-use TYPO3\Flow\Security\RequestPattern\ValidShortName;
-use TYPO3\Flow\Security\RequestPatternResolver;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Security\RequestPattern\ValidShortName;
+use Neos\Flow\Security\RequestPatternResolver;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the request pattern resolver
@@ -23,7 +23,7 @@ class RequestPatternResolverTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\NoRequestPatternFoundException
+     * @expectedException \Neos\Flow\Security\Exception\NoRequestPatternFoundException
      */
     public function resolveRequestPatternClassThrowsAnExceptionIfNoRequestPatternIsAvailable()
     {

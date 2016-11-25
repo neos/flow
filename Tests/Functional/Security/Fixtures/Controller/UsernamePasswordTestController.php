@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Security\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Security\Fixtures\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Exception as FlowException;
-use TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController;
-use TYPO3\Flow\Security\Exception\AuthenticationRequiredException;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Exception as FlowException;
+use Neos\Flow\Security\Authentication\Controller\AbstractAuthenticationController;
+use Neos\Flow\Security\Exception\AuthenticationRequiredException;
 
 /**
  * A controller for functional testing

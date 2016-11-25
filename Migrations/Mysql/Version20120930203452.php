@@ -1,9 +1,9 @@
 <?php
-namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use TYPO3\Flow\Persistence\Doctrine\Service;
+use Neos\Flow\Persistence\Doctrine\Service;
 
 /**
  * Adjust flow3 to flow
@@ -76,7 +76,7 @@ class Version20120930203452 extends AbstractMigration
             'typo3_flow_security_account',
             'typo3_flow_security_authorization_resource_securitypublis_861cb',
         );
-        $foreignKeyHandlingSql = \TYPO3\Flow\Persistence\Doctrine\Service::getForeignKeyHandlingSql($schema, $this->platform, $tableNames, 'persistence_object_identifier', 'flow3_persistence_identifier');
+        $foreignKeyHandlingSql = \Neos\Flow\Persistence\Doctrine\Service::getForeignKeyHandlingSql($schema, $this->platform, $tableNames, 'persistence_object_identifier', 'flow3_persistence_identifier');
 
         // drop FK constraints
         foreach ($foreignKeyHandlingSql['drop'] as $sql) {

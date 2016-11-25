@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop;
+namespace Neos\Flow\Tests\Functional\Aop;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Aop;
  * source code.
  */
 
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /**
  * Testcase for the AOP Framework class
@@ -59,7 +59,7 @@ class FrameworkTest extends FunctionalTestCase
     {
         $targetClass = new Fixtures\TargetClass01();
         $name = new Fixtures\Name('Flow');
-        $otherName = new Fixtures\Name('TYPO3');
+        $otherName = new Fixtures\Name('Neos');
         $splObjectStorage = new \SplObjectStorage();
         $splObjectStorage->attach($name);
         $targetClass->setCurrentName($name);
@@ -147,8 +147,8 @@ class FrameworkTest extends FunctionalTestCase
     public function resultOfGreetObjectMethodIsModifiedByAdvice()
     {
         $targetClass = $this->objectManager->get(Fixtures\TargetClass01::class);
-        $name = new Fixtures\Name('TYPO3');
-        $this->assertSame('Hello, old friend', $targetClass->greetObject($name), 'Aspect should greet with "old friend" if the name property equals "TYPO3"');
+        $name = new Fixtures\Name('Neos');
+        $this->assertSame('Hello, old friend', $targetClass->greetObject($name), 'Aspect should greet with "old friend" if the name property equals "Neos"');
         $name = new Fixtures\Name('Christopher');
         $this->assertSame('Hello, Christopher', $targetClass->greetObject($name));
     }
@@ -159,7 +159,7 @@ class FrameworkTest extends FunctionalTestCase
     public function thisIsSupportedInMethodRuntimeCondition()
     {
         $targetClass = $this->objectManager->get(Fixtures\TargetClass01::class);
-        $name = new Fixtures\Name('Neos');
+        $name = new Fixtures\Name('Fusion');
         $targetClass->setCurrentName($name);
         $this->assertSame('Hello, you', $targetClass->greetObject($name), 'Aspect should greet with "you" if the current name equals the name argument');
 
@@ -264,7 +264,7 @@ class FrameworkTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function methodWithStaticTypeDeclarationsCanBeAdviced()
+    public function methodWithStaticTypeDeclarationsCanBeAdvised()
     {
         if (version_compare(PHP_VERSION, '7.0.0') < 0) {
             $this->markTestSkipped('Requires PHP 7');
@@ -273,5 +273,14 @@ class FrameworkTest extends FunctionalTestCase
         $targetClass = new Fixtures\TargetClassWithPhp7Features();
 
         $this->assertSame('This is so NaN', $targetClass->methodWithStaticTypeDeclarations('The answer', 42));
+    }
+
+    /**
+     * @test
+     */
+    public function finalClassesCanBeAdvised()
+    {
+        $targetClass = new Fixtures\TargetClassWithFinalModifier();
+        $this->assertSame('nothing is final!', $targetClass->someMethod());
     }
 }

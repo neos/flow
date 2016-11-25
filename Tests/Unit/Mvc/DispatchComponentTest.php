@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc;
+namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,19 +11,19 @@ namespace TYPO3\Flow\Tests\Unit\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Http\Component\ComponentContext;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Response;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\DispatchComponent;
-use TYPO3\Flow\Mvc\Dispatcher;
-use TYPO3\Flow\Mvc\Routing\RoutingComponent;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\MediaTypeConverterInterface;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Component\ComponentContext;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\DispatchComponent;
+use Neos\Flow\Mvc\Dispatcher;
+use Neos\Flow\Mvc\Routing\RoutingComponent;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\MediaTypeConverterInterface;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the MVC Dispatcher Component

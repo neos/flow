@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization\Interceptor;
+namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use \TYPO3\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security;
 
 /**
  * Testcase for the policy enforcement interceptor

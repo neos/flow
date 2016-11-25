@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
+namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Object\ObjectManagerInterface;
-use TYPO3\Flow\Security\Authorization\FilterFirewall;
-use TYPO3\Flow\Security\Authorization\InterceptorResolver;
-use TYPO3\Flow\Security\Authorization\RequestFilter;
-use TYPO3\Flow\Security\RequestPattern\Uri;
-use TYPO3\Flow\Security\RequestPatternResolver;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Authorization\FilterFirewall;
+use Neos\Flow\Security\Authorization\InterceptorResolver;
+use Neos\Flow\Security\Authorization\RequestFilter;
+use Neos\Flow\Security\RequestPattern\Uri;
+use Neos\Flow\Security\RequestPatternResolver;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the filter firewall
@@ -219,7 +219,7 @@ class FilterFirewallTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\AccessDeniedException
+     * @expectedException \Neos\Flow\Security\Exception\AccessDeniedException
      */
     public function ifRejectAllIsSetAndNoFilterExplicitlyAllowsTheRequestAPermissionDeniedExceptionIsThrown()
     {
