@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
+namespace Neos\Flow\Tests\Functional\Persistence\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,9 +14,9 @@ namespace TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\SubEntity as ImportedSubEntity;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\SubEntity as ImportedSubEntity;
 
 /**
  * A simple entity for persistence tests
@@ -74,7 +74,7 @@ class TestEntity
 
     /**
      * @var TestEmbeddable
-     * @ORM\Embedded(class="TYPO3\Flow\Tests\Functional\Persistence\Fixtures\TestEmbeddable")
+     * @ORM\Embedded(class="Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEmbeddable")
      */
     protected $embedded;
 

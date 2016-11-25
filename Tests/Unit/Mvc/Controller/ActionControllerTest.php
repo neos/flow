@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,17 +10,17 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Mvc\Controller\ActionController;
-use TYPO3\Flow\Mvc\Controller\Arguments;
-use TYPO3\Flow\Mvc\View\SimpleTemplateView;
-use TYPO3\Flow\Mvc;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Mvc\View\ViewInterface;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
-use TYPO3\Flow\Validation\ValidatorResolver;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Mvc\View\SimpleTemplateView;
+use Neos\Flow\Mvc;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
+use Neos\Flow\Mvc\View\ViewInterface;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Flow\Validation\ValidatorResolver;
 
 /**
  * Testcase for the MVC Action Controller
@@ -128,7 +128,7 @@ class ActionControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException  \TYPO3\Flow\Mvc\Exception\NoSuchActionException
+     * @expectedException  \Neos\Flow\Mvc\Exception\NoSuchActionException
      */
     public function processRequestThrowsExceptionIfRequestedActionIsNotCallable()
     {
@@ -153,7 +153,7 @@ class ActionControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException  \TYPO3\Flow\Mvc\Exception\InvalidActionVisibilityException
+     * @expectedException  \Neos\Flow\Mvc\Exception\InvalidActionVisibilityException
      */
     public function processRequestThrowsExceptionIfRequestedActionIsNotPublic()
     {
@@ -252,7 +252,7 @@ class ActionControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\ViewNotFoundException
+     * @expectedException \Neos\Flow\Mvc\Exception\ViewNotFoundException
      */
     public function resolveViewThrowsExceptionIfResolvedViewDoesNotImplementViewInterface()
     {

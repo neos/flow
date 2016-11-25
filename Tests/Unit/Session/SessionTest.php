@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Session;
+namespace Neos\Flow\Tests\Unit\Session;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -14,22 +14,22 @@ namespace TYPO3\Flow\Tests\Unit\Session;
 use org\bovigo\vfs\vfsStream;
 use Neos\Cache\Backend\FileBackend;
 use Neos\Cache\EnvironmentConfiguration;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Session\Exception\SessionNotStartedException;
-use TYPO3\Flow\Session\Session;
-use TYPO3\Flow\Session\SessionManager;
-use TYPO3\Flow\Cache\Frontend\VariableFrontend;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Response;
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Security\Authentication\Token\UsernamePassword;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Session\Exception\SessionNotStartedException;
+use Neos\Flow\Session\Session;
+use Neos\Flow\Session\SessionManager;
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
+use Neos\Flow\Http;
+use Neos\Flow\Security\Authentication\Token\UsernamePassword;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Unit tests for the Flow Session implementation
@@ -299,7 +299,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\InvalidRequestHandlerException
+     * @expectedException \Neos\Flow\Session\Exception\InvalidRequestHandlerException
      */
     public function startThrowsAnExceptionIfIncompatibleRequestHandlerIsUsed()
     {
@@ -358,7 +358,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function renewIdThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -373,7 +373,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\OperationNotSupportedException
+     * @expectedException \Neos\Flow\Session\Exception\OperationNotSupportedException
      */
     public function renewIdThrowsExceptionIfCalledOnRemoteSession()
     {
@@ -471,7 +471,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function getDataThrowsExceptionIfSessionIsNotStarted()
     {
@@ -481,7 +481,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function putDataThrowsExceptionIfSessionIsNotStarted()
     {
@@ -491,7 +491,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\DataNotSerializableException
+     * @expectedException \Neos\Flow\Session\Exception\DataNotSerializableException
      */
     public function putDataThrowsExceptionIfTryingToPersistAResource()
     {
@@ -529,7 +529,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function hasKeyThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -570,7 +570,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function getLastActivityTimestampThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -609,7 +609,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function addTagThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -759,7 +759,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function getTagsThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -769,7 +769,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function removeTagThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -804,7 +804,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function touchThrowsExceptionIfCalledOnNonStartedSession()
     {
@@ -961,7 +961,7 @@ class SessionTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Session\Exception\SessionNotStartedException
+     * @expectedException \Neos\Flow\Session\Exception\SessionNotStartedException
      */
     public function destroyThrowsExceptionIfSessionIsNotStarted()
     {

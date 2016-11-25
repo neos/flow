@@ -1,5 +1,5 @@
 configurationFileHasBeenLoaded: TRUE
-TYPO3:
+Neos:
   Flow:
     something: 'foo'
     '@bar': 1

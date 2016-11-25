@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
+namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Do
  * source code.
  */
 
-use TYPO3\Flow\Cache\CacheManager;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Tests\Functional\Security\Fixtures;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Aop;
-use TYPO3\Flow\Security;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\Functional\Security\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Aop;
+use Neos\Flow\Security;
 
 /**
  * Testcase for content security using doctrine persistence

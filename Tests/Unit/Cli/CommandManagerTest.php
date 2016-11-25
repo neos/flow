@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cli;
+namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Cli;
  * source code.
  */
 
-use TYPO3\Flow\Cli\CommandManager;
-use TYPO3\Flow\Cli;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli\CommandManager;
+use Neos\Flow\Cli;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 require_once('Fixtures/Command/MockCommandController.php');
 
@@ -63,9 +63,9 @@ class CommandManagerTest extends UnitTestCase
 
         $commands = $commandManager->getAvailableCommands();
         $this->assertEquals(3, count($commands));
-        $this->assertEquals('typo3.flow.tests.unit.cli.fixtures:mocka:foo', $commands[0]->getCommandIdentifier());
-        $this->assertEquals('typo3.flow.tests.unit.cli.fixtures:mocka:bar', $commands[1]->getCommandIdentifier());
-        $this->assertEquals('typo3.flow.tests.unit.cli.fixtures:mockb:baz', $commands[2]->getCommandIdentifier());
+        $this->assertEquals('neos.flow.tests.unit.cli.fixtures:mocka:foo', $commands[0]->getCommandIdentifier());
+        $this->assertEquals('neos.flow.tests.unit.cli.fixtures:mocka:bar', $commands[1]->getCommandIdentifier());
+        $this->assertEquals('neos.flow.tests.unit.cli.fixtures:mockb:baz', $commands[2]->getCommandIdentifier());
     }
 
     /**
@@ -110,7 +110,7 @@ class CommandManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\NoSuchCommandException
+     * @expectedException \Neos\Flow\Mvc\Exception\NoSuchCommandException
      */
     public function getCommandByIdentifierThrowsExceptionIfNoMatchingCommandWasFound()
     {
@@ -124,7 +124,7 @@ class CommandManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\AmbiguousCommandIdentifierException
+     * @expectedException \Neos\Flow\Mvc\Exception\AmbiguousCommandIdentifierException
      */
     public function getCommandByIdentifierThrowsExceptionIfMoreThanOneMatchingCommandWasFound()
     {
@@ -140,7 +140,7 @@ class CommandManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\AmbiguousCommandIdentifierException
+     * @expectedException \Neos\Flow\Mvc\Exception\AmbiguousCommandIdentifierException
      */
     public function getCommandByIdentifierThrowsExceptionIfOnlyPackageKeyIsSpecifiedAndContainsMoreThanOneCommand()
     {
@@ -199,7 +199,7 @@ class CommandManagerTest extends UnitTestCase
     public function getShortestIdentifierForCommandAlwaysReturnsShortNameForFlowHelpCommand()
     {
         $mockHelpCommand = $this->getMockBuilder(Cli\Command::class)->disableOriginalConstructor()->getMock();
-        $mockHelpCommand->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('typo3.flow:help:help'));
+        $mockHelpCommand->expects($this->once())->method('getCommandIdentifier')->will($this->returnValue('neos.flow:help:help'));
         $commandIdentifier = $this->commandManager->getShortestIdentifierForCommand($mockHelpCommand);
         $this->assertSame('help', $commandIdentifier);
     }
@@ -210,7 +210,7 @@ class CommandManagerTest extends UnitTestCase
     public function getShortestIdentifierForCommandReturnsTheCompleteIdentifiersForCustomHelpCommands()
     {
         $mockFlowHelpCommand = $this->getMockBuilder(Cli\Command::class)->disableOriginalConstructor()->getMock();
-        $mockFlowHelpCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->will($this->returnValue('typo3.flow:help:help'));
+        $mockFlowHelpCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->will($this->returnValue('neos.flow:help:help'));
         $mockCustomHelpCommand = $this->getMockBuilder(Cli\Command::class)->disableOriginalConstructor()->getMock();
         $mockCustomHelpCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->will($this->returnValue('custom.package:help:help'));
         $mockCommands = [$mockFlowHelpCommand, $mockCustomHelpCommand];

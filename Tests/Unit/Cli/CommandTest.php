@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cli;
+namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Cli;
  * source code.
  */
 
-use TYPO3\Flow\Cli;
-use TYPO3\Flow\Command\CacheCommandController;
-use TYPO3\Flow\Reflection\MethodReflection;
-use TYPO3\Flow\Reflection\ParameterReflection;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli;
+use Neos\Flow\Command\CacheCommandController;
+use Neos\Flow\Reflection\MethodReflection;
+use Neos\Flow\Reflection\ParameterReflection;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the CLI Command class
@@ -57,7 +57,7 @@ class CommandTest extends UnitTestCase
     public function commandIdentifiers()
     {
         return [
-            [CacheCommandController::class, 'flush', 'typo3.flow:cache:flush'],
+            [CacheCommandController::class, 'flush', 'neos.flow:cache:flush'],
             ['RobertLemke\Foo\Faa\Fuuum\Command\CoffeeCommandController', 'brew', 'robertlemke.foo.faa.fuuum:coffee:brew'],
             ['SomePackage\Command\CookieCommandController', 'bake', 'somepackage:cookie:bake']
         ];

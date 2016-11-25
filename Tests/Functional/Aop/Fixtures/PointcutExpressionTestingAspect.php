@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+namespace Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Aop\JoinPointInterface;
 
 /**
  * An aspect for testing different kinds of pointcut expressions
@@ -23,7 +23,7 @@ class PointcutExpressionTestingAspect
 {
     /**
      *
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\PointcutExpressionTestingTarget->testSettingFilter()) && setting(TYPO3.Flow.tests.functional.aop.pointcutExpressionSettingFilterOptionA)")
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\PointcutExpressionTestingTarget->testSettingFilter()) && setting(Neos.Flow.tests.functional.aop.pointcutExpressionSettingFilterOptionA)")
      * @param JoinPointInterface $joinPoint
      * @return string
      */

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security;
+namespace Neos\Flow\Tests\Unit\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Security;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Security\Exception\NoSuchRoleException;
-use TYPO3\Flow\Security\Policy\PolicyService;
-use TYPO3\Flow\Security\Policy\Role;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Party\Domain\Service\PartyService;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Exception\NoSuchRoleException;
+use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Flow\Security\Policy\Role;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Party\Domain\Service\PartyService;
 
 /**
  * Test case for the account

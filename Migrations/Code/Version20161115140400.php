@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -16,12 +16,17 @@ namespace TYPO3\Flow\Core\Migrations;
  */
 class Version20161115140400 extends AbstractMigration
 {
+    public function getIdentifier()
+    {
+        return 'TYPO3.Flow-20161115140400';
+    }
+
     /**
      * @return void
      */
     public function up()
     {
-        $this->searchAndReplace('TYPO3\Flow\Resource', 'TYPO3\Flow\ResourceManagement');
+        $this->searchAndReplace('Neos\Flow\Resource', 'Neos\Flow\ResourceManagement');
         $this->searchAndReplaceRegex('/ResourceManagement\\\\Resource(?![a-zA-Z])/', 'ResourceManagement\\PersistentResource');
         $this->searchAndReplaceRegex('/(?<![a-zA-Z])Resource::class/', 'PersistentResource::class');
 

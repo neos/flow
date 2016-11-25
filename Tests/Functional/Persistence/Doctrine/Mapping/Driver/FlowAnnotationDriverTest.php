@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine\Mapping\Driver;
+namespace Neos\Flow\Tests\Functional\Persistence\Doctrine\Mapping\Driver;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,12 +12,12 @@ namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine\Mapping\Driver;
  */
 
 use Doctrine\ORM\Tools\SchemaTool;
-use TYPO3\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass04;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
-use TYPO3\Flow\Persistence\Doctrine\Mapping\ClassMetadata;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Flow\Persistence\Doctrine\Mapping\ClassMetadata;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for ORM annotation driver
@@ -192,7 +192,7 @@ class FlowAnnotationDriverTest extends FunctionalTestCase
             'fieldName' => 'related',
             'columnName' => 'related',
             'joinTable' => [
-                'name' => 'typo3_flow_tests_functional_persistence_fixt_7e1da_related_join',
+                'name' => 'neos_flow_tests_functional_persistence_fixtu_3a05f_related_join',
                 'schema' => null,
                 'joinColumns' => [
                     0 => [

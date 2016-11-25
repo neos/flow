@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security;
+namespace Neos\Flow\Tests\Unit\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,18 @@ namespace TYPO3\Flow\Tests\Unit\Security;
  * source code.
  */
 
-use TYPO3\Flow\Log\SecurityLoggerInterface;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Security\Policy;
-use TYPO3\Flow\Security\RequestPatternInterface;
-use TYPO3\Flow\Session\SessionInterface;
-use TYPO3\Flow\Session\SessionManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security\Policy\Role;
+use Neos\Flow\Log\SecurityLoggerInterface;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Policy;
+use Neos\Flow\Security\RequestPatternInterface;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Flow\Session\SessionManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Policy\Role;
 
 /**
  * Testcase for the security context
@@ -416,7 +416,7 @@ class ContextTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      * @test
      */
     public function invalidAuthenticationStrategyFromConfigurationThrowsException()
@@ -459,7 +459,7 @@ class ContextTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      * @test
      */
     public function invalidCsrfProtectionStrategyFromConfigurationThrowsException()

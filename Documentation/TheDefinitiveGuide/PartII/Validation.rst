@@ -98,7 +98,7 @@ annotations.
     ``type`` attributes are just the unqualified class names of these validators.
 
     It is possible and very simple to program custom validators by implementing
-    the ``TYPO3\Flow\Validation\Validator\ValidatorInterface``.
+    the ``Neos\Flow\Validation\Validator\ValidatorInterface``.
     Such validators must, however, be referred to by their fully qualified
     class name (i.e. including the namespace).
 

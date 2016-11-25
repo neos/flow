@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
+namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,12 +13,12 @@ namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
 
 use Neos\Cache\Backend\TransientMemoryBackend;
 use Neos\Cache\EnvironmentConfiguration;
-use TYPO3\Flow\Cache\Frontend\StringFrontend;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Security\Cryptography\HashService;
-use TYPO3\Flow\Security\Cryptography\PasswordHashingStrategyInterface;
-use TYPO3\Flow\Tests\Unit\Cryptography\Fixture\TestHashingStrategy;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Cryptography\HashService;
+use Neos\Flow\Security\Cryptography\PasswordHashingStrategyInterface;
+use Neos\Flow\Tests\Unit\Cryptography\Fixture\TestHashingStrategy;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Hash Service
@@ -102,7 +102,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function generateHmacThrowsExceptionIfNoStringGiven()
     {
@@ -170,7 +170,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\MissingConfigurationException
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
      */
     public function hashPasswordThrowsExceptionIfTheGivenHashingStrategyIsNotConfigured()
     {
@@ -180,7 +180,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\MissingConfigurationException
+     * @expectedException \Neos\Flow\Security\Exception\MissingConfigurationException
      */
     public function hashPasswordThrowsExceptionIfNoDefaultHashingStrategyIsConfigured()
     {
@@ -222,7 +222,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function appendHmacThrowsExceptionIfNoStringGiven()
     {
@@ -241,7 +241,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function validateAndStripHmacThrowsExceptionIfNoStringGiven()
     {
@@ -250,7 +250,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort()
     {
@@ -259,7 +259,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidHashException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidHashException
      */
     public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended()
     {
@@ -268,7 +268,7 @@ class HashServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidHashException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidHashException
      */
     public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid()
     {

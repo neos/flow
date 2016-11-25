@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Property;
+namespace Neos\Flow\Tests\Functional\Property;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests\Functional\Property;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\PropertyMappingConfigurationBuilder;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Property\TypeConverter\ObjectConverter;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Property\Fixtures;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\PropertyMappingConfigurationBuilder;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\TypeConverter\ObjectConverter;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Property\Fixtures;
 
 /**
  * Testcase for Property Mapper
@@ -120,7 +120,7 @@ class PropertyMapperTest extends FunctionalTestCase
             'age' => '28'
         );
 
-        $result = $this->propertyMapper->convert($source, \TYPO3\Flow\Tests\Functional\Property\Fixtures\TestEmbeddedValueobject::class);
+        $result = $this->propertyMapper->convert($source, \Neos\Flow\Tests\Functional\Property\Fixtures\TestEmbeddedValueobject::class);
         $this->assertSame('Christopher', $result->getName());
         $this->assertSame(28, $result->getAge());
     }
@@ -160,7 +160,7 @@ class PropertyMapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception
+     * @expectedException \Neos\Flow\Property\Exception
      */
     public function overridenTargetTypeForEntityMustBeASubclass()
     {
@@ -194,7 +194,7 @@ class PropertyMapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception
+     * @expectedException \Neos\Flow\Property\Exception
      */
     public function overridenTargetTypeForSimpleObjectMustBeASubclass()
     {
@@ -284,7 +284,7 @@ class PropertyMapperTest extends FunctionalTestCase
         $entity = new Fixtures\TestEntity();
         $entity->setName('Egon Olsen');
 
-        $result = $this->propertyMapper->convert([$entity], 'array<TYPO3\Flow\Tests\Functional\Property\Fixtures\TestEntity>');
+        $result = $this->propertyMapper->convert([$entity], 'array<Neos\Flow\Tests\Functional\Property\Fixtures\TestEntity>');
         $this->assertSame([$entity], $result);
     }
 
@@ -331,7 +331,7 @@ class PropertyMapperTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider invalidTypeConverterConfigurationsForOverridingTargetTypes
-     * @expectedException \TYPO3\Flow\Property\Exception
+     * @expectedException \Neos\Flow\Property\Exception
      */
     public function mappingToFieldsFromSubclassThrowsExceptionIfTypeConverterOptionIsInvalidOrNotSet(PropertyMappingConfigurationInterface $configuration = null)
     {
@@ -364,7 +364,7 @@ class PropertyMapperTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception
+     * @expectedException \Neos\Flow\Property\Exception
      */
     public function convertFromShouldThrowExceptionIfGivenSourceTypeIsNotATargetType()
     {
@@ -434,10 +434,10 @@ class PropertyMapperTest extends FunctionalTestCase
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
     {
         $defaultConfiguration = $this->propertyMapper->buildPropertyMappingConfiguration();
-        $this->assertTrue($defaultConfiguration->getConfigurationValue(\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        $this->assertTrue($defaultConfiguration->getConfigurationValue(\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        $this->assertTrue($defaultConfiguration->getConfigurationValue(\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class, \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        $this->assertTrue($defaultConfiguration->getConfigurationValue(\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class, \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
 
-        $this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
-        $this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class, \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
+        $this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class, \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
+        $this->assertNull($defaultConfiguration->getConfigurationFor('foo')->getConfigurationValue(\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class, \Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
     }
 }

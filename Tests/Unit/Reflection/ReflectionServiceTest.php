@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Reflection;
+namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,8 +12,8 @@ namespace TYPO3\Flow\Tests\Unit\Reflection;
  */
 
 use Doctrine\Common\Annotations\Reader;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the ReflectionService
@@ -42,7 +42,7 @@ class ReflectionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
+     * @expectedException \Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
      */
     public function reflectClassThrowsExceptionForNonExistingClasses()
     {
@@ -51,7 +51,7 @@ class ReflectionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
+     * @expectedException \Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
      */
     public function reflectClassThrowsExceptionForFilesWithNoClass()
     {
@@ -60,7 +60,7 @@ class ReflectionServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
+     * @expectedException \Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException
      */
     public function reflectClassThrowsExceptionForClassesWithNoMatchingFilename()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http\Client;
+namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Http\Client;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the HTTP client internal request engine
@@ -35,7 +35,7 @@ class InternalRequestEngineTest extends FunctionalTestCase
         $route->setName('Functional Test - Http::Client::InternalRequestEngine');
         $route->setUriPattern('test/security/restricted');
         $route->setDefaults([
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'Restricted',
             '@action' => 'admin',

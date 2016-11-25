@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
+namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use TYPO3\Flow\Reflection\ClassSchema;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Validation\Validator\UniqueEntityValidator;
+use Neos\Flow\Reflection\ClassSchema;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Validation\Validator\UniqueEntityValidator;
 
 /**
  * Testcase for the unique entity validator
@@ -24,13 +24,13 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
-     * @see \TYPO3\Flow\Reflection\ClassSchema
+     * @see \Neos\Flow\Reflection\ClassSchema
      */
     protected $classSchema;
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
-     * @see \TYPO3\Flow\Reflection\ReflectionService
+     * @see \Neos\Flow\Reflection\ReflectionService
      */
     protected $reflectionService;
 
@@ -48,7 +48,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358454270
      */
     public function validatorThrowsExceptionIfValueIsNotAnObject()
@@ -58,7 +58,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358454284
      */
     public function validatorThrowsExceptionIfValueIsNotReflectedAtAll()
@@ -70,7 +70,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358454284
      */
     public function validatorThrowsExceptionIfValueIsNotAFlowEntity()
@@ -82,7 +82,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358960500
      */
     public function validatorThrowsExceptionIfSetupPropertiesAreNotPresentInActualClass()
@@ -100,7 +100,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358459831
      */
     public function validatorThrowsExceptionIfThereIsNoIdentityProperty()
@@ -116,7 +116,7 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationOptionsException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationOptionsException
      * @expectedExceptionCode 1358501745
      */
     public function validatorThrowsExceptionOnMultipleOrmIdAnnotations()

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
+namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,13 +12,13 @@ namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Do
  */
 
 use Doctrine\Common\Persistence\ObjectManager;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\ConditionGenerator;
-use TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilegeExpressionEvaluator;
-use TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Eel;
-use TYPO3\Flow\Tests\Functional\Security\Fixtures;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\ConditionGenerator;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilegeExpressionEvaluator;
+use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Eel;
+use Neos\Flow\Tests\Functional\Security\Fixtures;
 
 class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
 {
@@ -47,12 +47,12 @@ class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
     {
         return [
             [
-                'isType("TYPO3\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name").equals("live")',
+                'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name").equals("live")',
                 '(t0.name = \'live\')'
             ],
 
             [
-                'isType("TYPO3\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name") == "live"',
+                'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name") == "live"',
                 '(t0.name = \'live\')'
             ]
         ];

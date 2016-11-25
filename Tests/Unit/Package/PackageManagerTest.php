@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Package;
+namespace Neos\Flow\Tests\Unit\Package;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,19 +11,19 @@ namespace TYPO3\Flow\Tests\Unit\Package;
  * source code.
  */
 
-use TYPO3\Flow\Composer\ComposerUtility;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Package\Exception\InvalidPackageKeyException;
-use TYPO3\Flow\Package\PackageFactory;
-use TYPO3\Flow\Package\PackageInterface;
+use Neos\Flow\Composer\ComposerUtility;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Package\Exception\InvalidPackageKeyException;
+use Neos\Flow\Package\PackageFactory;
+use Neos\Flow\Package\PackageInterface;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Package\PackageManager;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\SignalSlot\Dispatcher;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\Files;
 
 /**
  * Testcase for the default package manager
@@ -82,7 +82,7 @@ class PackageManagerTest extends UnitTestCase
         $this->packageManager = new PackageManager('vfs://Test/Configuration/PackageStates.php');
 
         $composerNameToPackageKeyMap = [
-            'typo3/flow' => 'TYPO3.Flow'
+            'neos/flow' => 'Neos.Flow'
         ];
 
         $this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
@@ -99,15 +99,15 @@ class PackageManagerTest extends UnitTestCase
      */
     public function getPackageReturnsTheSpecifiedPackage()
     {
-        $this->packageManager->createPackage('TYPO3.Flow');
+        $this->packageManager->createPackage('Neos.Flow');
 
-        $package = $this->packageManager->getPackage('TYPO3.Flow');
+        $package = $this->packageManager->getPackage('Neos.Flow');
         $this->assertInstanceOf(PackageInterface::class, $package, 'The result of getPackage() was no valid package object.');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\UnknownPackageException
+     * @expectedException \Neos\Flow\Package\Exception\UnknownPackageException
      */
     public function getPackageThrowsExceptionOnUnknownPackage()
     {
@@ -154,8 +154,8 @@ class PackageManagerTest extends UnitTestCase
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds()
     {
         $expectedPackageKeys = [
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow.Test' . md5(uniqid(mt_rand(), true)),
             'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
             'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true))
         ];
@@ -189,8 +189,8 @@ class PackageManagerTest extends UnitTestCase
     public function scanAvailablePackagesKeepsExistingPackageConfiguration()
     {
         $expectedPackageKeys = [
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow.Test' . md5(uniqid(mt_rand(), true)),
             'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
             'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true))
         ];
@@ -234,7 +234,7 @@ class PackageManagerTest extends UnitTestCase
     {
         $packageKeys = [
             'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow' . md5(uniqid(mt_rand(), true)),
             'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
         ];
 
@@ -382,7 +382,7 @@ class PackageManagerTest extends UnitTestCase
      * Makes sure that duplicate package keys are detected.
      *
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\PackageKeyAlreadyExistsException
+     * @expectedException \Neos\Flow\Package\Exception\PackageKeyAlreadyExistsException
      */
     public function createPackageThrowsExceptionForExistingPackageKey()
     {
@@ -417,7 +417,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\ProtectedPackageKeyException
+     * @expectedException \Neos\Flow\Package\Exception\ProtectedPackageKeyException
      */
     public function deactivatePackageThrowsAnExceptionIfPackageIsProtected()
     {
@@ -428,7 +428,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\UnknownPackageException
+     * @expectedException \Neos\Flow\Package\Exception\UnknownPackageException
      */
     public function deletePackageThrowsErrorIfPackageIsNotAvailable()
     {
@@ -437,7 +437,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\ProtectedPackageKeyException
+     * @expectedException \Neos\Flow\Package\Exception\ProtectedPackageKeyException
      */
     public function deletePackageThrowsAnExceptionIfPackageIsProtected()
     {
@@ -473,8 +473,8 @@ class PackageManagerTest extends UnitTestCase
         return [
             ['imagine/Imagine', 'imagine.Imagine'],
             ['imagine/imagine', 'imagine.Imagine'],
-            ['typo3/flow', 'TYPO3.Flow'],
-            ['TYPO3/Flow', 'TYPO3.Flow']
+            ['neos/flow', 'Neos.Flow'],
+            ['Neos/Flow', 'Neos.Flow']
         ];
     }
 
@@ -486,9 +486,9 @@ class PackageManagerTest extends UnitTestCase
     {
         $packageStatesConfiguration = [
             'packages' => [
-                'typo3/flow' => [
-                    'packageKey' => 'TYPO3.Flow',
-                    'composerName' => 'typo3/flow'
+                'neos/flow' => [
+                    'packageKey' => 'Neos.Flow',
+                    'composerName' => 'neos/flow'
                 ],
                 'imagine/imagine' => [
                     'packageKey' => 'imagine.Imagine',
@@ -505,7 +505,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\PackageKeyAlreadyExistsException
+     * @expectedException \Neos\Flow\Package\Exception\PackageKeyAlreadyExistsException
      */
     public function registeringTheSamePackageKeyWithDifferentCaseShouldThrowException()
     {

@@ -97,10 +97,10 @@ is the place to wire signals to slots as needed for your package:
 	/**
 	 * Boot the package. We wire some signals to slots here.
 	 *
-	 * @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
+	 * @param \Neos\Flow\Core\Bootstrap $bootstrap The current bootstrap
 	 * @return void
 	 */
-	public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+	public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 		$dispatcher = $bootstrap->getSignalSlotDispatcher();
 		$dispatcher->connect(
 			'Some\Package\Controller\CommentController', 'commentCreated',

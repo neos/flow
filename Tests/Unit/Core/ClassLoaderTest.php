@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Core;
+namespace Neos\Flow\Tests\Unit\Core;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,9 +12,9 @@ namespace TYPO3\Flow\Tests\Unit\Core;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Core\ClassLoader;
-use TYPO3\Flow\Package\Package;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\ClassLoader;
+use Neos\Flow\Package\Package;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the object class loader
@@ -138,7 +138,7 @@ class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from packages that match a
-     * substring of another package (e.g. TYPO3CR vs TYPO3).
+     * substring of another package (e.g. Media vs. Neos).
      *
      * @test
      */

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\ObjectManagement;
+namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\ObjectManagement;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
-use TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependenciesAndProxyAnnotation;
-use TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\ClassWithTransitivePrototypeDependency;
-use TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassA;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependenciesAndProxyAnnotation;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\ClassWithTransitivePrototypeDependency;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassA;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the Dependency Injection features
@@ -221,7 +221,7 @@ class DependencyInjectionTest extends FunctionalTestCase
     public function injectionOfAllSettings()
     {
         $classWithInjectedConfiguration = new Fixtures\ClassWithInjectedConfiguration();
-        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow');
+        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow');
         $this->assertSame($actualSettings, $classWithInjectedConfiguration->getSettings());
     }
 
@@ -233,7 +233,7 @@ class DependencyInjectionTest extends FunctionalTestCase
     {
         $classWithInjectedConfiguration = new Fixtures\ClassWithInjectedConfiguration();
 
-        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow');
+        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow');
         $this->assertSame($actualSettings, $classWithInjectedConfiguration->getInjectedSpecifiedPackageSettings());
     }
 
@@ -244,7 +244,7 @@ class DependencyInjectionTest extends FunctionalTestCase
     {
         $classWithInjectedConfiguration = new Fixtures\ClassWithInjectedConfiguration();
 
-        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow');
+        $actualSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow');
         $this->assertSame($actualSettings, $classWithInjectedConfiguration->getInjectedCurrentPackageSettings());
     }
 

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication\EntryPoint;
+namespace Neos\Flow\Tests\Unit\Security\Authentication\EntryPoint;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication\EntryPoint;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Response;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Security\Authentication\EntryPoint\HttpBasic;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Response;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Security\Authentication\EntryPoint\HttpBasic;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for HTTP Basic Auth authentication entry point

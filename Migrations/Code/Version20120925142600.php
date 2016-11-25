@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -34,7 +34,7 @@ class Version20120925142600 extends AbstractMigration
     public function up()
     {
         $this->searchAndReplace('TYPO3.FLOW3', 'TYPO3.Flow');
-        $this->searchAndReplace('TYPO3\FLOW3', 'TYPO3\Flow');
+        $this->searchAndReplace('TYPO3\FLOW3', 'Neos\Flow');
 
         $this->searchAndReplace('FLOW3_PATH_FLOW3', 'FLOW_PATH_FLOW');
         $this->searchAndReplace('FLOW3_PATH', 'FLOW_PATH');

@@ -142,7 +142,7 @@ Some examples:
 ``%PHP_VERSION%``
   Will be replaced by the current PHP version.
 
-``%TYPO3\Flow\Core\Bootstrap::MINIMUM_PHP_VERSION%``
+``%Neos\Flow\Core\Bootstrap::MINIMUM_PHP_VERSION%``
   Will be replaced by this class constant's value. Note that
   a leading namespace backslash is generally allowed as of PHP,
   but is not recommended due to CGL (stringed class names should not
@@ -166,7 +166,7 @@ method.
 .. code-block:: php
 
     $dispatcher = $bootstrap->getSignalSlotDispatcher();
-    $dispatcher->connect(\TYPO3\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
+    $dispatcher->connect(\Neos\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
         function ($configurationManager) {
             $configurationManager->registerConfigurationType('Views');
         }
@@ -185,7 +185,7 @@ constants in ``ConfigurationManager``.
 .. code-block:: php
 
     $dispatcher = $bootstrap->getSignalSlotDispatcher();
-    $dispatcher->connect(\TYPO3\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
+    $dispatcher->connect(\Neos\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
         function ($configurationManager) {
             $configurationManager->registerConfigurationType(
                 'CustomObjects',
@@ -206,7 +206,7 @@ configuration filenames.
 .. code-block:: php
 
     $dispatcher = $bootstrap->getSignalSlotDispatcher();
-    $dispatcher->connect(\TYPO3\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
+    $dispatcher->connect(\Neos\Flow\Configuration\ConfigurationManager::class, 'configurationManagerReady',
         function (ConfigurationManager $configurationManager) {
             $configurationManager->registerConfigurationType(
                 'Models',
@@ -321,7 +321,7 @@ The annotation provides three optional attributes related to configuration injec
 
     namespace Acme\Demo;
 
-    use TYPO3\Flow\Annotations as Flow;
+    use Neos\Flow\Annotations as Flow;
 
     class SomeClass {
 

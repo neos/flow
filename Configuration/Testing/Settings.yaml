@@ -8,7 +8,7 @@
 # global Configuration directory and its sub directories.                #
 #                                                                        #
 
-TYPO3:
+Neos:
 
   Flow:
 
@@ -18,7 +18,7 @@ TYPO3:
 
     error:
       exceptionHandler:
-        className: 'TYPO3\Flow\Error\DebugExceptionHandler'
+        className: 'Neos\Flow\Error\DebugExceptionHandler'
       errorHandler:
         exceptionalErrors: ['%E_USER_ERROR%', '%E_RECOVERABLE_ERROR%', '%E_WARNING%', '%E_NOTICE%', '%E_USER_WARNING%', '%E_USER_NOTICE%', '%E_STRICT%']
 
@@ -52,12 +52,12 @@ TYPO3:
         cacheImplementation: NULL
 
         eventSubscribers:
-          'TYPO3\Flow\Tests\Functional\Persistence\Fixtures\EventSubscriber':
-            'TYPO3\Flow\Tests\Functional\Persistence\Fixtures\EventSubscriber'
+          'Neos\Flow\Tests\Functional\Persistence\Fixtures\EventSubscriber':
+            'Neos\Flow\Tests\Functional\Persistence\Fixtures\EventSubscriber'
         eventListeners:
-          'TYPO3\Flow\Tests\Functional\Persistence\Fixtures\EventListener':
+          'Neos\Flow\Tests\Functional\Persistence\Fixtures\EventListener':
             events: ['onFlush', 'preFlush', 'postFlush']
-            listener: 'TYPO3\Flow\Tests\Functional\Persistence\Fixtures\EventListener'
+            listener: 'Neos\Flow\Tests\Functional\Persistence\Fixtures\EventListener'
 
     resource:
 
@@ -67,13 +67,13 @@ TYPO3:
 
         #
         defaultPersistentResourcesStorage:
-          storage: 'TYPO3\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
+          storage: 'Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
           storageOptions:
             path: '%FLOW_PATH_DATA%Persistent/TestResources/'
 
         #
         defaultStaticResourcesStorage:
-          storage: 'TYPO3\Flow\ResourceManagement\Storage\PackageStorage'
+          storage: 'Neos\Flow\ResourceManagement\Storage\PackageStorage'
 
       # Definition of the default resource collections.
       # Collections are used to bundle / group static or persistent resources
@@ -96,14 +96,14 @@ TYPO3:
       targets:
         # Target for publishing static resources to the local web directory
         localWebDirectoryStaticResourcesTarget:
-          target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+          target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
           targetOptions:
             path: '%FLOW_PATH_WEB%_Resources/Testing/Static/Packages/'
             baseUri: '_Resources/Testing/Static/Packages/'
 
         # Target for publishing persistent resources to the local web directory
         localWebDirectoryPersistentResourcesTarget:
-          target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+          target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
           targetOptions:
             path: '%FLOW_PATH_WEB%_Resources/Testing/Persistent/'
             baseUri: '_Resources/Testing/Persistent/'
@@ -116,7 +116,7 @@ TYPO3:
 
         providers:
           TestingProvider:
-            provider: 'TYPO3\Flow\Security\Authentication\Provider\TestingProvider'
+            provider: 'Neos\Flow\Security\Authentication\Provider\TestingProvider'
             entryPoint: 'WebRedirect'
             entryPointOptions:
               uri: 'flow/authentication'
@@ -124,28 +124,28 @@ TYPO3:
               'TestsPattern':
                 pattern: 'ControllerObjectName'
                 patternOptions:
-                  controllerObjectNamePattern: 'TYPO3\Flow\Tests\.*'
+                  controllerObjectNamePattern: 'Neos\Flow\Tests\.*'
           HttpBasicTestingProvider:
-            provider: 'TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
-            token: 'TYPO3\Flow\Security\Authentication\Token\UsernamePasswordHttpBasic'
+            provider: 'Neos\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
+            token: 'Neos\Flow\Security\Authentication\Token\UsernamePasswordHttpBasic'
             requestPatterns:
               'HttpBasicTestPattern':
                 pattern: 'ControllerObjectName'
                 patternOptions:
-                  controllerObjectNamePattern: 'TYPO3\Flow\Tests\Functional\Security\Fixtures\Controller\HttpBasicTestController'
+                  controllerObjectNamePattern: 'Neos\Flow\Tests\Functional\Security\Fixtures\Controller\HttpBasicTestController'
           UsernamePasswordTestingProvider:
-            provider: 'TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
-            token: 'TYPO3\Flow\Security\Authentication\Token\UsernamePassword'
+            provider: 'Neos\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
+            token: 'Neos\Flow\Security\Authentication\Token\UsernamePassword'
             requestPatterns:
               'UsernamePasswordTestControllerPattern':
                 pattern: 'ControllerObjectName'
                 patternOptions:
-                  controllerObjectNamePattern: 'TYPO3\Flow\Tests\Functional\Security\Fixtures\Controller\UsernamePasswordTestController'
+                  controllerObjectNamePattern: 'Neos\Flow\Tests\Functional\Security\Fixtures\Controller\UsernamePasswordTestController'
 
     # Setting for functional tests to test global objects in runtime evaluations
     aop:
       globalObjects:
-        testContext: 'TYPO3\Flow\Tests\Functional\Aop\Fixtures\TestContext'
+        testContext: 'Neos\Flow\Tests\Functional\Aop\Fixtures\TestContext'
 
     # Settings for functional tests to test setting designator and setting injection
     tests:

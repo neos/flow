@@ -18,4 +18,4 @@
     '@format': 'html'
   subRoutes:
     FlowSubroutes:
-      package: TYPO3.Flow
+      package: Neos.Flow

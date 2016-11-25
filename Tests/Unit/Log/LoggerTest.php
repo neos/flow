@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Log;
+namespace Neos\Flow\Tests\Unit\Log;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Log;
  * source code.
  */
 
-use TYPO3\Flow\Log\Backend\BackendInterface;
-use TYPO3\Flow\Log\Logger;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Log\Backend\BackendInterface;
+use Neos\Flow\Log\Logger;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the generic Logger
@@ -81,7 +81,7 @@ class LoggerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Log\Exception\NoSuchBackendException
+     * @expectedException \Neos\Flow\Log\Exception\NoSuchBackendException
      */
     public function removeThrowsAnExceptionOnTryingToRemoveABackendNotPreviouslyAdded()
     {

@@ -65,11 +65,6 @@ entry in the *Settings.yaml* of the package that expects packages of that type::
         packagesPathByType:
           'neos-acme': 'Acme'
 
-.. note::
-
-   Older versions also used `typo3-flow-*` as package types. This has been deprecated with
-   Flow 4.0 and while still supported should no longer be used.
-
 Package Directory Layout
 ========================
 
@@ -316,7 +311,7 @@ it does not need to exist.
 	<?php
 	namespace Acme\Demo;
 
-	use TYPO3\Flow\Package\Package as BasePackage;
+	use Neos\Flow\Package\Package as BasePackage;
 
 	/**
 	 * The Acme.Demo Package
@@ -327,14 +322,14 @@ it does not need to exist.
 		/**
 		* Invokes custom PHP code directly after the package manager has been initialized.
 		*
-		* @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
+		* @param \Neos\Flow\Core\Bootstrap $bootstrap The current bootstrap
 		* @return void
 		*/
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Demo\Quux\RequestHandler($bootstrap));
 
 			$dispatcher = $bootstrap->getSignalSlotDispatcher();
-			$dispatcher->connect(\TYPO3\Flow\Mvc\Dispatcher::class, 'afterControllerInvocation', \Acme\Demo\Baz::class, 'fooBar');
+			$dispatcher->connect(\Neos\Flow\Mvc\Dispatcher::class, 'afterControllerInvocation', \Acme\Demo\Baz::class, 'fooBar');
 		}
 	}
 	?>

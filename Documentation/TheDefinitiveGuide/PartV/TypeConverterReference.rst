@@ -27,7 +27,7 @@ Converter which transforms various types to arrays.
 :Source types:
  * array
  * string
- * TYPO3\Flow\Resource\Resource
+ * Neos\Flow\Resource\Resource
 
 
 
@@ -119,7 +119,7 @@ can be overridden in the initialize*Action() method like this::
  $this->arguments['<argumentName>']
    ->getPropertyMappingConfiguration()
    ->forProperty('<propertyName>') // this line can be skipped in order to specify the format for all properties
-   ->setTypeConverterOption(\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class, \TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
+   ->setTypeConverterOption(\Neos\Flow\Property\TypeConverter\DateTimeConverter::class, \Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT, '<dateFormat>');
 
 If the source is of type array, it is possible to override the format in the source::
 
@@ -175,7 +175,7 @@ Using NULL or an empty string as input will result in a NULL return value.
 
  protected function initializeCreateAction() {
  	$this->arguments['newBid']->getPropertyMappingConfiguration()->forProperty('price')->setTypeConverterOption(
- 		\TYPO3\Flow\Property\TypeConverter\FloatConverter::class, 'locale', TRUE
+ 		\Neos\Flow\Property\TypeConverter\FloatConverter::class, 'locale', TRUE
  	);
  }
 
@@ -187,7 +187,7 @@ for Germany for example, where a comma is used as decimal separator, the mention
 
  protected function initializeCreateAction() {
  	$this->arguments['newBid']->getPropertyMappingConfiguration()->forProperty('price')->setTypeConverterOption(
- 		\TYPO3\Flow\Property\TypeConverter\FloatConverter::class, 'locale', 'fr'
+ 		\Neos\Flow\Property\TypeConverter\FloatConverter::class, 'locale', 'fr'
  	);
  }
 
@@ -201,32 +201,32 @@ Default for strict mode is TRUE.
 *Example setting lenient mode (abridged)*::
 
  ->setTypeConverterOption(
- 	\TYPO3\Flow\Property\TypeConverter\FloatConverter::class, 'strictMode', FALSE
+ 	\Neos\Flow\Property\TypeConverter\FloatConverter::class, 'strictMode', FALSE
  );
 
 **Format type**
 
 Format type can be decimal, percent or currency; represented as class constant FORMAT_TYPE_DECIMAL,
-FORMAT_TYPE_PERCENT or FORMAT_TYPE_CURRENCY of class TYPO3\Flow\I18n\Cldr\Reader\NumbersReader.
+FORMAT_TYPE_PERCENT or FORMAT_TYPE_CURRENCY of class Neos\Flow\I18n\Cldr\Reader\NumbersReader.
 Default, if none given, is FORMAT_TYPE_DECIMAL.
 
 *Example setting format type `currency` (abridged)*::
 
  ->setTypeConverterOption(
- 	\TYPO3\Flow\Property\TypeConverter\FloatConverter::class, 'formatType', \TYPO3\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_CURRENCY
+ 	\Neos\Flow\Property\TypeConverter\FloatConverter::class, 'formatType', \Neos\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_CURRENCY
  );
 
 **Format length**
 
 Format type can be default, full, long, medium or short; represented as class constant FORMAT_LENGTH_DEFAULT,
-FORMAT_LENGTH_FULL, FORMAT_LENGTH_LONG etc., of class  TYPO3\Flow\I18n\Cldr\Reader\NumbersReader.
+FORMAT_LENGTH_FULL, FORMAT_LENGTH_LONG etc., of class  Neos\Flow\I18n\Cldr\Reader\NumbersReader.
 The format length has a technical background in the CLDR repository, and specifies whether a different number
 pattern should be used. In most cases leaving this DEFAULT would be the correct choice.
 
 *Example setting format length (abridged)*::
 
  ->setTypeConverterOption(
- 	\TYPO3\Flow\Property\TypeConverter\FloatConverter::class, 'formatLength', \TYPO3\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_LENGTH_FULL
+ 	\Neos\Flow\Property\TypeConverter\FloatConverter::class, 'formatLength', \Neos\Flow\I18n\Cldr\Reader\NumbersReader::FORMAT_LENGTH_FULL
  );
 
 :Priority: 1
@@ -268,7 +268,7 @@ LocaleTypeConverter
 Converter which transforms strings to a Locale object.
 
 :Priority: 1
-:Target type: TYPO3\Flow\I18n\Locale
+:Target type: Neos\Flow\I18n\Locale
 :Source type: string
 
 
@@ -354,7 +354,7 @@ as the serialized value.
 
 :Priority: 1
 :Target type: string
-:Source type: TYPO3\Flow\Persistence\Aspect\PersistenceMagicInterface
+:Source type: Neos\Flow\Persistence\Aspect\PersistenceMagicInterface
 
 
 
@@ -399,7 +399,7 @@ Has two major working modes:
    The imported Resource will be given a 'filename' if set in the source array in both cases (import from file or data).
 
 :Priority: 1
-:Target type: TYPO3\Flow\Resource\Resource
+:Target type: Neos\Flow\Resource\Resource
 :Source types:
  * string
  * array
@@ -415,7 +415,7 @@ RoleConverter
 This converter transforms strings to role instances
 
 :Priority: 0
-:Target type: TYPO3\Flow\Security\Policy\Role
+:Target type: Neos\Flow\Security\Policy\Role
 :Source type: string
 
 
@@ -429,10 +429,10 @@ SessionConverter
 
 This converter transforms a session identifier into a real session object.
 
-Given a session ID this will return an instance of TYPO3\Flow\Session\Session.
+Given a session ID this will return an instance of Neos\Flow\Session\Session.
 
 :Priority: 1
-:Target type: TYPO3\Flow\Session\Session
+:Target type: Neos\Flow\Session\Session
 :Source type: string
 
 
@@ -491,10 +491,10 @@ UriTypeConverter
 
 A type converter for converting URI strings to Http Uri objects.
 
-This converter simply creates a TYPO3\Flow\Http\Uri instance from the source string.
+This converter simply creates a Neos\Flow\Http\Uri instance from the source string.
 
 :Priority: 1
-:Target type: TYPO3\Flow\Http\Uri
+:Target type: Neos\Flow\Http\Uri
 :Source type: string
 
 

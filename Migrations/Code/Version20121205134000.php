@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -34,7 +34,7 @@ class Version20121205134000 extends AbstractMigration
     public function up()
     {
         $this->processConfiguration(
-            \TYPO3\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_POLICY,
+            \Neos\Flow\Configuration\ConfigurationManager::CONFIGURATION_TYPE_POLICY,
             function (&$configuration) {
                 if (isset($configuration['resources']['entities'])) {
                     $updatedResourcesEntities = array();
