@@ -213,7 +213,7 @@ resulting in:
 
 .. tip::
 	To see a full description of the kickstart commands and its options, you can
-	display more details with ``./flow help kickstart::actioncontroller``.
+	display more details with ``./flow help kickstart:actioncontroller``.
 
 Once complete (in the Controller chapter), this new controller will be accessible via http://dev.tutorial.local/acme.blog/post
 
