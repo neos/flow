@@ -14,6 +14,7 @@ namespace Neos\Flow\Persistence\Doctrine;
 use Doctrine\Common\EventManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Logging\SQLLogger;
 use Doctrine\DBAL\Types\Type;
@@ -141,6 +142,7 @@ class EntityManagerFactory
             $connection = DriverManager::getConnection($settings, $config, $eventManager);
         }
 
+        $this->emitConfigureEntityManager($connection, $config, $eventManager);
         $entityManager = EntityManager::create($connection, $config, $eventManager);
         $flowAnnotationDriver->setEntityManager($entityManager);
 
@@ -247,5 +249,14 @@ class EntityManagerFactory
 
         $factory = new \Doctrine\ORM\Cache\DefaultCacheFactory($regionsConfiguration, $cache);
         $doctrineConfiguration->getSecondLevelCacheConfiguration()->setCacheFactory($factory);
+    }
+
+    /**
+     * @param Connection $connection
+     * @param Configuration $config
+     * @param EventManager $eventManager
+     */
+    public function emitConfigureEntityManager(Connection $connection, Configuration $config, EventManager $eventManager)
+    {
     }
 }
