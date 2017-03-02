@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,19 @@ namespace TYPO3\Flow\Core\Migrations;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\ConfigurationManager;
 
 /**
  * Adjust "Policy.yaml" to new syntax
  */
 class Version20141113121400 extends AbstractMigration
 {
+
+    public function getIdentifier()
+    {
+        return 'TYPO3.Flow-20141113121400';
+    }
+
     /**
      * @return void
      */
@@ -186,7 +192,7 @@ class Version20141113121400 extends AbstractMigration
             return $roleIdentifier;
         }
         if (in_array($roleIdentifier, array('Everybody', 'Anonymous', 'AuthenticatedUser'))) {
-            return 'TYPO3.Flow:' . $roleIdentifier;
+            return 'Neos.Flow:' . $roleIdentifier;
         }
         return $this->targetPackageData['packageKey'] . ':' . $roleIdentifier;
     }

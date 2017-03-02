@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Doctrine\QueryResult;
-use TYPO3\Flow\Persistence\Doctrine\Query;
-use TYPO3\Flow\Persistence\QueryInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence\Doctrine\QueryResult;
+use Neos\Flow\Persistence\Doctrine\Query;
+use Neos\Flow\Persistence\QueryInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for \TYPO3\Flow\Persistence\QueryResult
+ * Testcase for \Neos\Flow\Persistence\QueryResult
  */
 class QueryResultTest extends UnitTestCase
 {

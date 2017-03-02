@@ -59,7 +59,7 @@ commands can be obtained with the *help* command:
 
 	The following commands are currently available:
 
-	PACKAGE "TYPO3.Flow":
+	PACKAGE "Neos.Flow":
 	----------------------------------------------------------------------------
 	* flow:cache:flush                         Flush all caches
 	  cache:warmup                             Warm up caches
@@ -77,9 +77,9 @@ package key part of the command to the *help* command:
 .. code-block:: none
 
 	$ ./flow help kickstart
-	5 commands match the command identifier "typo3.kickstart":
+	5 commands match the command identifier "neos.kickstart":
 
-	PACKAGE "TYPO3.KICKSTART":
+	PACKAGE "Neos.KICKSTART":
 	-------------------------------------------------------------------------------
 	kickstart:package                        Kickstart a new package
 	kickstart:actioncontroller               Kickstart a new action controller
@@ -98,7 +98,7 @@ respective command identifier:
 	Show the active configuration settings
 
 	COMMAND:
-	  typo3.flow:configuration:show
+	  neos.flow:configuration:show
 
 	USAGE:
 	  ./flow configuration:show [<options>]
@@ -106,13 +106,13 @@ respective command identifier:
 	OPTIONS:
 	  --type               Configuration type to show
 	  --path               path to subconfiguration separated by "." like
-	                       "TYPO3.Flow
+	                       "Neos.Flow
 
 	DESCRIPTION:
 	  The command shows the configuration of the current context as it is used by Flow itself.
 	  You can specify the configuration type and path if you want to show parts of the configuration.
 
-	  ./flow configuration:show --type Settings --path TYPO3.Flow.persistence
+	  ./flow configuration:show --type Settings --path Neos.Flow.persistence
 
 Running a Command
 -----------------
@@ -127,8 +127,8 @@ A fully qualified command identifier is the combination of the package key, the
 command controller name and the actual command name, separated by colons:
 
 The command "warmup" implemented by the "CacheCommandController" contained
-in the package "TYPO3.Flow" is referred to by the command identifier
-*typo3.flow:cache:warmup*.
+in the package "Neos.Flow" is referred to by the command identifier
+*neos.flow:cache:warmup*.
 
 Short Command Identifier
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -138,7 +138,7 @@ command identifier. The *help* command lists all commands by the shortest
 possible identifier which is still unique across all available commands.
 
 For example, the command "warmup" implemented by the "CacheCommandController"
-contained in the package "TYPO3.Flow" can also be referred to by the command
+contained in the package "Neos.Flow" can also be referred to by the command
 identifier *cache:warmup* as long as no other package provides a command
 with the same name.
 
@@ -239,12 +239,12 @@ command:
 .. code-block:: php
 
 	namespace Acme\Demo\Command;
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * @Flow\Scope("singleton")
 	 */
-	class CoffeeCommandController extends \TYPO3\Flow\Cli\CommandController {
+	class CoffeeCommandController extends \Neos\Flow\Cli\CommandController {
 
 		/**
 		 * Brew some coffee
@@ -469,8 +469,8 @@ Here's an example showing of some of those functions:
 
 	namespace Acme\Demo\Command;
 
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Cli\CommandController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Cli\CommandController;
 
 	/**
 	 * @Flow\Scope("singleton")
@@ -522,7 +522,7 @@ The majority of the commands are run at point when Flow is fully
 initialized and all of the framework features are available. However,
 for certain low-level operations it is desirable to execute code
 much earlier in the boot process – during *compile time*. Commands
-like *typo3.flow:cache:flush* or the internal compilation commands
+like *neos.flow:cache:flush* or the internal compilation commands
 which render the PHP proxy classes cannot rely on a fully initialized
 system.
 
@@ -547,7 +547,7 @@ in the *boot()* method of your package's *Package* class:
 .. code-block:: php
 
 	namespace Acme\Foo;
-	use TYPO3\Flow\Package\Package as BasePackage;
+	use Neos\Flow\Package\Package as BasePackage;
 
 	/**
 	 * Acme.Foo Package
@@ -557,10 +557,10 @@ in the *boot()* method of your package's *Package* class:
 		/**
 		 * Invokes custom PHP code directly after the package manager has been initialized.
 		 *
-		 * @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
+		 * @param \Neos\Flow\Core\Bootstrap $bootstrap The current bootstrap
 		 * @return void
 		 */
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Foo\Command\MyCommandController($bootstrap));
 		}
 	}
@@ -585,11 +585,11 @@ class and can be used as follows:
 
 .. code-block:: php
 
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Core\Booting\Scripts;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Core\Booting\Scripts;
 
 	/**
-	 * @Flow\InjectConfiguration(package="TYPO3.Flow")
+	 * @Flow\InjectConfiguration(package="Neos.Flow")
 	 * @var array
 	 */
 	protected $flowSettings;
@@ -629,7 +629,7 @@ and optionally passing an exit code to the console:
 The *quit()* method is the recommended way to exit Flow. The other
 command, *sendAndExit()*, is reserved for special cases where Flow
 is not stable enough to continue even with the shutdown procedure. An
-example for such a case is the *typo3.flow:cache:flush* command which
+example for such a case is the *neos.flow:cache:flush* command which
 removes all cache entries which requires an immediate exit because
 Flow relies on caches being intact.
 

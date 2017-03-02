@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration;
+namespace Neos\Flow\Tests\Functional\Mvc\ViewsConfiguration;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,9 +10,9 @@ namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Package\PackageManagerInterface;
 
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the ActionController
@@ -37,7 +37,7 @@ class ViewsConfigurationTest extends FunctionalTestCase
         parent::setUp();
 
         $this->registerRoute('viewsconfigurationa', 'test/mvc/viewsconfigurationa(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\ViewsConfiguration\Fixtures',
             '@controller' => 'ViewsConfigurationTestA',
             '@action' => 'first',
@@ -45,7 +45,7 @@ class ViewsConfigurationTest extends FunctionalTestCase
         ]);
 
         $this->registerRoute('viewsconfigurationb', 'test/mvc/viewsconfigurationb(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\ViewsConfiguration\Fixtures',
             '@controller' => 'ViewsConfigurationTestB',
             '@action' => 'first',
@@ -53,7 +53,7 @@ class ViewsConfigurationTest extends FunctionalTestCase
         ]);
 
         $this->registerRoute('viewsconfigurationc', 'test/mvc/viewsconfigurationc(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\ViewsConfiguration\Fixtures',
             '@controller' => 'ViewsConfigurationTestC',
             '@action' => 'index',

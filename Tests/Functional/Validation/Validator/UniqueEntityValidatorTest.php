@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Validation\Validator;
+namespace Neos\Flow\Tests\Functional\Validation\Validator;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Functional\Validation\Validator;
  * source code.
  */
 
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\Post;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
 
 /**
  * Testcase for the UniqueEntity Validator
  *
  */
-class UniqueEntityValidatorTest extends \TYPO3\Flow\Tests\FunctionalTestCase
+class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCase
 {
     /**
      * @var boolean
@@ -26,7 +26,7 @@ class UniqueEntityValidatorTest extends \TYPO3\Flow\Tests\FunctionalTestCase
     protected static $testablePersistenceEnabled = true;
 
     /**
-     * @var \TYPO3\Flow\Tests\Functional\Persistence\Fixtures\PostRepository
+     * @var \Neos\Flow\Tests\Functional\Persistence\Fixtures\PostRepository
      */
     protected $postRepository;
 
@@ -36,11 +36,11 @@ class UniqueEntityValidatorTest extends \TYPO3\Flow\Tests\FunctionalTestCase
     public function setUp()
     {
         parent::setUp();
-        if (!$this->persistenceManager instanceof \TYPO3\Flow\Persistence\Doctrine\PersistenceManager) {
+        if (!$this->persistenceManager instanceof \Neos\Flow\Persistence\Doctrine\PersistenceManager) {
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
 
-        $this->postRepository = $this->objectManager->get(\TYPO3\Flow\Tests\Functional\Persistence\Fixtures\PostRepository::class);
+        $this->postRepository = $this->objectManager->get(\Neos\Flow\Tests\Functional\Persistence\Fixtures\PostRepository::class);
     }
 
     /**
@@ -48,7 +48,7 @@ class UniqueEntityValidatorTest extends \TYPO3\Flow\Tests\FunctionalTestCase
      */
     public function validatorBehavesCorrectlyOnDuplicateEntityWithSingleConfiguredIdentityProperty()
     {
-        $validator = new \TYPO3\Flow\Validation\Validator\UniqueEntityValidator(['identityProperties' => ['title']]);
+        $validator = new \Neos\Flow\Validation\Validator\UniqueEntityValidator(['identityProperties' => ['title']]);
         $post = new Post();
         $post->setTitle('The title of the initial post');
         $this->postRepository->add($post);
@@ -69,7 +69,7 @@ class UniqueEntityValidatorTest extends \TYPO3\Flow\Tests\FunctionalTestCase
      */
     public function validatorBehavesCorrectlyOnDuplicateEntityWithMultipleAnnotatedIdentityProperties()
     {
-        $validator = new \TYPO3\Flow\Validation\Validator\UniqueEntityValidator();
+        $validator = new \Neos\Flow\Validation\Validator\UniqueEntityValidator();
 
         $book = new AnnotatedIdentitiesEntity();
         $book->setTitle('Watership Down');

@@ -53,17 +53,24 @@ The location for Flow packages installed via Composer (as opposed to manually
 placing them in a *Packages/* sub folder) is determined by looking at the package
 type in the manifest file. This would place a package into *Packages/Acme*::
 
- "type": "typo3-flow-acme"
+ "type": "neos-acme"
 
 If you would like to use ``package:create`` to create packages of this type in
 *Packages/Acme* instead of the default location *Packages/Application*, add an
 entry in the *Settings.yaml* of the package that expects packages of that type::
 
-  TYPO3:
+  Neos:
     Flow:
       package:
         packagesPathByType:
-          'typo3-flow-acme': 'Acme'
+          'neos-acme': 'Acme'
+
+.. note::
+
+	Packages where the type starts with ``typo3-flow-`` or ``neos-`` are considered
+	Flow packages and will therefore be reflected and proxied by default. We recommend
+	using only the ``neos-`` prefix for the type when creating new packages (but only from
+	Flow 3.2 upwards) as the other is deprecated and will stop working in the next major.
 
 Package Directory Layout
 ========================
@@ -167,7 +174,7 @@ different purposes. They save you from conflicts between packages which were pro
 different parties.
 
 We use *vendor namespaces* for package keys, i.e. all packages which are released
-and maintained by the Neos and Flow core teams start with ``TYPO3.*`` (for historical
+and maintained by the Neos and Flow core teams start with ``Neos.*`` (for historical
 reasons) or ``Neos.*``. In your company we suggest that you use your company name as vendor
 namespace.
 
@@ -311,7 +318,7 @@ it does not need to exist.
 	<?php
 	namespace Acme\Demo;
 
-	use TYPO3\Flow\Package\Package as BasePackage;
+	use Neos\Flow\Package\Package as BasePackage;
 
 	/**
 	 * The Acme.Demo Package
@@ -322,14 +329,14 @@ it does not need to exist.
 		/**
 		* Invokes custom PHP code directly after the package manager has been initialized.
 		*
-		* @param \TYPO3\Flow\Core\Bootstrap $bootstrap The current bootstrap
+		* @param \Neos\Flow\Core\Bootstrap $bootstrap The current bootstrap
 		* @return void
 		*/
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Demo\Quux\RequestHandler($bootstrap));
 
 			$dispatcher = $bootstrap->getSignalSlotDispatcher();
-			$dispatcher->connect(\TYPO3\Flow\Mvc\Dispatcher::class, 'afterControllerInvocation', \Acme\Demo\Baz::class, 'fooBar');
+			$dispatcher->connect(\Neos\Flow\Mvc\Dispatcher::class, 'afterControllerInvocation', \Acme\Demo\Baz::class, 'fooBar');
 		}
 	}
 	?>

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security;
+namespace Neos\Flow\Tests\Unit\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,18 @@ namespace TYPO3\Flow\Tests\Unit\Security;
  * source code.
  */
 
-use TYPO3\Flow\Log\SecurityLoggerInterface;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Security\Policy;
-use TYPO3\Flow\Security\RequestPatternInterface;
-use TYPO3\Flow\Session\SessionInterface;
-use TYPO3\Flow\Session\SessionManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security\Policy\Role;
+use Neos\Flow\Log\SecurityLoggerInterface;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Policy;
+use Neos\Flow\Security\RequestPatternInterface;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Flow\Session\SessionManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Policy\Role;
 
 /**
  * Testcase for the security context
@@ -416,7 +416,7 @@ class ContextTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      * @test
      */
     public function invalidAuthenticationStrategyFromConfigurationThrowsException()
@@ -459,7 +459,7 @@ class ContextTest extends UnitTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Exception
+     * @expectedException \Neos\Flow\Exception
      * @test
      */
     public function invalidCsrfProtectionStrategyFromConfigurationThrowsException()
@@ -476,8 +476,8 @@ class ContextTest extends UnitTestCase
      */
     public function getRolesReturnsTheCorrectRoles()
     {
-        $everybodyRole = new Policy\Role('TYPO3.Flow:Everybody');
-        $authenticatedUserRole = new Policy\Role('TYPO3.Flow:AuthenticatedUser');
+        $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
+        $authenticatedUserRole = new Policy\Role('Neos.Flow:AuthenticatedUser');
         $testRole = new Policy\Role('Acme.Demo:TestRole');
 
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
@@ -487,9 +487,9 @@ class ContextTest extends UnitTestCase
         $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will($this->returnCallback(
             function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole) {
                 switch ($roleIdentifier) {
-                    case 'TYPO3.Flow:Everybody':
+                    case 'Neos.Flow:Everybody':
                         return $everybodyRole;
-                    case 'TYPO3.Flow:AuthenticatedUser':
+                    case 'Neos.Flow:AuthenticatedUser':
                         return $authenticatedUserRole;
                 }
             }
@@ -509,7 +509,7 @@ class ContextTest extends UnitTestCase
         $securityContext->_set('policyService', $mockPolicyService);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
-        $expectedResult = ['TYPO3.Flow:Everybody' => $everybodyRole, 'TYPO3.Flow:AuthenticatedUser' => $authenticatedUserRole, 'Acme.Demo:TestRole' => $testRole];
+        $expectedResult = ['Neos.Flow:Everybody' => $everybodyRole, 'Neos.Flow:AuthenticatedUser' => $authenticatedUserRole, 'Acme.Demo:TestRole' => $testRole];
         $this->assertEquals($expectedResult, $securityContext->getRoles());
     }
 
@@ -519,9 +519,9 @@ class ContextTest extends UnitTestCase
     public function getRolesTakesInheritanceOfRolesIntoAccount()
     {
         /** @var Role|\PHPUnit_Framework_MockObject_MockObject $everybodyRole */
-        $everybodyRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['TYPO3.Flow:Everybody']);
+        $everybodyRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Neos.Flow:Everybody']);
         /** @var Role|\PHPUnit_Framework_MockObject_MockObject $authenticatedUserRole */
-        $authenticatedUserRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['TYPO3.Flow:AuthenticatedUser']);
+        $authenticatedUserRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Neos.Flow:AuthenticatedUser']);
         /** @var Role|\PHPUnit_Framework_MockObject_MockObject $testRole1 */
         $testRole1 = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Acme.Demo:TestRole1']);
         /** @var Role|\PHPUnit_Framework_MockObject_MockObject $testRole2 */
@@ -544,9 +544,9 @@ class ContextTest extends UnitTestCase
         $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will($this->returnCallback(
             function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole, $testRole1, $testRole2, $testRole3, $testRole4, $testRole5, $testRole6, $testRole7) {
                 switch ($roleIdentifier) {
-                    case 'TYPO3.Flow:Everybody':
+                    case 'Neos.Flow:Everybody':
                         return $everybodyRole;
-                    case 'TYPO3.Flow:AuthenticatedUser':
+                    case 'Neos.Flow:AuthenticatedUser':
                         return $authenticatedUserRole;
                     case 'Acme.Demo:TestRole1':
                         return $testRole1;
@@ -596,8 +596,8 @@ class ContextTest extends UnitTestCase
             'Acme.Demo:TestRole5' => $testRole5,
             'Acme.Demo:TestRole6' => $testRole6,
             'Acme.Demo:TestRole7' => $testRole7,
-            'TYPO3.Flow:Everybody' => $everybodyRole,
-            'TYPO3.Flow:AuthenticatedUser' => $authenticatedUserRole
+            'Neos.Flow:Everybody' => $everybodyRole,
+            'Neos.Flow:AuthenticatedUser' => $authenticatedUserRole
         ];
         $result = $securityContext->getRoles();
 
@@ -615,18 +615,18 @@ class ContextTest extends UnitTestCase
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
         $mockAuthenticationManager->expects($this->atLeastOnce())->method('isAuthenticated')->will($this->returnValue(false));
 
-        $everybodyRole = new Policy\Role('TYPO3.Flow:Everybody');
-        $anonymousRole = new Policy\Role('TYPO3.Flow:Anonymous');
+        $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
+        $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['TYPO3.Flow:Anonymous', $anonymousRole], ['TYPO3.Flow:Everybody', $everybodyRole]]));
+        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]));
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $securityContext->_set('policyService', $mockPolicyService);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
         $result = $securityContext->getRoles();
-        $this->assertInstanceOf(Policy\Role::class, $result['TYPO3.Flow:Everybody']);
-        $this->assertEquals('TYPO3.Flow:Everybody', $result['TYPO3.Flow:Everybody']->getIdentifier());
+        $this->assertInstanceOf(Policy\Role::class, $result['Neos.Flow:Everybody']);
+        $this->assertEquals('Neos.Flow:Everybody', $result['Neos.Flow:Everybody']->getIdentifier());
     }
 
     /**
@@ -637,18 +637,18 @@ class ContextTest extends UnitTestCase
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
         $mockAuthenticationManager->expects($this->atLeastOnce())->method('isAuthenticated')->will($this->returnValue(false));
 
-        $everybodyRole = new Policy\Role('TYPO3.Flow:Everybody');
-        $anonymousRole = new Policy\Role('TYPO3.Flow:Anonymous');
+        $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
+        $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['TYPO3.Flow:Anonymous', $anonymousRole], ['TYPO3.Flow:Everybody', $everybodyRole]]));
+        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]));
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $securityContext->_set('policyService', $mockPolicyService);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
         $result = $securityContext->getRoles();
-        $this->assertInstanceOf(Policy\Role::class, $result['TYPO3.Flow:Anonymous']);
-        $this->assertEquals('TYPO3.Flow:Anonymous', (string)($result['TYPO3.Flow:Anonymous']));
+        $this->assertInstanceOf(Policy\Role::class, $result['Neos.Flow:Anonymous']);
+        $this->assertEquals('Neos.Flow:Anonymous', (string)($result['Neos.Flow:Anonymous']));
     }
 
     /**
@@ -659,18 +659,18 @@ class ContextTest extends UnitTestCase
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
         $mockAuthenticationManager->expects($this->atLeastOnce())->method('isAuthenticated')->will($this->returnValue(true));
 
-        $everybodyRole = new Policy\Role('TYPO3.Flow:Everybody');
-        $authenticatedUserRole = new Policy\Role('TYPO3.Flow:AuthenticatedUser');
+        $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
+        $authenticatedUserRole = new Policy\Role('Neos.Flow:AuthenticatedUser');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['TYPO3.Flow:AuthenticatedUser', $authenticatedUserRole], ['Everybody', $everybodyRole]]));
+        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['Neos.Flow:AuthenticatedUser', $authenticatedUserRole], ['Everybody', $everybodyRole]]));
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $securityContext->_set('policyService', $mockPolicyService);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
         $result = $securityContext->getRoles();
-        $this->assertInstanceOf(Policy\Role::class, $result['TYPO3.Flow:AuthenticatedUser']);
-        $this->assertEquals('TYPO3.Flow:AuthenticatedUser', (string)($result['TYPO3.Flow:AuthenticatedUser']));
+        $this->assertInstanceOf(Policy\Role::class, $result['Neos.Flow:AuthenticatedUser']);
+        $this->assertEquals('Neos.Flow:AuthenticatedUser', (string)($result['Neos.Flow:AuthenticatedUser']));
     }
 
     /**
@@ -680,7 +680,7 @@ class ContextTest extends UnitTestCase
     {
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
 
-        $this->assertTrue($securityContext->hasRole('TYPO3.Flow:Everybody'));
+        $this->assertTrue($securityContext->hasRole('Neos.Flow:Everybody'));
     }
 
     /**
@@ -694,7 +694,7 @@ class ContextTest extends UnitTestCase
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
-        $this->assertTrue($securityContext->hasRole('TYPO3.Flow:Anonymous'));
+        $this->assertTrue($securityContext->hasRole('Neos.Flow:Anonymous'));
     }
 
     /**
@@ -708,7 +708,7 @@ class ContextTest extends UnitTestCase
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $securityContext->_set('authenticationManager', $mockAuthenticationManager);
 
-        $this->assertFalse($securityContext->hasRole('TYPO3.Flow:Anonymous'));
+        $this->assertFalse($securityContext->hasRole('Neos.Flow:Anonymous'));
     }
 
     /**
@@ -716,7 +716,7 @@ class ContextTest extends UnitTestCase
      */
     public function hasRoleWorks()
     {
-        $everybodyRole = new Policy\Role('TYPO3.Flow:Everybody');
+        $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $testRole = new Policy\Role('Acme.Demo:TestRole');
 
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
@@ -726,7 +726,7 @@ class ContextTest extends UnitTestCase
         $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will($this->returnCallback(
             function ($roleIdentifier) use ($everybodyRole) {
                 switch ($roleIdentifier) {
-                    case 'TYPO3.Flow:Everybody':
+                    case 'Neos.Flow:Everybody':
                         return $everybodyRole;
                 }
             }
@@ -755,7 +755,7 @@ class ContextTest extends UnitTestCase
      */
     public function hasRoleWorksWithRecursiveRoles()
     {
-        $everybodyRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['TYPO3.Flow:Everybody']);
+        $everybodyRole = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Neos.Flow:Everybody']);
         $testRole1 = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Acme.Demo:TestRole1']);
         $testRole2 = $this->getAccessibleMock(Policy\Role::class, ['dummy'], ['Acme.Demo:TestRole2']);
 
@@ -766,7 +766,7 @@ class ContextTest extends UnitTestCase
         $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will($this->returnCallback(
             function ($roleIdentifier) use ($everybodyRole, $testRole1, $testRole2) {
                 switch ($roleIdentifier) {
-                    case 'TYPO3.Flow:Everybody':
+                    case 'Neos.Flow:Everybody':
                         return $everybodyRole;
                     case 'Acme.Demo:TestRole1':
                         return $testRole1;

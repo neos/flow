@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Package;
+namespace Neos\Flow\Tests\Unit\Package;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,12 +10,12 @@ namespace TYPO3\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Package\PackageOrderResolver;
+use Neos\Flow\Package\PackageOrderResolver;
 
 /**
  * Test the PackageOrderResolver
  */
-class PackageOrderResolverTest extends \TYPO3\Flow\Tests\UnitTestCase
+class PackageOrderResolverTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
      * Data provider for testing if a list of unordered packages gets ordered correctly.

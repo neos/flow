@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security;
+namespace Neos\Flow\Tests\Functional\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Security;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Security\AccountFactory;
-use TYPO3\Flow\Security\AccountRepository;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Security\AccountFactory;
+use Neos\Flow\Security\AccountRepository;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional testcase for certain aspects of CSRF protection.
@@ -44,12 +44,12 @@ class CsrfProtectionTest extends FunctionalTestCase
         $accountRepository = $this->objectManager->get(AccountRepository::class);
         $accountFactory = $this->objectManager->get(AccountFactory::class);
 
-        $account = $accountFactory->createAccountWithPassword('admin', 'password', ['TYPO3.Flow:Administrator'], 'UsernamePasswordTestingProvider');
+        $account = $accountFactory->createAccountWithPassword('admin', 'password', ['Neos.Flow:Administrator'], 'UsernamePasswordTestingProvider');
         $accountRepository->add($account);
         $this->persistenceManager->persistAll();
 
         $this->registerRoute('authentication', 'test/security/authentication/usernamepassword(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'UsernamePasswordTest',
             '@action' => 'authenticate',
@@ -57,7 +57,7 @@ class CsrfProtectionTest extends FunctionalTestCase
         ]);
 
         $this->registerRoute('controller', 'test/security/restricted(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'Restricted',
             '@action' => 'public',
@@ -74,8 +74,8 @@ class CsrfProtectionTest extends FunctionalTestCase
         $this->markTestIncomplete('Needs to be implemented');
 
         $arguments = [];
-        $arguments['__authentication']['TYPO3']['Flow']['Security']['Authentication']['Token']['UsernamePassword']['username'] = 'admin';
-        $arguments['__authentication']['TYPO3']['Flow']['Security']['Authentication']['Token']['UsernamePassword']['password'] = 'password';
+        $arguments['__authentication']['Neos']['Flow']['Security']['Authentication']['Token']['UsernamePassword']['username'] = 'admin';
+        $arguments['__authentication']['Neos']['Flow']['Security']['Authentication']['Token']['UsernamePassword']['password'] = 'password';
 
         $request = Request::create(new Uri('http://localhost/test/security/authentication/usernamepassword/authenticate'), 'POST', $arguments);
         $response = $this->browser->sendRequest($request);

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Configuration\Fixtures;
+namespace Neos\Flow\Tests\Functional\Configuration\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Functional\Configuration\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
-class RootDirectoryIgnoringYamlSource extends \TYPO3\Flow\Configuration\Source\YamlSource
+class RootDirectoryIgnoringYamlSource extends \Neos\Flow\Configuration\Source\YamlSource
 {
     /**
      * Loads the specified configuration file and returns its content as an
@@ -23,7 +23,7 @@ class RootDirectoryIgnoringYamlSource extends \TYPO3\Flow\Configuration\Source\Y
      * @param string $pathAndFilename Full path and filename of the file to load, excluding the file extension (ie. ".yaml")
      * @param boolean $allowSplitSource If TRUE, the type will be used as a prefix when looking for configuration files
      * @return array
-     * @throws \TYPO3\Flow\Configuration\Exception\ParseErrorException
+     * @throws \Neos\Flow\Configuration\Exception\ParseErrorException
      */
 
     public function load($pathAndFilename, $allowSplitSource = false)

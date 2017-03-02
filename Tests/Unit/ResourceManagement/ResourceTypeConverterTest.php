@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ResourceManagement;
+namespace Neos\Flow\Tests\Unit\ResourceManagement;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\ResourceManagement;
  * source code.
  */
 
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\ResourceManagement\Exception;
-use TYPO3\Flow\ResourceManagement\PersistentResource;
-use TYPO3\Flow\ResourceManagement\ResourceManager;
-use TYPO3\Flow\ResourceManagement\ResourceTypeConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Error as FlowError;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\ResourceManagement\Exception;
+use Neos\Flow\ResourceManagement\PersistentResource;
+use Neos\Flow\ResourceManagement\ResourceManager;
+use Neos\Flow\ResourceManagement\ResourceTypeConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Error\Messages as FlowError;
 
 /**
  * Test case for the ResourceTypeConverter class

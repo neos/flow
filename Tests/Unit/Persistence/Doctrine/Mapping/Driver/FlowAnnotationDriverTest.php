@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
+namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security;
-use TYPO3\Party\Domain\Model;
+use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security;
 
 /**
  * Testcase for the Flow annotation driver
@@ -29,11 +28,11 @@ class FlowAnnotationDriverTest extends UnitTestCase
     public function classNameToTableNameMappings()
     {
         return [
-            [Model\Person::class, 'typo3_party_domain_model_person'],
+            [\Neos\Party\Domain\Model\Person::class, 'neos_party_domain_model_person'],
             ['SomePackage\Domain\Model\Blob', 'somepackage_domain_model_blob'],
-            [Security\Policy\Role::class, 'typo3_flow_security_policy_role'],
-            [Security\Account::class, 'typo3_flow_security_account'],
-            [\TYPO3\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'typo3_flow_security_authorization_resource_securitypublish_861cb']
+            [Security\Policy\Role::class, 'neos_flow_security_policy_role'],
+            [Security\Account::class, 'neos_flow_security_account'],
+            [\Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'neos_flow_security_authorization_resource_securitypublishi_07c54']
         ];
     }
 
@@ -56,13 +55,13 @@ class FlowAnnotationDriverTest extends UnitTestCase
     public function classAndPropertyNameToJoinTableNameMappings()
     {
         return [
-            [64, Model\Person::class, 'propertyName', 'typo3_party_domain_model_person_propertyname_join'],
+            [64, \Neos\Party\Domain\Model\Person::class, 'propertyName', 'neos_party_domain_model_person_propertyname_join'],
             [64, 'SomePackage\Domain\Model\Blob', 'propertyName', 'somepackage_domain_model_blob_propertyname_join'],
-            [64, Security\Policy\Role::class, 'propertyName', 'typo3_flow_security_policy_role_propertyname_join'],
-            [64, Security\Account::class, 'propertyName', 'typo3_flow_security_account_propertyname_join'],
-            [64, \TYPO3\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'propertyName', 'typo3_flow_security_authorization_resour_861cb_propertyname_join'],
-            [30, \TYPO3\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'propertyName', 'typo3__861cb_propertyname_join'],
-            [30, \TYPO3\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'somePrettyLongPropertyNameWhichMustBeShortened', 'typo3_flow_security_auth_6aad0']
+            [64, Security\Policy\Role::class, 'propertyName', 'neos_flow_security_policy_role_propertyname_join'],
+            [64, Security\Account::class, 'propertyName', 'neos_flow_security_account_propertyname_join'],
+            [64, \Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'propertyName', 'neos_flow_security_authorization_resourc_07c54_propertyname_join'],
+            [30, \Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'propertyName', 'neos_f_07c54_propertyname_join'],
+            [30, \Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration::class, 'somePrettyLongPropertyNameWhichMustBeShortened', 'neos_flow_security_autho_6afa5']
         ];
     }
 

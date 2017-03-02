@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\I18n;
+namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,11 +12,11 @@ namespace TYPO3\Flow\Tests\Unit\I18n;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Cache\Frontend\VariableFrontend;
-use TYPO3\Flow\Package\PackageInterface;
-use TYPO3\Flow\Package\PackageManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\I18n;
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Package\PackageInterface;
+use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\I18n;
 
 /**
  * Testcase for the Locale Service class.
@@ -149,6 +149,10 @@ class ServiceTest extends UnitTestCase
         foreach (['en_GB', 'sr'] as $localeIdentifier) {
             file_put_contents('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier . '.xlf', 'FooBar');
         }
+        foreach (array('de_DE', 'de_CH') as $localeIdentifier) {
+            mkdir('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier, 0777, true);
+            file_put_contents('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier . '/Main.xlf', 'FooBar');
+        }
 
         $mockPackage = $this->createMock(PackageInterface::class);
         $mockPackage->expects($this->any())->method('getResourcesPath')->will($this->returnValue('vfs://Foo/Bar/'));
@@ -157,7 +161,7 @@ class ServiceTest extends UnitTestCase
         $mockPackageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue([$mockPackage]));
 
         $mockLocaleCollection = $this->createMock(I18n\LocaleCollection::class);
-        $mockLocaleCollection->expects($this->exactly(4))->method('addLocale');
+        $mockLocaleCollection->expects($this->exactly(6))->method('addLocale');
 
         $mockSettings = ['i18n' => [
                                 'defaultLocale' => 'sv_SE',

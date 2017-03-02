@@ -1,21 +1,21 @@
 <?php
-namespace TYPO3\Flow\Tests\Behavior\Features\Bootstrap;
+namespace Neos\Flow\Tests\Behavior\Features\Bootstrap;
 
-use TYPO3\Flow\Cache\CacheManager;
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\RequestHandler;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Security\Authentication\AuthenticationProviderManager;
-use TYPO3\Flow\Security\Authentication\Provider\TestingProvider;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Authorization\PrivilegeManagerInterface;
-use TYPO3\Flow\Security\Exception\AccessDeniedException;
-use TYPO3\Flow\Security\Policy\PolicyService;
-use TYPO3\Flow\Tests\Functional\Security\Fixtures\Controller\AuthenticationController;
-use TYPO3\Flow\Utility\Arrays;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\RequestHandler;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Utility\ObjectAccess;
+use Neos\Flow\Security;
+use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
+use Neos\Flow\Security\Authentication\Provider\TestingProvider;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Flow\Security\Exception\AccessDeniedException;
+use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Flow\Tests\Functional\Security\Fixtures\Controller\AuthenticationController;
+use Neos\Utility\Arrays;
 use PHPUnit_Framework_Assert as Assert;
 
 /**
@@ -24,8 +24,8 @@ use PHPUnit_Framework_Assert as Assert;
  *
  * Note that this trait requires that the following members are available:
  *
- * - $this->objectManager (TYPO3\Flow\ObjectManagement\ObjectManagerInterface)
- * - $this->environment (TYPO3\Flow\Utility\Environment)
+ * - $this->objectManager (Neos\Flow\ObjectManagement\ObjectManagerInterface)
+ * - $this->environment (Neos\Flow\Utility\Environment)
  *
  * Note: This trait expects the IsolatedBehatStepsTrait to be available!
  *
@@ -165,9 +165,6 @@ trait SecurityOperationsTrait
      */
     protected function authenticateRoles(array $roleNames)
     {
-        // FIXME this is currently needed in order to correctly import the roles. Otherwise RepositoryInterface::isConnected() returns FALSE and importing is skipped in PolicyService::initializeRolesFromPolicy()
-        $this->objectManager->get(Security\AccountRepository::class)->countAll();
-
         $account = new Security\Account();
         $account->setAccountIdentifier('TestAccount');
         $roles = [];

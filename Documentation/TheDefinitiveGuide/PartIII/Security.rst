@@ -17,7 +17,7 @@ chapter describes how you can use Flow's security features and how they work int
 Security context
 ----------------
 
-The :abbr:`Security Context (\\TYPO3\\Flow\\Security\\Context)` is initialized as soon as an HTTP request is being
+The :abbr:`Security Context (\\Neos\\Flow\\Security\\Context)` is initialized as soon as an HTTP request is being
 dispatched. It lies in session scope and holds context data like the current authentication status. That means, if you
 need data related to security, the security context (you can get it easily with dependency injection) will be your main
 information source. The details of the context's data will be described in the next chapters.
@@ -40,7 +40,7 @@ Using the authentication controller
 
 First, let's see how you can use Flow's authentication features. There is a base
 controller in the security package: the
-:abbr:`AbstractAuthenticationController (\\TYPO3\\Flow\\Security\\Authentication\\Controller\\AbstractAuthenticationController)`,
+:abbr:`AbstractAuthenticationController (\\Neos\\Flow\\Security\\Authentication\\Controller\\AbstractAuthenticationController)`,
 which already contains almost everything you need to authenticate an account. This controller has
 three actions, namely ``loginAction()``, ``authenticateAction()`` and ``logoutAction()``. To use authentication in your
 project you have to inherit from this controller, provide a template for the login action (e.g. a login form) and
@@ -54,9 +54,9 @@ You may also want to override ``onAuthenticationFailure()`` to react on login pr
 	<?php
 	namespace Acme\YourPackage\Controller;
 
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Mvc\ActionRequest;
-	use TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Mvc\ActionRequest;
+	use Neos\Flow\Security\Authentication\Controller\AbstractAuthenticationController;
 
 	class AuthenticationController extends AbstractAuthenticationController {
 
@@ -103,7 +103,7 @@ account by checking a username and password against accounts stored in the datab
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       security:
         authentication:
@@ -112,7 +112,7 @@ account by checking a username and password against accounts stored in the datab
               provider: 'PersistedUsernamePasswordProvider'
 
 This registers the
-:abbr:`PersistedUsernamePasswordProvider (\\TYPO3\\Flow\\Security\\Authentication\\Provider\\PersistedUsernamePasswordProvider)`
+:abbr:`PersistedUsernamePasswordProvider (\\Neos\\Flow\\Security\\Authentication\\Provider\\PersistedUsernamePasswordProvider)`
 authentication provider under the name "``SomeAuthenticationProvider``" as the only, global authentication mechanism. To
 successfully authenticate an account with this provider, you'll obviously have to
 provide a username and password. This is done by sending two POST variables to the
@@ -126,8 +126,8 @@ Given there is a route that resolves “your/app/authenticate” to the ``authen
 
   <form action="your/app/authenticate" method="post">
      <input type="text"
-        name="__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][username]" />
-     <input type="password"        name="__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][password]" />
+        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]" />
+     <input type="password"        name="__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]" />
      <input type="submit" value="Login" />
   </form>
 
@@ -147,7 +147,7 @@ The following sequence diagram shows the participating components and their inte
 
   Internal authentication process
 
-As already explained, the security framework is initialized in the ``TYPO3\Flow\Mvc\Dispatcher``.
+As already explained, the security framework is initialized in the ``Neos\Flow\Mvc\Dispatcher``.
 It intercepts the request dispatching before any controller is called. Regarding
 authentication, you can see, that a so called authentication token will be stored in the
 security context and some credentials will be updated in it.
@@ -160,7 +160,7 @@ example it receives the credentials (e.g. a username and password) needed for
 authentication and stores one of the following authentication states in the session. [#]_
 
 These constants are defined in the authentication token interface
-(``TYPO3\Flow\Security\Authentication\TokenInterface``) and the status can be obtained
+(``Neos\Flow\Security\Authentication\TokenInterface``) and the status can be obtained
 from the ``getAuthenticationStatus()`` method of any token.
 
 .. tip::
@@ -181,8 +181,8 @@ from the ``getAuthenticationStatus()`` method of any token.
 Now you might ask yourself, how a token receives its credentials. The simple answer
 is: It's up to the token, to fetch them from somewhere. The ``UsernamePassword``
 token for example checks for a username and password in the two POST parameters:
-``__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][username]`` and
-``__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][password]`` (see
+``__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][username]`` and
+``__authentication[Neos][Flow][Security][Authentication][Token][UsernamePassword][password]`` (see
 :ref:`Using the authentication controller`). The framework only makes sure that
 ``updateCredentials()`` is called on every token, then the token has to set possibly
 available credentials itself, e.g. from available headers or parameters or anything else
@@ -202,7 +202,7 @@ request, so there's no need to start a session for keeping the token. Especially
 when dealing with REST services, it is not desirable to start a session.
 
 Authentication tokens which don't require a session simply need to implement the
-:abbr:`SessionlessTokenInterface (\\TYPO3\\Flow\\Security\\Authentication\\Token\\SessionlessTokenInterface)` marker
+:abbr:`SessionlessTokenInterface (\\Neos\\Flow\\Security\\Authentication\\Token\\SessionlessTokenInterface)` marker
 interface. If a token carries this marker, the Authentication Manager will refrain
 from starting a session during authentication.
 
@@ -220,7 +220,7 @@ provider is able to authenticate the ``UsernamePassword`` token.
 
 After checking the credentials, it is the responsibility of an authentication provider to
 set the correct authentication status (see above) and ``Roles`` in its corresponding token.
-The role implementation resides in the ``TYPO3\Flow\Security\Policy`` namespace. (see the
+The role implementation resides in the ``Neos\Flow\Security\Policy`` namespace. (see the
 Policy section for details).
 
 .. note::
@@ -229,7 +229,7 @@ Policy section for details).
   the case since Flow 3.0. Instead the active roles will be determined from the configured
   policies. Creating a new role is as easy as adding a line to your ``Policy.yaml``.
   If you do need to add roles during runtime, you can use the ``rolesInitialized`` Signal of
-  the :abbr:`PolicyService (\\TYPO3\\Flow\\Security\\Policy\\PolicyService)`.
+  the :abbr:`PolicyService (\\Neos\\Flow\\Security\\Policy\\PolicyService)`.
 
 .. _Account management:
 
@@ -279,7 +279,7 @@ Creating accounts
 ~~~~~~~~~~~~~~~~~
 
 Creating an account is as easy as creating a new account object and add it to the account
-repository. Look at the following example, which uses the ``TYPO3\Flow\Security\AccountFactory``
+repository. Look at the following example, which uses the ``Neos\Flow\Security\AccountFactory``
 to create a simple username/password account for the DefaultProvider:
 
 *Example: Add a new username/password account* ::
@@ -294,7 +294,7 @@ to create a simple username/password account for the DefaultProvider:
 
 The way the credentials are stored internally is completely up to the authentication provider.
 The ``PersistedUsernamePasswordProvider`` uses the
-``TYPO3\Flow\Security\Cryptography\HashService`` to verify the given password. In the
+``Neos\Flow\Security\Cryptography\HashService`` to verify the given password. In the
 example above, the given plaintext password will be securely hashed by the ``HashService``.
 The hashing is the main magic happening in the ``AccountFactory`` and the reason why we don't
 create  the account object directly. If you want to learn more about secure password hashing
@@ -346,7 +346,7 @@ them in "parallel".
     authentication:
       providers:
         'MyLDAPProvider':
-          provider: 'TYPO3\MyCoolPackage\Security\Authentication\MyLDAPProvider'
+          provider: 'Neos\MyCoolPackage\Security\Authentication\MyLDAPProvider'
           providerOptions: 'Some LDAP configuration options'
         'DefaultProvider':
           provider: 'PersistedUsernamePasswordProvider'
@@ -437,7 +437,7 @@ configuration:
               patternOptions:
                 'cidrPattern': '192.168.178.0/24'
         'MyLDAPProvider':
-          provider: 'TYPO3\MyCoolPackage\Security\Authentication\MyLDAPProvider'
+          provider: 'Neos\MyCoolPackage\Security\Authentication\MyLDAPProvider'
           providerOptions: 'Some LDAP configuration options'
           requestPatterns:
             'Acme.SomePackage:AdministrationArea':
@@ -478,7 +478,7 @@ controllers will be authenticated by the default username/password provider.
 .. tip::
 
   You can easily implement your own pattern. Just implement the interface
-  ``TYPO3\Flow\Security\RequestPatternInterface`` and configure the pattern with its
+  ``Neos\Flow\Security\RequestPatternInterface`` and configure the pattern with its
   full qualified class name.
 
 :title:`Available request patterns`
@@ -545,7 +545,7 @@ example, that redirects to a login page (Using the ``WebRedirect`` entry point).
 
   Of course you can implement your own entry point and configure it by using its full
   qualified class name. Just make sure to implement the
-  ``TYPO3\Flow\Security\Authentication\EntryPointInterface`` interface.
+  ``Neos\Flow\Security\Authentication\EntryPointInterface`` interface.
 
 .. tip::
 
@@ -596,9 +596,9 @@ Simple username/password authentication
 *Provider*
 
 The implementation of the corresponding authentication provider resides in the class
-``TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider``.
+``Neos\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider``.
 It is able to authenticate tokens of the type
-``TYPO3\Flow\Security\Authentication\Token\UsernamePassword``. It expects a credentials
+``Neos\Flow\Security\Authentication\Token\UsernamePassword``. It expects a credentials
 array in the token which looks like that::
 
   array(
@@ -606,7 +606,7 @@ array in the token which looks like that::
     'password' => 'plaintextPassword'
   );
 
-It will try to find an account in the ``TYPO3\Flow\Security\AccountRepository`` that has
+It will try to find an account in the ``Neos\Flow\Security\AccountRepository`` that has
 the username value as account identifier and fetch the credentials source.
 
 .. tip::
@@ -623,14 +623,14 @@ corresponding section above.
 *Token*
 
 The username/password token is implemented in the class
-``TYPO3\Flow\Security\Authentication\Token\UsernamePassword``. It fetches the credentials
+``Neos\Flow\Security\Authentication\Token\UsernamePassword``. It fetches the credentials
 from the HTTP POST data, look at the following program listing for details::
 
   $postArguments = $this->environment->getRawPostArguments();
-  $username = \TYPO3\Flow\Reflection\ObjectAccess::getPropertyPath($postArguments,
-      '__authentication.TYPO3.Flow.Security.Authentication.Token.UsernamePassword.username');
-  $password = \TYPO3\Flow\Reflection\ObjectAccess::getPropertyPath($postArguments,
-      '__authentication.TYPO3.Flow.Security.Authentication.Token.UsernamePassword.password');
+  $username = \Neos\Utility\ObjectAccess::getPropertyPath($postArguments,
+      '__authentication.Neos.Flow.Security.Authentication.Token.UsernamePassword.username');
+  $password = \Neos\Utility\ObjectAccess::getPropertyPath($postArguments,
+      '__authentication.Neos.Flow.Security.Authentication.Token.UsernamePassword.password');
 
 .. note::
 
@@ -651,7 +651,7 @@ here find the steps needed to implement your own authentication mechanism:
 *Authentication token*
 
 You'll have to provide an authentication token, that implements the interface
-``TYPO3\Flow\Security\Authentication\TokenInterface``:
+``Neos\Flow\Security\Authentication\TokenInterface``:
 
 #. The most interesting method is ``updateCredentials()``. There you'll get the current
 request and you'll have to make sure that credentials sent from the client will be
@@ -659,7 +659,7 @@ fetched and stored in the token.
 
 #. Implement the remaining methods of the interface. These are  mostly getters and setters,
 have a look in one of the existing  tokens (for example
-``TYPO3\Flow\Security\Authentication\Token\UsernamePassword``), if you need more
+``Neos\Flow\Security\Authentication\Token\UsernamePassword``), if you need more
 information.
 
 .. tip::
@@ -671,7 +671,7 @@ information.
 
 After that you'll have to implement your own authentication mechanism by providing a class,
 that implements the interface
-``TYPO3\Flow\Security\Authentication\AuthenticationProviderInterface``:
+``Neos\Flow\Security\Authentication\AuthenticationProviderInterface``:
 
 #. In the constructor you will get the name, that has been configured for the provider and
    an optional options array. Basically you can decide on your own which options you need
@@ -773,7 +773,7 @@ methods.
 
   privilegeTargets:
 
-    'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
       'Acme.MyPackage:RestrictedController.customerAction':
         matcher: 'method(Acme\MyPackage\Controller\RestrictedController->customerAction())'
@@ -788,7 +788,7 @@ methods.
 
 Privilege targets are defined in the ``Policy.yaml`` file of your package and are grouped by their respective types,
 which are define by the fully qualified classname of the privilege type to be used (e.g.
-``TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege``). Besides the type each privilege target is given
+``Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege``). Besides the type each privilege target is given
 a unique name [#]_ and a so called matcher expression, which would be a pointcut expression in case of the Method
 Privilege.
 
@@ -838,11 +838,11 @@ The role ``Acme.MyPackage:PrivilegedCustomer`` is configured as a sub role of
 ``Acme.MyPackage:Customer``, for example it will inherit the privileges from the
 ``Acme.MyPackage:Customer`` role.
 
-Flow will always add the magic ``TYPO3.Flow:Everybody`` role, which you don't have to
+Flow will always add the magic ``Neos.Flow:Everybody`` role, which you don't have to
 configure yourself. This role will also be present, if no account is authenticated.
 
-Likewise, the magic role ``TYPO3.Flow:Anonymous`` is added to the security context if no user
-is authenticated and ``TYPO3.Flow:AuthenticatedUser`` if there is an authenticated user.
+Likewise, the magic role ``Neos.Flow:Anonymous`` is added to the security context if no user
+is authenticated and ``Neos.Flow:AuthenticatedUser`` if there is an authenticated user.
 
 *Defining Privileges and Permissions*
 
@@ -912,7 +912,7 @@ allowed to approve an invoice or not. The respective MethodPrivilege could look 
 
   privilegeTargets:
 
-    'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
       'Acme.MyPackage:InvoiceService.ApproveInvoiceGreater100Euros':
         matcher: 'method(Acme\MyPackage\Controller\InvoiceService->approve(invoice.amount > 100))'
@@ -947,13 +947,13 @@ The following Policy expresses the exact same functionality as above:
 
   privilegeTargets:
 
-    'TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
+    'Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilege':
 
       'Acme.MyPackage:InvoiceService.ApproveInvoice':
         matcher: 'method(Acme\MyPackage\Controller\InvoiceService->approve(invoice.amount > {amount}))'
         parameters:
           amount:
-            className: 'TYPO3\Flow\Security\Authorization\Privilege\Parameter\StringPrivilegeParameter'
+            className: 'Neos\Flow\Security\Authorization\Privilege\Parameter\StringPrivilegeParameter'
 
     roles:
       'Acme.MyPackage:Employee':
@@ -1014,7 +1014,7 @@ As already said, the whole authorization starts with an intercepted method, or i
 words with a method that should be protected and only be callable by privileged users. In
 the chapter about AOP you've already read, that every method interception is implemented
 in a so called advice, which resides in an aspect class. Here we are: the
-``TYPO3\Flow\Security\Aspect\PolicyEnforcementAspect``. Inside this aspect there is the
+``Neos\Flow\Security\Aspect\PolicyEnforcementAspect``. Inside this aspect there is the
 ``enforcePolicy()`` advice, which hands over to Flow's authorization components.
 
 The next thing to be called is a security interceptor. This interceptor calls the
@@ -1040,7 +1040,7 @@ The following example shows the matcher syntax used for entity privilege targets
 
 .. code-block:: yaml
 
-  'TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilege':
+  'Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilege':
 
     'Acme.MyPackage.RestrictableEntity.AllEntitiesOfTypeRestrictableEntity':
       matcher: 'isType("Acme\MyPackage\RestrictableEntity")'
@@ -1058,7 +1058,7 @@ entities. The following examples, taken from the functional tests, show some mor
 
 .. code-block:: yaml
 
-  'TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilege':
+  'Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilege':
 
     'Acme.MyPackage.RelatedStringProperty':
       matcher: 'isType("Acme\MyPackage\EntityA") && property("relatedEntityB.stringValue") == "Admin"'
@@ -1082,7 +1082,7 @@ Internal workings of entity restrictions (EntityPrivilege)
 
 Internally the Doctrine filter API is used to add additional SQL constraints to all queries issued by the ORM against
 the database. This also ensures to rewrite queries done while lazy loading objects, or DQL statements. The responsible
-filter class ``TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter`` uses various
+filter class ``Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter`` uses various
 ``ConditionGenerators`` to create the needed SQL. It is registered als Doctrine filter with the name
 ``Flow_Security_Entity_Filter`` in Flow’s Settings.yaml file.
 
@@ -1142,7 +1142,7 @@ Retrieving permission and status information
 
 Besides enforcing the policy it is also important to find out about permissions beforehand, to be able to react on not
 permitted actions before permissions are actually enforced. To find out about permissions, the central privilege
-manager (``TYPO3\Flow\Security\Authorization\PrivilegeManager``) can be asked for different things:
+manager (``Neos\Flow\Security\Authorization\PrivilegeManager``) can be asked for different things:
 
 #. If the user with the currently authenticated roles is granted for a given subject: ``isGranted(...)``. The subject
 depends on the privilege type, which bring their specific privilege subject implementations. In case of the
@@ -1299,7 +1299,7 @@ available interceptors, shipped with Flow:
 .. note::
 
   Of course you can implement your own interceptor. Just make sure to implement the
-  interface: ``TYPO3\Flow\Security\Authorization\InterceptorInterface``.
+  interface: ``Neos\Flow\Security\Authorization\InterceptorInterface``.
 
 :title:`Flow's built-in security interceptors`
 
@@ -1322,7 +1322,7 @@ firewall configuration will look like:
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       security:
         firewall:
@@ -1405,7 +1405,7 @@ Hash service
 ------------
 
 Creating cryptographically secure hashes is a crucial part to many security related tasks. To make sure the hashes are
-built correctly Flow provides a central hash service ``TYPO3\Flow\Security\Cryptography\HashService``, which
+built correctly Flow provides a central hash service ``Neos\Flow\Security\Cryptography\HashService``, which
 brings well tested hashing algorithms to the developer. We highly recommend to use this service to make sure hashes are
 securely created.
 
@@ -1418,7 +1418,7 @@ RSA wallet service
 Flow provides a so called RSA wallet service, to manage public/private key encryptions. The idea behind this
 service is to store private keys securely within the application by only exposing the public key via API. The default
 implementation shipped with Flow is based on the openssl functions shipped with PHP:
-``TYPO3\Flow\Security\Cryptography\RsaWalletServicePhp``.
+``Neos\Flow\Security\Cryptography\RsaWalletServicePhp``.
 
 The service can either create new key pairs itself, while returning the fingerprint as identifier for this keypair.
 This identifier can be used to export the public key, decrypt and encrypt data or sign data and verify signatures.

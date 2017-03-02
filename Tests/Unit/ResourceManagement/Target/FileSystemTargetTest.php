@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Streams;
+namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Streams;
  * source code.
  */
 
-use TYPO3\Flow\Cli\CommandRequestHandler;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Http\HttpRequestHandlerInterface;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\ResourceManagement\PersistentResource;
-use TYPO3\Flow\ResourceManagement\Target\FileSystemTarget;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli\CommandRequestHandler;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Http\HttpRequestHandlerInterface;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\ResourceManagement\PersistentResource;
+use Neos\Flow\ResourceManagement\Target\FileSystemTarget;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Tests for the FileSystemTarget class
@@ -112,7 +112,7 @@ class FileSystemTargetTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ResourceManagement\Target\Exception
+     * @expectedException \Neos\Flow\ResourceManagement\Target\Exception
      */
     public function getPublicStaticResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {
@@ -180,7 +180,7 @@ class FileSystemTargetTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ResourceManagement\Target\Exception
+     * @expectedException \Neos\Flow\ResourceManagement\Target\Exception
      */
     public function getPublicPersistentResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {

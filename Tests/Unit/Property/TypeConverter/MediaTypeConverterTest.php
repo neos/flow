@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
+namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Property\TypeConverter\MediaTypeConverter;
-use TYPO3\Flow\Property\TypeConverter\MediaTypeConverterInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\TypeConverter\MediaTypeConverter;
+use Neos\Flow\Property\TypeConverter\MediaTypeConverterInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MediaTypeConverter

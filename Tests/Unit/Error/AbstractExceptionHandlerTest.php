@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Error;
+namespace Neos\Flow\Tests\Unit\Error;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,11 +10,11 @@ namespace TYPO3\Flow\Tests\Unit\Error;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Error\AbstractExceptionHandler;
-use TYPO3\Flow\Exception;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Mvc\Exception\NoMatchingRouteException;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Error\AbstractExceptionHandler;
+use Neos\Flow\Exception;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Mvc\Exception\NoMatchingRouteException;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Abstract Exception Handler
@@ -61,7 +61,7 @@ class AbstractExceptionHandlerTest extends UnitTestCase
                     'matchingStatusCodes' => [404],
                     'options' => [
                         'logException' => false,
-                        'templatePathAndFilename' => 'resource://TYPO3.Flow/Private/Templates/Error/Default.html',
+                        'templatePathAndFilename' => 'resource://Neos.Flow/Private/Templates/Error/Default.html',
                         'variables' => [
                             'errorDescription' => 'Sorry, the page you requested was not found.'
                         ]

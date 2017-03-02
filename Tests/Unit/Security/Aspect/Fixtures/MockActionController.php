@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Security\Aspect\Fixtures;
+namespace Neos\Flow\Security\Aspect\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Security\Aspect\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * A mock ActionController
  *
  */
-class MockActionController extends \TYPO3\Flow\Mvc\Controller\ActionController
+class MockActionController extends \Neos\Flow\Mvc\Controller\ActionController
 {
     /**
      * @return void

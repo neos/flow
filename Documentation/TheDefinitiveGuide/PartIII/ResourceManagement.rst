@@ -28,12 +28,12 @@ A *Storage* is configured via ``Settings.yaml``:
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         storages:
           defaultPersistentResourcesStorage:
-            storage: 'TYPO3\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
+            storage: 'Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
             storageOptions:
               path: '%FLOW_PATH_DATA%Persistent/Resources/'
 
@@ -64,19 +64,19 @@ persistent storage above is configured like this:
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         targets:
           localWebDirectoryPersistentResourcesTarget:
-            target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+            target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
             targetOptions:
               path: '%FLOW_PATH_WEB%_Resources/Persistent/'
               baseUri: '_Resources/Persistent/'
 
 This configures the ``Target`` named ``localWebDirectoryPersistentResourcesTarget``. Resources using this
 target will be published into the the given ``path`` which is inside the public web folder of Flow.
-The class ``TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget`` is the implementation responsible for
+The class ``Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget`` is the implementation responsible for
 publishing the resources and providing public URIs to it. From the name you can guess that it creates
 symlinks to the resources stored on the local filesystem to save space. Other ``Target`` implementations
 could publish the resources to CDNs or other external locations that are publicly accessible.
@@ -88,12 +88,12 @@ The option for your Target you need to set in this case is ``subdivideHashPathSe
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         targets:
           localWebDirectoryPersistentResourcesTarget:
-            target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+            target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
             targetOptions:
               path: '%FLOW_PATH_WEB%_Resources/Persistent/'
               baseUri: '_Resources/Persistent/'
@@ -166,7 +166,7 @@ provides a simple API method for this purpose:
 
 		/**
 		 * @Flow\Inject
-		 * @var \TYPO3\Flow\ResourceManagement\ResourceManager
+		 * @var \Neos\Flow\ResourceManagement\ResourceManager
 		 */
 		protected $resourceManager;
 
@@ -268,7 +268,7 @@ above code will work just as expected::
 	   protected $title;
 
 	   /**
-	    * @var \TYPO3\Flow\ResourceManagement\PersistentResource
+	    * @var \Neos\Flow\ResourceManagement\PersistentResource
 	    */
 	   protected $originalResource;
 
@@ -288,15 +288,15 @@ above code will work just as expected::
 	   }
 
 	   /**
-	    * @param \TYPO3\Flow\ResourceManagement\PersistentResource $originalResource
+	    * @param \Neos\Flow\ResourceManagement\PersistentResource $originalResource
 	    * @return void
 	    */
-	   public function setOriginalResource(\TYPO3\Flow\ResourceManagement\PersistentResource $originalResource) {
+	   public function setOriginalResource(\Neos\Flow\ResourceManagement\PersistentResource $originalResource) {
 	      $this->originalResource = $originalResource;
 	   }
 
 	   /**
-	    * @return \TYPO3\Flow\ResourceManagement\PersistentResource
+	    * @return \Neos\Flow\ResourceManagement\PersistentResource
 	    */
 	   public function getOriginalResource() {
 	      return $this->originalResource;
@@ -320,8 +320,8 @@ Or you can define it in your property mapping configuration like this::
 	$propertyMappingConfiguration
 		->forProperty('originalResource')
 		->setTypeConverterOption(
-			\TYPO3\Flow\ResourceManagement\ResourceTypeConverter::class,
-			\TYPO3\Flow\ResourceManagement\ResourceTypeConverter::CONFIGURATION_COLLECTION_NAME,
+			\Neos\Flow\ResourceManagement\ResourceTypeConverter::class,
+			\Neos\Flow\ResourceManagement\ResourceTypeConverter::CONFIGURATION_COLLECTION_NAME,
 			'images'
 		);
 
@@ -463,7 +463,7 @@ to your collection.
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         collections:
@@ -499,7 +499,7 @@ contains your published resources (as with local storage this can't be the same 
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         storages:
@@ -521,7 +521,7 @@ publication target.
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         collections:
@@ -543,7 +543,7 @@ Now you can overwrite your old collection configuration and remove the temporary
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       resource:
         collections:

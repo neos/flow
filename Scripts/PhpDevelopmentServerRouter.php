@@ -1,5 +1,5 @@
 <?php
-use TYPO3\Flow\Utility\Files;
+use Neos\Utility\Files;
 
 /**
  * Entry Point (Router) for PHP's embedded HTTP server. Use ./flow server:run to execute.
@@ -10,7 +10,7 @@ if (strpos($_SERVER['REQUEST_URI'], '_Resources/') !== false) {
     return false;
 }
 
-require(__DIR__. '/../Classes/TYPO3/Flow/Core/Bootstrap.php');
+require(__DIR__. '/../Classes/Core/Bootstrap.php');
 
 define('FLOW_PATH_ROOT', Files::getUnixStylePath(realpath(__DIR__ . '/../../../../')) . '/');
 
@@ -23,6 +23,6 @@ putenv('FLOW_REWRITEURLS=1');
 
 
 
-$context = \TYPO3\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
-$bootstrap = new \TYPO3\Flow\Core\Bootstrap($context);
+$context = \Neos\Flow\Core\Bootstrap::getEnvironmentConfigurationSetting('FLOW_CONTEXT') ?: 'Development';
+$bootstrap = new \Neos\Flow\Core\Bootstrap($context);
 $bootstrap->run();

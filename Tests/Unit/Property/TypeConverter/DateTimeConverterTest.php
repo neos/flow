@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
+namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\TypeConverter\DateTimeConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Error\Error as FlowError;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Error\Messages\Error as FlowError;
 
 /**
  * Testcase for the DateTime converter
  *
- * @covers \TYPO3\Flow\Property\TypeConverter\DateTimeConverter<extended>
+ * @covers \Neos\Flow\Property\TypeConverter\DateTimeConverter<extended>
  */
 class DateTimeConverterTest extends UnitTestCase
 {
@@ -211,6 +211,38 @@ class DateTimeConverterTest extends UnitTestCase
         $this->assertSame(strval($source), $date->format('U'));
     }
 
+    /**
+     * @return array
+     * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
+     * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
+     */
+    public function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider()
+    {
+        return array(
+            array('1308174051'),
+            array(1308174051),
+        );
+    }
+
+    /**
+     * @test
+     * @param $source
+     * @dataProvider convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider
+     */
+    public function convertFromIntegerOrDigitStringWithConfigurationWithoutFormatTests($source)
+    {
+        $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
+        $mockMappingConfiguration
+            ->expects($this->atLeastOnce())
+            ->method('getConfigurationValue')
+            ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT)
+            ->will($this->returnValue(null));
+
+        $date = $this->converter->convertFrom($source, 'DateTime', array(), $mockMappingConfiguration);
+        $this->assertInstanceOf(\DateTime::class, $date);
+        $this->assertSame(strval($source), $date->format('U'));
+    }
+
     /** Array to DateTime testcases  **/
 
     /**
@@ -244,7 +276,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate()
     {
@@ -280,7 +312,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      * @dataProvider invalidDatePartKeyValuesDataProvider
      */
     public function convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified($source)
@@ -345,7 +377,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid()
     {
@@ -359,7 +391,7 @@ class DateTimeConverterTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function convertFromArrayThrowsExceptionForEmptyArray()
     {
@@ -382,7 +414,7 @@ class DateTimeConverterTest extends UnitTestCase
     {
         return [
             [['date' => '2005-08-15T15:52:01+01:00'], true],
-            [['date' => '1308174051', 'dateFormat' => ''], false],
+            [['date' => '1308174051', 'dateFormat' => ''], true],
             [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false],
             [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false],
             [['date' => '12:13', 'dateFormat' => 'H:i'], true],
@@ -421,10 +453,14 @@ class DateTimeConverterTest extends UnitTestCase
         }
 
         $this->assertInstanceOf(\DateTime::class, $date);
-        if ($dateFormat === null) {
-            $dateFormat = DateTimeConverter::DEFAULT_DATE_FORMAT;
-        }
         $dateAsString = isset($source['date']) ? strval($source['date']) : '';
+        if ($dateFormat === null) {
+            if (ctype_digit($dateAsString)) {
+                $dateFormat = 'U';
+            } else {
+                $dateFormat = DateTimeConverter::DEFAULT_DATE_FORMAT;
+            }
+        }
         $this->assertSame($dateAsString, $date->format($dateFormat));
     }
 

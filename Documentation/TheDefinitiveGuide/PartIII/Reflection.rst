@@ -81,7 +81,7 @@ injected as usual.
 
 
 In an application, after wiring $reflectionService with
-``\TYPO3\Flow\Reflection\ReflectionService`` via, for example, Dependency
+``\Neos\Flow\Reflection\ReflectionService`` via, for example, Dependency
 Injection, there are a couple of options available. The following two examples
 just should give a slight overview.
 
@@ -210,8 +210,8 @@ itself! So complying with the walkthrough, the following approach is possible::
 
 It's even possible to collect all annotation classes of a particular class, done via
 ``reflectionService->getClassAnnotations('Magrathea\Erp\Domain\Model\CustomizedGoodsOrder');``
-which returns an array of annotations, in this case  ``TYPO3\Flow\Annotations\Entity``
+which returns an array of annotations, in this case  ``Neos\Flow\Annotations\Entity``
 and our ``Magrathea\Erp\Annotations\Reportable``.
 
 
-.. _Coding Guidelines:                   http://flow.typo3.org/documentation/codingguidelines.html
+.. _Coding Guidelines:                   http://flow.neos.io/documentation/codingguidelines.html

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests;
+namespace Neos\Flow\Tests;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Http\Component\ComponentContext;
-use TYPO3\Flow\Http;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Http\Component\ComponentContext;
+use Neos\Flow\Http;
 
 /**
  * A request handler which boots up Flow into a basic runtime level and then returns
@@ -33,10 +33,10 @@ use TYPO3\Flow\Http;
  * @Flow\Proxy(false)
  * @Flow\Scope("singleton")
  */
-class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandlerInterface
+class FunctionalTestRequestHandler implements \Neos\Flow\Http\HttpRequestHandlerInterface
 {
     /**
-     * @var \TYPO3\Flow\Core\Bootstrap
+     * @var \Neos\Flow\Core\Bootstrap
      */
     protected $bootstrap;
 
@@ -48,7 +48,7 @@ class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandle
     /**
      * Constructor
      *
-     * @param \TYPO3\Flow\Core\Bootstrap $bootstrap
+     * @param \Neos\Flow\Core\Bootstrap $bootstrap
      */
     public function __construct(Bootstrap $bootstrap)
     {
@@ -93,7 +93,7 @@ class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandle
     /**
      * Returns the currently processed HTTP request
      *
-     * @return \TYPO3\Flow\Http\Request
+     * @return \Neos\Flow\Http\Request
      */
     public function getHttpRequest()
     {
@@ -103,7 +103,7 @@ class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandle
     /**
      * Returns the HTTP response corresponding to the currently handled request
      *
-     * @return \TYPO3\Flow\Http\Response
+     * @return \Neos\Flow\Http\Response
      * @api
      */
     public function getHttpResponse()
@@ -141,11 +141,11 @@ class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandle
      * Allows to set the currently processed HTTP request by the base functional
      * test case.
      *
-     * @param \TYPO3\Flow\Http\Request $request
+     * @param \Neos\Flow\Http\Request $request
      * @return void
      * @deprecated since Flow 3.3, use setComponentContext() instead
      */
-    public function setHttpRequest(\TYPO3\Flow\Http\Request $request)
+    public function setHttpRequest(\Neos\Flow\Http\Request $request)
     {
         $this->getComponentContext()->replaceHttpRequest($request);
     }
@@ -154,11 +154,11 @@ class FunctionalTestRequestHandler implements \TYPO3\Flow\Http\HttpRequestHandle
      * Allows to set the currently processed HTTP response by the base functional
      * test case.
      *
-     * @param \TYPO3\Flow\Http\Response $response
+     * @param \Neos\Flow\Http\Response $response
      * @return void
      * @deprecated since Flow 3.3, use setComponentContext() instead
      */
-    public function setHttpResponse(\TYPO3\Flow\Http\Response $response)
+    public function setHttpResponse(\Neos\Flow\Http\Response $response)
     {
         $this->getComponentContext()->replaceHttpResponse($response);
     }

@@ -7,7 +7,7 @@
 # instead.                                                               #
 #                                                                        #
 
-TYPO3:
+Neos:
 
   Flow:
 
@@ -16,18 +16,10 @@ TYPO3:
       # Registers global objects to be evaluated for dynamic pointcut expressions
       globalObjects:
 
-        securityContext: TYPO3\Flow\Security\Context
+        securityContext: Neos\Flow\Security\Context
 
-    compatibility:
-
-      uriBuilder:
-
-        # A compatibility flag that affects the behavior of the UriBuilder when creating relative URIs:
-        # TRUE: The UriBuilder creates relative path like "some/path", a base tag is required in the respective HTML head
-        # FALSE: The UriBuilder prefixes the path with the scripts request path: "/document/root/some/path", no base tag will be required
-        #
-        # NOTE: This flag will be obsolete with version 2.2 and removed in version 3.0 of Flow
-        createRelativePaths: FALSE
+    # A section for compatibility flags that are deprecated.
+    compatibility: []
 
     core:
 
@@ -37,7 +29,7 @@ TYPO3:
 
       # Key of the "main" package of the application. This package's meta data is used for displaying the application
       # version and possibly other metadata in the X-Flow-Powered HTTP header, ./flow command line help and where else needed.
-      applicationPackageKey: 'TYPO3.Flow'
+      applicationPackageKey: 'Neos.Flow'
 
       # Human-readable name of the "main" package of the application. This name is displayed in the X-Flow-Powered
       # HTTP header, in the ./flow command line help and where else needed.
@@ -68,12 +60,12 @@ TYPO3:
       exceptionHandler:
 
         # Defines the global, last-resort exception handler.
-        # The specified class must implement \TYPO3\Flow\Error\ExceptionHandlerInterface
-        className: TYPO3\Flow\Error\ProductionExceptionHandler
+        # The specified class must implement \Neos\Flow\Error\ExceptionHandlerInterface
+        className: Neos\Flow\Error\ProductionExceptionHandler
 
         # default options for all rendering groups (see below). Options can be overridden in the respective rendering group
         defaultRenderingOptions:
-          viewClassName: TYPO3\Flow\Mvc\View\SimpleTemplateView
+          viewClassName: Neos\Flow\Mvc\View\SimpleTemplateView
           viewOptions: []
           renderTechnicalDetails: FALSE
           logException: TRUE
@@ -86,14 +78,14 @@ TYPO3:
             matchingStatusCodes: [404]
             options:
               logException: FALSE
-              templatePathAndFilename: 'resource://TYPO3.Flow/Private/Templates/Error/Default.html'
+              templatePathAndFilename: 'resource://Neos.Flow/Private/Templates/Error/Default.html'
               variables:
                 errorDescription: 'Sorry, the page you requested was not found.'
 
           databaseConnectionExceptions:
-            matchingExceptionClassNames: ['TYPO3\Flow\Persistence\Doctrine\Exception\DatabaseException']
+            matchingExceptionClassNames: ['Neos\Flow\Persistence\Doctrine\Exception\DatabaseException']
             options:
-              templatePathAndFilename: 'resource://TYPO3.Flow/Private/Templates/Error/Default.html'
+              templatePathAndFilename: 'resource://Neos.Flow/Private/Templates/Error/Default.html'
               variables:
                 errorDescription: 'Sorry, the database connection couldn''t be established.'
 
@@ -109,23 +101,23 @@ TYPO3:
         # List of regular expressions classes are matched against in the debugger
         # to prevent them from being expanded.
         ignoredClasses:
-          'TYPO3\\Flow\\Aop.*': TRUE
-          'TYPO3\\Flow\\Cac.*': TRUE
-          'TYPO3\\Flow\\Core\\.*': TRUE
-          'TYPO3\\Flow\\Con.*': TRUE
-          'TYPO3\\Flow\\Http\\RequestHandler': TRUE
-          'TYPO3\\Flow\\Uti.*': TRUE
-          'TYPO3\\Flow\\Mvc\\Routing.*': TRUE
-          'TYPO3\\Flow\\Log.*': TRUE
-          'TYPO3\\Flow\\Obj.*': TRUE
-          'TYPO3\\Flow\\Pac.*': TRUE
-          'TYPO3\\Flow\\Persistence\\(?!Doctrine\\Mapping).*': TRUE
-          'TYPO3\\Flow\\Pro.*': TRUE
-          'TYPO3\\Flow\\Ref.*': TRUE
-          'TYPO3\\Flow\\Sec.*': TRUE
-          'TYPO3\\Flow\\Sig.*': TRUE
-          'TYPO3\\Flow\\.*ResourceManager': TRUE
-          'TYPO3\\Fluid\\.*': TRUE
+          'Neos\\Flow\\Aop.*': TRUE
+          'Neos\\Flow\\Cac.*': TRUE
+          'Neos\\Flow\\Core\\.*': TRUE
+          'Neos\\Flow\\Con.*': TRUE
+          'Neos\\Flow\\Http\\RequestHandler': TRUE
+          'Neos\\Flow\\Uti.*': TRUE
+          'Neos\\Flow\\Mvc\\Routing.*': TRUE
+          'Neos\\Flow\\Log.*': TRUE
+          'Neos\\Flow\\Obj.*': TRUE
+          'Neos\\Flow\\Pac.*': TRUE
+          'Neos\\Flow\\Persistence\\(?!Doctrine\\Mapping).*': TRUE
+          'Neos\\Flow\\Pro.*': TRUE
+          'Neos\\Flow\\Ref.*': TRUE
+          'Neos\\Flow\\Sec.*': TRUE
+          'Neos\\Flow\\Sig.*': TRUE
+          'Neos\\Flow\\.*ResourceManager': TRUE
+          'Neos\\FluidAdaptor\\.*': TRUE
           '.+Service$': TRUE
           '.+Repository$': TRUE
           'PHPUnit_Framework_MockObject_InvocationMocker': TRUE
@@ -150,7 +142,7 @@ TYPO3:
       # The value can be one of:
       #
       # - "Off" (no application token header is sent)
-      # - "ApplicationName" (the application name only, determined via the TYPO3.Flow.core.applicationKey setting)
+      # - "ApplicationName" (the application name only, determined via the Neos.Flow.core.applicationKey setting)
       # - "MajorVersion" (the application name + major version, e.g. "Neos/2"
       # - "MinorVersion" (the application name + minor version, e.g. "Neos/2.1"
       #
@@ -175,21 +167,21 @@ TYPO3:
           chain:
             'trustedProxies':
               position: 'start'
-              component: 'TYPO3\Flow\Http\Component\TrustedProxiesComponent'
+              component: 'Neos\Flow\Http\Component\TrustedProxiesComponent'
 
         'process':
           chain:
             'routing':
               position: 'start'
-              component: 'TYPO3\Flow\Mvc\Routing\RoutingComponent'
+              component: 'Neos\Flow\Mvc\Routing\RoutingComponent'
             'dispatching':
-              component: 'TYPO3\Flow\Mvc\DispatchComponent'
+              component: 'Neos\Flow\Mvc\DispatchComponent'
 
         'postprocess':
           chain:
             'standardsCompliance':
               position: 'end'
-              component: 'TYPO3\Flow\Http\Component\StandardsComplianceComponent'
+              component: 'Neos\Flow\Http\Component\StandardsComplianceComponent'
 
       trustedProxies:
 
@@ -219,8 +211,8 @@ TYPO3:
 
       # Settings for Flow's default loggers
       systemLogger:
-        logger: TYPO3\Flow\Log\Logger
-        backend: TYPO3\Flow\Log\Backend\FileBackend
+        logger: Neos\Flow\Log\Logger
+        backend: Neos\Flow\Log\Backend\FileBackend
         backendOptions:
            logFileURL: '%FLOW_PATH_DATA%Logs/System.log'
            createParentDirectories: TRUE
@@ -230,7 +222,7 @@ TYPO3:
            logMessageOrigin: FALSE
 
       securityLogger:
-        backend: TYPO3\Flow\Log\Backend\FileBackend
+        backend: Neos\Flow\Log\Backend\FileBackend
         backendOptions:
            logFileURL: '%FLOW_PATH_DATA%Logs/Security.log'
            createParentDirectories: TRUE
@@ -240,7 +232,7 @@ TYPO3:
            logIpAddress: TRUE
 
       sqlLogger:
-        backend: TYPO3\Flow\Log\Backend\FileBackend
+        backend: Neos\Flow\Log\Backend\FileBackend
         backendOptions:
           logFileURL: '%FLOW_PATH_DATA%Logs/Query.log'
           createParentDirectories: TRUE
@@ -249,7 +241,7 @@ TYPO3:
           logFilesToKeep: 1
 
       i18nLogger:
-        backend: TYPO3\Flow\Log\Backend\FileBackend
+        backend: Neos\Flow\Log\Backend\FileBackend
         backendOptions:
           logFileURL: '%FLOW_PATH_DATA%Logs/I18n.log'
           createParentDirectories: TRUE
@@ -308,7 +300,7 @@ TYPO3:
       # Each regular expression will be tested against the list of fully qualified
       # class names in the package and classes will be included if matching.
       #
-      # For Flow packages (type = "typo3-flow-*") this setting is not required as they're
+      # For Flow packages (type = "neos-*") this setting is not required as they're
       # reflected by default. You can however exclude specific (or all) classes from Flow packages
       # by specifying corresponding regular expressions that don't match classes to exclude.
       #
@@ -346,17 +338,17 @@ TYPO3:
         enable: TRUE
         sqlLogger: NULL
         filters:
-          Flow_Security_Entity_Filter: 'TYPO3\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter'
+          Flow_Security_Entity_Filter: 'Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter'
 
         # DBAL custom mapping types can be registered here
         dbal:
           mappingTypes:
             'flow_json_array':
               dbType: 'json_array'
-              className: 'TYPO3\Flow\Persistence\Doctrine\DataTypes\JsonArrayType'
+              className: 'Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType'
             'objectarray':
               dbType: 'array'
-              className: 'TYPO3\Flow\Persistence\Doctrine\DataTypes\ObjectArray'
+              className: 'Neos\Flow\Persistence\Doctrine\DataTypes\ObjectArray'
 
         # Doctrine ORM Lifecycle events and their subscribers and listeners.
         # See Flow manual, chapter "Persistence" for further information on how to subscribe to Doctrine events.
@@ -441,13 +433,13 @@ TYPO3:
 
         #
         defaultPersistentResourcesStorage:
-          storage: 'TYPO3\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
+          storage: 'Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage'
           storageOptions:
             path: '%FLOW_PATH_DATA%Persistent/Resources/'
 
         #
         defaultStaticResourcesStorage:
-          storage: 'TYPO3\Flow\ResourceManagement\Storage\PackageStorage'
+          storage: 'Neos\Flow\ResourceManagement\Storage\PackageStorage'
 
       # Definition of the default resource collections.
       # Collections are used to bundle / group static or persistent resources
@@ -471,7 +463,7 @@ TYPO3:
 
         # Target for publishing static resources to the local web directory
         localWebDirectoryStaticResourcesTarget:
-          target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+          target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
           targetOptions:
             path: '%FLOW_PATH_WEB%_Resources/Static/Packages/'
             baseUri: '_Resources/Static/Packages/'
@@ -482,7 +474,7 @@ TYPO3:
 
         # Target for publishing persistent resources to the local web directory
         localWebDirectoryPersistentResourcesTarget:
-          target: 'TYPO3\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
+          target: 'Neos\Flow\ResourceManagement\Target\FileSystemSymlinkTarget'
           targetOptions:
             path: '%FLOW_PATH_WEB%_Resources/Persistent/'
             baseUri: '_Resources/Persistent/'
@@ -516,19 +508,19 @@ TYPO3:
         #       'foo': 'bar'
         #     interceptor:  AccessDeny
         #
-        # If the objects are in the namespace "\TYPO3\Flow\Security" it is enough to specify
+        # If the objects are in the namespace "\Neos\Flow\Security" it is enough to specify
         # the last name of the class name, e.g. AccessGrant
         filters:
-          'TYPO3.Flow:CsrfProtection':
+          'Neos.Flow:CsrfProtection':
             pattern: 'CsrfProtection'
-            interceptor: AccessDeny
+            interceptor: CsrfTokenMissing
 
       authentication:
 
         # Array of authentication providers that should be used for authentication.
         # If you define a request pattern, the provider will only be called if the pattern
         # matches the current request. If the objects are in the namespace
-        # "\TYPO3\Flow\Security" it is sufficient to specify the last part of the class name,
+        # "\Neos\Flow\Security" it is sufficient to specify the last part of the class name,
         # e.g. PersistedUsernamePasswordProvider
         # Note: Authentication will be performed in the given order of the providers.
         # So make sure, that the primary authentication method is the first array entry.
@@ -546,7 +538,7 @@ TYPO3:
         #      'AdminControllers':
         #        pattern: 'ControllerObjectName'
         #        patternOptions:
-        #          'controllerObjectNamePattern': 'TYPO3\Admin\Controller\.*'
+        #          'controllerObjectNamePattern': 'Neos\Admin\Controller\.*'
         #    entryPoint: 'WebRedirect'
         #    entryPointOptions:
         #      routeValues:
@@ -595,9 +587,9 @@ TYPO3:
           # The default strategy will be used to hash or validate passwords if no specific strategy is given
           default: bcrypt
 
-          pbkdf2: TYPO3\Flow\Security\Cryptography\Pbkdf2HashingStrategy
-          bcrypt: TYPO3\Flow\Security\Cryptography\BCryptHashingStrategy
-          saltedmd5: TYPO3\Flow\Security\Cryptography\SaltedMd5HashingStrategy
+          pbkdf2: Neos\Flow\Security\Cryptography\Pbkdf2HashingStrategy
+          bcrypt: Neos\Flow\Security\Cryptography\BCryptHashingStrategy
+          saltedmd5: Neos\Flow\Security\Cryptography\SaltedMd5HashingStrategy
 
         Pbkdf2HashingStrategy:
 
@@ -636,7 +628,7 @@ TYPO3:
       # A specific name for the session, used in the session cookie.
       # The session name must be alphanumerical and must contain at least one
       # character – not only numbers.
-      name: 'TYPO3_Flow_Session'
+      name: 'Neos_Flow_Session'
 
       # Configuration for handling of expired sessions
       garbageCollection:
@@ -678,7 +670,7 @@ TYPO3:
         domain: NULL
 
     utility:
-      lockStrategyClassName: 'TYPO3\Flow\Utility\Lock\FlockLockStrategy'
+      lockStrategyClassName: 'Neos\Utility\Lock\FlockLockStrategy'
 
   # DocTools is a tool used by Flow Developers to help with a variety of documentation tasks.
   # These settings are only used in generating Documentation.
@@ -698,54 +690,54 @@ TYPO3:
       'Flow:FlowCommands':
         title: 'Flow Command Reference'
         packageKeys:
-          - 'TYPO3.Flow'
-          - 'TYPO3.Party'
+          - 'Neos.Flow'
+          - 'Neos.Party'
           - 'Neos.FluidAdaptor'
-          - 'TYPO3.Kickstart'
-          - 'TYPO3.Welcome'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/CommandReference.rst'
+          - 'Neos.Kickstart'
+          - 'Neos.Welcome'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/CommandReference.rst'
 
     references:
       'Flow:FluidViewHelpers':
         title: 'Fluid ViewHelper Reference'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/FluidViewHelperReference.rst'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/FluidViewHelperReference.rst'
         affectedClasses:
           parentClassName: 'Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper'
-          classNamePattern: '/^TYPO3\\Fluid\\ViewHelpers\\.*$/i'
+          classNamePattern: '/^Neos\\FluidAdaptor\\ViewHelpers\\.*$/i'
         parser:
-          implementationClassName: 'TYPO3\DocTools\Domain\Service\FluidViewHelperClassParser'
+          implementationClassName: 'Neos\DocTools\Domain\Service\FluidViewHelperClassParser'
           options:
             namespaces:
               f: 'Neos\FluidAdaptor\ViewHelpers'
       'Flow:FlowValidators':
         title: 'Flow Validator Reference'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/ValidatorReference.rst'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/ValidatorReference.rst'
         affectedClasses:
-          parentClassName: 'TYPO3\Flow\Validation\Validator\AbstractValidator'
-          classNamePattern: '/^TYPO3\\Flow\\Validation\\Validator\\.*$/i'
+          parentClassName: 'Neos\Flow\Validation\Validator\AbstractValidator'
+          classNamePattern: '/^Neos\\Flow\\Validation\\Validator\\.*$/i'
         parser:
-          implementationClassName: 'TYPO3\DocTools\Domain\Service\FlowValidatorClassParser'
+          implementationClassName: 'Neos\DocTools\Domain\Service\FlowValidatorClassParser'
       'Flow:FlowSignals':
         title: 'Flow Signals Reference'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/SignalsReference.rst'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/SignalsReference.rst'
         affectedClasses:
-          classesContainingMethodsAnnotatedWith: 'TYPO3\Flow\Annotations\Signal'
-          classNamePattern: '/^TYPO3\\Flow\\.*$/i'
+          classesContainingMethodsAnnotatedWith: 'Neos\Flow\Annotations\Signal'
+          classNamePattern: '/^Neos\\Flow\\.*$/i'
           includeAbstractClasses: TRUE
         parser:
-          implementationClassName: 'TYPO3\DocTools\Domain\Service\SignalsParser'
+          implementationClassName: 'Neos\DocTools\Domain\Service\SignalsParser'
       'Flow:FlowTypeConverters':
         title: 'Flow TypeConverter Reference'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/TypeConverterReference.rst'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/TypeConverterReference.rst'
         affectedClasses:
-          parentClassName: 'TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter'
-          classNamePattern: '/^TYPO3\\Flow\\.*$/i'
+          parentClassName: 'Neos\Flow\Property\TypeConverter\AbstractTypeConverter'
+          classNamePattern: '/^Neos\\Flow\\.*$/i'
         parser:
-          implementationClassName: 'TYPO3\DocTools\Domain\Service\FlowTypeConverterClassParser'
+          implementationClassName: 'Neos\DocTools\Domain\Service\FlowTypeConverterClassParser'
       'Flow:FlowAnnotations':
         title: 'Flow Annotation Reference'
-        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/TYPO3.Flow/Documentation/TheDefinitiveGuide/PartV/AnnotationReference.rst'
+        savePathAndFilename: '%FLOW_PATH_PACKAGES%Framework/Neos.Flow/Documentation/TheDefinitiveGuide/PartV/AnnotationReference.rst'
         affectedClasses:
-          classNamePattern: '/^TYPO3\\Flow\\Annotations\\.*$/i'
+          classNamePattern: '/^Neos\\Flow\\Annotations\\.*$/i'
         parser:
-          implementationClassName: 'TYPO3\DocTools\Domain\Service\FlowAnnotationClassParser'
+          implementationClassName: 'Neos\DocTools\Domain\Service\FlowAnnotationClassParser'

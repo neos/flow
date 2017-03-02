@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cache;
+namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,12 +12,13 @@ namespace TYPO3\Flow\Tests\Unit\Cache;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Cache;
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Environment;
+use Neos\Cache;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Utility\Environment;
 
 /**
  * Testcase for the Cache Manager
@@ -47,7 +48,7 @@ class CacheManagerTest extends UnitTestCase
     public function setUp()
     {
         vfsStream::setup('Foo');
-        $this->cacheManager = new Cache\CacheManager();
+        $this->cacheManager = new CacheManager();
 
         $this->mockEnvironment = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
         $this->mockEnvironment->expects($this->any())->method('getPathToTemporaryDirectory')->will($this->returnValue('vfs://Foo/'));
@@ -76,7 +77,7 @@ class CacheManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Cache\Exception\DuplicateIdentifierException
+     * @expectedException \Neos\Cache\Exception\DuplicateIdentifierException
      */
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier()
     {
@@ -109,7 +110,7 @@ class CacheManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Cache\Exception\NoSuchCacheException
+     * @expectedException \Neos\Cache\Exception\NoSuchCacheException
      */
     public function getCacheThrowsExceptionForNonExistingIdentifier()
     {
@@ -226,7 +227,7 @@ class CacheManagerTest extends UnitTestCase
         $this->registerCache('Flow_Object_Classes');
         $this->registerCache('Flow_Object_Configuration');
 
-        $this->mockConfigurationManager->expects($this->once())->method('flushConfigurationCache');
+        $this->mockConfigurationManager->expects($this->once())->method('refreshConfiguration');
 
         $this->cacheManager->flushSystemCachesByChangedFiles('Flow_ConfigurationFiles', []);
     }
@@ -240,11 +241,11 @@ class CacheManagerTest extends UnitTestCase
         $objectConfigurationCache = $this->registerCache('Flow_Object_Configuration');
         $this->registerCache('Flow_Reflection_Status');
 
-        $objectClassCache->expects($this->once())->method('remove')->with('TYPO3_Flow_Cache_CacheManager');
+        $objectClassCache->expects($this->once())->method('remove')->with('Neos_Flow_Cache_CacheManager');
         $objectConfigurationCache->expects($this->once())->method('remove')->with('allCompiledCodeUpToDate');
 
         $this->cacheManager->flushSystemCachesByChangedFiles('Flow_ClassFiles', [
-            FLOW_PATH_PACKAGES . 'Framework/TYPO3.Flow/Classes/TYPO3/Flow/Cache/CacheManager.php' => ChangeDetectionStrategyInterface::STATUS_CHANGED
+            FLOW_PATH_PACKAGES . 'Framework/Neos.Flow/Classes/Cache/CacheManager.php' => ChangeDetectionStrategyInterface::STATUS_CHANGED
         ]);
     }
 
@@ -257,7 +258,7 @@ class CacheManagerTest extends UnitTestCase
         $objectConfigurationCache = $this->registerCache('Flow_Object_Configuration');
         $this->registerCache('Flow_Reflection_Status');
 
-        $objectClassCache->expects($this->once())->method('remove')->with('TYPO3_Flow_Tests_Unit_Cache_CacheManagerTest');
+        $objectClassCache->expects($this->once())->method('remove')->with('Neos_Flow_Tests_Unit_Cache_CacheManagerTest');
         $objectConfigurationCache->expects($this->once())->method('remove')->with('allCompiledCodeUpToDate');
 
         $this->cacheManager->flushSystemCachesByChangedFiles('Flow_ClassFiles', [

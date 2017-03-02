@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http\Client;
+namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Http\Client;
  * source code.
  */
 
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the HTTP browser
@@ -33,7 +33,7 @@ class BrowserTest extends FunctionalTestCase
             'Functional Test - Http::Client::BrowserTest',
             'test/http/redirecting(/{@action})',
             [
-                '@package' => 'TYPO3.Flow',
+                '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Http\Fixtures',
                 '@controller' => 'Redirecting',
                 '@action' => 'fromHere',

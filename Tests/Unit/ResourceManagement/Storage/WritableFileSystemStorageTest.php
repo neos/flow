@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Storage;
+namespace Neos\Flow\Tests\Unit\ResourceManagement\Storage;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,10 +13,10 @@ namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Storage;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use TYPO3\Flow\ResourceManagement\Storage\WritableFileSystemStorage;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Environment;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Utility\Environment;
+use Neos\Utility\Files;
 
 /**
  * Test case for the WritableFileSystemStorage class

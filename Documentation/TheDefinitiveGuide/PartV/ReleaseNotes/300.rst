@@ -504,7 +504,7 @@ Further breaking changes
 ========================
 
 * [BUGFIX] Generate Value Object hash from property values (see `#55953 <https://forge.typo3.org/issues/55953>`_)
-* [TASK] Do not use LoggerFactory in a static context(see `c4a9350 <https://git.typo3.org/Packages/TYPO3.Flow.git/commit/c4a935054d840a49394559a128296b2812dbfca2>`_)
+* [TASK] Do not use LoggerFactory in a static context(see `c4a9350 <https://git.typo3.org/Packages/Neos.Flow.git/commit/c4a935054d840a49394559a128296b2812dbfca2>`_)
 * [TASK] Fix order of DB migrations related to role handling (see `d1641d4 <https://git.typo3.org/Packages/TYPO3.Flow.git/commit/d1641d40b73f5cc716693e0fd1ae7e79abbb07d2>`_)
 * [BUGFIX] SessionManagerInterface and SessionInterface are incomplete (see `0c8ed7d <https://git.typo3.org/Packages/TYPO3.Flow.git/commit/0c8ed7daed836e80b36b951d61fbd24295f7f24c>`_)
 * [BUGFIX] Correct object modification exception trigger (see `525a894 <https://git.typo3.org/Packages/TYPO3.Flow.git/commit/525a8942af2866966c8b86c6995734b7885e451c>`_)
@@ -608,5 +608,5 @@ in *Development Context*, padded with some manual checking and adjustments needs
 That should result in a working package.
 
 If it does not and you have no idea what to do next, please get in touch
-with us. The `support page <http://flow.typo3.org/support/>`_ provides more
+with us. The `support page <http://flow.neos.io/support/>`_ provides more
 information.

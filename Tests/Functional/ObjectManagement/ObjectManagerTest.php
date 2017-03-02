@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\ObjectManagement;
+namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\ObjectManagement;
  * source code.
  */
 
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the Object Manager features
@@ -50,5 +50,22 @@ class ObjectManagerTest extends FunctionalTestCase
         $objectByClassName = $this->objectManager->get(Fixtures\InterfaceAImplementation::class);
 
         $this->assertSame($objectByInterface, $objectByClassName);
+    }
+
+    /**
+     * @test
+     */
+    public function shutdownObjectMethodIsCalledAfterRegistrationViaConstructor()
+    {
+        $entity = new Fixtures\PrototypeClassG();
+        $entity->setName('Shutdown');
+
+        /**
+         * When shutting down the ObjectManager shutdownObject() on Fixtures\TestEntityWithShutdown is called
+         * and sets $destructed property to TRUE
+         */
+        \Neos\Flow\Core\Bootstrap::$staticObjectManager->shutdown();
+
+        $this->assertTrue($entity->isDestructed());
     }
 }

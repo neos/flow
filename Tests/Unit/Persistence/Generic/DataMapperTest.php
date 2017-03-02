@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
+namespace Neos\Flow\Tests\Unit\Persistence\Generic;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,20 +11,20 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
  * source code.
  */
 
-use TYPO3\Flow\Aop\ProxyInterface;
-use TYPO3\Flow\Reflection\ClassSchema;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Persistence;
+use Neos\Flow\Aop\ProxyInterface;
+use Neos\Flow\Reflection\ClassSchema;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence;
 
 /**
- * Testcase for \TYPO3\Flow\Persistence\DataMapper
+ * Testcase for \Neos\Flow\Persistence\DataMapper
  */
 class DataMapperTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Generic\Exception\InvalidObjectDataException
+     * @expectedException \Neos\Flow\Persistence\Generic\Exception\InvalidObjectDataException
      */
     public function mapToObjectThrowsExceptionOnEmptyInput()
     {
@@ -188,7 +188,7 @@ class DataMapperTest extends UnitTestCase
 
         $objectData = [
             'identifier' => '1234',
-            'classname' => 'TYPO3\Post',
+            'classname' => 'Neos\Post',
             'properties' => [
                 'firstProperty' => [
                     'type' => 'array',
@@ -206,18 +206,18 @@ class DataMapperTest extends UnitTestCase
                     'value' => 'theUnixtime'
                 ],
                 'fourthProperty' => [
-                    'type' => '\TYPO3\Some\Domain\Model',
+                    'type' => \Neos\Some\Domain\Model::class,
                     'multivalue' => false,
                     'value' => ['identifier' => 'theMappedObjectIdentifier']
                 ]
             ]
         ];
 
-        $classSchema = new ClassSchema('TYPO3\Post');
+        $classSchema = new ClassSchema('Neos\Post');
         $classSchema->addProperty('firstProperty', 'array');
         $classSchema->addProperty('secondProperty', 'SplObjectStorage');
         $classSchema->addProperty('thirdProperty', 'DateTime');
-        $classSchema->addProperty('fourthProperty', \TYPO3\Some\Domain\Model::class);
+        $classSchema->addProperty('fourthProperty', \Neos\Some\Domain\Model::class);
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getClassSchema')->will($this->returnValue($classSchema));
@@ -385,7 +385,7 @@ class DataMapperTest extends UnitTestCase
     {
         $expected = new \DateTime();
         $dataMapper = $this->getAccessibleMock(Persistence\Generic\DataMapper::class, ['dummy']);
-        $this->assertEquals($dataMapper->_call('mapDateTime', $expected->getTimestamp()), $expected);
+        $this->assertEquals($dataMapper->_call('mapDateTime', $expected->getTimestamp())->format(\DateTime::W3C), $expected->format(\DateTime::W3C));
     }
 
     /**

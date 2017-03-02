@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Core\Migrations;
  * source code.
  */
 
-use TYPO3\Flow\Utility\Files;
+use Neos\Utility\Files;
 
 /**
  * Move all code to PSR-0 compatible directory structure, remove Package.xml,
@@ -36,6 +36,11 @@ class Version20120920111200 extends AbstractMigration
      */
     public function up()
     {
+        if (file_exists(Files::concatenatePaths([$this->targetPackageData['path'], 'composer.json']))) {
+            $this->showNote('Skipping moving of classes to PSR-0 layout since composer.json already exists.');
+            return;
+        }
+
         $packageKeyAsDirectory = str_replace('.', '/', $this->targetPackageData['packageKey']);
         if (!is_dir(Files::concatenatePaths(array($this->targetPackageData['path'], 'Classes', $packageKeyAsDirectory)))) {
             $this->moveFile('Classes/*', 'Classes/' . $packageKeyAsDirectory . '/');

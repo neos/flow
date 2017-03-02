@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
+namespace Neos\Flow\Tests\Functional\Persistence\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +28,12 @@ class Image
     protected $data;
 
     /**
+     * @Flow\Transient
+     * @var CleanupObject
+     */
+    protected $relatedObject;
+
+    /**
      * @return string
      */
     public function getData()
@@ -42,5 +48,28 @@ class Image
     public function setData($data)
     {
         $this->data = $data;
+    }
+
+    /**
+     * @return CleanupObject
+     */
+    public function getRelatedObject()
+    {
+        return $this->relatedObject;
+    }
+
+    /**
+     * @param CleanupObject $relatedObject
+     */
+    public function setRelatedObject(CleanupObject $relatedObject = null)
+    {
+        $this->relatedObject = $relatedObject;
+    }
+
+    public function shutdownObject()
+    {
+        if ($this->relatedObject instanceof CleanupObject) {
+            $this->relatedObject->toggleState();
+        }
     }
 }

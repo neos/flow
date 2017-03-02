@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures;
+namespace Neos\Flow\Tests\Functional\Reflection\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Tests\Functional\Reflection\Fixtures\Model\SuperEntity;
+use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SuperEntity;
 
 /**
  * An abstract annotated class with use statements

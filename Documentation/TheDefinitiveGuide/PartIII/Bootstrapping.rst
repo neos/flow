@@ -72,7 +72,7 @@ application:
   in the public ``Web`` directory.
 
 Both scripts set certain environment variables and then instantiate and run the
-``TYPO3\Flow\Core\Bootstrap`` class.
+``Neos\Flow\Core\Bootstrap`` class.
 
 The bootstrap's ``run()`` method initializes the bare minimum needed for any
 kind of operation. When it did that, it determines the actual request
@@ -126,7 +126,7 @@ Request Handlers
 
 A request handler is in charge of executing the boot sequence and ultimately
 answering the request it was designed for. It must implement the
-``\TYPO3\Flow\Core\RequestHandlerInterface`` interface which,
+``\Neos\Flow\Core\RequestHandlerInterface`` interface which,
 among others, contains the following methods::
 
 	public function handleRequest();
@@ -148,7 +148,7 @@ containing the request handler::
 
 	class Package extends BasePackage {
 
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Foo\BarRequestHandler($bootstrap));
 		}
 
@@ -158,5 +158,5 @@ containing the request handler::
 
 	The Flow package contains meaningful working examples for registration of
 	request handlers and building boot sequences. A good starting point is
-	the ``\TYPO3\Flow\Package`` class where the request handlers are
+	the ``\Neos\Flow\Package`` class where the request handlers are
 	registered.

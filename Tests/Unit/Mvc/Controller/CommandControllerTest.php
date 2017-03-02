@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Cli\CommandController;
-use TYPO3\Flow\Cli\CommandManager;
-use TYPO3\Flow\Cli\ConsoleOutput;
-use TYPO3\Flow\Cli\Request;
-use TYPO3\Flow\Mvc\Controller\Arguments;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Mvc;
+use Neos\Flow\Cli\CommandController;
+use Neos\Flow\Cli\CommandManager;
+use Neos\Flow\Cli\ConsoleOutput;
+use Neos\Flow\Cli\Request;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc;
 
 /**
  * Testcase for the Command Controller
@@ -60,7 +60,7 @@ class CommandControllerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\UnsupportedRequestTypeException
+     * @expectedException \Neos\Flow\Mvc\Exception\UnsupportedRequestTypeException
      */
     public function processRequestThrowsExceptionIfGivenRequestIsNoCliRequest()
     {

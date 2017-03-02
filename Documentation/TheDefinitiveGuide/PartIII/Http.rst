@@ -26,24 +26,24 @@ The basic walk through a Flow-based web application is as follows:
 
 * the browser sends an HTTP request to a webserver
 * the webserver calls Web/index.php and passes control over to Flow
-* the :abbr:`Bootstrap (\\TYPO3\\Flow\\Core\\Bootstrap)` initializes the bare minimum and passes control to a suitable
+* the :abbr:`Bootstrap (\\Neos\\Flow\\Core\\Bootstrap)` initializes the bare minimum and passes control to a suitable
   request handler
-* by default, the :abbr:`HTTP Request Handler (\\TYPO3\\Flow\\Http\\RequestHandler)` takes over and runs a boot sequence
+* by default, the :abbr:`HTTP Request Handler (\\Neos\\Flow\\Http\\RequestHandler)` takes over and runs a boot sequence
   which initializes all important parts of Flow
 * the HTTP Request Handler builds an HTTP Request and Response object. The
-  :abbr:`Request object (\\TYPO3\\Flow\\Http\\Request)` contains all important properties of the real HTTP request.
-  The :abbr:`Response object (\\TYPO3\\Flow\\Http\\Response)` in turn is empty and will be filled with information by a
+  :abbr:`Request object (\\Neos\\Flow\\Http\\Request)` contains all important properties of the real HTTP request.
+  The :abbr:`Response object (\\Neos\\Flow\\Http\\Response)` in turn is empty and will be filled with information by a
   controller at a later point
 * the HTTP Request Handler initializes the
-  :abbr:`HTTP Component Chain (\\TYPO3\\Flow\\Http\\Component\\ComponentChain)`, a set of independent units that have
+  :abbr:`HTTP Component Chain (\\Neos\\Flow\\Http\\Component\\ComponentChain)`, a set of independent units that have
   access to the current HTTP request and response and can share information amongst each other.
   The chain is fully configurable, but by default it consists of the following steps:
-* the ``routing`` component invokes the :abbr:`Router (\\TYPO3\\Flow\\Mvc\\Routing\\Router)` to determine which
+* the ``routing`` component invokes the :abbr:`Router (\\Neos\\Flow\\Mvc\\Routing\\Router)` to determine which
   controller and action is responsible for processing the request. This information (controller name, action name,
-  arguments) is stored in the :abbr:`ComponentContext (\\TYPO3\\Flow\\Http\\Component\\ComponentContext)`
+  arguments) is stored in the :abbr:`ComponentContext (\\Neos\\Flow\\Http\\Component\\ComponentContext)`
 * the ``dispatching`` component tries to invoke the corresponding controller action via the
-  :abbr:`Dispatcher (TYPO3\\Flow\\Mvc\\Dispatcher)`
-* the controller, usually an :abbr:`Action Controller (\\TYPO3\\Flow\\Mvc\\Controller\\ActionController)`, processes the
+  :abbr:`Dispatcher (Neos\\Flow\\Mvc\\Dispatcher)`
+* the controller, usually an :abbr:`Action Controller (\\Neos\\Flow\\Mvc\\Controller\\ActionController)`, processes the
   request and modifies the given HTTP Response object which will, in the end, contain the content to display (body) as
   well as any headers to be passed back to the client
 * the ``standardsCompliance`` component tries to make the HTTP Response standards compliant by adding required HTTP
@@ -88,7 +88,7 @@ the request handler. This pays off in situations where a specialized request han
 requests in a very effective way. In fact, the request handler is responsible for executing big parts of the
 initialization procedures and thus can optimize the boot process by choosing only the parts it actually needs.
 
-A request handler must implement the :abbr:`RequestHandler interface (\\TYPO3\\Flow\\Core\\RequestHandlerInterface)`
+A request handler must implement the :abbr:`RequestHandler interface (\\Neos\\Flow\\Core\\RequestHandlerInterface)`
 interface which, among others, contains the following methods::
 
 	public function handleRequest();
@@ -108,7 +108,7 @@ the ``Package`` class of the package containing the request handler::
 
 	class Package extends BasePackage {
 
-		public function boot(\TYPO3\Flow\Core\Bootstrap $bootstrap) {
+		public function boot(\Neos\Flow\Core\Bootstrap $bootstrap) {
 			$bootstrap->registerRequestHandler(new \Acme\Foo\BarRequestHandler($bootstrap));
 		}
 
@@ -118,11 +118,11 @@ Component Chain
 ---------------
 
 Instead of registering a new RequestHandler the application workflow can also be altered by a custom ``HTTP Component``.
-A HTTP component must implement the :abbr:`Component interface (\\TYPO3\\Flow\\Http\\Component\\ComponentInterface)`
+A HTTP component must implement the :abbr:`Component interface (\\Neos\\Flow\\Http\\Component\\ComponentInterface)`
 that defines the ``handle()`` method::
 
-	use TYPO3\Flow\Http\Component\ComponentInterface;
-	use TYPO3\Flow\Http\Component\ComponentContext;
+	use Neos\Flow\Http\Component\ComponentInterface;
+	use Neos\Flow\Http\Component\ComponentContext;
 
 	/**
 	 * A sample HTTP component that intercepts the default handling and returns "bar" if the request contains an argument "foo"
@@ -159,7 +159,7 @@ The ``ComponentContext`` contains a reference to the current HTTP request and re
 pass arbitrary parameters to successive components.
 To activate a component, it must be configured in the ``Settings.yaml``::
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    http:
 	      chain:
@@ -172,7 +172,7 @@ To activate a component, it must be configured in the ``Settings.yaml``::
 	                'someOption': 'someValue'
 
 With the ``position`` directive the order of a component within the chain can be defined. In this case the new component
-will be handled before the routing component that is configured in the TYPO3.Flow package.
+will be handled before the routing component that is configured in the Neos.Flow package.
 ``componentOptions`` is an optional key/value array with options that will be passed to the component's constructor.
 
 Interrupting the chain
@@ -189,7 +189,7 @@ For example if one wants to handle an AJAX request and prevent the default dispa
 	public function handle(ComponentContext $componentContext) {
 		// check if the request should be handled and return otherwise
 
-		$componentContext->setParameter(\TYPO3\Flow\Http\Component\ComponentChain::class, 'cancel', TRUE);
+		$componentContext->setParameter(\Neos\Flow\Http\Component\ComponentChain::class, 'cancel', TRUE);
 	}
 
 Note that component chains can be nested. By default the three sub chains ``preprocess``, ``process`` and ``postprocess``
@@ -200,7 +200,7 @@ still handled even if the new component cancels the current chain.
 Request
 -------
 
-The ``TYPO3\Flow\Http\Request`` class is, like most other classes in the ``Http`` sub package, a relatively close match
+The ``Neos\Flow\Http\Request`` class is, like most other classes in the ``Http`` sub package, a relatively close match
 of a request according to the HTTP 1.1 specification. You'll be best off studying the API of the class and reading the
 respective comments for getting an idea about the available functions. That being said, we'll pick a few important
 methods which may need some further explanation.
@@ -211,6 +211,15 @@ Constructing a Request
 You can, in theory, create a new ``Request`` instance by simply using the ``new`` operator and passing the required
 arguments to the constructor. However, there are two static factory methods which make life much easier. We recommend
 using these instead of the low-level constructor method.
+
+.. warning::
+
+	You should only create a ``Request`` manually if you want to send out requests or if you know exactly what you are
+	doing. The created ``Request`` will not have any ``HTTP Components`` affect him and might therefore lead to
+	unexpected results, like the trusted proxy headers ``X-Forwarded-*`` not being applied and the ``Request`` providing
+	wrong protocol, host or client IP address.
+	If you need access to the **current** HTTP ``Request`` or ``Response``, instead inject the ``Bootstrap`` and
+	get the ``HttpRequest`` and ``HttpResponse`` through the ``getActiveRequestHandler()``.
 
 create()
 ~~~~~~~~
@@ -226,6 +235,8 @@ The second method, ``createFromEnvironment()``, take the environment provided by
 functions into account. It creates a ``Request`` instance which reflects the current HTTP request received from the web
 server. This method is best used if you need a ``Request`` object with all properties set according to the current
 server environment and incoming HTTP request.
+Note though, that you should not expect this ``Request`` to match the current ``Request``, since the latter will still
+have been affected by some ``HTTP Components``. If you need the **current** Request, get it from the ``RequestHandler`` instead.
 
 Creating an ActionRequest
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -233,8 +244,25 @@ Creating an ActionRequest
 In order to dispatch a request to a controller, you need an ``ActionRequest``.
 Such a request is always bound to an ``Http\Request``::
 
-	$httpRequest = Request::createFromEnvironment();
-	$actionRequest = new ActionRequest($httpRequest);
+    use Neos\Flow\Core\Bootstrap;
+    use Neos\Flow\Http\HttpRequestHandlerInterface;
+    use Neos\Flow\Mvc\ActionRequest;
+
+    // ...
+
+    /**
+     * @var Bootstrap
+     * @Flow\Inject
+     */
+    protected $bootstrap;
+
+    // ...
+
+    $requestHandler = $this->bootstrap->getActiveRequestHandler();
+    if ($requestHandler instanceof HttpRequestHandlerInterface) {
+        $actionRequest = new ActionRequest($requestHandler->getHttpRequest());
+        // ...
+    }
 
 Arguments
 ~~~~~~~~~
@@ -289,7 +317,7 @@ sure that those headers are only accepted from trusted proxies.
 For this, you can configure a list of proxy IP address ranges in CIDR notation that are allowed to provide such headers,
 and which headers specifically are accepted for overriding those request information::
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    http:
 	      trustedProxies:
@@ -314,7 +342,7 @@ Those headers will be checked from left to right and the first set header will b
 
 If you know that your installation will not run behind a proxy server, you should change settings to this::
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    http:
 	      trustedProxies:
@@ -422,12 +450,12 @@ Consider the following examples:
 
 A URI specifying a resource:
 
-* http://flow.typo3.org/images/logo
+* http://flow.neos.io/images/logo
 
 A URL specifying two different representations of that resource:
 
-* http://flow.typo3.org/images/logo.png
-* http://flow.typo3.org/images/logo.gif
+* http://flow.neos.io/images/logo.png
+* http://flow.neos.io/images/logo.gif
 
 Throughout the framework we use the term ``URI`` instead of ``URL`` because it is more generic and more often than not,
 the correct term to use.
@@ -463,13 +491,13 @@ Sending a request and processing the response is a matter of a few lines::
 
 		/**
 		 * @Flow\Inject
-		 * @var \TYPO3\Flow\Http\Client\Browser
+		 * @var \Neos\Flow\Http\Client\Browser
 		 */
 		protected $browser;
 
 		/**
 		 * @Flow\Inject
-		 * @var \TYPO3\Flow\Http\Client\CurlEngine
+		 * @var \Neos\Flow\Http\Client\CurlEngine
 		 */
 		protected $browserRequestEngine;
 
@@ -510,7 +538,7 @@ other application parts which are accessible via HTTP. This browser has the ``In
 	/**
 	 * Some functional tests
 	 */
-	class SomeTest extends \TYPO3\Flow\Tests\FunctionalTestCase {
+	class SomeTest extends \Neos\Flow\Tests\FunctionalTestCase {
 
 		/**
 		 * @var boolean

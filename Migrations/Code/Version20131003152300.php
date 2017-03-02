@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,8 +12,8 @@ namespace TYPO3\Flow\Core\Migrations;
  */
 
 /**
- * Change TYPO3\Flow\Persistence\Doctrine\DatabaseConnectionException to
- * TYPO3\Flow\Persistence\Doctrine\Exception\DatabaseConnectionException
+ * Change Neos\Flow\Persistence\Doctrine\DatabaseConnectionException to
+ * Neos\Flow\Persistence\Doctrine\Exception\DatabaseConnectionException
  */
 class Version20131003152300 extends AbstractMigration
 {

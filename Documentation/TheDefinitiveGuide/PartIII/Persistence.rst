@@ -34,10 +34,10 @@ look at the ``addPost()`` method of the ``Blog`` class shows:
 *Example: The Blog's addPost() method* ::
 
 	/**
-	 * @param \TYPO3\Blog\Domain\Model\Post $post
+	 * @param \Neos\Blog\Domain\Model\Post $post
 	 * @return void
 	 */
-	public function addPost(\TYPO3\Blog\Domain\Model\Post $post) {
+	public function addPost(\Neos\Blog\Domain\Model\Post $post) {
 	    $post->setBlog($this);
 	    $this->posts->add($post);
 	}
@@ -68,7 +68,7 @@ need to write tons of XML, a few annotations in your code are enough:
 
 *Example: Persistence-related annotations in the Blog class* ::
 
-	namespace TYPO3\Blog\Domain\Model;
+	namespace Neos\Blog\Domain\Model;
 
 	/**
 	 * A Blog object
@@ -86,7 +86,7 @@ need to write tons of XML, a few annotations in your code are enough:
 	    protected $title;
 
 	    /**
-	     * @var \Doctrine\Common\Collections\ArrayCollection<\TYPO3\Blog\Domain\Model\Post>
+	     * @var \Doctrine\Common\Collections\ArrayCollection<\Neos\Blog\Domain\Model\Post>
 	     * @ORM\OneToMany(mappedBy="blog")
 	     * @ORM\OrderBy({"date" = "DESC"})
 	     */
@@ -111,14 +111,14 @@ Let's conclude by taking a look at the BlogRepository code:
 
 *Example: Code of a simple BlogRepository* ::
 
-  use TYPO3\Flow\Annotations as Flow;
+  use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * A BlogRepository
 	 *
 	 * @Flow\Scope("singleton")
 	 */
-	class BlogRepository extends \TYPO3\Flow\Persistence\Repository {
+	class BlogRepository extends \Neos\Flow\Persistence\Repository {
 	}
 
 As you can see we get away with very little code by simply extending the Flow-provided
@@ -131,17 +131,17 @@ methods in our repository, we can make use of the query building API:
 	/**
 	 * A PostRepository
 	 */
-	class PostRepository extends \TYPO3\Flow\Persistence\Repository {
+	class PostRepository extends \Neos\Flow\Persistence\Repository {
 
 	    /**
 	     * Finds posts by the specified tag and blog
 	     *
-	     * @param \TYPO3\Blog\Domain\Model\Tag $tag
-	     * @param \TYPO3\Blog\Domain\Model\Blog $blog The blog the post must refer to
-	     * @return \TYPO3\Flow\Persistence\QueryResultInterface The posts
+	     * @param \Neos\Blog\Domain\Model\Tag $tag
+	     * @param \Neos\Blog\Domain\Model\Blog $blog The blog the post must refer to
+	     * @return \Neos\Flow\Persistence\QueryResultInterface The posts
 	     */
-	    public function findByTagAndBlog(\TYPO3\Blog\Domain\Model\Tag $tag,
-	      \TYPO3\Blog\Domain\Model\Blog $blog) {
+	    public function findByTagAndBlog(\Neos\Blog\Domain\Model\Tag $tag,
+	      \Neos\Blog\Domain\Model\Blog $blog) {
 	        $query = $this->createQuery();
 	        return $query->matching(
 	            $query->logicalAnd(
@@ -150,15 +150,26 @@ methods in our repository, we can make use of the query building API:
 	            )
 	        )
 	        ->setOrderings(array(
-	            'date' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING)
+	            'date' => \Neos\Flow\Persistence\QueryInterface::ORDER_DESCENDING)
 	        )
 	        ->execute();
 	    }
 	}
 
 If you like to do things the hard way you can get away with implementing
-``\TYPO3\Flow\Persistence\RepositoryInterface`` yourself, though that is
+``\Neos\Flow\Persistence\RepositoryInterface`` yourself, though that is
 something the normal developer never has to do.
+
+.. note::
+
+	With the query building API it is possible to query for properties of sub-entities easily via
+	a dot-notation path. When querying multiple properties of a collection property, it is ambiguous
+	if you want to select a single sub-entity with the given matching constraints, or multiple
+	sub-entities which each matching a part of the given constraints.
+
+	Since 4.0 Flow will translate such a query to "find all entities where a single sub-entity matches all the constraints",
+	which is the more common case. If you intend a different querying logic, you should fall back to DQL or
+	native SQL queries instead.
 
 Basics of Persistence in Flow
 =============================
@@ -261,15 +272,15 @@ conventions need to be followed:
   ``<ModelName>Repository``
 * Aside from ``Model`` versus ``Repository`` the qualified class class names should be the
   same for corresponding classes
-* Repositories must implement ``\TYPO3\Flow\Persistence\RepositoryInterface`` (which is
-  already the case when extending ``\TYPO3\Flow\Persistence\Repository`` or
-  ``\TYPO3\Flow\Persistence\Doctrine\Repository``)
+* Repositories must implement ``\Neos\Flow\Persistence\RepositoryInterface`` (which is
+  already the case when extending ``\Neos\Flow\Persistence\Repository`` or
+  ``\Neos\Flow\Persistence\Doctrine\Repository``)
 
 *Example: Conventions for model and repository naming*
 
 .. code-block:: text
 
-	\TYPO3
+	\Neos
 	  \Blog
 	    \Domain
 	      \Model
@@ -455,7 +466,7 @@ Registration of those types in a Flow application is done through settings:
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       persistence:
         doctrine:
@@ -489,7 +500,7 @@ Doctrine provides a flexible event system to allow extensions to plug into diffe
 of the persistence. Therefore two methods to get notification of doctrine events are
 possible - through the EventSubscriber interface and registering EventListeners.
 Flow allows for easily registering both with Doctrine through the configuration settings
-``TYPO3.Flow.persistence.doctrine.eventSubscribers`` and ``TYPO3.Flow.persistence.doctrine.eventListeners``
+``Neos.Flow.persistence.doctrine.eventSubscribers`` and ``Neos.Flow.persistence.doctrine.eventListeners``
 respectively. EventSubscribers need to implement the ``Doctrine\Common\EventSubscriber`` Interface
 and provide a list of the events they want to subscribe to. EventListeners need to be configured
 for the events they want to listen on, but do not need to implement any specific Interface.
@@ -499,7 +510,7 @@ See the documentation ([#]_) for more information on the Doctrine Event System.
 
 .. code-block:: yaml
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    persistence:
 	      doctrine:
@@ -518,13 +529,13 @@ to the conditional clauses of queries, regardless the place where the SQL
 is generated (e.g. from a DQL query, or by loading).
 
 Flow allows for easily registering Filters with Doctrine through the
-configuration setting ``TYPO3.Flow.persistence.doctrine.filters``.
+configuration setting ``Neos.Flow.persistence.doctrine.filters``.
 
 *Example: Configuration for Doctrine Filters*:
 
 .. code-block:: yaml
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    persistence:
 	      doctrine:
@@ -547,7 +558,7 @@ configure these for the use in Flow, use the following Settings:
 
 .. code-block:: yaml
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    persistence:
 	      doctrine:
@@ -573,13 +584,13 @@ beyond the result query cache.
 
 See the Doctrine documentation ([#doctrineSecondLevelCache]_) for more information on the second level cache.
 Flow allows you to enable and configure the second level cache through the configuration setting
-``TYPO3.Flow.persistence.doctrine.secondLevelCache``.
+``Neos.Flow.persistence.doctrine.secondLevelCache``.
 
 *Example: Configuration for Doctrine second level cache*:
 
 .. code-block:: yaml
 
-  TYPO3:
+  Neos:
     Flow:
       persistence:
         doctrine:
@@ -634,7 +645,7 @@ makes a number of things easier, compared to plain Doctrine 2.
   *Example: JoinTable annotation for a self-referencing annotation* ::
 
 	/**
-	 * @var \Doctrine\Common\Collections\ArrayCollection<\TYPO3\Blog\Domain\Model\Post>
+	 * @var \Doctrine\Common\Collections\ArrayCollection<\Neos\Blog\Domain\Model\Post>
 	 * @ORM\ManyToMany
 	 * @ORM\JoinTable(inverseJoinColumns={@ORM\JoinColumn(name="related_id")})
 	 */
@@ -669,7 +680,7 @@ An entity with only the annotations needed in Flow::
 	class Post {
 
 	  /**
-	   * @var \TYPO3\Blog\Domain\Model\Blog
+	   * @var \Neos\Blog\Domain\Model\Blog
 	   * @ORM\ManyToOne(inversedBy="posts")
 	   */
 	  protected $blog;
@@ -692,7 +703,7 @@ An entity with only the annotations needed in Flow::
 	  protected $content;
 
 	  /**
-	   * @var \Doctrine\Common\Collections\ArrayCollection<\TYPO3\Blog\Domain\Model\Comment>
+	   * @var \Doctrine\Common\Collections\ArrayCollection<\Neos\Blog\Domain\Model\Comment>
 	   * @ORM\OneToMany(mappedBy="post")
 	   * @ORM\OrderBy({"date" = "DESC"})
 	   */
@@ -702,7 +713,7 @@ The same code with all annotations needed in plain Doctrine 2 to result in the s
 metadata::
 
 	/**
-	 * @ORM\Entity(repositoryClass="TYPO3\Blog\Domain\Model\Repository\PostRepository")
+	 * @ORM\Entity(repositoryClass="Neos\Blog\Domain\Model\Repository\PostRepository")
 	 * @ORM\Table(name="blog_post")
 	 */
 	class Post {
@@ -715,8 +726,8 @@ metadata::
 	  protected $Persistence_Object_Identifier;
 
 	  /**
-	   * @var \TYPO3\Blog\Domain\Model\Blog
-	   * @ORM\ManyToOne(targetEntity="TYPO3\Blog\Domain\Model\Blog", inversedBy="posts")
+	   * @var \Neos\Blog\Domain\Model\Blog
+	   * @ORM\ManyToOne(targetEntity="Neos\Blog\Domain\Model\Blog", inversedBy="posts")
 	   * @ORM\JoinColumn(name="blog_blog", referencedColumnName="persistence_object_identifier")
 	   */
 	  protected $blog;
@@ -740,8 +751,8 @@ metadata::
 	  protected $content;
 
 	  /**
-	   * @var \Doctrine\Common\Collections\ArrayCollection<\TYPO3\Blog\Domain\Model\Comment>
-	   * @ORM\OneToMany(targetEntity="TYPO3\Blog\Domain\Model\Comment", mappedBy="post",
+	   * @var \Doctrine\Common\Collections\ArrayCollection<\Neos\Blog\Domain\Model\Comment>
+	   * @ORM\OneToMany(targetEntity="Neos\Blog\Domain\Model\Comment", mappedBy="post",
 	    cascade={"all"}, orphanRemoval=true)
 	   * @ORM\OrderBy({"date" = "DESC"})
 	   */
@@ -786,7 +797,7 @@ actual state of schema and active packages:
 	    >> Database Name:                                      flow
 	    >> Configuration Source:                               manually configured
 	    >> Version Table Name:                                 flow_doctrine_migrationstatus
-	    >> Migrations Namespace:                               TYPO3\Flow\Persistence\Doctrine\Migrations
+	    >> Migrations Namespace:                               Neos\Flow\Persistence\Doctrine\Migrations
 	    >> Migrations Target Directory:                        /path/to/Data/DoctrineMigrations
 	    >> Current Version:                                    0
 	    >> Latest Version:                                     2011-06-13 22:38:37 (20110613223837)
@@ -964,7 +975,7 @@ detected between the current schema and the current models in the system:
 
 *Example: Migration generated based on schema/model differences* ::
 
-	namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+	namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 	use Doctrine\DBAL\Migrations\AbstractMigration,
 	  Doctrine\DBAL\Schema\Schema;
@@ -1033,7 +1044,7 @@ To permanently skip certain tables the ``ignoredTables`` setting can be used:
 
 .. code-block:: yaml
 
-	TYPO3:
+	Neos:
 	  Flow:
 	    persistence:
 	      doctrine:
@@ -1088,7 +1099,7 @@ that connection wrapper by setting the following options in your packages ``Sett
 
 .. code-block:: text
 
-   TYPO3:
+   Neos:
      Flow:
        persistence:
          backendOptions:
@@ -1154,12 +1165,12 @@ To switch to Generic persistence you need to configure Flow like this.
 
 .. code-block:: yaml
 
-	TYPO3\Flow\Persistence\PersistenceManagerInterface:
-	  className: 'TYPO3\Flow\Persistence\Generic\PersistenceManager'
+	Neos\Flow\Persistence\PersistenceManagerInterface:
+	  className: 'Neos\Flow\Persistence\Generic\PersistenceManager'
 
-	TYPO3\Flow\Persistence\QueryResultInterface:
+	Neos\Flow\Persistence\QueryResultInterface:
 	  scope: prototype
-	  className: 'TYPO3\Flow\Persistence\Generic\QueryResult'
+	  className: 'Neos\Flow\Persistence\Generic\QueryResult'
 
 *Settings.yaml*:
 
@@ -1271,7 +1282,7 @@ Persisting a Domain Object
 
 After an object has been added to a repository it will be seen when Flow calls
 ``persistAll()`` at the end of a script run. Internally all instances implementing the
-``\TYPO3\Flow\Persistence\RepositoryInterface`` will be fetched and asked for the objects
+``\Neos\Flow\Persistence\RepositoryInterface`` will be fetched and asked for the objects
 they hold. Those will then be handed to the persistence backend in use and processed by
 it.
 

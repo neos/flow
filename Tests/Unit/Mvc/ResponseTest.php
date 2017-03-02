@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc;
+namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Response;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\Response;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Generic Response
