@@ -1,32 +1,16 @@
-|Travis Build Status| |Code Climate| |StyleCI| |Latest Stable Version| |License| |Docs| |API|
+--------------
+Flow Framework
+--------------
 
-.. |Travis Build Status| image:: https://travis-ci.org/neos/flow-development-collection.svg?branch=2.3
-   :target: https://travis-ci.org/neos/flow-development-collection
-   :alt: Travis
-.. |Code Climate| image:: https://codeclimate.com/github/neos/flow-development-collection/badges/gpa.svg
-   :target: https://codeclimate.com/github/neos/flow-development-collection
-   :alt: Code Climate
-.. |StyleCI| image:: https://styleci.io/repos/40963991/shield?style=flat
-   :target: https://styleci.io/repos/40963991
-   :alt: StyleCI
-.. |Latest Stable Version| image:: https://poser.pugx.org/neos/flow-development-collection/v/stable
-   :target: https://packagist.org/packages/neos/flow-development-collection
-   :alt: Latest Stable Version
-.. |License| image:: https://poser.pugx.org/neos/flow-development-collection/license
-   :target: https://packagist.org/packages/neos/flow-development-collection
-   :alt: License
-.. |Docs| image:: https://img.shields.io/badge/documentation-2.3-blue.svg
-   :target: https://flowframework.readthedocs.org/en/2.3/
-   :alt: Documentation
-.. |API| image:: https://img.shields.io/badge/API%20docs-2.3-blue.svg
-   :target: http://neos.github.io/flow/2.3/
-   :alt: API Docs
+.. note:: This repository is a **read-only subsplit** of a package that is part of the
+          Flow framework (learn more on `flow.typo3.org <http://flow.typo3.org/>`_).
 
----------------------------
-Flow development collection
----------------------------
+If you want to use the Flow framework, please have a look at the `Flow documentation
+<http://flowframework.readthedocs.org/en/stable/>`_
 
-This repository is a collection of packages for the Flow framework (learn more on http://flow.typo3.org/).
-The repository is used for development and all pull requests should go into it.
+Contribute
+----------
 
-If you want to use the Flow framework, please have a look at the documentation: https://flowframework.readthedocs.org/en/2.3/
+If you want to contribute to the Flow framework, please have a look at
+https://github.com/neos/flow-development-collection - it is the repository
+used for development and all pull requests should go into it.

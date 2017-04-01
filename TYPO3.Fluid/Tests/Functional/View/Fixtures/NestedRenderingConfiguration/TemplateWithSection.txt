@@ -1,3 +1,0 @@
-<f:section name="test">
-Christian uses <f:render partial="Test" arguments="{_all}" />
-</f:section>
