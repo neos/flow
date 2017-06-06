@@ -451,7 +451,7 @@ This is the concept which makes Fluid extremely versatile and extensible.
 
 If you want to create a view helper which you can call from your template (as a
 tag), you just write a plain PHP class which needs to inherit from
-``Neos\FluidAdaptor\Core\AbstractViewHelper`` (or its subclasses). You need to implement
+``\Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper`` (or its subclasses). You need to implement
 only one method to write a view helper:
 
 .. code-block:: php
@@ -570,7 +570,7 @@ have without the ``AbstractTagBasedViewHelper``):
 
 .. code-block:: php
 
-    class ActionViewHelper extends \Neos\FluidAdaptor\Core\AbstractViewHelper {
+    class ActionViewHelper extends \Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper {
 
       public function initializeArguments() {
         $this->registerArgument('class', 'string', 'CSS class to add to the link');
@@ -608,7 +608,7 @@ With the above methods, the ``Link\ActionViewHelper`` from above can be condense
 
 .. code-block:: php
 
-    class ActionViewHelper extends \Neos\FluidAdaptor\Core\AbstractViewHelper {
+    class ActionViewHelper extends \Neos\FluidAdaptor\Core\ViewHelper\AbstractViewHelper {
 
         public function initializeArguments() {
             $this->registerUniversalTagAttributes();
@@ -845,3 +845,4 @@ Partial::
 Template::
 
     <f:render partial=”PartialName” section=”content” />
+
