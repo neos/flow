@@ -18,11 +18,9 @@ use Neos\Flow\Log\Exception\NoSuchBackendException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 
 /**
- * The default logger of the Flow framework
  *
- * @api
  */
-class Logger implements SystemLoggerInterface, ThrowableLoggerInterface, SecurityLoggerInterface
+class Logger extends DefaultLogger implements SystemLoggerInterface, SecurityLoggerInterface
 {
     /**
      * @var \SplObjectStorage
@@ -209,6 +207,7 @@ class Logger implements SystemLoggerInterface, ThrowableLoggerInterface, Securit
         $errorCodeNumber = ($error->getCode() > 0) ? ' #' . $error->getCode() : '';
         $backTrace = $error->getTrace();
         $line = isset($backTrace[0]['line']) ? ' in line ' . $backTrace[0]['line'] . ' of ' . $backTrace[0]['file'] : '';
+
         return 'Exception' . $errorCodeNumber . $line . ': ' . $error->getMessage();
     }
 
@@ -256,8 +255,5 @@ class Logger implements SystemLoggerInterface, ThrowableLoggerInterface, Securit
      */
     public function shutdownObject()
     {
-        foreach ($this->backends as $backend) {
-            $backend->close();
-        }
     }
 }
