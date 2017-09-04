@@ -20,11 +20,11 @@ which boil down to this in the simplest case:
 
 Then use `Composer`_ in a directory which will be accessible by your web server to download
 and install all packages of the Flow Base Distribution. The following command will
-clone the 3.0.0 version, include development dependencies and keep git metadata for future use:
+clone the 4.1.6 version, include development dependencies and keep git metadata for future use:
 
 .. code-block:: sh
 
- composer create-project --keep-vcs neos/flow-base-distribution tutorial 3.0.0
+ composer create-project --keep-vcs neos/flow-base-distribution tutorial 4.1.6
 
 .. note::
 	Throughout this tutorial we assume that you installed the Flow distribution in
