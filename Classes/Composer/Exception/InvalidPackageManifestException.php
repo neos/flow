@@ -1,5 +1,5 @@
 <?php
-namespace Neos\Flow\Log\Exception;
+namespace Neos\Flow\Composer\Exception;
 
 /*
  * This file is part of the Neos.Flow package.
@@ -12,10 +12,10 @@ namespace Neos\Flow\Log\Exception;
  */
 
 /**
- * A "No Such Backend" exception
+ * An "package manifest could not be converted to JSON" exception
  *
  * @api
  */
-class NoSuchBackendException extends \Neos\Cache\Exception
+class InvalidPackageManifestException extends \Neos\Flow\Package\Exception
 {
 }
