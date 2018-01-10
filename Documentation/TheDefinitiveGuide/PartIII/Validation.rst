@@ -54,6 +54,8 @@ Domain Model arguments is triggered as explained above. So in order for the auto
 previous edit form to work, the validation inside that action needs to be suppressed, or else it would
 itself possibly fail the validation and try to redirect to previous action, ending up in an infinite loop.
 
+.. code-block:: php
+  
 	class CommentController extends \Neos\Flow\Mvc\Controller\ActionController {
 
 		/**
