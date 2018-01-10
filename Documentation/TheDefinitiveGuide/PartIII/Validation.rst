@@ -109,8 +109,8 @@ simple type.
 All validators implement ``\Neos\Flow\Validation\Validator\ValidatorInterface``, and
 the API of every validator is demonstrated in the following code example::
 
-		// NOTE: you should always use the ValidatorResolver to create new
-		// validators, as it is demonstrated in the next section.
+	// NOTE: you should always use the ValidatorResolver to create new
+	// validators, as it is demonstrated in the next section.
 	$validator = new \Neos\Flow\Validation\Validator\StringLengthValidator(array(
 		'minimum' => 10,
 		'maximum' => 20
