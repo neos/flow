@@ -954,32 +954,32 @@ The following Policy expresses the exact same functionality as above:
           amount:
             className: 'Neos\Flow\Security\Authorization\Privilege\Parameter\StringPrivilegeParameter'
 
-    roles:
-      'Acme.MyPackage:Employee':
-        privileges:
-          -
-            privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
-            parameters:
-              amount: 100
-            permission: GRANT
-          -
-            privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
-            parameters:
-              amount: 1000
-            permission: DENY
+  roles:
+    'Acme.MyPackage:Employee':
+      privileges:
+        -
+          privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
+          parameters:
+            amount: 100
+          permission: GRANT
+        -
+          privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
+          parameters:
+            amount: 1000
+          permission: DENY
 
-      'Acme.MyPackage:CEO':
-        privileges:
-          -
-            privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
-            parameters:
-              amount: 100
-            permission: GRANT
-          -
-            privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
-            parameters:
-              amount: 1000
-            permission: GRANT
+    'Acme.MyPackage:CEO':
+      privileges:
+        -
+          privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
+          parameters:
+            amount: 100
+          permission: GRANT
+        -
+          privilegeTarget: 'Acme.MyPackage:InvoiceService.ApproveInvoice'
+          parameters:
+            amount: 1000
+          permission: GRANT
 
 As you can see we saved one privilege target definition. The specific amount will not be defined in the privilege target
 anymore, but is passed along as parameter with the permission for a specific role. Of course, a privilege target can
