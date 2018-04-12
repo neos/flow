@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Object\Fixture;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Fixture;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -184,7 +184,7 @@ class BasicClass
      *
      * @param  array $someArray Some array
      * @return void
-     * @see    \TYPO3\Flow\Aop\Builder\AdvicedMethodInterceptorBuilderTest
+     * @see    \Neos\Flow\Aop\Builder\AdvicedMethodInterceptorBuilderTest
      */
     public function methodWhichExpectsAnArrayArgument(array $someArray)
     {

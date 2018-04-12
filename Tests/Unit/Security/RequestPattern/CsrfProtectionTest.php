@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\RequestPattern;
+namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,17 +11,17 @@ namespace TYPO3\Flow\Tests\Unit\Security\RequestPattern;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\RequestInterface;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface;
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\RequestInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the CsrfProtection request pattern

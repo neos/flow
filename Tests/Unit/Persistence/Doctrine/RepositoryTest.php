@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,8 +13,8 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use TYPO3\Flow\Persistence\Doctrine\Repository;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence\Doctrine\Repository;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the doctrine Repository
@@ -62,7 +62,7 @@ class RepositoryTest extends UnitTestCase
     public function constructSetsObjectTypeFromClassName($repositoryNamespace, $repositoryClassName, $modelClassName)
     {
         $mockClassName = $repositoryNamespace . '\\' . $repositoryClassName;
-        eval('namespace ' . $repositoryNamespace . '; class ' . $repositoryClassName . ' extends \TYPO3\Flow\Persistence\Doctrine\Repository {}');
+        eval('namespace ' . $repositoryNamespace . '; class ' . $repositoryClassName . ' extends \Neos\Flow\Persistence\Doctrine\Repository {}');
 
         /** @var Repository $repository */
         $repository = new $mockClassName($this->mockEntityManager);

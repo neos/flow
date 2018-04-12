@@ -26,7 +26,7 @@ Exceptions can contain an HTTP status code which is sent as a corresponding resp
 header. The status code is simply set by defining a property with the respective
 value assigned::
 
-    class SomethingWasNotFoundException extends \TYPO3\Flow\Exception {
+    class SomethingWasNotFoundException extends \Neos\Flow\Exception {
 
     /**
      * @var integer
@@ -56,13 +56,13 @@ The exception handler to be used can be configured through an entry in Settings.
 
 .. code-block:: yaml
 
-    TYPO3:
+    Neos:
       Flow:
         error:
           exceptionHandler:
             # Defines the global, last-resort exception handler.
-            # The specified class must implement \TYPO3\Flow\Error\ExceptionHandlerInterface
-            className: 'TYPO3\Flow\Error\ProductionExceptionHandler'
+            # The specified class must implement \Neos\Flow\Error\ExceptionHandlerInterface
+            className: 'Neos\Error\Messages\ProductionExceptionHandler'
 
 Reference Code
 --------------
@@ -97,7 +97,7 @@ should be converted into exceptions. All other errors are silently ignored:
 
 .. code-block:: yaml
 
-    TYPO3:
+    Neos:
       Flow:
         error:
           errorHandler:
@@ -119,7 +119,7 @@ An example configuration could look like in the following Settings.yaml excerpt:
 
 .. code-block:: yaml
 
-    TYPO3:
+    Neos:
       Flow:
         error:
           exceptionHandler:
@@ -130,14 +130,14 @@ An example configuration could look like in the following Settings.yaml excerpt:
               notFoundExceptions:
                 matchingStatusCodes: [404]
                 options:
-                  templatePathAndFilename: 'resource://TYPO3.Flow/Private/Templates/Error/Default.html'
+                  templatePathAndFilename: 'resource://Neos.Flow/Private/Templates/Error/Default.html'
                   variables:
                     errorDescription: 'Sorry, the page you requested was not found.'
 
               databaseConnectionExceptions:
-                matchingExceptionClassNames: ['TYPO3\Flow\Persistence\Doctrine\DatabaseConnectionException']
+                matchingExceptionClassNames: ['Neos\Flow\Persistence\Doctrine\DatabaseConnectionException']
                 options:
-                  templatePathAndFilename: 'resource://TYPO3.Flow/Private/Templates/Error/Default.html'
+                  templatePathAndFilename: 'resource://Neos.Flow/Private/Templates/Error/Default.html'
                   variables:
                     errorDescription: 'Sorry, the database connection couldn''t be established.'
 
@@ -188,7 +188,7 @@ The following variables will be assigned to the template an can be used there:
 
 ``renderingOptions``:
     the complete rendering options array, as defined in the settings. This is a merge
-    of ``TYPO3.Flow.error.exceptionHandler.defaultRenderingOptions`` and the ``options``
+    of ``Neos.Flow.error.exceptionHandler.defaultRenderingOptions`` and the ``options``
     array of the particular rendering group
 
 ``statusCode``:

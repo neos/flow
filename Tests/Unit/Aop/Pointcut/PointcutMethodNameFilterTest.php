@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
+namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Aop;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop;
 
 /**
  * Testcase for the Pointcut Method Name Filter
@@ -23,7 +23,7 @@ class PointcutMethodNameFilterTest extends UnitTestCase
     /**
      * @test
      */
-    public function matchesRespectsFinalMethodsIfTheirNameMatches()
+    public function matchesIgnoresFinalMethodsEvenIfTheirNameMatches()
     {
         $className = 'TestClass' . md5(uniqid(mt_rand(), true));
         eval('
@@ -32,13 +32,13 @@ class PointcutMethodNameFilterTest extends UnitTestCase
 			}'
         );
 
-        $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->any())->method('isMethodFinal')->with($className, 'someFinalMethod')->will($this->returnValue(true));
+        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->setMethods(['isMethodFinal'])->getMock();
+        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodFinal')->with($className, 'someFinalMethod')->will($this->returnValue(true));
 
         $methodNameFilter = new Aop\Pointcut\PointcutMethodNameFilter('someFinalMethod');
         $methodNameFilter->injectReflectionService($mockReflectionService);
 
-        $this->assertTrue($methodNameFilter->matches($className, 'someFinalMethod', $className, 1));
+        $this->assertFalse($methodNameFilter->matches($className, 'someFinalMethod', $className, 1));
     }
 
     /**
@@ -58,7 +58,7 @@ class PointcutMethodNameFilterTest extends UnitTestCase
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService->expects($this->atLeastOnce())->method('isMethodPublic')->will($this->onConsecutiveCalls(true, false, false, true));
         $mockReflectionService->expects($this->atLeastOnce())->method('isMethodProtected')->will($this->onConsecutiveCalls(false, true, false, false));
-
+        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodFinal')->will($this->returnValue(false));
         $mockReflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->will($this->returnValue([]));
 
         $methodNameFilter = new Aop\Pointcut\PointcutMethodNameFilter('some.*', 'public');
@@ -97,7 +97,7 @@ class PointcutMethodNameFilterTest extends UnitTestCase
                 ['arg1' => [], 'arg2' => [], 'arg3' => []]
         ));
 
-        $mockSystemLogger = $this->getMockBuilder(\TYPO3\Flow\Log\Logger::class)->setMethods(['log'])->getMock();
+        $mockSystemLogger = $this->getMockBuilder(\Neos\Flow\Log\Logger::class)->setMethods(['log'])->getMock();
         $mockSystemLogger->expects($this->once())->method('log')->with($this->equalTo(
             'The argument "arg2" declared in pointcut does not exist in method ' . $className . '->somePublicMethod'
         ));

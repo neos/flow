@@ -97,18 +97,18 @@ System Architecture
 
 The caching framework architecture is based on these classes:
 
-``TYPO3\Flow\Cache\CacheFactory``
+``Neos\Flow\Cache\CacheFactory``
 	Factory class to instantiate caches.
 
-``TYPO3\Flow\Cache\CacheManager``
+``Neos\Flow\Cache\CacheManager``
 	Returns the cache frontend of a specific cache. Implements methods to handle cache
 	instances.
 
-``TYPO3\Flow\Cache\Frontend\FrontendInterface``
+``Neos\Cache\Frontend\FrontendInterface``
 	Interface to handle cache entries of a specific cache. Different frontends exist to
 	handle different data types.
 
-``TYPO3\Flow\Cache\Backend\BackendInterface``
+``Neos\Cache\Backend\BackendInterface``
 	Interface for different storage strategies. A set of implementations exist with
 	different characteristics.
 
@@ -146,8 +146,8 @@ any cache unless overridden:
 	# If no frontend, backend or options are specified for a cache, these values
 	# will be taken to create the cache.
 	Default:
-	  frontend: TYPO3\Flow\Cache\Frontend\VariableFrontend
-	  backend: TYPO3\Flow\Cache\Backend\FileBackend
+	  frontend: Neos\Cache\Frontend\VariableFrontend
+	  backend: Neos\Cache\Backend\FileBackend
 	  backendOptions:
 	    defaultLifetime: 0
 
@@ -159,7 +159,7 @@ or package *Configuration* directory.
 *Example: Configuration to use RedisBackend for FooCache* ::
 
 	FooCache:
-	  backend: TYPO3\Flow\Cache\Backend\RedisBackend
+	  backend: Neos\Cache\Backend\RedisBackend
 	  backendOptions:
 	    database: 3
 
@@ -180,7 +180,7 @@ this cache looks like this:
 	# If no frontend, backend or options are specified for a cache, these values
 	# will be taken to create the cache.
 	Flow_Security_Cryptography_HashService:
-	  backend: TYPO3\Flow\Cache\Backend\SimpleFileBackend
+	  backend: Neos\Cache\Backend\SimpleFileBackend
 	  persistent: true
 
 Note that, because the cache has been configured as "persistent", the *SimpleFileBackend* will store its data in
@@ -195,7 +195,7 @@ Frontend API
 ------------
 
 All frontends must implement the API defined in the interface
-``TYPO3\Flow\Cache\Frontend\FrontendInterface``. All cache operations must be done
+``Neos\Cache\Frontend\FrontendInterface``. All cache operations must be done
 with these methods.
 
 ``getIdentifier()``
@@ -243,10 +243,10 @@ Available Frontends
 Currently three different frontends are implemented, the main difference is the data types
 which can be stored using a specific frontend.
 
-``TYPO3\Flow\Cache\Frontend\StringFrontend``
+``Neos\Cache\Frontend\StringFrontend``
 	The string frontend accepts strings as data to be cached.
 
-``TYPO3\Flow\Cache\Frontend\VariableFrontend``
+``Neos\Cache\Frontend\VariableFrontend``
 	Strings, arrays and objects are accepted by this frontend. Data is serialized before
 	it is given to the backend. The igbinary serializer is used transparently (if
 	available in the system) which speeds up the serialization and unserialization and
@@ -255,7 +255,7 @@ which can be stored using a specific frontend.
 	string frontend should be used in this case to avoid the additional serialization done
 	by the variable frontend.
 
-``TYPO3\Flow\Cache\Frontend\PhpFrontend``
+``Neos\Cache\Frontend\PhpFrontend``
 	This is a special frontend to cache PHP files. It extends the string frontend with the
 	method ``requireOnce()`` and allows PHP files to be ``require()``'d if a cache entry
 	exists.
@@ -264,7 +264,7 @@ which can be stored using a specific frontend.
 	if a lot of reflection and dynamic PHP class construction is done. A backend to be used
 	with the PHP frontend must implement the
 
-``TYPO3\Flow\Cache\Backend\PhpCapableBackendInterface``
+``Neos\Cache\Backend\PhpCapableBackendInterface``
 	Currently the file backend is the only backend which fulfills this requirement.
 
 .. note::
@@ -293,7 +293,7 @@ Common Options
 |                 | on set()                             |           |         |         |
 +-----------------+--------------------------------------+-----------+---------+---------+
 
-TYPO3\\Flow\\Cache\\Backend\\FileBackend
+Neos\\Flow\\Cache\\Backend\\FileBackend
 ----------------------------------------
 
 The file backend stores every cache entry as a single file to the file system. The
@@ -327,6 +327,10 @@ production systems, so get and set performance is much more important in this sc
 	wait in top, the file backend has reached this bound. A different storage strategy
 	like RAM disks, battery backed up RAID systems or SSD hard disks might help then.
 
+.. note::
+	The FileBackend is the only cache-backend that is capable of storing the
+	``FLOW_Object_Classes`` Cache.
+
 Options
 ~~~~~~~
 
@@ -343,7 +347,7 @@ Options
 |                | * /tmp/my-cache-directory/             |           |        |         |
 +----------------+----------------------------------------+-----------+--------+---------+
 
-TYPO3\\Flow\\Cache\\Backend\\PdoBackend
+Neos\\Flow\\Cache\\Backend\\PdoBackend
 ---------------------------------------
 
 The PDO backend can be used as a native PDO interface to databases which are connected to
@@ -352,9 +356,31 @@ to clean up hard disk space or memory.
 
 .. note::
 
-	There is currently very little production experience with this  backend, especially
-	not with a capable database like Oracle. We appreciate any feedback for real life use
-	cases of this cache.
+  There is currently very little production experience with this  backend, especially
+  not with a capable database like Oracle. We appreciate any feedback for real life use
+  cases of this cache.
+
+.. note::
+
+  When *not using SQLite*, you have to create the needed caching tables manually.
+  The table definition (as used automatically for SQLite) can be found in the
+  file ``Neos.Flow/Resources/Private/Cache/SQL/DDL.sql``. It works unchanged for
+  MySQL, for other RDBMS you might need to adjust the DDL manually.
+
+.. note::
+
+  When *not using SQLite* the maximum length of each cache entry is restricted.
+  The default in ``Neos.Flow/Resources/Private/Cache/SQL/DDL.sql``
+  is ``MEDIUMTEXT`` (16mb on MySQL), which should be sufficient in most cases.
+
+.. warning::
+
+	This backend is php-capable. Nevertheless it cannot be used to store the proxy-classes
+	from the ``FLOW_Object_Classes`` Cache. It can be used for other code-caches like
+	``Fluid_TemplateCache``, ``Eel_Expression_Code`` or ``Flow_Aop_RuntimeExpressions``.
+	This can be usefull in certain situations to avoid file operations on production
+	environments. If you want to use this backend for code-caching make sure that
+	``allow_url_include`` is enabled in php.ini
 
 Options
 ~~~~~~~
@@ -380,7 +406,7 @@ Options
 |                | connection                             |           |        |         |
 +----------------+----------------------------------------+-----------+--------+---------+
 
-TYPO3\\Flow\\Cache\\Backend\\RedisBackend
+Neos\\Flow\\Cache\\Backend\\RedisBackend
 -----------------------------------------
 
 `Redis`_ is a key-value storage/database. In contrast to memcached, it allows structured
@@ -418,6 +444,15 @@ system. It is recommended to build this from the git repository. Currently redis
 	redis project itself has a very high development speed and it might happen that the
 	Flow implementation changes to adapt to new versions.
 
+.. warning::
+
+	This backend is php-capable. Nevertheless it cannot be used to store the proxy-classes
+	from the ``FLOW_Object_Classes`` Cache. It can be used for other code-caches like
+	``Fluid_TemplateCache``, ``Eel_Expression_Code`` or ``Flow_Aop_RuntimeExpressions``.
+	This can be usefull in certain situations to avoid file operations on production
+	environments. If you want to use this backend for code-caching make sure that
+	``allow_url_include`` is enabled in php.ini
+
 Options
 ~~~~~~~
 
@@ -453,7 +488,7 @@ Options
 |                  | specific value.                 |           | (0 to 9)  |           |
 +------------------+---------------------------------+-----------+-----------+-----------+
 
-TYPO3\\Flow\\Cache\\Backend\\MemcachedBackend
+Neos\\Flow\\Cache\\Backend\\MemcachedBackend
 ---------------------------------------------
 
 `Memcached`_ is a simple key/value RAM database which scales across multiple servers. To
@@ -506,6 +541,15 @@ all.
 	memcache is cheap (but could be read by third parties) and access to databases is
 	expensive.
 
+.. warning::
+
+	This backend is php-capable. Nevertheless it cannot be used to store the proxy-classes
+	from the ``FLOW_Object_Classes`` Cache. It can be used for other code-caches like
+	``Fluid_TemplateCache``, ``Eel_Expression_Code`` or ``Flow_Aop_RuntimeExpressions``.
+	This can be usefull in certain situations to avoid file operations on production
+	environments. If you want to use this backend for code-caching make sure that
+	``allow_url_include`` is enabled in php.ini
+
 Options
 ~~~~~~~
 
@@ -541,41 +585,41 @@ Options
 |             | servers.                                 |           |         |         |
 +-------------+------------------------------------------+-----------+---------+---------+
 
-TYPO3\\Flow\\Cache\\Backend\\ApcBackend
+Neos\\Flow\\Cache\\Backend\\ApcuBackend
 ---------------------------------------
 
-`APC`_ is mostly known as an opcode cache for PHP source files but can be used to store
-user data as well. As main advantage the data can be shared between different PHP
-processes and requests. All calls are direct memory calls. This makes this backend
-lightning fast for get() and set() operations. It can be an option for relatively small
-caches (few dozens of megabytes) which are read and written very often and becomes handy
-if APC is used as opcode cache anyway.
+`APCu`_ is also known as APC without opcode cache. It can be used to store user data.
+As main advantage the data can be shared between different PHP processes and requests.
+All calls are direct memory calls. This makes this backend lightning fast for get() and
+set() operations. It can be an option for relatively small caches (few dozens of megabytes)
+which are read and written very often.
 
 The implementation is very similar to the memcached backend implementation and suffers
-from the same problems if APC runs out of memory.
-
-The garbage collection is currently not implemented. In its latest version, APC will fail
-to store data with a `PHP warning`_ if it runs out of memory. This may change in the
-future. Even without using the cache backend, it is advisable to increase the memory
-cache size of APC to at least 64MB when working with Flow, simply due to the large number
-of PHP files to be cached. A minimum of 128MB is recommended when using the additional
-content cache. Cache TTL for file and user data should be set to zero (disabled) to avoid
-heavy memory fragmentation.
+from the same problems if APCu runs out of memory.
 
 .. note::
-	It is not advisable to use the APC backend in shared hosting environments for security
-	reasons: The user cache in APC is not aware of different virtual hosts. Basically
-	every PHP script which is executed on the system can read and write any data to this
-	shared cache, given data is not encapsulated or namespaced in any way. Only use the
-	APC backend in environments which are completely under your control and where no third
-	party can read or tamper your data.
+   It is not advisable to use the APCu backend in shared hosting environments for security
+   reasons: The user cache in APCu is not aware of different virtual hosts. Basically
+   every PHP script which is executed on the system can read and write any data to this
+   shared cache, given data is not encapsulated or namespaced in any way. Only use the
+   APCu backend in environments which are completely under your control and where no third
+   party can read or tamper your data.
+
+.. warning::
+
+   This backend is php-capable. Nevertheless it cannot be used to store the proxy-classes
+   from the ``Flow_Object_Classes`` Cache. It can be used for other code-caches like
+   ``Fluid_TemplateCache``, ``Eel_Expression_Code`` or ``Flow_Aop_RuntimeExpressions``.
+   This can be useful in certain situations to avoid file operations on production
+   environments. If you want to use this backend for code-caching make sure that
+   ``allow_url_include`` is enabled in php.ini
 
 Options
 ~~~~~~~
 
-The APC backend has no options.
+The APCu backend has no options.
 
-TYPO3\\Flow\\Cache\\Backend\\TransientMemoryBackend
+Neos\\Flow\\Cache\\Backend\\TransientMemoryBackend
 ---------------------------------------------------
 
 The transient memory backend stores data in a local array. It is only valid for one
@@ -595,7 +639,7 @@ Options
 
 The transient memory backend has no options.
 
-TYPO3\\Flow\\Cache\\Backend\\NullBackend
+Neos\\Flow\\Cache\\Backend\\NullBackend
 ----------------------------------------
 
 The null backend is a dummy backend which doesn't store any data and always returns
@@ -619,9 +663,9 @@ Register a Cache
 To register a cache it must be configured in *Caches.yaml* of a package::
 
 	MyPackage_FooCache:
-	  frontend: TYPO3\Flow\Cache\Frontend\StringFrontend
+	  frontend: Neos\Cache\Frontend\StringFrontend
 
-In this case ``\TYPO3\Flow\Cache\Frontend\StringFrontend`` was chosen, but that depends
+In this case ``\Neos\Cache\Frontend\StringFrontend`` was chosen, but that depends
 on individual needs. This setting is usually not changed by users. Any option not given is
 inherited from the configuration of the "Default" cache. The name (``MyPackage_FooCache``
 in this case) can be chosen freely, but keep possible name clashes in mind and adopt a
@@ -643,7 +687,7 @@ configuration given above. First you need to configure the injection in *Objects
 	  properties:
 	    fooCache:
 	      object:
-	        factoryObjectName: TYPO3\Flow\Cache\CacheManager
+	        factoryObjectName: Neos\Flow\Cache\CacheManager
 	        factoryMethodName: getCache
 	        arguments:
 	          1:
@@ -654,10 +698,10 @@ This configures what will be injected into the following setter::
 	/**
 	 * Sets the foo cache
 	 *
-	 * @param \TYPO3\Flow\Cache\Frontend\StringFrontend $cache Cache for foo data
+	 * @param \Neos\Cache\Frontend\StringFrontend $cache Cache for foo data
 	 * @return void
 	 */
-	public function setFooCache(\TYPO3\Flow\Cache\Frontend\StringFrontend $cache) {
+	public function setFooCache(\Neos\Cache\Frontend\StringFrontend $cache) {
 		$this->fooCache = $cache;
 	}
 
@@ -677,5 +721,5 @@ convenience) for a cache::
 .. _phpredis:                    https://github.com/owlient/phpredis
 .. _Memcached:                   http://memcached.org/
 .. _PHP memcache bug 16927:      https://bugs.php.net/bug.php?id=58943
-.. _APC:                         http://pecl.php.net/package/APC
+.. _APCu:                        http://php.net/manual/en/book.apcu.php
 .. _PHP warning:                 https://bugs.php.net/bug.php?id=58982

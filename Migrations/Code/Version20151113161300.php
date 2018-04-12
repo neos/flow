@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,24 @@ namespace TYPO3\Flow\Core\Migrations;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Security\RequestPattern\ControllerObjectName;
-use TYPO3\Flow\Security\RequestPattern\CsrfProtection;
-use TYPO3\Flow\Security\RequestPattern\Host;
-use TYPO3\Flow\Security\RequestPattern\Ip;
-use TYPO3\Flow\Security\RequestPattern\Uri;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Security\RequestPattern\ControllerObjectName;
+use Neos\Flow\Security\RequestPattern\CsrfProtection;
+use Neos\Flow\Security\RequestPattern\Host;
+use Neos\Flow\Security\RequestPattern\Ip;
+use Neos\Flow\Security\RequestPattern\Uri;
 
 /**
  * Adjust "Settings.yaml" to new "requestPattern" and "firewall" syntax (see FLOW-412)
  */
 class Version20151113161300 extends AbstractMigration
 {
+
+    public function getIdentifier()
+    {
+        return 'TYPO3.Flow-20151113161300';
+    }
+
     /**
      * @return void
      */

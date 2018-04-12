@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Mvc;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
-use TYPO3\Flow\Error as FLowError;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Error\Messages as FLowError;
 
 /**
  * Testcase for the MVC Controller Argument
@@ -84,66 +84,11 @@ class ArgumentTest extends UnitTestCase
     /**
      * @test
      */
-    public function setShortNameProvidesFluentInterface()
-    {
-        $returnedArgument = $this->simpleValueArgument->setShortName('x');
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-    }
-
-    public function invalidShortNames()
-    {
-        return [
-            [''],
-            ['as'],
-            [5]
-        ];
-    }
-    /**
-     * @test
-     * @dataProvider invalidShortNames
-     * @expectedException \InvalidArgumentException
-     */
-    public function shortNameShouldThrowExceptionIfInvalid($invalidShortName)
-    {
-        $this->simpleValueArgument->setShortName($invalidShortName);
-    }
-
-    /**
-     * @test
-     */
-    public function shortNameCanBeRetrievedAgain()
-    {
-        $this->simpleValueArgument->setShortName('x');
-        $this->assertEquals('x', $this->simpleValueArgument->getShortName());
-    }
-
-    /**
-     * @test
-     */
     public function setRequiredShouldProvideFluentInterfaceAndReallySetRequiredState()
     {
         $returnedArgument = $this->simpleValueArgument->setRequired(true);
         $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
         $this->assertTrue($this->simpleValueArgument->isRequired());
-    }
-
-    /**
-     * @test
-     */
-    public function setShortHelpMessageShouldProvideFluentInterfaceAndReallySetShortHelpMessage()
-    {
-        $returnedArgument = $this->simpleValueArgument->setShortHelpMessage('Some Help Message');
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-        $this->assertSame('Some Help Message', $this->simpleValueArgument->getShortHelpMessage());
-    }
-
-    /**
-     * @test
-     * @expectedException \InvalidArgumentException
-     */
-    public function setShortHelpMessageShouldThrowExceptionIfMessageIsNoString()
-    {
-        $this->simpleValueArgument->setShortHelpMessage(null);
     }
 
     /**
@@ -210,7 +155,6 @@ class ArgumentTest extends UnitTestCase
     {
         $this->setupPropertyMapperAndSetValue();
         $this->assertSame('convertedValue', $this->simpleValueArgument->getValue());
-        $this->assertTrue($this->simpleValueArgument->isValid());
     }
 
     /**
@@ -235,7 +179,6 @@ class ArgumentTest extends UnitTestCase
 
         $this->simpleValueArgument->setValidator($mockValidator);
         $this->setupPropertyMapperAndSetValue();
-        $this->assertFalse($this->simpleValueArgument->isValid());
         $this->assertEquals([$error], $this->simpleValueArgument->getValidationResults()->getErrors());
     }
 
@@ -246,15 +189,5 @@ class ArgumentTest extends UnitTestCase
     {
         $this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED));
         $this->assertNull($this->simpleValueArgument->getPropertyMappingConfiguration()->getConfigurationValue(PersistentObjectConverter::class, PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED));
-    }
-
-    /**
-     * @test
-     */
-    public function setDataTypeProvidesFluentInterfaceAndReallySetsDataType()
-    {
-        $returnedArgument = $this->simpleValueArgument->setDataType('integer');
-        $this->assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
-        $this->assertSame('integer', $this->simpleValueArgument->getDataType(), 'The got dataType is not the set dataType.');
     }
 }

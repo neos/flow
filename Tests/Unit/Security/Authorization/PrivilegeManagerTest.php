@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
+namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,17 +11,17 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 
-use TYPO3\Flow\Aop\JoinPoint;
-use TYPO3\Flow\Aop\JoinPointInterface;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Security\Authorization\Privilege\AbstractPrivilege;
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
-use TYPO3\Flow\Security\Authorization\Privilege\PrivilegeInterface;
-use TYPO3\Flow\Security\Authorization\PrivilegeManager;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\JoinPoint;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Authorization\Privilege\AbstractPrivilege;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
+use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
+use Neos\Flow\Security\Authorization\PrivilegeManager;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the privilege manager

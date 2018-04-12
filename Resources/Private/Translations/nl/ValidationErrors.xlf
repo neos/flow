@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" product-name="TYPO3.Flow" source-language="en" datatype="plaintext" target-language="nl">
+  <file original="" product-name="Neos.Flow" source-language="en" datatype="plaintext" target-language="nl">
     <body>
       <!-- AlphanumericValidator -->
       <trans-unit id="1221551320" xml:space="preserve" approved="yes">
@@ -122,7 +122,7 @@
         </trans-unit>
         <trans-unit id="1238108068[1]">
           <source>This field must contain at least {0,number} characters</source>
-          <target xml:lang="nl" state="needs-translation">This field must contain at least {0,number} characters</target>
+          <target xml:lang="nl" state="translated">Dit veld moet ten minste {0,number} karakters bevatten</target>
         </trans-unit>
       </group>
       <group id="1238108069" restype="x-gettext-plurals">
@@ -132,7 +132,7 @@
         </trans-unit>
         <trans-unit id="1238108069[1]">
           <source>This text may not exceed {0,number} characters</source>
-          <target xml:lang="nl" state="needs-translation">This text may not exceed {0,number} characters</target>
+          <target xml:lang="nl" state="translated">Deze tekst mag niet langer zijn dan {0,number} karakters</target>
         </trans-unit>
       </group>
       <!-- StringValidator -->
@@ -155,7 +155,7 @@
       <trans-unit id="1268676765" xml:space="preserve" approved="yes">
 				<source>The person name cannot be empty</source>
 			<target xml:lang="nl">De naam van de persoon mag niet leeg zijn</target></trans-unit>
-      <!-- Package "TYPO3.Media" -->
+      <!-- Package "Neos.Media" -->
       <!-- ImageTypeValidator -->
       <trans-unit id="1327947256" xml:space="preserve" approved="yes">
 				<source>The given value is not a Image instance</source>

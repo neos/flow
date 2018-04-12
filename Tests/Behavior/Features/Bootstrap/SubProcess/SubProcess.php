@@ -1,7 +1,7 @@
 <?php
-namespace TYPO3\Flow\Tests\Features\Bootstrap\SubProcess;
+namespace Neos\Flow\Tests\Features\Bootstrap\SubProcess;
 
-use TYPO3\Flow\Core\ApplicationContext;
+use Neos\Flow\Core\ApplicationContext;
 
 /**
  * A wrapper for a flow sub process that allows for sending arbitrary commands to the same request
@@ -86,7 +86,7 @@ class SubProcess
      */
     protected function launchSubProcess()
     {
-        $systemCommand = 'FLOW_ROOTPATH=' . FLOW_PATH_ROOT . ' FLOW_PATH_TEMPORARY_BASE=' . escapeshellarg(FLOW_PATH_TEMPORARY_BASE) . ' FLOW_CONTEXT=' . (string)$this->context . ' ' . PHP_BINDIR . '/php -c ' . php_ini_loaded_file() . ' ' . FLOW_PATH_FLOW . 'Scripts/flow.php' . ' --start-slave';
+        $systemCommand = 'FLOW_ROOTPATH=' . escapeshellarg(FLOW_PATH_ROOT) . ' FLOW_PATH_TEMPORARY_BASE=' . escapeshellarg(FLOW_PATH_TEMPORARY_BASE) . ' FLOW_CONTEXT=' . (string)$this->context . ' ' . PHP_BINARY . ' -c ' . php_ini_loaded_file() . ' ' . escapeshellarg(FLOW_PATH_FLOW . 'Scripts/flow.php') . ' --start-slave';
         $descriptorSpecification = [['pipe', 'r'], ['pipe', 'w'], ['pipe', 'a']];
         $this->subProcess = proc_open($systemCommand, $descriptorSpecification, $this->pipes);
         if (!is_resource($this->subProcess)) {

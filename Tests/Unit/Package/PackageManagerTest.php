@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Package;
+namespace Neos\Flow\Tests\Unit\Package;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,19 +11,19 @@ namespace TYPO3\Flow\Tests\Unit\Package;
  * source code.
  */
 
-use TYPO3\Flow\Composer\ComposerUtility;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Package\Exception\InvalidPackageKeyException;
-use TYPO3\Flow\Package\PackageFactory;
-use TYPO3\Flow\Package\PackageInterface;
+use Neos\Flow\Composer\ComposerUtility;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Package\Exception\InvalidPackageKeyException;
+use Neos\Flow\Package\PackageFactory;
+use Neos\Flow\Package\PackageInterface;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Package\PackageManager;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\SignalSlot\Dispatcher;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\Files;
 
 /**
  * Testcase for the default package manager
@@ -68,25 +68,18 @@ class PackageManagerTest extends UnitTestCase
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->mockBootstrap->expects($this->any())->method('getObjectManager')->will($this->returnValue($mockObjectManager));
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->any())->method('getClassNameByObject')->will($this->returnCallback(function ($object) {
-            if ($object instanceof \Doctrine\ORM\Proxy\Proxy) {
-                return get_parent_class($object);
-            }
-            return get_class($object);
-        }));
         $mockObjectManager->expects($this->any())->method('get')->with(ReflectionService::class)->will($this->returnValue($mockReflectionService));
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');
 
-        $this->packageManager = new PackageManager('vfs://Test/Configuration/PackageStates.php');
+        $this->packageManager = new PackageManager('vfs://Test/Configuration/PackageStates.php', 'vfs://Test/Packages/');
 
         $composerNameToPackageKeyMap = [
-            'typo3/flow' => 'TYPO3.Flow'
+            'neos/flow' => 'Neos.Flow'
         ];
 
         $this->inject($this->packageManager, 'composerNameToPackageKeyMap', $composerNameToPackageKeyMap);
-        $this->inject($this->packageManager, 'packagesBasePath', 'vfs://Test/Packages/');
 
         $this->mockDispatcher = $this->getMockBuilder(Dispatcher::class)->disableOriginalConstructor()->getMock();
         $this->inject($this->packageManager, 'dispatcher', $this->mockDispatcher);
@@ -99,71 +92,19 @@ class PackageManagerTest extends UnitTestCase
      */
     public function getPackageReturnsTheSpecifiedPackage()
     {
-        $this->packageManager->createPackage('TYPO3.Flow');
+        $this->packageManager->createPackage('Neos.Flow');
 
-        $package = $this->packageManager->getPackage('TYPO3.Flow');
+        $package = $this->packageManager->getPackage('Neos.Flow');
         $this->assertInstanceOf(PackageInterface::class, $package, 'The result of getPackage() was no valid package object.');
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\UnknownPackageException
+     * @expectedException \Neos\Flow\Package\Exception\UnknownPackageException
      */
     public function getPackageThrowsExceptionOnUnknownPackage()
     {
         $this->packageManager->getPackage('PrettyUnlikelyThatThisPackageExists');
-    }
-
-    /**
-     * @test
-     */
-    public function getPackageOfObjectGetsPackageByGivenObject()
-    {
-        $package = $this->packageManager->createPackage('Acme.Foobar');
-        $dummyObject = $this->createDummyObjectForPackage($package);
-        $actual = $this->packageManager->getPackageOfObject($dummyObject);
-        $this->assertSame($package, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getPackageOfObjectAssumesParentClassIfDoctrineProxyClassGiven()
-    {
-        $package = $this->packageManager->createPackage('Acme.Foobar');
-        $dummyObject = $this->createDummyObjectForPackage($package);
-
-        mkdir('vfs://Test/Somewhere/For/DoctrineProxies', 0700, true);
-        $dummyProxyClassName = 'Proxy_' . str_replace('\\', '_', get_class($dummyObject));
-        $dummyProxyClassPath = 'vfs://Test/Somewhere/For/DoctrineProxies/' . $dummyProxyClassName . '.php';
-        file_put_contents($dummyProxyClassPath, '<?php class ' . $dummyProxyClassName . ' extends ' . get_class($dummyObject) . ' implements \Doctrine\ORM\Proxy\Proxy {
-            public function __setInitialized($initialized) {}
-            public function __setInitializer(Closure $initializer = null) {}
-            public function __getInitializer() {}
-            public function __setCloner(Closure $cloner = null) {}
-            public function __getCloner() {}
-            public function __getLazyProperties() {}
-            public function __load() {}
-            public function __isInitialized() {}
-        } ?>');
-        require $dummyProxyClassPath;
-        $dummyProxy = new $dummyProxyClassName();
-
-        $actual = $this->packageManager->getPackageOfObject($dummyProxy);
-        $this->assertSame($package, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function getPackageOfObjectDoesNotGivePackageWithShorterPathPrematurely()
-    {
-        $package1 = $this->packageManager->createPackage('Acme.Foo');
-        $package2 = $this->packageManager->createPackage('Acme.Foobaz');
-        $dummy1Object = $this->createDummyObjectForPackage($package1);
-        $dummy2Object = $this->createDummyObjectForPackage($package2);
-        $this->assertSame($package1, $this->packageManager->getPackageOfObject($dummy1Object));
-        $this->assertSame($package2, $this->packageManager->getPackageOfObject($dummy2Object));
     }
 
     /**
@@ -175,14 +116,17 @@ class PackageManagerTest extends UnitTestCase
      */
     protected function createDummyObjectForPackage(PackageInterface $package)
     {
+        $namespaces = $package->getNamespaces();
         $dummyClassName = 'Someclass' . md5(uniqid(mt_rand(), true));
-        $fullyQualifiedClassName = '\\' . $package->getNamespace() . '\\' . $dummyClassName;
+
+        $fullyQualifiedClassName = '\\' . reset($namespaces) . '\\' . $dummyClassName;
+
         $dummyClassFilePath = Files::concatenatePaths([
             $package->getPackagePath(),
             PackageInterface::DIRECTORY_CLASSES,
             $dummyClassName . '.php'
         ]);
-        file_put_contents($dummyClassFilePath, '<?php namespace ' . $package->getNamespace() . '; class ' . $dummyClassName . ' {}');
+        file_put_contents($dummyClassFilePath, '<?php namespace ' . reset($namespaces) . '; class ' . $dummyClassName . ' {}');
         require $dummyClassFilePath;
         return new $fullyQualifiedClassName();
     }
@@ -190,17 +134,9 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function getPackageOfObjectReturnsNullIfPackageCouldNotBeResolved()
-    {
-        $this->assertNull($this->packageManager->getPackageOfObject(new \ArrayObject()));
-    }
-
-    /**
-     * @test
-     */
     public function getCaseSensitivePackageKeyReturnsTheUpperCamelCaseVersionOfAGivenPackageKeyIfThePackageIsRegistered()
     {
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['dummy'], ['', '']);
         $packageManager->_set('packageKeys', ['acme.testpackage' => 'Acme.TestPackage']);
         $this->assertEquals('Acme.TestPackage', $packageManager->getCaseSensitivePackageKey('acme.testpackage'));
     }
@@ -211,9 +147,9 @@ class PackageManagerTest extends UnitTestCase
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds()
     {
         $expectedPackageKeys = [
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow.Test' . md5(uniqid(mt_rand(), true)),
+            'Neos.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
             'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true))
         ];
 
@@ -225,9 +161,7 @@ class PackageManagerTest extends UnitTestCase
             file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageKey . '", "type": "flow-test"}');
         }
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['emitPackageStatesUpdated']);
-        $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['emitPackageStatesUpdated'], ['vfs://Test/Configuration/PackageStates.php', 'vfs://Test/Packages/']);
 
         $packageFactory = new PackageFactory($packageManager);
         $this->inject($packageManager, 'packageFactory', $packageFactory);
@@ -243,56 +177,12 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function scanAvailablePackagesKeepsExistingPackageConfiguration()
-    {
-        $expectedPackageKeys = [
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow.Test' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
-            'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true))
-        ];
-
-        foreach ($expectedPackageKeys as $packageKey) {
-            $packageName = ComposerUtility::getComposerPackageNameFromPackageKey($packageKey);
-            $packagePath = 'vfs://Test/Packages/Application/' . $packageKey . '/';
-
-            mkdir($packagePath, 0770, true);
-            mkdir($packagePath . 'Classes');
-            file_put_contents($packagePath . 'composer.json', '{"name": "' . $packageName . '", "type": "flow-test"}');
-        }
-
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['emitPackageStatesUpdated']);
-        $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
-
-        $packageFactory = new PackageFactory($packageManager);
-        $this->inject($packageManager, 'packageFactory', $packageFactory);
-
-        $packageManager->_set('packageStatesConfiguration', [
-            'packages' => [
-                $packageName => [
-                    'state' => 'inactive',
-                    'frozen' => false,
-                    'packagePath' => 'Application/' . $packageKey . '/',
-                    'classesPath' => 'Classes/'
-                ]
-            ],
-            'version' => 2
-        ]);
-        $packageStates = $packageManager->rescanPackages(false);
-        $this->assertEquals('inactive', $packageStates['packages'][$packageName]['state']);
-    }
-
-
-    /**
-     * @test
-     */
     public function packageStatesConfigurationContainsRelativePaths()
     {
         $packageKeys = [
             'RobertLemke.Flow.NothingElse' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.Flow' . md5(uniqid(mt_rand(), true)),
-            'TYPO3.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
+            'Neos.Flow' . md5(uniqid(mt_rand(), true)),
+            'Neos.YetAnotherTestPackage' . md5(uniqid(mt_rand(), true)),
         ];
 
         foreach ($packageKeys as $packageKey) {
@@ -300,12 +190,12 @@ class PackageManagerTest extends UnitTestCase
 
             mkdir($packagePath, 0770, true);
             mkdir($packagePath . 'Classes');
-            ComposerUtility::writeComposerManifest($packagePath, $packageKey, ['type' => 'flow-test', 'autoload' => []]);
+            ComposerUtility::writeComposerManifest($packagePath, $packageKey, ['type' => 'neos-test', 'autoload' => []]);
         }
 
         $packageManager = $this->getAccessibleMock(PackageManager::class, ['updateShortcuts', 'emitPackageStatesUpdated'], [], '', false);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
-        $packageManager->_set('packageStatesPathAndFilename', 'vfs://Test/Configuration/PackageStates.php');
+        $packageManager->_set('packageInformationCacheFilePath', 'vfs://Test/Configuration/PackageStates.php');
 
         $packageFactory = new PackageFactory($packageManager);
         $this->inject($packageManager, 'packageFactory', $packageFactory);
@@ -317,7 +207,6 @@ class PackageManagerTest extends UnitTestCase
         foreach ($packageKeys as $packageKey) {
             $composerName = ComposerUtility::getComposerPackageNameFromPackageKey($packageKey);
             $expectedPackageStatesConfiguration[$composerName] = [
-                'state' => 'active',
                 'packagePath' => 'Application/' . $packageKey . '/',
                 'composerName' => $composerName,
                 'packageClassInformation' => [],
@@ -337,7 +226,7 @@ class PackageManagerTest extends UnitTestCase
     public function packageKeysAndPaths()
     {
         return [
-            ['TYPO3.YetAnotherTestPackage', 'vfs://Test/Packages/Application/TYPO3.YetAnotherTestPackage/'],
+            ['Neos.YetAnotherTestPackage', 'vfs://Test/Packages/Application/Neos.YetAnotherTestPackage/'],
             ['RobertLemke.Flow.NothingElse', 'vfs://Test/Packages/Application/RobertLemke.Flow.NothingElse/']
         ];
     }
@@ -362,9 +251,9 @@ class PackageManagerTest extends UnitTestCase
      */
     public function createPackageWritesAComposerManifestUsingTheGivenMetaObject()
     {
-        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage', null, null, null, [
+        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage', [
             'name' => 'acme/yetanothertestpackage',
-            'type' => 'typo3-flow-package',
+            'type' => 'neos-package',
             'description' => 'Yet Another Test Package',
             'autoload' => [
                 'psr-0' => [
@@ -387,7 +276,7 @@ class PackageManagerTest extends UnitTestCase
     {
         $metaData = [
             'name' => 'acme/yetanothertestpackage2',
-            'type' => 'flow-custom-package',
+            'type' => 'neos-custom-package',
             'description' => 'Yet Another Test Package',
             'autoload' => [
                 'psr-0' => [
@@ -396,12 +285,26 @@ class PackageManagerTest extends UnitTestCase
             ]
         ];
 
-        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage2', null, null, null, $metaData);
+        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage2', $metaData);
 
         $json = file_get_contents($package->getPackagePath() . '/composer.json');
         $composerManifest = json_decode($json);
 
-        $this->assertEquals('flow-custom-package', $composerManifest->type);
+        $this->assertEquals('neos-custom-package', $composerManifest->type);
+    }
+
+
+    /**
+     * @test
+     */
+    public function createPackageAlwaysSetsThePackageType()
+    {
+        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage2');
+
+        $json = file_get_contents($package->getPackagePath() . '/composer.json');
+        $composerManifest = json_decode($json);
+
+        $this->assertEquals('neos-package', $composerManifest->type);
     }
 
     /**
@@ -416,7 +319,6 @@ class PackageManagerTest extends UnitTestCase
 
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_CLASSES), 'Classes directory was not created');
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_CONFIGURATION), 'Configuration directory was not created');
-        $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_DOCUMENTATION), 'Documentation directory was not created');
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_RESOURCES), 'Resources directory was not created');
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_TESTS_UNIT), 'Tests/Unit directory was not created');
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_TESTS_FUNCTIONAL), 'Tests/Functional directory was not created');
@@ -440,7 +342,7 @@ class PackageManagerTest extends UnitTestCase
      * Makes sure that duplicate package keys are detected.
      *
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\PackageKeyAlreadyExistsException
+     * @expectedException \Neos\Flow\Package\Exception\PackageKeyAlreadyExistsException
      */
     public function createPackageThrowsExceptionForExistingPackageKey()
     {
@@ -451,42 +353,15 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function createPackageActivatesTheNewlyCreatedPackage()
+    public function createPackageMakesTheNewlyCreatedPackageAvailable()
     {
         $this->packageManager->createPackage('Acme.YetAnotherTestPackage');
-        $this->assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'));
+        $this->assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'));
     }
 
     /**
      * @test
-     */
-    public function activatePackageAndDeactivatePackageActivateAndDeactivateTheGivenPackage()
-    {
-        $packageKey = 'Acme.YetAnotherTestPackage';
-
-        $this->packageManager->createPackage($packageKey);
-
-        $this->packageManager->deactivatePackage($packageKey);
-        $this->assertFalse($this->packageManager->isPackageActive($packageKey));
-
-        $this->packageManager->activatePackage($packageKey);
-        $this->assertTrue($this->packageManager->isPackageActive($packageKey));
-    }
-
-    /**
-     * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\ProtectedPackageKeyException
-     */
-    public function deactivatePackageThrowsAnExceptionIfPackageIsProtected()
-    {
-        $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage');
-        $package->setProtected(true);
-        $this->packageManager->deactivatePackage('Acme.YetAnotherTestPackage');
-    }
-
-    /**
-     * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\UnknownPackageException
+     * @expectedException \Neos\Flow\Package\Exception\UnknownPackageException
      */
     public function deletePackageThrowsErrorIfPackageIsNotAvailable()
     {
@@ -495,7 +370,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\ProtectedPackageKeyException
+     * @expectedException \Neos\Flow\Package\Exception\ProtectedPackageKeyException
      */
     public function deletePackageThrowsAnExceptionIfPackageIsProtected()
     {
@@ -513,13 +388,11 @@ class PackageManagerTest extends UnitTestCase
         $packagePath = $package->getPackagePath();
 
         $this->assertTrue(is_dir($packagePath . PackageInterface::DIRECTORY_CONFIGURATION), 'The package configuration directory does not exist.');
-        $this->assertTrue($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'), 'The package is not active.');
         $this->assertTrue($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'), 'The package is not available.');
 
         $this->packageManager->deletePackage('Acme.YetAnotherTestPackage');
 
         $this->assertFalse(is_dir($packagePath . PackageInterface::DIRECTORY_CONFIGURATION), 'The package configuration directory does still exist.');
-        $this->assertFalse($this->packageManager->isPackageActive('Acme.YetAnotherTestPackage'), 'The package is still active.');
         $this->assertFalse($this->packageManager->isPackageAvailable('Acme.YetAnotherTestPackage'), 'The package is still available.');
     }
 
@@ -531,8 +404,8 @@ class PackageManagerTest extends UnitTestCase
         return [
             ['imagine/Imagine', 'imagine.Imagine'],
             ['imagine/imagine', 'imagine.Imagine'],
-            ['typo3/flow', 'TYPO3.Flow'],
-            ['TYPO3/Flow', 'TYPO3.Flow']
+            ['neos/flow', 'Neos.Flow'],
+            ['Neos/Flow', 'Neos.Flow']
         ];
     }
 
@@ -544,9 +417,9 @@ class PackageManagerTest extends UnitTestCase
     {
         $packageStatesConfiguration = [
             'packages' => [
-                'typo3/flow' => [
-                    'packageKey' => 'TYPO3.Flow',
-                    'composerName' => 'typo3/flow'
+                'neos/flow' => [
+                    'packageKey' => 'Neos.Flow',
+                    'composerName' => 'neos/flow'
                 ],
                 'imagine/imagine' => [
                     'packageKey' => 'imagine.Imagine',
@@ -555,7 +428,7 @@ class PackageManagerTest extends UnitTestCase
             ]
         ];
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies'], ['', '']);
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
 
         $this->assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
@@ -563,7 +436,7 @@ class PackageManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Package\Exception\PackageKeyAlreadyExistsException
+     * @expectedException \Neos\Flow\Package\Exception\PackageKeyAlreadyExistsException
      */
     public function registeringTheSamePackageKeyWithDifferentCaseShouldThrowException()
     {
@@ -583,35 +456,11 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @test
      */
-    public function activatePackageEmitsPackageStatesUpdatedSignal()
-    {
-        $this->packageManager->createPackage('Some.Package');
-        $this->packageManager->deactivatePackage('Some.Package');
-
-        $this->mockDispatcher->expects($this->once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');
-        $this->packageManager->activatePackage('Some.Package');
-    }
-
-    /**
-     * @test
-     */
-    public function deactivatePackageEmitsPackageStatesUpdatedSignal()
-    {
-        $this->packageManager->createPackage('Some.Package');
-
-        $this->mockDispatcher->expects($this->once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');
-        $this->packageManager->deactivatePackage('Some.Package');
-    }
-
-
-    /**
-     * @test
-     */
     public function freezePackageEmitsPackageStatesUpdatedSignal()
     {
         $this->mockApplicationContext->expects($this->atLeastOnce())->method('isDevelopment')->will($this->returnValue(true));
 
-        $this->packageManager->createPackage('Some.Package', null, null, null, [
+        $this->packageManager->createPackage('Some.Package', [
             'name' => 'some/package'
         ]);
 
@@ -626,9 +475,9 @@ class PackageManagerTest extends UnitTestCase
     {
         $this->mockApplicationContext->expects($this->atLeastOnce())->method('isDevelopment')->will($this->returnValue(true));
 
-        $this->packageManager->createPackage('Some.Package', null, null, null, [
+        $this->packageManager->createPackage('Some.Package', [
             'name' => 'some/package',
-            'type' => 'typo3-flow-package'
+            'type' => 'neos-package'
         ]);
         $this->packageManager->freezePackage('Some.Package');
 

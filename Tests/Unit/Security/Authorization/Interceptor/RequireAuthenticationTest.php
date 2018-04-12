@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization\Interceptor;
+namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * source code.
  */
 
-use TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface;
-use TYPO3\Flow\Security\Authorization\Interceptor\RequireAuthentication;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
+use Neos\Flow\Security\Authorization\Interceptor\RequireAuthentication;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the authentication required security interceptor

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" product-name="TYPO3.Flow" source-language="en" datatype="plaintext" target-language="fi">
+  <file original="" product-name="Neos.Flow" source-language="en" datatype="plaintext" target-language="fi">
     <body>
       <!-- AlphanumericValidator -->
       <trans-unit id="1221551320" xml:space="preserve" approved="yes">
@@ -116,23 +116,23 @@
 				<source>The length of this text must be between {0,number} and {1,number} characters</source>
 			<target xml:lang="fi">Tekstin pituusa saa olla {0,number} - {1,number} merkkiä</target></trans-unit>
       <group id="1238108068" restype="x-gettext-plurals">
-        <trans-unit id="1238108068[0]">
+        <trans-unit id="1238108068[0]" approved="yes">
           <source>This field must contain at least {0,number} character</source>
-          <target xml:lang="fi" state="needs-translation">This field must contain at least {0,number} character</target>
+          <target xml:lang="fi">Kentässä on oltava vähintään {0,number} merkki</target>
         </trans-unit>
-        <trans-unit id="1238108068[1]">
+        <trans-unit id="1238108068[1]" approved="yes">
           <source>This field must contain at least {0,number} characters</source>
-          <target xml:lang="fi" state="needs-translation">This field must contain at least {0,number} characters</target>
+          <target xml:lang="fi">Kentässä on oltava vähintään {0,number} merkkiä</target>
         </trans-unit>
       </group>
       <group id="1238108069" restype="x-gettext-plurals">
-        <trans-unit id="1238108069[0]">
+        <trans-unit id="1238108069[0]" approved="yes">
           <source>This text may not exceed {0,number} character</source>
-          <target xml:lang="fi" state="needs-translation">This text may not exceed {0,number} character</target>
+          <target xml:lang="fi">Tekstissä saa olla enintään {0,number} merkki</target>
         </trans-unit>
-        <trans-unit id="1238108069[1]">
+        <trans-unit id="1238108069[1]" approved="yes">
           <source>This text may not exceed {0,number} characters</source>
-          <target xml:lang="fi" state="needs-translation">This text may not exceed {0,number} characters</target>
+          <target xml:lang="fi">Tekstissä saa olla enintään {0,number} merkkiä</target>
         </trans-unit>
       </group>
       <!-- StringValidator -->
@@ -155,7 +155,7 @@
       <trans-unit id="1268676765" xml:space="preserve" approved="yes">
 				<source>The person name cannot be empty</source>
 			<target xml:lang="fi">Nimi ei voi olla tyhjä</target></trans-unit>
-      <!-- Package "TYPO3.Media" -->
+      <!-- Package "Neos.Media" -->
       <!-- ImageTypeValidator -->
       <trans-unit id="1327947256" xml:space="preserve" approved="yes">
 				<source>The given value is not a Image instance</source>

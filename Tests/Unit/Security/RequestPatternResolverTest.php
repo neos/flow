@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security;
+namespace Neos\Flow\Tests\Unit\Security;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\Security\RequestPattern\ValidShortName;
-use TYPO3\Flow\Security\RequestPatternResolver;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Security\RequestPatternResolver;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the request pattern resolver
@@ -23,12 +22,12 @@ class RequestPatternResolverTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\NoRequestPatternFoundException
+     * @expectedException \Neos\Flow\Security\Exception\NoRequestPatternFoundException
      */
     public function resolveRequestPatternClassThrowsAnExceptionIfNoRequestPatternIsAvailable()
     {
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->will($this->returnValue(false));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will($this->returnValue(false));
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
 
@@ -40,23 +39,25 @@ class RequestPatternResolverTest extends UnitTestCase
      */
     public function resolveRequestPatternReturnsTheCorrectRequestPatternForAShortName()
     {
-        $getCaseSensitiveObjectNameCallback = function () {
+        $longNameForTest = 'Neos\Flow\Security\RequestPattern\ValidShortName';
+
+        $getCaseSensitiveObjectNameCallback = function () use ($longNameForTest) {
             $args = func_get_args();
 
-            if ($args[0] === ValidShortName::class) {
-                return ValidShortName::class;
+            if ($args[0] === $longNameForTest) {
+                return $longNameForTest;
             }
 
             return false;
         };
 
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->will($this->returnCallback($getCaseSensitiveObjectNameCallback));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will($this->returnCallback($getCaseSensitiveObjectNameCallback));
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
         $requestPatternClass = $requestPatternResolver->resolveRequestPatternClass('ValidShortName');
 
-        $this->assertEquals(ValidShortName::class, $requestPatternClass, 'The wrong classname has been resolved');
+        $this->assertEquals($longNameForTest, $requestPatternClass, 'The wrong classname has been resolved');
     }
 
     /**
@@ -65,7 +66,7 @@ class RequestPatternResolverTest extends UnitTestCase
     public function resolveRequestPatternReturnsTheCorrectRequestPatternForACompleteClassName()
     {
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->with('ExistingRequestPatternClass')->will($this->returnValue('ExistingRequestPatternClass'));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->with('ExistingRequestPatternClass')->will($this->returnValue('ExistingRequestPatternClass'));
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
         $requestPatternClass = $requestPatternResolver->resolveRequestPatternClass('ExistingRequestPatternClass');

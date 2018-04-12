@@ -1,14 +1,21 @@
 Upgrading instructions
 ======================
 
-This file contains instructions for upgrading your Flow 3.2 based
-applications to TYPO3 Flow 3.3.
+This file contains instructions for upgrading your Flow 4.2 based
+applications to Neos Flow 4.3
 
 What has changed
 ----------------
 
-The most important change relevant for upgrading is https://github.com/neos/flow-development-collection/pull/130
-Make sure to run code migrations and check the changed provider patterns.
+- The Flow-routing is improved and now allows the definition of RoutingParameters
+via HTTP-components.
+
+- Flow now allows bypassing the custom class loader for performance.
+
+- The log-package was extracted from Flow to become a separate independent
+composer-package neos/flow-log.
+
+For further details see the ReleaseNotes and ChangeLogs.
 
 Upgrading your Packages
 -----------------------
@@ -16,15 +23,14 @@ Upgrading your Packages
 Upgrading existing code
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Here comes the easier part. As with earlier changes to Flow that required code changes on the user side we provide a code
-migration tool.
-Given you have a Flow system with your (outdated) package in place you should run the following before attempting to fix
-anything by hand::
+Here comes the easier part. As with earlier changes to Flow that required code changes on the user side we provide a
+code migration tool. Given you have a Flow system with your (outdated) package in place you should run the following
+before attempting to fix anything by hand ::
 
  ./flow core:migrate --package-key Acme.Demo
 
 The package key is optional, if left out it will work on all packages it finds (except for library packages and packages
-prefixed with "TYPO3.*") - for the first run you might want to limit things a little to keep the overview, though.
+prefixed with "Neos.*") - for the first run you might want to limit things a little to keep the overview, though.
 
 Make sure to run::
 
@@ -79,5 +85,5 @@ in *Development Context*, padded with some manual checking and adjustments needs
 That should result in a working package.
 
 If it does not and you have no idea what to do next, please get in touch
-with us. The `support page <http://flow.typo3.org/support/>`_ provides more
+with us. The `support page <https://www.neos.io/docs-and-support/support.html>`_ provides more
 information.

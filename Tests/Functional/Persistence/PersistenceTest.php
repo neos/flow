@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence;
+namespace Neos\Flow\Tests\Functional\Persistence;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,12 +13,12 @@ namespace TYPO3\Flow\Tests\Functional\Persistence;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Tools\SchemaTool;
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Persistence\Doctrine\QueryResult;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\CommonObject;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Persistence\Doctrine\QueryResult;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\CommonObject;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for persistence
@@ -120,7 +120,7 @@ class PersistenceTest extends FunctionalTestCase
     {
         $this->removeExampleEntities();
         $this->insertExampleEntity('Flow');
-        $this->insertExampleEntity('TYPO3');
+        $this->insertExampleEntity('Neos');
 
         $allResults = $this->testEntityRepository->findAll();
         $this->assertEquals('Flow', $allResults->getFirst()->getName());
@@ -169,14 +169,14 @@ class PersistenceTest extends FunctionalTestCase
 
         $serializedData = serialize($testEntityWithArrayProperty);
 
-        $testEntityLyingInsideTheArray->setName('TYPO3');
+        $testEntityLyingInsideTheArray->setName('Neos');
         $this->persistenceManager->persistAll();
 
         $testEntityWithArrayPropertyUnserialized = unserialize($serializedData);
         $arrayPropertyAfterUnserialize = $testEntityWithArrayPropertyUnserialized->getArrayProperty();
 
         $this->assertNotSame($testEntityWithArrayProperty, $testEntityWithArrayPropertyUnserialized);
-        $this->assertEquals('TYPO3', $arrayPropertyAfterUnserialize['some']['nestedArray']['key']->getName(), 'The entity inside the array property has not been updated to the current persistend state after wakeup.');
+        $this->assertEquals('Neos', $arrayPropertyAfterUnserialize['some']['nestedArray']['key']->getName(), 'The entity inside the array property has not been updated to the current persistend state after wakeup.');
     }
 
     /**
@@ -186,7 +186,7 @@ class PersistenceTest extends FunctionalTestCase
     {
         $expectedEntity = new Fixtures\TestEntity();
         $uuid = $this->persistenceManager->getIdentifierByObject($expectedEntity);
-        $actualEntity = $this->persistenceManager->getObjectByIdentifier($uuid, TestEntity::class);
+        $actualEntity = $this->persistenceManager->getObjectByIdentifier($uuid, Fixtures\TestEntity::class);
         $this->assertSame($expectedEntity, $actualEntity);
     }
 
@@ -277,7 +277,7 @@ class PersistenceTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\ObjectValidationFailedException
+     * @expectedException \Neos\Flow\Persistence\Exception\ObjectValidationFailedException
      */
     public function validationIsDoneForNewEntities()
     {
@@ -289,7 +289,7 @@ class PersistenceTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\ObjectValidationFailedException
+     * @expectedException \Neos\Flow\Persistence\Exception\ObjectValidationFailedException
      */
     public function validationIsDoneForReconstitutedEntities()
     {
@@ -307,7 +307,7 @@ class PersistenceTest extends FunctionalTestCase
      * Testcase for issue #32830 - Validation on persist breaks with Doctrine Lazy Loading Proxies
      *
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\ObjectValidationFailedException
+     * @expectedException \Neos\Flow\Persistence\Exception\ObjectValidationFailedException
      */
     public function validationIsDoneForReconstitutedEntitiesWhichAreLazyLoadingProxies()
     {
@@ -377,7 +377,7 @@ class PersistenceTest extends FunctionalTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Persistence\Exception
+     * @expectedException \Neos\Flow\Persistence\Exception
      * @test
      */
     public function persistAllThrowsExceptionIfNonWhitelistedObjectsAreDirtyAndFlagIsSet()
@@ -389,7 +389,7 @@ class PersistenceTest extends FunctionalTestCase
     }
 
     /**
-     * @expectedException \TYPO3\Flow\Persistence\Exception
+     * @expectedException \Neos\Flow\Persistence\Exception
      * @test
      */
     public function persistAllThrowsExceptionIfNonWhitelistedObjectsAreUpdatedAndFlagIsSet()
@@ -450,7 +450,7 @@ class PersistenceTest extends FunctionalTestCase
      */
     public function commonObjectIsPersistedAndIsReconstituted()
     {
-        if ($this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'TYPO3.Flow.persistence.backendOptions.driver') === 'pdo_pgsql') {
+        if ($this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.persistence.backendOptions.driver') === 'pdo_pgsql') {
             $this->markTestSkipped('Doctrine ORM on PostgreSQL cannot store serialized data, thus storing objects with Type::OBJECT would fail. See http://www.doctrine-project.org/jira/browse/DDC-3241');
         }
 

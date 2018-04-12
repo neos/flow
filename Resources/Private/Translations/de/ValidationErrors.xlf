@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" product-name="TYPO3.Flow" source-language="en" datatype="plaintext" target-language="de">
+  <file original="" product-name="Neos.Flow" source-language="en" datatype="plaintext" target-language="de">
     <body>
       <!-- AlphanumericValidator -->
       <trans-unit id="1221551320" xml:space="preserve" approved="yes">
@@ -54,7 +54,7 @@
       <!-- FloatValidator -->
       <trans-unit id="1221560288" xml:space="preserve" approved="yes">
 				<source>A valid float number is expected</source>
-			<target xml:lang="de">Eine gültige Dezimalzahl wird erwartet</target></trans-unit>
+			<target xml:lang="de">Eine gültige Dezimalzahl wird erwartet</target><alt-trans><target xml:lang="de">Eine durch Punkt getrennte, gültige Dezimalzahl wird erwartet</target></alt-trans><alt-trans><target xml:lang="de">Eine gültige Dezimalzahl mit einem Punkt wird erwartet</target></alt-trans></trans-unit>
       <trans-unit id="1332934124" xml:space="preserve" approved="yes">
 				<source>"{0}" cannot be converted to a float value</source>
 			<target xml:lang="de">"{0}" kann nicht in eine Dezimalzahl umgewandelt werden</target></trans-unit>
@@ -155,7 +155,7 @@
       <trans-unit id="1268676765" xml:space="preserve" approved="yes">
 				<source>The person name cannot be empty</source>
 			<target xml:lang="de">Der Personenname darf nicht leer sein</target></trans-unit>
-      <!-- Package "TYPO3.Media" -->
+      <!-- Package "Neos.Media" -->
       <!-- ImageTypeValidator -->
       <trans-unit id="1327947256" xml:space="preserve" approved="yes">
 				<source>The given value is not a Image instance</source>

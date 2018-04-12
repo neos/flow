@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Policy;
+namespace Neos\Flow\Tests\Unit\Security\Policy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Unit\Security\Policy;
  * source code.
  */
 
-use TYPO3\Flow\Security\Authorization\Privilege\Method\MethodTargetExpressionParser;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodTargetExpressionParser;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the policy expression parser
@@ -21,7 +21,7 @@ class PolicyExpressionParserTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\InvalidPointcutExpressionException
+     * @expectedException \Neos\Flow\Aop\Exception\InvalidPointcutExpressionException
      */
     public function parseMethodThrowsAnExceptionIfAnotherPrivilegeTargetIsReferencedInAnExpression()
     {

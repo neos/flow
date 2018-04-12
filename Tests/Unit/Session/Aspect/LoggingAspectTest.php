@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Session\Aspect;
+namespace Neos\Flow\Tests\Unit\Session\Aspect;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Session\Aspect;
  * source code.
  */
 
-use TYPO3\Flow\Aop\JoinPoint;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\Session\TransientSession;
-use TYPO3\Flow\Session\Aspect\LoggingAspect;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\JoinPoint;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\Session\TransientSession;
+use Neos\Flow\Session\Aspect\LoggingAspect;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Logging Aspect implementation

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,10 @@ namespace TYPO3\Flow\Core\Migrations;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\Source\YamlSource;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\Source\YamlSource;
+use Neos\Utility\Arrays;
+use Neos\Utility\Files;
 
 /**
  * The base class for code migrations.
@@ -82,14 +84,11 @@ abstract class AbstractMigration
     }
 
     /**
-     * Returns the identifier of this migration, e.g. 'TYPO3.Flow-20120126163610'.
+     * Returns the identifier of this migration, e.g. 'Neos.Flow-20120126163610'.
      *
      * @return string
      */
-    public function getIdentifier()
-    {
-        return $this->sourcePackageKey . '-' . $this->getVersionNumber();
-    }
+    abstract public function getIdentifier();
 
     /**
      * Returns the version of this migration, e.g. '20120126163610'.
@@ -339,6 +338,54 @@ abstract class AbstractMigration
     }
 
     /**
+     * Move a settings path from "source" to "destination"; best to be used when package names change.
+     *
+     * @param string $sourcePath
+     * @param string $destinationPath
+     */
+    protected function moveSettingsPaths($sourcePath, $destinationPath)
+    {
+        $this->processConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
+            function (array &$configuration) use ($sourcePath, $destinationPath) {
+                $sourceConfigurationValue = Arrays::getValueByPath($configuration, $sourcePath);
+                $destinationConfigurationValue = Arrays::getValueByPath($configuration, $destinationPath);
+
+                if ($sourceConfigurationValue !== null) {
+                    // source exists, so we need to move source to destination.
+
+                    if ($destinationConfigurationValue !== null) {
+                        // target exists as well; we need to MERGE source and target.
+                        $destinationConfigurationValue = Arrays::arrayMergeRecursiveOverrule($sourceConfigurationValue, $destinationConfigurationValue);
+                    } else {
+                        // target does NOT exist; we directly set target = source
+                        $destinationConfigurationValue = $sourceConfigurationValue;
+                    }
+
+                    // set the config on the new path
+                    $configuration = Arrays::setValueByPath($configuration, $destinationPath, $destinationConfigurationValue);
+
+                    // Unset the old configuration
+                    $configuration = Arrays::unsetValueByPath($configuration, $sourcePath);
+
+                    // remove empty keys before our removed key (if it exists)
+                    $sourcePathExploded = explode('.', $sourcePath);
+                    for ($length = count($sourcePathExploded) - 1; $length > 0; $length--) {
+                        $temporaryPath = array_slice($sourcePathExploded, 0, $length);
+                        $valueAtPath = Arrays::getValueByPath($configuration, $temporaryPath);
+                        if (empty($valueAtPath)) {
+                            $configuration = Arrays::unsetValueByPath($configuration, $temporaryPath);
+                        } else {
+                            break;
+                        }
+
+                    }
+                }
+            },
+            true
+        );
+    }
+
+    /**
      * Applies all registered searchAndReplace operations.
      *
      * @return void
@@ -360,7 +407,7 @@ abstract class AbstractMigration
                     if ($filter !== array() && (!isset($pathInfo['extension']) || !in_array($pathInfo['extension'], $filter, true))) {
                         continue;
                     }
-                } elseif ($pathAndFilename !== $filter) {
+                } elseif (substr($pathAndFilename, -strlen($filter)) !== $filter) {
                     continue;
                 }
                 Tools::searchAndReplace($search, $replacement, $pathAndFilename, $regularExpression);

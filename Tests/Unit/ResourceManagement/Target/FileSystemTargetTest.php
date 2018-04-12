@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Streams;
+namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,21 @@ namespace TYPO3\Flow\Tests\Unit\ResourceManagement\Streams;
  * source code.
  */
 
-use TYPO3\Flow\Cli\CommandRequestHandler;
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Http\HttpRequestHandlerInterface;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\ResourceManagement\PersistentResource;
-use TYPO3\Flow\ResourceManagement\Target\FileSystemTarget;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Cli\CommandRequestHandler;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Http\HttpRequestHandlerInterface;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Package;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\ResourceManagement\Collection;
+use Neos\Flow\ResourceManagement\PersistentResource;
+use Neos\Flow\ResourceManagement\Storage\PackageStorage;
+use Neos\Flow\ResourceManagement\Target\FileSystemTarget;
+use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Tests for the FileSystemTarget class
@@ -112,7 +119,7 @@ class FileSystemTargetTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ResourceManagement\Target\Exception
+     * @expectedException \Neos\Flow\ResourceManagement\Target\Exception
      */
     public function getPublicStaticResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {
@@ -180,7 +187,7 @@ class FileSystemTargetTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\ResourceManagement\Target\Exception
+     * @expectedException \Neos\Flow\ResourceManagement\Target\Exception
      */
     public function getPublicPersistentResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {
@@ -193,5 +200,39 @@ class FileSystemTargetTest extends UnitTestCase
         $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
 
         $this->fileSystemTarget->getPublicStaticResourceUri($mockResource);
+    }
+
+    /**
+     * @test
+     */
+    public function getWorksWithPackageStorage()
+    {
+        vfsStream::setup('Test');
+        mkdir('vfs://Test/Configuration');
+        $packageManager = new PackageManager('vfs://Test/Configuration/PackageStates.php', 'vfs://Test/Packages/');
+
+        $packageManager->createPackage("Neos.Flow");
+
+        $packageStorage = new PackageStorage('testStorage');
+        $packageStorage->initializeObject(ObjectManagerInterface::INITIALIZATIONCAUSE_CREATED);
+
+        $mockSystemLogger = $this->getMockBuilder(SystemLoggerInterface::class)->getMock();
+
+        $this->inject($packageStorage, 'packageManager', $packageManager);
+
+        $oneResourcePublished = false;
+
+        $_publicationCallback = function ($i, $o) use (&$oneResourcePublished) {
+            $oneResourcePublished = true;
+        };
+
+        $staticCollection = new Collection('testStaticCollection', $packageStorage, $this->fileSystemTarget, ['*']);
+
+        $fileSystemTarget = new FileSystemTarget('test', ['path' => 'vfs://Test/Publish']);
+        $fileSystemTarget->initializeObject(ObjectManagerInterface::INITIALIZATIONCAUSE_CREATED);
+        $this->inject($fileSystemTarget, 'systemLogger', $mockSystemLogger);
+        $fileSystemTarget->publishCollection($staticCollection, $_publicationCallback);
+
+        $this->assertTrue($oneResourcePublished);
     }
 }

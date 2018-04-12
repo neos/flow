@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\RequestPattern;
+namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\RequestPattern;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Security\RequestPattern\ControllerObjectName;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Security\RequestPattern\ControllerObjectName;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the controller object name request pattern
@@ -27,9 +27,9 @@ class ControllerObjectNameTest extends UnitTestCase
     public function matchRequestReturnsTrueIfTheCurrentRequestMatchesTheControllerObjectNamePattern()
     {
         $request = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->setMethods(['getControllerObjectName'])->getMock();
-        $request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('TYPO3\Flow\Security\Controller\LoginController'));
+        $request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Neos\Flow\Security\Controller\LoginController'));
 
-        $requestPattern = new ControllerObjectName(['controllerObjectNamePattern' => 'TYPO3\Flow\Security\.*']);
+        $requestPattern = new ControllerObjectName(['controllerObjectNamePattern' => 'Neos\Flow\Security\.*']);
 
         $this->assertTrue($requestPattern->matchRequest($request));
     }
@@ -42,7 +42,7 @@ class ControllerObjectNameTest extends UnitTestCase
         $request = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->setMethods(['getControllerObjectName'])->getMock();
         $request->expects($this->once())->method('getControllerObjectName')->will($this->returnValue('Some\Package\Controller\SomeController'));
 
-        $requestPattern = new ControllerObjectName(['controllerObjectNamePattern' => 'TYPO3\Flow\Security\.*']);
+        $requestPattern = new ControllerObjectName(['controllerObjectNamePattern' => 'Neos\Flow\Security\.*']);
 
         $this->assertFalse($requestPattern->matchRequest($request));
     }

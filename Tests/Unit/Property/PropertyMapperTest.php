@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property;
+namespace Neos\Flow\Tests\Unit\Property;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,18 +11,17 @@ namespace TYPO3\Flow\Tests\Unit\Property;
  * source code.
  */
 
-use TYPO3\Flow\Core\Bootstrap;
-use TYPO3\Flow\Property\Exception\DuplicateTypeConverterException;
-use TYPO3\Flow\Property\Exception\InvalidTargetException;
-use TYPO3\Flow\Property\Exception\TypeConverterException;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\PropertyMappingConfigurationBuilder;
-use TYPO3\Flow\Property\PropertyMappingConfigurationInterface;
-use TYPO3\Flow\Property\TypeConverterInterface;
-use TYPO3\Flow\Security\Exception;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility\TypeHandling;
+use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Property\Exception\DuplicateTypeConverterException;
+use Neos\Flow\Property\Exception\InvalidTargetException;
+use Neos\Flow\Property\Exception\TypeConverterException;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\PropertyMappingConfigurationInterface;
+use Neos\Flow\Property\TypeConverterInterface;
+use Neos\Flow\Security\Exception;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\TypeHandling;
 
 require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
 
@@ -31,8 +30,6 @@ require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
  */
 class PropertyMapperTest extends UnitTestCase
 {
-    protected $mockConfigurationBuilder;
-
     protected $mockConfiguration;
 
     /**
@@ -42,7 +39,6 @@ class PropertyMapperTest extends UnitTestCase
      */
     public function setUp()
     {
-        $this->mockConfigurationBuilder = $this->createMock(PropertyMappingConfigurationBuilder::class);
         $this->mockConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
     }
 
@@ -84,7 +80,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @test
      * @dataProvider invalidSourceTypes
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidSourceException
+     * @expectedException \Neos\Flow\Property\Exception\InvalidSourceException
      */
     public function sourceWhichIsNoSimpleTypeOrObjectThrowsException($source)
     {
@@ -198,7 +194,7 @@ class PropertyMapperTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\TypeConverterException
+     * @expectedException \Neos\Flow\Property\Exception\TypeConverterException
      */
     public function findTypeConverterThrowsExceptionIfAllMatchingConvertersHaveNegativePriorities()
     {

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
+namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,17 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use TYPO3\Flow\Http;
-use TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException;
-use TYPO3\Flow\Mvc\Routing\Fixtures\MockRoutePartHandler;
-use TYPO3\Flow\Mvc\Routing;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Mvc\Exception\InvalidRoutePartValueException;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
+use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Fixtures\MockRoutePartHandler;
+use Neos\Flow\Mvc\Routing;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Psr\Http\Message\UriInterface;
 
 require_once(__DIR__ . '/Fixtures/MockRoutePartHandler.php');
 
@@ -69,11 +73,15 @@ class RouteTest extends UnitTestCase
      */
     protected function routeMatchesPath($routePath)
     {
-        /** @var Http\Request $mockHttpRequest|\PHPUnit_Framework_MockObject_MockObject */
+        $mockUri = $this->getMockBuilder(UriInterface::class)->getMock();
+
+        /** @var Http\Request|\PHPUnit_Framework_MockObject_MockObject $mockHttpRequest */
         $mockHttpRequest = $this->getMockBuilder(Http\Request::class)->disableOriginalConstructor()->getMock();
         $mockHttpRequest->expects($this->any())->method('getRelativePath')->will($this->returnValue($routePath));
+        $mockHttpRequest->expects($this->any())->method('getUri')->will($this->returnValue($mockUri));
 
-        return $this->route->matches($mockHttpRequest);
+        $routeContext = new RouteContext($mockHttpRequest, RouteParameters::createEmpty());
+        return $this->route->matches($routeContext);
     }
 
     /*                                                                        *
@@ -136,7 +144,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartHandlerException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartHandlerException
      */
     public function settingInvalidRoutePartHandlerThrowsException()
     {
@@ -196,7 +204,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithTrailingSlashThrowsException()
     {
@@ -206,7 +214,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithLeadingSlashThrowsException()
     {
@@ -216,7 +224,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithSuccessiveDynamicRoutepartsThrowsException()
     {
@@ -226,7 +234,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithSuccessiveOptionalSectionsThrowsException()
     {
@@ -236,7 +244,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithUnterminatedOptionalSectionsThrowsException()
     {
@@ -246,7 +254,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidUriPatternException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidUriPatternException
      */
     public function uriPatternWithUnopenedOptionalSectionsThrowsException()
     {
@@ -434,7 +442,7 @@ class RouteTest extends UnitTestCase
     public function matchesThrowsExceptionIfRoutePartValueContainsObjects($shouldThrowException, $routePartValue)
     {
         if ($shouldThrowException === true) {
-            $this->setExpectedException(InvalidRoutePartValueException::class);
+            $this->expectException(InvalidRoutePartValueException::class);
         }
         $mockRoutePart = $this->createMock(Routing\RoutePartInterface::class);
         $mockRoutePart->expects($this->once())->method('match')->with('foo')->will($this->returnValue(true));
@@ -559,7 +567,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRouteSetupException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRouteSetupException
      */
     public function routeThrowsExceptionIfUriPatternContainsOneOptionalDynamicRoutePartWithoutDefaultValue()
     {
@@ -752,7 +760,7 @@ class RouteTest extends UnitTestCase
         $mockHttpRequest->expects($this->any())->method('getBaseUri')->will($this->returnValue($mockBaseUri));
 
         $mockHttpRequest->expects($this->atLeastOnce())->method('getMethod')->will($this->returnValue('GET'));
-        $this->assertFalse($this->route->matches($mockHttpRequest), 'Route must not match GET requests if only POST or PUT requests are accepted.');
+        $this->assertFalse($this->route->matches(new RouteContext($mockHttpRequest, RouteParameters::createEmpty())), 'Route must not match GET requests if only POST or PUT requests are accepted.');
     }
 
     /**
@@ -776,7 +784,7 @@ class RouteTest extends UnitTestCase
 
         $mockHttpRequest->expects($this->atLeastOnce())->method('getMethod')->will($this->returnValue('PUT'));
 
-        $this->assertTrue($this->route->matches($mockHttpRequest), 'Route should match PUT requests if POST and PUT requests are accepted.');
+        $this->assertTrue($this->route->matches(new RouteContext($mockHttpRequest, RouteParameters::createEmpty())), 'Route should match PUT requests if POST and PUT requests are accepted.');
     }
 
     /*                                                                        *
@@ -794,7 +802,7 @@ class RouteTest extends UnitTestCase
         $this->routeValues = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3', 'key4' => 'value4'];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('value1-value2/value3.value4.xml', $this->route->getResolvedUriPath());
+        $this->assertEquals('value1-value2/value3.value4.xml', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -819,7 +827,7 @@ class RouteTest extends UnitTestCase
         $this->routeValues = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3', 'key4' => 'value4', '__someInternalArgument' => 'someValue'];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('value1-value2/value3.value4.xml?__someInternalArgument=someValue', $this->route->getResolvedUriPath());
+        $this->assertEquals('value1-value2/value3.value4.xml?__someInternalArgument=someValue', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -832,7 +840,7 @@ class RouteTest extends UnitTestCase
         $this->routeValues = ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3', 'key4' => 'value4', '--subRequest' => ['__someInternalArgument' => 'someValue']];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('value1-value2/value3.value4.xml?--subRequest%5B__someInternalArgument%5D=someValue', $this->route->getResolvedUriPath());
+        $this->assertEquals('value1-value2/value3.value4.xml?--subRequest%5B__someInternalArgument%5D=someValue', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -858,7 +866,7 @@ class RouteTest extends UnitTestCase
         $this->route->setAppendExceedingArguments(true);
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('value1-value2/value3.value4.xml?__someInternalArgument=someValue&nonexistingkey=foo', $this->route->getResolvedUriPath());
+        $this->assertEquals('value1-value2/value3.value4.xml?__someInternalArgument=someValue&nonexistingkey=foo', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -883,13 +891,13 @@ class RouteTest extends UnitTestCase
         $this->routeValues = ['key1' => ['key1a' => 'key1aValue', 'key1b' => 'key1bValue'], 'key2' => ['key2a' => 'key2aValue']];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('key2bValue', $this->route->getResolvedUriPath());
+        $this->assertEquals('key2bValue', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
      * @test
      */
-    public function resolvesAppendsDefaultValuesOfOptionalUriPartsToResolvedUriPath()
+    public function resolvesAppendsDefaultValuesOfOptionalUriPartsToResolvedUriPathConstraint()
     {
         $this->route->setUriPattern('foo(/{bar}/{baz})');
         $this->route->setDefaults(['bar' => 'barDefaultValue', 'baz' => 'bazDefaultValue']);
@@ -897,20 +905,20 @@ class RouteTest extends UnitTestCase
 
         $this->route->resolves($this->routeValues);
         $expectedResult = 'foo/barDefaultValue/bazvalue';
-        $actualResult = $this->route->getResolvedUriPath();
+        $actualResult = $this->route->getResolvedUriConstraints()->getPathConstraint();
         $this->assertSame($expectedResult, $actualResult);
     }
 
     /**
      * @test
      */
-    public function resolvesLowerCasesResolvedUriPathByDefault()
+    public function resolvesLowerCasesResolvedUriPathConstraintByDefault()
     {
         $this->route->setUriPattern('CamelCase/{someKey}');
         $this->routeValues = ['someKey' => 'CamelCase'];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('camelcase/camelcase', $this->route->getResolvedUriPath());
+        $this->assertEquals('camelcase/camelcase', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -923,7 +931,7 @@ class RouteTest extends UnitTestCase
         $this->routeValues = ['someKey' => 'CamelCase'];
 
         $this->assertTrue($this->route->resolves($this->routeValues));
-        $this->assertEquals('CamelCase/CamelCase', $this->route->getResolvedUriPath());
+        $this->assertEquals('CamelCase/CamelCase', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -941,7 +949,7 @@ class RouteTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolvedUriPathIsNullAfterUnsuccessfulResolve()
+    public function resolvedUriPathConstraintIsNullAfterUnsuccessfulResolve()
     {
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->route = new Routing\Route($this->mockObjectManager, $mockObjectManager);
@@ -952,7 +960,7 @@ class RouteTest extends UnitTestCase
 
         $this->routeValues = ['differentKey' => 'value1'];
         $this->assertFalse($this->route->resolves($this->routeValues));
-        $this->assertNull($this->route->getResolvedUriPath());
+        $this->assertNull($this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -973,7 +981,7 @@ class RouteTest extends UnitTestCase
         $this->mockObjectManager->expects($this->once())->method('get')->with(MockRoutePartHandler::class)->will($this->returnValue($mockRoutePartHandler));
         $this->route->resolves($this->routeValues);
 
-        $this->assertEquals('_resolve_invoked_/value2', $this->route->getResolvedUriPath());
+        $this->assertEquals('_resolve_invoked_/value2', $this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
     /**
@@ -990,7 +998,7 @@ class RouteTest extends UnitTestCase
     /**
      * @test
      */
-    public function resolvesAppendsRemainingRouteValuesToResolvedUriPathIfAppendExceedingArgumentsIsTrue()
+    public function resolvesAppendsRemainingRouteValuesToResolvedUriPathConstraintIfAppendExceedingArgumentsIsTrue()
     {
         $this->route->setUriPattern('foo');
         $this->route->setAppendExceedingArguments(true);
@@ -998,7 +1006,7 @@ class RouteTest extends UnitTestCase
         $routeValues = ['foo' => 'bar', 'baz' => ['foo2' => 'bar2']];
         $this->route->resolves($routeValues);
 
-        $actualResult = $this->route->getResolvedUriPath();
+        $actualResult = $this->route->getResolvedUriConstraints()->getPathConstraint();
         $expectedResult = '?foo=bar&baz%5Bfoo2%5D=bar2';
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -1025,7 +1033,7 @@ class RouteTest extends UnitTestCase
         $this->route->_set('isParsed', true);
         $this->route->resolves($originalArray);
 
-        $actualResult = $this->route->getResolvedUriPath();
+        $actualResult = $this->route->getResolvedUriConstraints()->getPathConstraint();
         $expectedResult = '?foo=bar&someObject%5B__identity%5D=x&baz%5BsomeOtherObject%5D%5B__identity%5D=y';
 
         $this->assertEquals($expectedResult, $actualResult);
@@ -1045,7 +1053,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartValueException
      */
     public function resolvesThrowsExceptionIfRoutePartValueIsNoString()
     {
@@ -1062,7 +1070,7 @@ class RouteTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Mvc\Exception\InvalidRoutePartValueException
+     * @expectedException \Neos\Flow\Mvc\Exception\InvalidRoutePartValueException
      */
     public function resolvesThrowsExceptionIfRoutePartDefaultValueIsNoString()
     {

@@ -6,11 +6,11 @@
 #
 # Make sure to set the webserver group name to the one used by your system.
 
-echo TYPO3 Flow File Permission Script
+echo Neos Flow File Permission Script
 echo
 
 if [ ! -d "Web" -o ! -d "Packages" -o ! -d "Configuration" ]; then
-	echo Make sure you run this from the TYPO3 Flow root directory!
+	echo Make sure you run this from the Flow root directory!
 	echo
 	exit 1
 fi
@@ -67,6 +67,16 @@ echo
 echo "Note: Access Control Lists seem not to be supported by your system."
 echo
 echo "Setting file permissions per file, this might take a while ..."
+
+# Check that command line user is a member of the webserver group
+
+if id -nG "$COMMANDLINE_USER" | grep -qw "$WEBSERVER_GROUP"; then
+  echo "User is a member of the webserver group $WEBSERVER_GROUP, continuing"
+else
+  echo "User is not a member of the webserver group $WEBSERVER_GROUP, exiting"
+  echo
+  exit 1;
+fi
 
 sudo chown -R ${COMMANDLINE_USER}:${WEBSERVER_GROUP} .
 find . -type d -exec sudo chmod 2770 {} \;

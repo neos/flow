@@ -26,7 +26,7 @@ Example Usage
 The most simple usage is to convert simple types to different simple types, i.e.
 converting a numeric ``string`` to a ``float`` number::
 
-	// $propertyMapper is of class TYPO3\Flow\Property\PropertyMapper
+	// $propertyMapper is of class Neos\Flow\Property\PropertyMapper
 	$result = $propertyMapper->convert('12.5', 'float');
 	// $result == (float)12.5
 
@@ -39,7 +39,7 @@ to convert an array of data into a domain model::
 	/**
 	 * @Flow\Entity
 	 */
-	class TYPO3\MyPackage\Domain\Model\Person {
+	class Neos\MyPackage\Domain\Model\Person {
 		/**
 		 * @var string
 		 */
@@ -51,7 +51,7 @@ to convert an array of data into a domain model::
 		protected $birthDate;
 
 		/**
-		 * @var TYPO3\MyPackage\Domain\Model\Person
+		 * @var Neos\MyPackage\Domain\Model\Person
 		 */
 		protected $mother;
 		// ... furthermore contains getters and setters for the above properties.
@@ -61,9 +61,9 @@ to convert an array of data into a domain model::
 		'name' => 'John Fisher',
 		'birthDate' => '1990-11-14T15:32:12+00:00'
 	);
-	$person = $propertyMapper->convert($inputArray, \TYPO3\MyPackage\Domain\Model\Person::class);
+	$person = $propertyMapper->convert($inputArray, \Neos\MyPackage\Domain\Model\Person::class);
 
-	// $person is a newly created object of type TYPO3\MyPackage\Domain\Model\Person
+	// $person is a newly created object of type Neos\MyPackage\Domain\Model\Person
 	// $person->name == 'John Fisher'
 	// $person->birthDate is a DateTime object with the correct date set.
 
@@ -74,7 +74,7 @@ We'll first use a simple input array::
 	  'birthDate' => '1990-11-14T15:32:12+00:00'
 	);
 
-After calling ``$propertyMapper->convert($input, \TYPO3\MyPackage\Domain\Model\Person::class)``,
+After calling ``$propertyMapper->convert($input, \Neos\MyPackage\Domain\Model\Person::class)``,
 we receive an ew object of type ``Person`` which has ``$name`` set to ``John Fisher``,
 and ``$birthDate`` set to a ``DateTime`` object of the specified date. You might
 now wonder how the PropertyMapper knows how to convert ``DateTime`` objects and
@@ -148,7 +148,7 @@ In most cases, you should use the ``PropertyMappingConfigurationBuilder`` to cre
 PropertyMappingConfiguration, so that you get a convenient default configuration::
 
 		// Here $propertyMappingConfigurationBuilder is an instance of
-		// \TYPO3\Flow\Property\PropertyMappingConfigurationBuilder
+		// \Neos\Flow\Property\PropertyMappingConfigurationBuilder
 	$propertyMappingConfiguration = $propertyMappingConfigurationBuilder->build();
 
 		// modify $propertyMappingConfiguration here
@@ -176,8 +176,8 @@ The following configuration options exist:
   date format::
 
 	$propertyMappingConfiguration->setTypeConverterOption(
-		\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-		\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+		\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+		\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 		'Y-m-d'
 	);
 
@@ -206,8 +206,8 @@ configures the ``DateTime`` converter for the ``birthDate`` property::
 	$propertyMappingConfiguration
 		->forProperty('birthDate')
 		->setTypeConverterOption(
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 			'Y-m-d'
 		);
 
@@ -220,8 +220,8 @@ the path syntax supports an asterisk as a placeholder::
 	$propertyMappingConfiguration
 		->forProperty('items.*')
 		->setTypeConverterOption(
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+			\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class,
+			\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
 			TRUE
 		);
 
@@ -231,8 +231,8 @@ on large collections::
 	$propertyMappingConfiguration
 		->forProperty('persons.*.birthDate')
 		->setTypeConvertOption(
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::class,
-			\TYPO3\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::class,
+			\Neos\Flow\Property\TypeConverter\DateTimeConverter::CONFIGURATION_DATE_FORMAT,
 			'Y-m-d'
 		);
 
@@ -243,7 +243,7 @@ on large collections::
 
 	If you use Fluid forms, normally no adjustments are needed. However, when programming
 	a web service or an ajax endpoint, you might need to set the ``PropertyMappingConfiguration``
-	manually. You can access them using the ``\TYPO3\Flow\Mvc\Controller\Argument``
+	manually. You can access them using the ``\Neos\Flow\Mvc\Controller\Argument``
 	object -- and this configuration takes place inside the corresponding ``initialize*Action``
 	of the controller, as in the following example:
 
@@ -254,8 +254,8 @@ on large collections::
 			$commentConfiguration->allowAllProperties();
 			$commentConfiguration
 				->setTypeConverterOption(
-				\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::class,
-				\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+				\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::class,
+				\Neos\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
 				TRUE
 			);
 		}
@@ -402,7 +402,7 @@ Automatic resolving of type converters
 Automatic Resolving of Type Converters
 --------------------------------------
 
-All type converters which implement ``TYPO3\Flow\Property\TypeConverterInterface``
+All type converters which implement ``Neos\Flow\Property\TypeConverterInterface``
 are automatically found in the resolving process. There are four API methods in
 each ``TypeConverter`` which influence the resolving process:
 
@@ -452,7 +452,7 @@ Writing Your Own TypeConverters
 -------------------------------
 
 Often, it is enough to subclass
-``TYPO3\Flow\Property\TypeConverter\AbstractTypeConverter``
+``Neos\Flow\Property\TypeConverter\AbstractTypeConverter``
 instead of implementing ``TypeConverterInterface``.
 
 Besides, good starting points for own type converters are the ``DateTimeConverter``
@@ -476,7 +476,7 @@ possibilities what can be returned in ``convertFrom()``:
   this.
 
 * If the error is recoverable, and the user should re-submit his data, return a
-  ``TYPO3\Flow\Error\Error`` object (or a subclass thereof), containing information
+  ``Neos\Error\Messages\Error`` object (or a subclass thereof), containing information
   about the error. In this case, the property is not mapped at all (``NULL`` is
   returned, like above).
 
@@ -490,7 +490,7 @@ possibilities what can be returned in ``convertFrom()``:
 .. warning::
 
 	Inside a type converter it is not allowed to use an (injected) instance
-	of ``TYPO3\Flow\Property\PropertyMapper`` because it can lead to an
+	of ``Neos\Flow\Property\PropertyMapper`` because it can lead to an
 	infinite recursive invocation.
 
 .. note::

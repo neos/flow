@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Core\Migrations;
+namespace Neos\Flow\Core\Migrations;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -16,6 +16,12 @@ namespace TYPO3\Flow\Core\Migrations;
  */
 class Version20161115140430 extends AbstractMigration
 {
+
+    public function getIdentifier()
+    {
+        return 'TYPO3.Flow-20161115140430';
+    }
+
     /**
      * @return void
      */

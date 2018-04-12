@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Builder;
+namespace Neos\Flow\Tests\Unit\Aop\Builder;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Builder;
  * source code.
  */
 
-use TYPO3\Flow\Aop\Builder\AbstractMethodInterceptorBuilder;
-use TYPO3\Flow\Aop\Builder\AdvicedConstructorInterceptorBuilder;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\Builder\AbstractMethodInterceptorBuilder;
+use Neos\Flow\Aop\Builder\AdvicedConstructorInterceptorBuilder;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Abstract Method Interceptor Builder

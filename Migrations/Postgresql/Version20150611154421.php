@@ -1,9 +1,9 @@
 <?php
-namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use TYPO3\Flow\Utility\Files;
+use Neos\Utility\Files;
 
 /**
  * Move persistent resource files from abcde/fghij/../abcdefghij  to  a/b/c/d/abcdefghij
@@ -17,6 +17,10 @@ class Version20150611154421 extends AbstractMigration
     public function up(Schema $schema)
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != "postgresql");
+
+        if (!$this->sm->tablesExist(['typo3_flow_resource_resource'])) {
+            return;
+        }
 
         $resourcesResult = $this->connection->executeQuery('SELECT persistence_object_identifier, sha1, filename FROM typo3_flow_resource_resource');
         while ($resourceInfo = $resourcesResult->fetch(\PDO::FETCH_ASSOC)) {

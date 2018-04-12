@@ -33,12 +33,12 @@ The kickstarter created a very basic command controller containing only one comm
 	 *                                                                        *
 	 *                                                                        */
 
-	use TYPO3\Flow\Annotations as Flow;
+	use Neos\Flow\Annotations as Flow;
 
 	/**
 	 * @Flow\Scope("singleton")
 	 */
-	class BlogCommandController extends \TYPO3\Flow\Cli\CommandController {
+	class BlogCommandController extends \Neos\Flow\Cli\CommandController {
 
 		/**
 		 * An example command
@@ -79,8 +79,8 @@ Let's replace the example with a ``setupCommand`` that can be used to create the
 	use Acme\Blog\Domain\Model\Post;
 	use Acme\Blog\Domain\Repository\BlogRepository;
 	use Acme\Blog\Domain\Repository\PostRepository;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Cli\CommandController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Cli\CommandController;
 
 	/**
 	 * @Flow\Scope("singleton")
@@ -179,11 +179,11 @@ tables for our package:
 
 	Do you want to move the migration to one of these Packages?
 	  [0] Don't Move
-	  [1] TYPO3.Eel
-	  [2] TYPO3.Flow
-	  [3] TYPO3.Fluid
-	  [3] TYPO3.Kickstart
-	  [4] TYPO3.Welcome
+	  [1] Neos.Eel
+	  [2] Neos.Flow
+	  [3] Neos.Fluid
+	  [3] Neos.Kickstart
+	  [4] Neos.Welcome
 	  [5] Acme.Blog
 
 Hit a key to move the new migration to the ``Acme.Blog`` package (in this example key "5") and press <ENTER>.
@@ -194,7 +194,7 @@ to apply. In this case the migration should look like this:
 .. code-block:: php
 
 	<?php
-	namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+	namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 	use Doctrine\DBAL\Migrations\AbstractMigration,
 		Doctrine\DBAL\Schema\Schema;
@@ -267,8 +267,8 @@ Now let us add some more code to *.../Classes/Acme/Blog/Controller/PostControlle
 
 	use Acme\Blog\Domain\Repository\BlogRepository;
 	use Acme\Blog\Domain\Repository\PostRepository;
-	use TYPO3\Flow\Annotations as Flow;
-	use TYPO3\Flow\Mvc\Controller\ActionController;
+	use Neos\Flow\Annotations as Flow;
+	use Neos\Flow\Mvc\Controller\ActionController;
 	use Acme\Blog\Domain\Model\Post;
 
 	class PostController extends ActionController {

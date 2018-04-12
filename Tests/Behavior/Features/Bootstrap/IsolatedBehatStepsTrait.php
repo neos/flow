@@ -1,12 +1,12 @@
 <?php
-namespace TYPO3\Flow\Tests\Behavior\Features\Bootstrap;
+namespace Neos\Flow\Tests\Behavior\Features\Bootstrap;
 
 require_once(__DIR__ . '/SubProcess/SubProcess.php');
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Tests\Features\Bootstrap\SubProcess\SubProcess;
-use TYPO3\Flow\Cache\CacheManager;
-use PHPUnit_Framework_Assert as Assert;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Tests\Features\Bootstrap\SubProcess\SubProcess;
+use Neos\Flow\Cache\CacheManager;
+use PHPUnit\Framework\Assert;
 
 /**
  * Class IsolatedBehatStepsTrait
@@ -67,7 +67,7 @@ trait IsolatedBehatStepsTrait
             $stepMethodName = substr($stepMethodName, strpos($stepMethodName, '::') + 2);
         }
         $withoutSecurityChecks = ($withoutSecurityChecks === true ? '--without-security-checks ' : '');
-        $subProcessCommand = sprintf('typo3.flow.tests.functional:behathelper:callbehatstep %s%s %s%s', $withoutSecurityChecks, escapeshellarg($this->behatTestHelperObjectName), $stepMethodName, $encodedStepArguments);
+        $subProcessCommand = sprintf('neos.flow.tests.functional:behathelper:callbehatstep %s%s %s%s', $withoutSecurityChecks, escapeshellarg($this->behatTestHelperObjectName), $stepMethodName, $encodedStepArguments);
 
         $subProcessResponse = $this->getSubProcess()->execute($subProcessCommand);
 

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
+namespace Neos\Flow\Tests\Unit\Persistence\Generic;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Unit\Persistence\Generic;
  * source code.
  */
 
-use TYPO3\Flow\Aop\ProxyInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Persistence;
+use Neos\Flow\Aop\ProxyInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Persistence;
 
 /**
  * Testcase for the Persistence Session
@@ -583,8 +583,11 @@ class SessionTest extends UnitTestCase
         $knownObject = $this->createMock(ProxyInterface::class);
         $knownObject->Persistence_Object_Identifier = 'fakeUuid';
 
+        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->setMethods(['getPropertyNamesByTag'])->getMock();
+        $mockReflectionService->expects($this->any())->method('getPropertyNamesByTag')->will($this->returnValue([]));
+
         $session = new Persistence\Generic\Session();
-        $session->injectReflectionService($this->createMock(ReflectionService::class));
+        $session->injectReflectionService($mockReflectionService);
 
         $this->assertEquals('fakeUuid', $session->getIdentifierByObject($knownObject));
     }
@@ -600,8 +603,11 @@ class SessionTest extends UnitTestCase
         $knownObject = $this->createMock(ProxyInterface::class);
         $knownObject->Persistence_Object_Identifier = 'fakeHash';
 
+        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->setMethods(['getPropertyNamesByTag'])->getMock();
+        $mockReflectionService->expects($this->any())->method('getPropertyNamesByTag')->will($this->returnValue([]));
+
         $session = new Persistence\Generic\Session();
-        $session->injectReflectionService($this->createMock(ReflectionService::class));
+        $session->injectReflectionService($mockReflectionService);
 
         $this->assertEquals('fakeHash', $session->getIdentifierByObject($knownObject));
     }
@@ -616,8 +622,11 @@ class SessionTest extends UnitTestCase
     {
         $unknownObject = $this->createMock(ProxyInterface::class);
 
+        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->setMethods(['getPropertyNamesByTag'])->getMock();
+        $mockReflectionService->expects($this->any())->method('getPropertyNamesByTag')->will($this->returnValue([]));
+
         $session = new Persistence\Generic\Session();
-        $session->injectReflectionService($this->createMock(ReflectionService::class));
+        $session->injectReflectionService($mockReflectionService);
 
         $this->assertNull($session->getIdentifierByObject($unknownObject));
     }

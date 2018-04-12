@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
+namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Property\Fixtures;
-use TYPO3\Flow\Property\Exception as PropertyException;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Property\Fixtures;
+use Neos\Flow\Property\Exception as PropertyException;
 
 class PersistentObjectConverterTest extends FunctionalTestCase
 {
@@ -98,7 +98,7 @@ class PersistentObjectConverterTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception
+     * @expectedException \Neos\Flow\Property\Exception
      */
     public function entityWithImmutablePropertyCanNotBeUpdatedWhenImmutablePropertyChanged()
     {

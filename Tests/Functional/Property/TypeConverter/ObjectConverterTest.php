@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
+namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Property\TypeConverter;
  * source code.
  */
 
-use TYPO3\Flow\Property\Exception\InvalidTargetException;
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\ObjectConverter;
-use TYPO3\Flow\Reflection\ObjectAccess;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Property\Fixtures;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\ObjectConverter;
+use Neos\Utility\ObjectAccess;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Property\Fixtures;
 
 /**
  */
@@ -80,10 +79,11 @@ class ObjectConverterTest extends FunctionalTestCase
 
     /**
      * @test
+     * @expectedException \Neos\Flow\Property\Exception\InvalidTargetException
+     * @expectedExceptionCode 1406821818
      */
     public function getTypeOfChildPropertyThrowsExceptionIfThatPropertyIsPubliclyPresentButHasNoProperTypeAnnotation()
     {
-        $this->setExpectedException(InvalidTargetException::class, '', 1406821818);
         $this->converter->getTypeOfChildProperty(
             Fixtures\TestClass::class,
             'somePublicPropertyWithoutVarAnnotation',
@@ -129,24 +129,56 @@ class ObjectConverterTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function convertFromAllowsAutomaticInjectionOfSingletonConstructorArguments()
+    public function getTypeOfChildPropertyReturnsNullIfPropertyDoesNotExistAndSkipUnknownPropertiesIsSet()
     {
-        $convertedObject = $this->converter->convertFrom(
-            'irrelevant',
-            \TYPO3\Flow\Tests\Functional\Property\Fixtures\TestClassWithSingletonConstructorInjection::class
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->skipUnknownProperties();
+
+        $result = $this->converter->getTypeOfChildProperty(
+            Fixtures\TestClass::class,
+            'someUnknownProperty',
+            $configuration
         );
-        $this->assertInstanceOf(\TYPO3\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation::class, $convertedObject->getSingletonClass());
+        $this->assertNull($result);
     }
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Property\Exception\InvalidTargetException
+     */
+    public function getTypeOfChildPropertyReturnsNullIfPropertyDoesNotExistAndPropertyIsFlaggedToBeSkippedSpecifically()
+    {
+        $configuration = new PropertyMappingConfiguration();
+        $configuration->skipProperties('someUnknownProperty');
+
+        $result = $this->converter->getTypeOfChildProperty(
+            Fixtures\TestClass::class,
+            'someUnknownProperty',
+            $configuration
+        );
+        $this->assertNull($result);
+    }
+
+    /**
+     * @test
+     */
+    public function convertFromAllowsAutomaticInjectionOfSingletonConstructorArguments()
+    {
+        $convertedObject = $this->converter->convertFrom(
+            'irrelevant',
+            \Neos\Flow\Tests\Functional\Property\Fixtures\TestClassWithSingletonConstructorInjection::class
+        );
+        $this->assertInstanceOf(\Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation::class, $convertedObject->getSingletonClass());
+    }
+
+    /**
+     * @test
+     * @expectedException \Neos\Flow\Property\Exception\InvalidTargetException
      */
     public function convertFromThrowsMeaningfulExceptionWhenTheTargetExpectsAnUnknownDependencyThatIsNotSpecifiedInTheSource()
     {
         $this->converter->convertFrom(
             'irrelevant',
-            \TYPO3\Flow\Tests\Functional\Property\Fixtures\TestClassWithThirdPartyClassConstructorInjection::class
+            \Neos\Flow\Tests\Functional\Property\Fixtures\TestClassWithThirdPartyClassConstructorInjection::class
         );
     }
 }

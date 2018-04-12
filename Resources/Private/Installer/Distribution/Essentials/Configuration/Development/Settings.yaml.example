@@ -8,7 +8,7 @@
 # possible configuration options.                                        #
 #                                                                        #
 
-TYPO3:
+Neos:
   Flow:
     persistence:
       backendOptions:
@@ -18,4 +18,4 @@ TYPO3:
 
        # if you want to log executed SQL queries, enable the next 2 lines
 #      doctrine:
-#        sqlLogger: 'TYPO3\Flow\Persistence\Doctrine\Logging\SqlLogger'
+#        sqlLogger: 'Neos\Flow\Persistence\Doctrine\Logging\SqlLogger'

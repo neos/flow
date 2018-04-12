@@ -8,7 +8,7 @@
 # global Configuration directory and its sub directories.                #
 #                                                                        #
 
-TYPO3:
+Neos:
 
   Flow:
 
@@ -18,7 +18,7 @@ TYPO3:
 
     error:
       exceptionHandler:
-        className: 'TYPO3\Flow\Error\DebugExceptionHandler'
+        className: 'Neos\Flow\Error\DebugExceptionHandler'
 
         defaultRenderingOptions:
           renderTechnicalDetails: TRUE

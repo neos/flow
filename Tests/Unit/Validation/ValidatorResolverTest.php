@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Validation;
+namespace Neos\Flow\Tests\Unit\Validation;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,20 +11,20 @@ namespace TYPO3\Flow\Tests\Unit\Validation;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Controller\ActionController;
-use TYPO3\Flow\ObjectManagement\Configuration\Configuration;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Validation\Validator\CollectionValidator;
-use TYPO3\Flow\Validation\Validator\ConjunctionValidator;
-use TYPO3\Flow\Validation\Validator\DateTimeValidator;
-use TYPO3\Flow\Validation\Validator\EmailAddressValidator;
-use TYPO3\Flow\Validation\Validator\GenericObjectValidator;
-use TYPO3\Flow\Validation\Validator\PolyTypeObjectValidatorInterface;
-use TYPO3\Flow\Validation\Validator\ValidatorInterface;
-use TYPO3\Flow\Validation\ValidatorResolver;
-use TYPO3\Flow\Annotations;
+use Neos\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\ObjectManagement\Configuration\Configuration;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Validation\Validator\CollectionValidator;
+use Neos\Flow\Validation\Validator\ConjunctionValidator;
+use Neos\Flow\Validation\Validator\DateTimeValidator;
+use Neos\Flow\Validation\Validator\EmailAddressValidator;
+use Neos\Flow\Validation\Validator\GenericObjectValidator;
+use Neos\Flow\Validation\Validator\PolyTypeObjectValidatorInterface;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Flow\Validation\ValidatorResolver;
+use Neos\Flow\Annotations;
 
 /**
  * Testcase for the validator resolver
@@ -65,7 +65,7 @@ class ValidatorResolverTest extends UnitTestCase
 
         $this->mockObjectManager->expects($this->at(0))->method('get')->with(ReflectionService::class)->will($this->returnValue($this->mockReflectionService));
         $this->mockObjectManager->expects($this->at(1))->method('isRegistered')->with('Foo')->will($this->returnValue(false));
-        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('TYPO3\Flow\Validation\Validator\FooValidator')->will($this->returnValue(false));
+        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('Neos\Flow\Validation\Validator\FooValidator')->will($this->returnValue(false));
 
         $this->assertSame(false, $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
@@ -89,7 +89,7 @@ class ValidatorResolverTest extends UnitTestCase
     {
         $this->mockObjectManager->expects($this->at(0))->method('get')->with(ReflectionService::class)->will($this->returnValue($this->mockReflectionService));
         $this->mockObjectManager->expects($this->at(1))->method('isRegistered')->with('Foo')->will($this->returnValue(true));
-        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('TYPO3\Flow\Validation\Validator\FooValidator')->will($this->returnValue(false));
+        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('Neos\Flow\Validation\Validator\FooValidator')->will($this->returnValue(false));
         $this->mockReflectionService->expects($this->any())->method('getAllImplementationClassNamesForInterface')->with(ValidatorInterface::class)->will($this->returnValue(['Bar']));
 
         $this->assertFalse($this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
@@ -155,9 +155,9 @@ class ValidatorResolverTest extends UnitTestCase
     {
         $this->mockObjectManager->expects($this->at(0))->method('get')->with(ReflectionService::class)->will($this->returnValue($this->mockReflectionService));
         $this->mockObjectManager->expects($this->at(1))->method('isRegistered')->with('Foo')->will($this->returnValue(false));
-        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('TYPO3\Flow\Validation\Validator\FooValidator')->will($this->returnValue(true));
-        $this->mockReflectionService->expects($this->any())->method('getAllImplementationClassNamesForInterface')->with(ValidatorInterface::class)->will($this->returnValue(['TYPO3\Flow\Validation\Validator\FooValidator']));
-        $this->assertSame('TYPO3\Flow\Validation\Validator\FooValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
+        $this->mockObjectManager->expects($this->at(2))->method('isRegistered')->with('Neos\Flow\Validation\Validator\FooValidator')->will($this->returnValue(true));
+        $this->mockReflectionService->expects($this->any())->method('getAllImplementationClassNamesForInterface')->with(ValidatorInterface::class)->will($this->returnValue(['Neos\Flow\Validation\Validator\FooValidator']));
+        $this->assertSame('Neos\Flow\Validation\Validator\FooValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
 
     /**
@@ -183,7 +183,7 @@ class ValidatorResolverTest extends UnitTestCase
     public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions()
     {
         $className = 'Test' . md5(uniqid(mt_rand(), true));
-        eval('class ' . $className . ' implements \TYPO3\Flow\Validation\Validator\ValidatorInterface {
+        eval('class ' . $className . ' implements \Neos\Flow\Validation\Validator\ValidatorInterface {
 				protected $options = array();
 				public function __construct(array $options = array()) {
 					$this->options = $options;
@@ -215,7 +215,7 @@ class ValidatorResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationConfigurationException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationConfigurationException
      */
     public function createValidatorThrowsExceptionForSingletonValidatorsWithOptions()
     {
@@ -361,7 +361,7 @@ class ValidatorResolverTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Validation\Exception\InvalidValidationConfigurationException
+     * @expectedException \Neos\Flow\Validation\Exception\InvalidValidationConfigurationException
      */
     public function buildMethodArgumentsValidatorConjunctionsThrowsExceptionIfValidationAnnotationForNonExistingArgumentExists()
     {
@@ -491,7 +491,7 @@ class ValidatorResolverTest extends UnitTestCase
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, ['resolveValidatorObjectName', 'createValidator', 'getBaseValidatorConjunction']);
         $validatorResolver->_set('objectManager', $mockObjectManager);
         $validatorResolver->_set('reflectionService', $mockReflectionService);
-        $validatorResolver->expects($this->once())->method('getBaseValidatorConjunction')->will($this->returnValue($this->createMock(ValidatorInterface::class)));
+        $validatorResolver->expects($this->once())->method('getBaseValidatorConjunction')->will($this->returnValue($this->getMockBuilder(ConjunctionValidator::class)->getMock()));
 
         $validatorResolver->_call('buildBaseValidatorConjunction', $modelClassName, $modelClassName, ['Default']);
     }

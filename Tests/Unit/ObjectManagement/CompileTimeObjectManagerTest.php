@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement;
+namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,11 +12,11 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Log\SystemLoggerInterface;
-use TYPO3\Flow\ObjectManagement\CompileTimeObjectManager;
-use TYPO3\Flow\Package\Package;
-use TYPO3\Flow\Package\PackageManager;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Log\SystemLoggerInterface;
+use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
+use Neos\Flow\Package\Package;
+use Neos\Flow\Package\PackageManager;
+use Neos\Flow\Tests\UnitTestCase;
 
 class CompileTimeObjectManagerTest extends UnitTestCase
 {
@@ -37,7 +37,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         $this->compileTimeObjectManager = $this->getAccessibleMock(CompileTimeObjectManager::class, array('dummy'), array(), '', false);
         $this->compileTimeObjectManager->_set('systemLogger', $this->createMock(SystemLoggerInterface::class));
         $configurations = array(
-            'TYPO3' => array(
+            'Neos' => array(
                 'Flow' => array(
                     'object' => array(
                         'includeClasses' => array(
@@ -62,7 +62,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
     {
         $packagePath = 'vfs://Packages/Vendor.TestPackage/';
         mkdir($packagePath . 'Classes/', 0777, true);
-        file_put_contents($packagePath . 'composer.json', '{"name": "vendor/testpackage", "type": "typo3-flow-package"}');
+        file_put_contents($packagePath . 'composer.json', '{"name": "vendor/testpackage", "type": "neos-package"}');
         file_put_contents($packagePath . 'Classes/Test.php', '<?php ?>');
 
         $testPackage = new Package('Vendor.TestPackage', 'vendor/testpackage', $packagePath, ['psr-4' => ['Vendor\\TestPackage' => 'Classes/']]);

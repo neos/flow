@@ -14,7 +14,7 @@ Basics
 Locale class
 ------------
 
-Instances of ``\TYPO3\Flow\I18n\Locale`` class are fundamental for the whole i18n and
+Instances of ``\Neos\Flow\I18n\Locale`` class are fundamental for the whole i18n and
 L10n functionality. They are used to specify what language should be used for translation,
 how date and time should be formatted, and so on. They can be treated as simple wrappers
 for locale identifiers (like *de* or *pl_PL*). Many methods from the i18n framework accept
@@ -35,11 +35,11 @@ use the i18n service API to obtain these verified ``Locale`` objects.
 .. note::
 
   You can configure which folders Flow should scan for finding available locales through
-  the ``TYPO3.Flow.i18n.scan.includePaths`` setting. This is useful to restrict the scanning
+  the ``Neos.Flow.i18n.scan.includePaths`` setting. This is useful to restrict the scanning
   to specific paths when you have a big file structure in your package ``Resources``.
-  You can also blacklist folders through ``TYPO3.Flow.i18n.scan.excludePatterns``.
-  By default all folders except 'node_modules', 'bower_components' and any folder starting
-  with a dot will be scanned.
+  You can also blacklist folders through ``Neos.Flow.i18n.scan.excludePatterns``.
+  By default the ``Public`` and ``Private/Translations`` folders, except 'node_modules',
+  'bower_components' and any folder starting with a dot will be scanned.
 
 Locales are organized in a hierarchy. For example, *en* is a parent of *en_US* which is a
 parent of *en_US_POSIX*. Thanks to the hierarchical relation resources can be
@@ -75,7 +75,7 @@ Translating text
 Translator class
 ----------------
 
-The ``\TYPO3\Flow\I18n\Translator`` class is the central place for the translation
+The ``\Neos\Flow\I18n\Translator`` class is the central place for the translation
 related functionality. Two translation modes can be used: translating by original label or
 by ID. ``Translator`` also supports plural forms and placeholders.
 
@@ -165,7 +165,7 @@ Formatters
 ----------
 
 A ``Formatter`` is a class implementing the
-``\TYPO3\Flow\I18n\Formatter\FormatterInterface``. A formatter can be used to format a
+``\Neos\Flow\I18n\Formatter\FormatterInterface``. A formatter can be used to format a
 value of particular type: to convert it to string in locale-aware manner. For example, the
 number *1234.567* would be formatted for French locale as *1 234,567*. It is possible to
 define more elements than just the position and symbols of separators.
@@ -176,7 +176,7 @@ your class by injection), providing you more control over the results of formatt
 
 The following formatters are available in Flow by default:
 
-``\TYPO3\Flow\I18n\Formatter\NumberFormatter``
+``\Neos\Flow\I18n\Formatter\NumberFormatter``
   Formats integers or floats in order to display them as strings in localized manner.
   Uses patterns obtained from CLDR for specified locale (pattern defines such elements
   like minimal and maximal size of decimal part, symbol for decimal and group separator,
@@ -184,7 +184,7 @@ The following formatters are available in Flow by default:
   attribute in placeholder) as *decimal* or *percent*. You can also manually set the
   pattern if you use this class directly (i.e. not in placeholder, but in your class by
   injection).
-``\TYPO3\Flow\I18n\Formatter\DatetimeFormatter``
+``\Neos\Flow\I18n\Formatter\DatetimeFormatter``
   Formats date and / or time part of PHP ``\DateTime`` object. Supports most of very
   extensive pattern syntax from CLDR. Has three format types: *date*, *time*, and
   *datetime*. You can also manually set the pattern if you use this class directly.
@@ -203,7 +203,7 @@ multiplied by 100).
 
 You can create your own formatter class which will be available for use in
 placeholders. Just make sure your class implements the
-``\TYPO3\Flow\I18n\Formatter\FormatterInterface``. Use the fully qualified class name,
+``\Neos\Flow\I18n\Formatter\FormatterInterface``. Use the fully qualified class name,
 without the leading backslash, as formatter name::
 
   {0,Acme\Foobar\Formatter\SampleFormatter}
@@ -269,7 +269,7 @@ of these translations, you have to adjust your templates to make use of the ``Tr
 
   <f:form.validationResults for="{property}">
 	<f:for each="{validationResults.errors}" as="error">
-		{error -> f:translate(id: error.code, arguments: error.arguments, package: 'TYPO3.Flow', source: 'ValidationErrors')}
+		{error -> f:translate(id: error.code, arguments: error.arguments, package: 'Neos.Flow', source: 'ValidationErrors')}
 	</f:for>
   </f:form.validationResults>
 
@@ -316,9 +316,9 @@ A validator is a class implementing ``ValidatorInterface`` and is used by the Fl
 Validation Framework for assuring correctness of user input. Flow provides two validators
 that utilize i18n functionality:
 
-``\TYPO3\Flow\Validation\Validator\NumberValidator``
+``\Neos\Flow\Validation\Validator\NumberValidator``
   Validates decimal and integer numbers provided as strings (e.g. from user's input).
-``\TYPO3\Flow\Validation\Validator\DateTimeValidator``
+``\Neos\Flow\Validation\Validator\DateTimeValidator``
   Validates date, time, or both date and time provided as strings.
 
 Both validators accept the following options: *locale*, *strictMode*, *formatType*,
@@ -334,9 +334,9 @@ A Parsers' task is to read user input of particular type (e.g. number, date, tim
 respect to the localization used and return it in a form that can be further processed.
 The following parsers are available in Flow:
 
-``\TYPO3\Flow\I18n\Parser\NumberParser``
+``\Neos\Flow\I18n\Parser\NumberParser``
   Accepts strings with integer or decimal number and converts it to a float.
-``\TYPO3\Flow\I18n\Parser\DatetimeParser``
+``\Neos\Flow\I18n\Parser\DatetimeParser``
   Accepts strings with date, time or both date and time and returns an array with date /
   time elements (like day, hour, timezone, etc.) which were successfully recognized.
 
@@ -402,8 +402,17 @@ as a directory hierarchy in between. The minimum needed to provide message catal
 XLIFF file creation
 -------------------
 
-For now there are no Flow tools to aid in creation of the initial XLIFF files. So you
-need to write them yourself. A minimal XLIFF file looks like this:
+It is possible to create initial translation files for a given language. With Flow command
+
+.. code-block:: bash
+
+./flow kickstart:translation --package-key Some.Package --source-language-key en --target-language-keys "de,fr"
+
+the files for the default language *english* in the package *Some.Package* will be created as well as the translation
+files for *german* and *french*. Already existing files will not be overwritten. Translations that do not yet exist are
+generated based on the default language.
+
+A minimal XLIFF file looks like this:
 
 .. code-block:: xml
 
@@ -484,7 +493,7 @@ in two forms that will be used depending on the count:
 
 Please be aware that the number of the available plural forms depends on the language!
 If you want to find out which plural forms are available for a locale you can have a
-look at *TYPO3.Flow/Resources/Private/I18n/CLDR/Sources/supplemental/plurals.xml*
+look at *Neos.Flow/Resources/Private/I18n/CLDR/Sources/supplemental/plurals.xml*
 
 XLIFF file translation
 ----------------------

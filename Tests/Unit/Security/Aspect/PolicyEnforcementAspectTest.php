@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Aspect;
+namespace Neos\Flow\Tests\Unit\Security\Aspect;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Security\Aspect;
  * source code.
  */
 
-use TYPO3\Flow\Aop\Advice\AdviceChain;
-use TYPO3\Flow\Aop\JoinPointInterface;
-use TYPO3\Flow\Security;
-use TYPO3\Flow\Security\Aspect\PolicyEnforcementAspect;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\Advice\AdviceChain;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Security;
+use Neos\Flow\Security\Aspect\PolicyEnforcementAspect;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the security policy enforcement aspect

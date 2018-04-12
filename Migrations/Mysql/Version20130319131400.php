@@ -1,9 +1,9 @@
 <?php
-namespace TYPO3\Flow\Persistence\Doctrine\Migrations;
+namespace Neos\Flow\Persistence\Doctrine\Migrations;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
-use TYPO3\Flow\Utility\Files;
+use Neos\Utility\Files;
 
 /**
  * Adjust tables for Role handling
@@ -11,8 +11,8 @@ use TYPO3\Flow\Utility\Files;
 class Version20130319131400 extends AbstractMigration
 {
     /**
-     * @\TYPO3\Flow\Annotations\Inject
-     * @var \TYPO3\Flow\Configuration\ConfigurationManager
+     * @\Neos\Flow\Annotations\Inject
+     * @var \Neos\Flow\Configuration\ConfigurationManager
      */
     protected $configurationManager;
 
@@ -63,6 +63,9 @@ class Version20130319131400 extends AbstractMigration
      */
     protected function migrateAccountRolesUp()
     {
+        if (!$this->sm->tablesExist(['typo3_flow_security_account'])) {
+            return;
+        }
         $rolesSql = array();
         $accountRolesSql = array();
         $rolesToMigrate = array();
@@ -103,6 +106,9 @@ class Version20130319131400 extends AbstractMigration
      */
     protected function migrateAccountRolesDown()
     {
+        if (!$this->sm->tablesExist(['typo3_flow_security_account_roles_join', 'typo3_flow_security_policy_role'])) {
+            return;
+        }
         $accountsWithRoles = array();
 
         $accountRolesResult = $this->connection->executeQuery('SELECT j.flow_security_account, r.identifier FROM typo3_flow_security_account_roles_join as j LEFT JOIN typo3_flow_security_policy_role AS r ON j.flow_policy_role = r.identifier');
@@ -159,9 +165,9 @@ class Version20130319131400 extends AbstractMigration
             }
         );
 
-        $yamlSource = new \TYPO3\Flow\Configuration\Source\YamlSource();
+        $yamlSource = new \Neos\Flow\Configuration\Source\YamlSource();
         foreach ($configurationPathsAndFilenames as $pathAndFilename) {
-            if (preg_match('%Packages/.+/([^/]+)/Configuration/(?:Development|Production|Policy).+%', $pathAndFilename, $matches) === 0) {
+            if (preg_match('%Packages/[^/]+/([^/]+)/Configuration/(?:Development/|Production/)?[^/]+%', $pathAndFilename, $matches) === 0) {
                 continue;
             };
             $packageKey = $matches[1];

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication;
+namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\Security\Authentication\AuthenticationProviderResolver;
-use TYPO3\Flow\Security\Authentication\Provider\ValidShortName;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the security interceptor resolver
@@ -23,7 +22,7 @@ class AuthenticationProviderResolverTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\NoAuthenticationProviderFoundException
+     * @expectedException \Neos\Flow\Security\Exception\NoAuthenticationProviderFoundException
      */
     public function resolveProviderObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
@@ -40,11 +39,13 @@ class AuthenticationProviderResolverTest extends UnitTestCase
      */
     public function resolveProviderReturnsTheCorrectProviderForAShortName()
     {
-        $getCaseSensitiveObjectNameCallback = function () {
+        $longClassNameForTest = 'Neos\Flow\Security\Authentication\Provider\ValidShortName';
+
+        $getCaseSensitiveObjectNameCallback = function () use ($longClassNameForTest) {
             $args = func_get_args();
 
-            if ($args[0] === ValidShortName::class) {
-                return ValidShortName::class;
+            if ($args[0] === $longClassNameForTest) {
+                return $longClassNameForTest;
             }
 
             return false;
@@ -56,7 +57,7 @@ class AuthenticationProviderResolverTest extends UnitTestCase
         $providerResolver = new AuthenticationProviderResolver($mockObjectManager);
         $providerClass = $providerResolver->resolveProviderClass('ValidShortName');
 
-        $this->assertEquals(ValidShortName::class, $providerClass, 'The wrong classname has been resolved');
+        $this->assertEquals($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
     }
 
     /**

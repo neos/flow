@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Core;
+namespace Neos\Flow\Tests\Unit\Core;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,9 +12,9 @@ namespace TYPO3\Flow\Tests\Unit\Core;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Core\ClassLoader;
-use TYPO3\Flow\Package\Package;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Core\ClassLoader;
+use Neos\Flow\Package\Package;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the object class loader
@@ -60,6 +60,10 @@ class ClassLoaderTest extends UnitTestCase
      */
     public function setUp()
     {
+        if (FLOW_ONLY_COMPOSER_LOADER) {
+            $this->markTestSkipped('Not testing if composer-only loading is requested.');
+        }
+
         vfsStream::setup('Test');
 
         self::$testClassWasLoaded = false;
@@ -67,7 +71,7 @@ class ClassLoaderTest extends UnitTestCase
         $this->classLoader = new ClassLoader();
 
         $this->mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage1->expects($this->any())->method('getNamespace')->will($this->returnValue('Acme\\MyApp'));
+        $this->mockPackage1->expects($this->any())->method('getNamespaces')->will($this->returnValue(['Acme\\MyApp']));
         $this->mockPackage1->expects($this->any())->method('getPackagePath')->will($this->returnValue('vfs://Test/Packages/Application/Acme.MyApp/'));
         $this->mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
@@ -78,7 +82,7 @@ class ClassLoaderTest extends UnitTestCase
         ]));
 
         $this->mockPackage2 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage2->expects($this->any())->method('getNamespace')->will($this->returnValue('Acme\\MyAppAddon'));
+        $this->mockPackage2->expects($this->any())->method('getNamespaces')->will($this->returnValue(['Acme\\MyAppAddon']));
         $this->mockPackage2->expects($this->any())->method('getPackagePath')->will($this->returnValue('vfs://Test/Packages/Application/Acme.MyAppAddon/'));
         $this->mockPackage2->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
@@ -138,7 +142,7 @@ class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from packages that match a
-     * substring of another package (e.g. TYPO3CR vs TYPO3).
+     * substring of another package (e.g. Media vs. Neos).
      *
      * @test
      */
@@ -227,7 +231,7 @@ class ClassLoaderTest extends UnitTestCase
     public function classesFromPsr4PackagesAreLoaded()
     {
         $this->mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage1->expects($this->any())->method('getNamespace')->will($this->returnValue('Acme\\MyApp'));
+        $this->mockPackage1->expects($this->any())->method('getNamespaces')->will($this->returnValue(['Acme\\MyApp']));
         $this->mockPackage1->expects($this->any())->method('getPackagePath')->will($this->returnValue('vfs://Test/Packages/Application/Acme.MyApp/'));
         $this->mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
@@ -254,7 +258,7 @@ class ClassLoaderTest extends UnitTestCase
         $this->classLoader = new ClassLoader();
 
         $mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage1->expects($this->any())->method('getNamespace')->will($this->returnValue('TestPackage\\Subscriber\\Log'));
+        $mockPackage1->expects($this->any())->method('getNamespaces')->will($this->returnValue(['TestPackage\\Subscriber\\Log']));
         $mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
                 'namespace' => 'TestPackage\Subscriber\Log',
@@ -297,7 +301,7 @@ class ClassLoaderTest extends UnitTestCase
         $this->classLoader = new ClassLoader();
 
         $mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage1->expects($this->any())->method('getNamespace')->will($this->returnValue('TestPackage\\Foo'));
+        $mockPackage1->expects($this->any())->method('getNamespaces')->will($this->returnValue(['TestPackage\\Foo']));
         $mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
                 'namespace' => 'TestPackage\Foo',
@@ -307,7 +311,7 @@ class ClassLoaderTest extends UnitTestCase
         ]));
 
         $mockPackage2 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage2->expects($this->any())->method('getNamespace')->will($this->returnValue('TestPackage'));
+        $mockPackage2->expects($this->any())->method('getNamespaces')->will($this->returnValue(['TestPackage']));
         $mockPackage2->expects($this->any())->method('getFlattenedAutoloadConfiguration')->will($this->returnValue([
             [
                 'namespace' => 'TestPackage',

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
+namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security;
 
 /**
  * Testcase for the security interceptor resolver
@@ -22,12 +22,12 @@ class InterceptorResolverTest extends UnitTestCase
 {
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\NoInterceptorFoundException
+     * @expectedException \Neos\Flow\Security\Exception\NoInterceptorFoundException
      */
     public function resolveInterceptorClassThrowsAnExceptionIfNoInterceptorIsAvailable()
     {
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->will($this->returnValue(false));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will($this->returnValue(false));
 
         $interceptorResolver = new Security\Authorization\InterceptorResolver($mockObjectManager);
 
@@ -39,24 +39,26 @@ class InterceptorResolverTest extends UnitTestCase
      */
     public function resolveInterceptorReturnsTheCorrectInterceptorForAShortName()
     {
-        $getCaseSensitiveObjectNameCallback = function () {
+        $longClassNameForTest = 'Neos\Flow\Security\Authorization\Interceptor\ValidShortName';
+
+        $getCaseSensitiveObjectNameCallback = function () use ($longClassNameForTest) {
             $args = func_get_args();
 
-            if ($args[0] === Security\Authorization\Interceptor\ValidShortName::class) {
-                return Security\Authorization\Interceptor\ValidShortName::class;
+            if ($args[0] === $longClassNameForTest) {
+                return $longClassNameForTest;
             }
 
             return false;
         };
 
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->will($this->returnCallback($getCaseSensitiveObjectNameCallback));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will($this->returnCallback($getCaseSensitiveObjectNameCallback));
 
 
         $interceptorResolver = new Security\Authorization\InterceptorResolver($mockObjectManager);
         $interceptorClass = $interceptorResolver->resolveInterceptorClass('ValidShortName');
 
-        $this->assertEquals(Security\Authorization\Interceptor\ValidShortName::class, $interceptorClass, 'The wrong classname has been resolved');
+        $this->assertEquals($longClassNameForTest, $interceptorClass, 'The wrong classname has been resolved');
     }
 
     /**
@@ -65,7 +67,7 @@ class InterceptorResolverTest extends UnitTestCase
     public function resolveInterceptorReturnsTheCorrectInterceptorForACompleteClassName()
     {
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getCaseSensitiveObjectName')->with('ExistingInterceptorClass')->will($this->returnValue('ExistingInterceptorClass'));
+        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->with('ExistingInterceptorClass')->will($this->returnValue('ExistingInterceptorClass'));
 
         $interceptorResolver = new Security\Authorization\InterceptorResolver($mockObjectManager);
         $interceptorClass = $interceptorResolver->resolveInterceptorClass('ExistingInterceptorClass');

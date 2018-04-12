@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" product-name="TYPO3.Flow" source-language="en" datatype="plaintext" target-language="it">
+  <file original="" product-name="Neos.Flow" source-language="en" datatype="plaintext" target-language="it">
     <body>
       <!-- AlphanumericValidator -->
       <trans-unit id="1221551320" xml:space="preserve">
@@ -118,21 +118,21 @@
       <group id="1238108068" restype="x-gettext-plurals">
         <trans-unit id="1238108068[0]">
           <source>This field must contain at least {0,number} character</source>
-          <target xml:lang="it" state="needs-translation">This field must contain at least {0,number} character</target>
+          <target xml:lang="it" state="translated">Questo campo deve contenere almeno {0,number} carattere</target>
         </trans-unit>
         <trans-unit id="1238108068[1]">
           <source>This field must contain at least {0,number} characters</source>
-          <target xml:lang="it" state="needs-translation">This field must contain at least {0,number} characters</target>
+          <target xml:lang="it" state="translated">Questo campo deve contenere almeno {0,number} caratteri</target>
         </trans-unit>
       </group>
       <group id="1238108069" restype="x-gettext-plurals">
         <trans-unit id="1238108069[0]">
           <source>This text may not exceed {0,number} character</source>
-          <target xml:lang="it" state="needs-translation">This text may not exceed {0,number} character</target>
+          <target xml:lang="it" state="translated">Questo testo non può superare {0,number} carattere</target>
         </trans-unit>
         <trans-unit id="1238108069[1]">
           <source>This text may not exceed {0,number} characters</source>
-          <target xml:lang="it" state="needs-translation">This text may not exceed {0,number} characters</target>
+          <target xml:lang="it" state="translated">Questo testo non può superare {0,number} caratteri</target>
         </trans-unit>
       </group>
       <!-- StringValidator -->
@@ -155,7 +155,7 @@
       <trans-unit id="1268676765" xml:space="preserve">
 				<source>The person name cannot be empty</source>
 			<target xml:lang="it" state="needs-translation">The person name cannot be empty</target></trans-unit>
-      <!-- Package "TYPO3.Media" -->
+      <!-- Package "Neos.Media" -->
       <!-- ImageTypeValidator -->
       <trans-unit id="1327947256" xml:space="preserve">
 				<source>The given value is not a Image instance</source>

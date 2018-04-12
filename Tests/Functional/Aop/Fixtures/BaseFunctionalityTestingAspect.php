@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+namespace Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,37 +11,37 @@ namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Aop\JoinPointInterface;
 
 /**
  * An aspect for testing the basic functionality of the AOP framework
  *
- * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)", interfaceName="TYPO3\Flow\Tests\Functional\Aop\Fixtures\Introduced01Interface")
+ * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)", interfaceName="Neos\Flow\Tests\Functional\Aop\Fixtures\Introduced01Interface")
  * @Flow\Aspect
  */
 class BaseFunctionalityTestingAspect
 {
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
      * @var string
      */
     protected $introducedProtectedProperty;
 
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
      * @var array
      */
     public $introducedPublicProperty;
 
     /**
-     * @Flow\Introduce("class(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
+     * @Flow\Introduce("class(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03)")
      * @var string
      */
     public $introducedProtectedPropertyWithDefaultValue = 'thisIsADefaultValueBelieveItOrNot';
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->__construct())")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->__construct())")
      * @param JoinPointInterface $joinPoint
      * @return void
      */
@@ -52,7 +52,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("within(TYPO3\Flow\Tests\Functional\Aop\Fixtures\SayHelloInterface) && method(.*->sayHello())")
+     * @Flow\Around("within(Neos\Flow\Tests\Functional\Aop\Fixtures\SayHelloInterface) && method(.*->sayHello())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -62,7 +62,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("within(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01) && method(.*->sayWhatFlowIs())")
+     * @Flow\Around("within(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01) && method(.*->sayWhatFlowIs())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -72,7 +72,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("within(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01) && method(.*->someStaticMethod())")
+     * @Flow\Around("within(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01) && method(.*->someStaticMethod())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -82,7 +82,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->saySomethingSmart())")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->saySomethingSmart())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -92,7 +92,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->sayHelloAndThrow())")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->sayHelloAndThrow())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -102,7 +102,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet(name === 'Flow'))")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet(name === 'Flow'))")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -112,7 +112,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet())")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -125,7 +125,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetMany(names contains this.currentName))")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetMany(names contains this.currentName))")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -135,7 +135,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\AfterReturning("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass02->publicTargetMethod())")
+     * @Flow\AfterReturning("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass02->publicTargetMethod())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -145,7 +145,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(protected TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass02->protectedTargetMethod())")
+     * @Flow\Around("method(protected Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass02->protectedTargetMethod())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -155,7 +155,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetObject(name.name === 'TYPO3'))")
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetObject(name.name === 'Neos'))")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -165,7 +165,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetObject(name === this.currentName))")
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greetObject(name === this.currentName))")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -175,7 +175,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(public TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet(name === current.testContext.nameOfTheWeek))")
+     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->greet(name === current.testContext.nameOfTheWeek))")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -185,7 +185,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03->introducedMethod01())")
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03->introducedMethod01())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -195,7 +195,7 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass03->introducedMethodWithArguments())")
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03->introducedMethodWithArguments())")
      * @param JoinPointInterface $joinPoint
      * @return string
      */
@@ -205,35 +205,65 @@ class BaseFunctionalityTestingAspect
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp7Features->methodWithStaticTypeDeclarations())")
-     * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp7Features->methodWithStaticTypeDeclarations())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
      * @return string
      */
-    public function methodWithStaticTypeDeclarationsAdvice(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint)
+    public function methodWithStaticTypeDeclarationsAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
     {
         return 'This is so NaN';
     }
 
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithFinalModifier->someMethod())")
-     * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithFinalModifier->someMethod())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
      * @return string
      */
-    public function methodOfFinalClassAdvice(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint)
+    public function methodOfFinalClassAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
     {
         $originalValue = $joinPoint->getAdviceChain()->proceed($joinPoint);
         return 'nothing is ' . $originalValue . '!';
     }
 
-
     /**
-     * @Flow\Around("method(TYPO3\Flow\Tests\Functional\Aop\Fixtures\TargetClass01->someFinalMethod())")
-     * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp7Features->methodWithStaticScalarReturnTypeDeclaration())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
      * @return string
      */
-    public function methodWithFinalModifierAdvice(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint)
+    public function methodWithStaticScalarReturnTypeDeclarationAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
     {
-        $originalValue = $joinPoint->getAdviceChain()->proceed($joinPoint);
-        return $originalValue . ' But, as said, nothing is final!';
+        return 'adviced: ' . $joinPoint->getAdviceChain()->proceed($joinPoint);
+    }
+
+    /**
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp7Features->methodWithStaticObjectReturnTypeDeclaration())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
+     * @return string
+     */
+    public function methodWithStaticObjectReturnTypeDeclarationAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
+    {
+        return $joinPoint->getAdviceChain()->proceed($joinPoint);
+    }
+
+    /**
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp71Features->methodWithNullableScalarReturnTypeDeclaration())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
+     * @return string
+     */
+    public function methodWithNullableScalarReturnTypeDeclarationAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
+    {
+        $originalResult = $joinPoint->getAdviceChain()->proceed($joinPoint);
+        return 'adviced: ' . ($originalResult === null ? 'NULL' : $originalResult);
+    }
+
+
+    /**
+     * @Flow\Around("method(Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp71Features->methodWithNullableObjectReturnTypeDeclaration())")
+     * @param \Neos\Flow\Aop\JoinPointInterface $joinPoint
+     * @return string
+     */
+    public function methodWithNullableObjectReturnTypeDeclarationAdvice(\Neos\Flow\Aop\JoinPointInterface $joinPoint)
+    {
+        return $joinPoint->getAdviceChain()->proceed($joinPoint);
     }
 }

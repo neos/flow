@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Http\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Http\Fixtures\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Mvc\Controller\ActionController;
 
 class RedirectingController extends ActionController
 {

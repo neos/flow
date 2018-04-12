@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\I18n;
+namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,11 +12,11 @@ namespace TYPO3\Flow\Tests\Unit\I18n;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Cache\Frontend\VariableFrontend;
-use TYPO3\Flow\Package\PackageInterface;
-use TYPO3\Flow\Package\PackageManagerInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\I18n;
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Package\PackageInterface;
+use Neos\Flow\Package\PackageManagerInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\I18n;
 
 /**
  * Testcase for the Locale Service class.
@@ -142,19 +142,24 @@ class ServiceTest extends UnitTestCase
      */
     public function initializeCorrectlyGeneratesAvailableLocales()
     {
+        mkdir('vfs://Foo/Bar/Public', 0777, true);
         mkdir('vfs://Foo/Bar/Private/Translations', 0777, true);
         foreach (['en', 'sr_Cyrl_RS'] as $localeIdentifier) {
-            file_put_contents('vfs://Foo/Bar/Private/foobar.' . $localeIdentifier . '.baz', 'FooBar');
+            file_put_contents('vfs://Foo/Bar/Public/foobar.' . $localeIdentifier . '.baz', 'FooBar');
         }
         foreach (['en_GB', 'sr'] as $localeIdentifier) {
             file_put_contents('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier . '.xlf', 'FooBar');
+        }
+        foreach (array('de_DE', 'de_CH') as $localeIdentifier) {
+            mkdir('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier, 0777, true);
+            file_put_contents('vfs://Foo/Bar/Private/Translations/' . $localeIdentifier . '/Main.xlf', 'FooBar');
         }
 
         $mockPackage = $this->createMock(PackageInterface::class);
         $mockPackage->expects($this->any())->method('getResourcesPath')->will($this->returnValue('vfs://Foo/Bar/'));
 
         $mockPackageManager = $this->createMock(PackageManagerInterface::class);
-        $mockPackageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue([$mockPackage]));
+        $mockPackageManager->expects($this->any())->method('getAvailablePackages')->will($this->returnValue([$mockPackage]));
 
         $mockLocaleCollection = $this->createMock(I18n\LocaleCollection::class);
         $mockLocaleCollection->expects($this->exactly(4))->method('addLocale');
@@ -163,7 +168,7 @@ class ServiceTest extends UnitTestCase
                                 'defaultLocale' => 'sv_SE',
                                 'fallbackRule' => ['strict' => false, 'order' => []],
                                 'scan' => [
-                                    'includePaths' => ['/Private/' => true],
+                                    'includePaths' => ['/Private/Translations/' => true],
                                     'excludePatterns' => [],
                                 ]
         ]];
@@ -201,7 +206,7 @@ class ServiceTest extends UnitTestCase
         $mockPackage->expects($this->any())->method('getResourcesPath')->will($this->returnValue('vfs://Foo/Bar/'));
 
         $mockPackageManager = $this->createMock(PackageManagerInterface::class);
-        $mockPackageManager->expects($this->any())->method('getActivePackages')->will($this->returnValue([$mockPackage]));
+        $mockPackageManager->expects($this->any())->method('getAvailablePackages')->will($this->returnValue([$mockPackage]));
 
         $mockLocaleCollection = $this->createMock(I18n\LocaleCollection::class);
         $mockLocaleCollection->expects($this->exactly(2))->method('addLocale');
@@ -210,7 +215,7 @@ class ServiceTest extends UnitTestCase
                                 'defaultLocale' => 'sv_SE',
                                 'fallbackRule' => ['strict' => false, 'order' => []],
                                 'scan' => [
-                                    'includePaths' => ['/Private/' => true, '/Public/' => true],
+                                    'includePaths' => ['/Private/Translations/' => true, '/Public/' => true],
                                     'excludePatterns' => ['/node_modules/' => true, '/\..*/' => true]
                                 ]
         ]];

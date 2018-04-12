@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures\Repository;
+namespace Neos\Flow\Tests\Functional\Reflection\Fixtures\Repository;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures\Repository;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence;
 
 /**
  * @Flow\Scope("singleton")

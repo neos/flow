@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures\Model;
+namespace Neos\Flow\Tests\Functional\Reflection\Fixtures\Model;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,7 +11,7 @@ namespace TYPO3\Flow\Tests\Functional\Reflection\Fixtures\Model;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Just a Plain Old PHP Object as non-abstract base class for the Aggregate Root "EntityExtendingPlainObject"

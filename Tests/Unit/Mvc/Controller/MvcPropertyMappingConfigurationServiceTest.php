@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
+namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter;
-use TYPO3\Flow\Security\Cryptography\HashService;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Mvc;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
+use Neos\Flow\Security\Cryptography\HashService;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Mvc;
 
 /**
  * Testcase for the MVC Property Mapping Configuration Service
@@ -123,7 +123,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     /**
      * @test
      * @dataProvider dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidArgumentForHashGenerationException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException
      */
     public function generateTrustedPropertiesTokenThrowsExceptionInWrongCases($input)
     {

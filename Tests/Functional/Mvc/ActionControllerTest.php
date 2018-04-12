@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc;
+namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\Controller\MvcPropertyMappingConfigurationService;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfigurationService;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 class ActionControllerTest extends FunctionalTestCase
 {
@@ -32,7 +32,7 @@ class ActionControllerTest extends FunctionalTestCase
         parent::setUp();
 
         $this->registerRoute('testa', 'test/mvc/actioncontrollertesta(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'ActionControllerTestA',
             '@action' => 'first',
@@ -40,7 +40,7 @@ class ActionControllerTest extends FunctionalTestCase
         ]);
 
         $this->registerRoute('testb', 'test/mvc/actioncontrollertestb(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'ActionControllerTestB',
             '@action' => 'first',
@@ -48,7 +48,7 @@ class ActionControllerTest extends FunctionalTestCase
         ]);
 
         $route = $this->registerRoute('testc', 'test/mvc/actioncontrollertestc/{entity}(/{@action})', [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'Entity',
             '@action' => 'show',
@@ -56,7 +56,7 @@ class ActionControllerTest extends FunctionalTestCase
         ]);
         $route->setRoutePartsConfiguration([
             'entity' => [
-                'objectType' => \TYPO3\Flow\Tests\Functional\Persistence\Fixtures\TestEntity::class
+                'objectType' => \Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity::class
             ]
         ]);
     }
@@ -209,7 +209,7 @@ class ActionControllerTest extends FunctionalTestCase
         ];
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/requiredobject', 'POST', $arguments);
 
-        $expectedResult = 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredObjectAction().' . PHP_EOL;
+        $expectedResult = 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredObjectAction().' . PHP_EOL;
         $this->assertEquals($expectedResult, $response->getContent());
     }
 
@@ -226,7 +226,7 @@ class ActionControllerTest extends FunctionalTestCase
         ];
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/optionalobject', 'POST', $arguments);
 
-        $expectedResult = 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalObjectAction().' . PHP_EOL;
+        $expectedResult = 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalObjectAction().' . PHP_EOL;
         $this->assertEquals($expectedResult, $response->getContent());
     }
 
@@ -236,6 +236,17 @@ class ActionControllerTest extends FunctionalTestCase
     public function optionalObjectArgumentsCanBeOmitted()
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/optionalobject');
+
+        $expectedResult = 'null';
+        $this->assertEquals($expectedResult, $response->getContent());
+    }
+
+    /**
+     * @test
+     */
+    public function optionalObjectArgumentsCanBeAnnotatedNullable()
+    {
+        $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/optionalannotatedobject');
 
         $expectedResult = 'null';
         $this->assertEquals($expectedResult, $response->getContent());
@@ -271,7 +282,7 @@ class ActionControllerTest extends FunctionalTestCase
         ];
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/validatedgroupobject', 'POST', $arguments);
 
-        $expectedResult = 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->validatedGroupObjectAction().' . PHP_EOL;
+        $expectedResult = 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->validatedGroupObjectAction().' . PHP_EOL;
         $this->assertEquals($expectedResult, $response->getContent());
     }
 
@@ -291,40 +302,38 @@ class ActionControllerTest extends FunctionalTestCase
             'required string - missing value'   => ['requiredString', null, $requiredArgumentExceptionText],
             'optional string'                   => ['optionalString', '123', '\'123\''],
             'optional string - default'         => ['optionalString', null, '\'default\''],
+            'optional string - nullable'        => ['optionalNullableString', null, 'NULL'],
             'required integer'                  => ['requiredInteger', '234', 234],
             'required integer - missing value'  => ['requiredInteger', null, $requiredArgumentExceptionText],
-            'required integer - mapping error'  => ['requiredInteger', 'not an integer', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredIntegerAction().'],
+            'required integer - mapping error'  => ['requiredInteger', 'not an integer', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredIntegerAction().'],
             'required integer - empty value'    => ['requiredInteger', '', 'NULL'],
             'optional integer'                  => ['optionalInteger', 456, 456],
             'optional integer - default value'  => ['optionalInteger', null, 123],
-            'optional integer - mapping error'  => ['optionalInteger', 'not an integer', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalIntegerAction().'],
+            'optional integer - mapping error'  => ['optionalInteger', 'not an integer', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalIntegerAction().'],
             'optional integer - empty value'    => ['optionalInteger', '', 123],
+            'optional integer - nullable'       => ['optionalNullableInteger', null, 'NULL'],
             'required float'                    => ['requiredFloat', 34.56, 34.56],
             'required float - integer'          => ['requiredFloat', 485, '485'],
             'required float - integer2'         => ['requiredFloat', '888', '888'],
             'required float - missing value'    => ['requiredFloat', null, $requiredArgumentExceptionText],
-            'required float - mapping error'    => ['requiredFloat', 'not a float', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredFloatAction().'],
+            'required float - mapping error'    => ['requiredFloat', 'not a float', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredFloatAction().'],
             'required float - empty value'      => ['requiredFloat', '', 'NULL'],
             'optional float'                    => ['optionalFloat', 78.90, 78.9],
             'optional float - default value'    => ['optionalFloat', null, 112.34],
-            'optional float - mapping error'    => ['optionalFloat', 'not a float', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalFloatAction().'],
+            'optional float - mapping error'    => ['optionalFloat', 'not a float', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalFloatAction().'],
             'optional float - empty value'      => ['optionalFloat', '', 112.34],
+            'optional float - nullable'         => ['optionalNullableFloat', null, 'NULL'],
             'required date'                     => ['requiredDate', ['date' => '1980-12-13', 'dateFormat' => 'Y-m-d'], '1980-12-13'],
             'required date string'              => ['requiredDate', '1980-12-13T14:22:12+02:00', '1980-12-13'],
             'required date - missing value'     => ['requiredDate', null, $requiredArgumentExceptionText],
-            'required date - mapping error'     => ['requiredDate', 'no date', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredDateAction().'],
+            'required date - mapping error'     => ['requiredDate', 'no date', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->requiredDateAction().'],
+            'required date - empty value'       => ['requiredDate', '', 'Uncaught Exception in Flow Argument 1 passed to Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController_Original::requiredDateAction() must be an instance of DateTime, null given'],
             'optional date string'              => ['optionalDate', '1980-12-13T14:22:12+02:00', '1980-12-13'],
             'optional date - default value'     => ['optionalDate', null, 'null'],
-            'optional date - mapping error'     => ['optionalDate', 'no date', 'Validation failed while trying to call TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalDateAction().'],
+            'optional date - mapping error'     => ['optionalDate', 'no date', 'Validation failed while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController->optionalDateAction().'],
             'optional date - missing value'     => ['optionalDate', null, 'null'],
-            'optional date - empty value'       => ['optionalDate', '', 'null']
+            'optional date - empty value'       => ['optionalDate', '', 'null'],
         ];
-
-        if (version_compare(PHP_VERSION, '6.0.0') >= 0) {
-            $data['required date - empty value'] = ['requiredDate', '', 'Uncaught Exception in Flow Argument 1 passed to TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController_Original::requiredDateAction() must be an instance of DateTime, null given'];
-        } else {
-            $data['required date - empty value'] = ['requiredDate', '', 'Uncaught Exception in Flow #1: Catchable Fatal Error: Argument 1 passed to TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestBController_Original::requiredDateAction() must be an instance of DateTime, null given'];
-        }
 
         return $data;
     }

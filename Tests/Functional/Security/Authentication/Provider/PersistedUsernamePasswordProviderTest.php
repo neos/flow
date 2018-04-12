@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Authentication\Provider;
+namespace Neos\Flow\Tests\Functional\Security\Authentication\Provider;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Functional\Security\Authentication\Provider;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Security;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Security;
 
 /**
  * Testcase for the persisted username and password provider
@@ -72,7 +72,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         $this->assertTrue($this->authenticationToken->isAuthenticated());
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
-        $this->assertEquals(new \DateTime(), $account->getLastSuccessfulAuthenticationDate());
+        $this->assertEquals((new \DateTime())->format(\DateTime::W3C), $account->getLastSuccessfulAuthenticationDate()->format(\DateTime::W3C));
         $this->assertEquals(0, $account->getFailedAuthenticationCount());
     }
 
@@ -120,7 +120,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         $this->persistedUsernamePasswordProvider->authenticate($this->authenticationToken);
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
-        $this->assertEquals(new \DateTime(), $account->getLastSuccessfulAuthenticationDate());
+        $this->assertEquals((new \DateTime())->format(\DateTime::W3C), $account->getLastSuccessfulAuthenticationDate()->format(\DateTime::W3C));
         $this->assertEquals(0, $account->getFailedAuthenticationCount());
     }
 }

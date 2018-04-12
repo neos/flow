@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Cache;
+namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,14 +13,14 @@ namespace TYPO3\Flow\Tests\Unit\Cache;
 
 use Neos\Cache\EnvironmentConfiguration;
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Cache\Backend\FileBackend;
-use TYPO3\Flow\Cache\Backend\NullBackend;
-use TYPO3\Flow\Cache\CacheFactory;
-use TYPO3\Flow\Cache\CacheManager;
-use TYPO3\Flow\Cache\Frontend\VariableFrontend;
-use TYPO3\Flow\Core\ApplicationContext;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Utility;
+use Neos\Cache\Backend\FileBackend;
+use Neos\Cache\Backend\NullBackend;
+use Neos\Flow\Cache\CacheFactory;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Utility;
 
 /**
  * Test case for the Cache Factory
@@ -61,6 +61,7 @@ class CacheFactoryTest extends UnitTestCase
         $this->mockCacheManager->expects($this->any())->method('isCachePersistent')->will($this->returnValue(false));
 
         $this->mockEnvironmentConfiguration = $this->getMockBuilder(EnvironmentConfiguration::class)
+            ->setMethods(null)
             ->setConstructorArgs([
                 __DIR__ . '~Testing',
                 'vfs://Foo/',

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http;
+namespace Neos\Flow\Tests\Functional\Http;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Http;
  * source code.
  */
 
-use TYPO3\Flow\Http\RequestHandler;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\RequestHandler;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the HTTP Request Handler
@@ -31,11 +31,10 @@ class RequestHandlerTest extends FunctionalTestCase
     {
         $foundRoute = false;
         foreach ($this->router->getRoutes() as $route) {
-            if ($route->getName() === 'Flow :: Functional Test: HTTP - FooController') {
+            if ($route->getName() === 'Neos.Flow :: Functional Test: HTTP - FooController') {
                 $foundRoute = true;
             }
         }
-
         if (!$foundRoute) {
             $this->markTestSkipped('In this distribution the Flow routes are not included into the global configuration.');
             return;
@@ -45,7 +44,7 @@ class RequestHandlerTest extends FunctionalTestCase
             'HTTP_HOST' => 'localhost',
             'REQUEST_METHOD' => 'GET',
             'QUERY_STRING' => '',
-            'REQUEST_URI' => '/typo3/flow/test/http/foo',
+            'REQUEST_URI' => '/neos/flow/test/http/foo',
             'SCRIPT_NAME' => '/index.php',
             'PHP_SELF' => '/index.php',
         ];

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc;
+namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,17 +11,18 @@ namespace TYPO3\Flow\Tests\Functional\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Http\Client;
-use TYPO3\Flow\Http\Request;
-use TYPO3\Flow\Http\Uri;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Mvc\Routing\Route;
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Routing\Router;
-use TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestAController;
-use TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller\RoutingTestAController;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Utility\Arrays;
+use Neos\Flow\Http\Request;
+use Neos\Flow\Http\Uri;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Exception\NoMatchingRouteException;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
+use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
+use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\ActionControllerTestAController;
+use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\RoutingTestAController;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Utility\Arrays;
 
 /**
  * Functional tests for the Router
@@ -41,7 +42,7 @@ class RoutingTest extends FunctionalTestCase
         $foundRoute = false;
         /** @var $route Route */
         foreach ($this->router->getRoutes() as $route) {
-            if ($route->getName() === 'Flow :: Functional Test: HTTP - FooController') {
+            if ($route->getName() === 'Neos.Flow :: Functional Test: HTTP - FooController') {
                 $foundRoute = true;
                 break;
             }
@@ -74,9 +75,9 @@ class RoutingTest extends FunctionalTestCase
      */
     public function httpMethodsAreRespectedForGetRequests()
     {
-        $requestUri = 'http://localhost/typo3/flow/test/httpmethods';
+        $requestUri = 'http://localhost/neos/flow/test/httpmethods';
         $request = Request::create(new Uri($requestUri), 'GET');
-        $matchResults = $this->router->route($request);
+        $matchResults = $this->router->route(new RouteContext($request, RouteParameters::createEmpty()));
         $actionRequest = $this->createActionRequest($request, $matchResults);
         $this->assertEquals(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
         $this->assertEquals('first', $actionRequest->getControllerActionName());
@@ -87,9 +88,9 @@ class RoutingTest extends FunctionalTestCase
      */
     public function httpMethodsAreRespectedForPostRequests()
     {
-        $requestUri = 'http://localhost/typo3/flow/test/httpmethods';
+        $requestUri = 'http://localhost/neos/flow/test/httpmethods';
         $request = Request::create(new Uri($requestUri), 'POST');
-        $matchResults = $this->router->route($request);
+        $matchResults = $this->router->route(new RouteContext($request, RouteParameters::createEmpty()));
         $actionRequest = $this->createActionRequest($request, $matchResults);
         $this->assertEquals(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
         $this->assertEquals('second', $actionRequest->getControllerActionName());
@@ -105,59 +106,59 @@ class RoutingTest extends FunctionalTestCase
         return [
             // non existing route is not matched:
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/some/non/existing/route',
+                'requestUri' => 'http://localhost/neos/flow/test/some/non/existing/route',
                 'expectedMatchingRouteName' => null
             ],
 
             // static route parts are case sensitive:
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/Upper/Camel/Case',
+                'requestUri' => 'http://localhost/neos/flow/test/Upper/Camel/Case',
                 'expectedMatchingRouteName' => 'static route parts are case sensitive'
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/upper/camel/case',
+                'requestUri' => 'http://localhost/neos/flow/test/upper/camel/case',
                 'expectedMatchingRouteName' => null
             ],
 
             // dynamic route parts are case insensitive
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/TYPO3.Flow/ActionControllerTestA/index.html',
+                'requestUri' => 'http://localhost/neos/flow/test/Neos.Flow/ActionControllerTestA/index.html',
                 'expectedMatchingRouteName' => 'controller route parts are case insensitive',
                 'expectedControllerObjectName' => ActionControllerTestAController::class
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/typo3.flow/actioncontrollertesta/index.HTML',
+                'requestUri' => 'http://localhost/neos/flow/test/neos.flow/actioncontrollertesta/index.HTML',
                 'expectedMatchingRouteName' => 'controller route parts are case insensitive',
                 'expectedControllerObjectName' => ActionControllerTestAController::class
             ],
 
             // dynamic route part defaults are overwritten by request path
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/dynamic/part/without/default/DynamicOverwritten',
+                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/without/default/DynamicOverwritten',
                 'expectedMatchingRouteName' => 'dynamic part without default',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/dynamic/part/with/default/DynamicOverwritten',
+                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/with/default/DynamicOverwritten',
                 'expectedMatchingRouteName' => 'dynamic part with default',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/optional/dynamic/part/with/default/DynamicOverwritten',
+                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default/DynamicOverwritten',
                 'expectedMatchingRouteName' => 'optional dynamic part with default',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['optionalDynamic' => 'DynamicOverwritten']
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/optional/dynamic/part/with/default',
+                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
                 'expectedMatchingRouteName' => 'optional dynamic part with default',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/optional/dynamic/part/with/default',
+                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
                 'expectedMatchingRouteName' => 'optional dynamic part with default',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
@@ -165,7 +166,7 @@ class RoutingTest extends FunctionalTestCase
 
             // toLowerCase has no effect when matching routes
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/dynamic/part/case/Dynamic1Overwritten/Dynamic2Overwritten',
+                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/case/Dynamic1Overwritten/Dynamic2Overwritten',
                 'expectedMatchingRouteName' => 'dynamic part case',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['dynamic1' => 'Dynamic1Overwritten', 'dynamic2' => 'Dynamic2Overwritten']
@@ -173,13 +174,13 @@ class RoutingTest extends FunctionalTestCase
 
             // query arguments are ignored when matching routes
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/exceeding/arguments2/FromPath?dynamic=FromQuery',
+                'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments2/FromPath?dynamic=FromQuery',
                 'expectedMatchingRouteName' => 'exceeding arguments 02',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['dynamic' => 'FromPath']
             ],
             [
-                'requestUri' => 'http://localhost/typo3/flow/test/exceeding/arguments1?dynamic=FromQuery',
+                'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments1?dynamic=FromQuery',
                 'expectedMatchingRouteName' => 'exceeding arguments 01',
                 'expectedControllerObjectName' => RoutingTestAController::class,
                 'expectedArguments' => ['dynamic' => 'DynamicDefault']
@@ -198,7 +199,11 @@ class RoutingTest extends FunctionalTestCase
     public function routeTests($requestUri, $expectedMatchingRouteName, $expectedControllerObjectName = null, array $expectedArguments = null)
     {
         $request = Request::create(new Uri($requestUri));
-        $matchResults = $this->router->route($request);
+        try {
+            $matchResults = $this->router->route(new RouteContext($request, RouteParameters::createEmpty()));
+        } catch (NoMatchingRouteException $exception) {
+            $matchResults = null;
+        }
         $actionRequest = $this->createActionRequest($request, $matchResults);
         $matchedRoute = $this->router->getLastMatchedRoute();
         if ($expectedMatchingRouteName === null) {
@@ -209,7 +214,7 @@ class RoutingTest extends FunctionalTestCase
             if ($matchedRoute === null) {
                 $this->fail('Expected route "' . $expectedMatchingRouteName . '" to match, but no route matched request URI "' . $requestUri . '"');
             } else {
-                $this->assertEquals('Flow :: Functional Test: ' . $expectedMatchingRouteName, $matchedRoute->getName());
+                $this->assertEquals('Neos.Flow :: Functional Test: ' . $expectedMatchingRouteName, $matchedRoute->getName());
             }
         }
         $this->assertEquals($expectedControllerObjectName, $actionRequest->getControllerObjectName());
@@ -225,49 +230,49 @@ class RoutingTest extends FunctionalTestCase
      */
     public function resolveTestsDataProvider()
     {
-        $defaults = ['@package' => 'TYPO3.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
+        $defaults = ['@package' => 'Neos.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
         return [
             // route resolves no matter if defaults are equal to route values
             [
                 'routeValues' => array_merge($defaults, ['dynamic' => 'DynamicDefault']),
                 'expectedResolvedRouteName' => 'dynamic part without default',
-                'expectedResolvedUriPath' => 'typo3/flow/test/dynamic/part/without/default/dynamicdefault'
+                'expectedResolvedUriPath' => 'neos/flow/test/dynamic/part/without/default/dynamicdefault'
             ],
             [
                 'routeValues' => array_merge($defaults, ['dynamic' => 'OverwrittenDynamicValue']),
                 'expectedResolvedRouteName' => 'dynamic part without default',
-                'expectedResolvedUriPath' => 'typo3/flow/test/dynamic/part/without/default/overwrittendynamicvalue'
+                'expectedResolvedUriPath' => 'neos/flow/test/dynamic/part/without/default/overwrittendynamicvalue'
             ],
 
             // if route value is omitted, only routes with a default value resolve
             [
                 'routeValues' => $defaults,
                 'expectedResolvedRouteName' => 'dynamic part with default',
-                'expectedResolvedUriPath' => 'typo3/flow/test/dynamic/part/with/default/DynamicDefault'
+                'expectedResolvedUriPath' => 'neos/flow/test/dynamic/part/with/default/DynamicDefault'
             ],
             [
                 'routeValues' => array_merge($defaults, ['optionalDynamic' => 'OptionalDynamicDefault']),
                 'expectedResolvedRouteName' => 'optional dynamic part with default',
-                'expectedResolvedUriPath' => 'typo3/flow/test/optional/dynamic/part/with/default'
+                'expectedResolvedUriPath' => 'neos/flow/test/optional/dynamic/part/with/default'
             ],
 
             // toLowerCase has an effect on generated URIs
             [
                 'routeValues' => array_merge($defaults, ['dynamic1' => 'DynamicRouteValue1', 'dynamic2' => 'DynamicRouteValue2']),
                 'expectedResolvedRouteName' => 'dynamic part case',
-                'expectedResolvedUriPath' => 'typo3/flow/test/dynamic/part/case/DynamicRouteValue1/dynamicroutevalue2'
+                'expectedResolvedUriPath' => 'neos/flow/test/dynamic/part/case/DynamicRouteValue1/dynamicroutevalue2'
             ],
 
             // exceeding arguments are appended to resolved URI if appendExceedingArguments is set
             [
                 'routeValues' => array_merge($defaults, ['@action' => 'test1', 'dynamic' => 'DynamicDefault', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar']),
                 'expectedResolvedRouteName' => 'exceeding arguments 01',
-                'expectedResolvedUriPath' => 'typo3/flow/test/exceeding/arguments1?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
+                'expectedResolvedUriPath' => 'neos/flow/test/exceeding/arguments1?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
             ],
             [
                 'routeValues' => array_merge($defaults, ['@action' => 'test1', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar', 'dynamic' => 'DynamicOther']),
                 'expectedResolvedRouteName' => 'exceeding arguments 02',
-                'expectedResolvedUriPath' => 'typo3/flow/test/exceeding/arguments2/dynamicother?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
+                'expectedResolvedUriPath' => 'neos/flow/test/exceeding/arguments2/dynamicother?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
             ],
         ];
     }
@@ -281,7 +286,8 @@ class RoutingTest extends FunctionalTestCase
      */
     public function resolveTests(array $routeValues, $expectedResolvedRouteName, $expectedResolvedUriPath = null)
     {
-        $resolvedUriPath = $this->router->resolve($routeValues);
+        $baseUri = new Uri('http://localhost');
+        $resolvedUriPath = $this->router->resolve(new ResolveContext($baseUri, $routeValues, false));
         $resolvedRoute = $this->router->getLastResolvedRoute();
         if ($expectedResolvedRouteName === null) {
             if ($resolvedRoute !== null) {
@@ -291,7 +297,7 @@ class RoutingTest extends FunctionalTestCase
             if ($resolvedRoute === null) {
                 $this->fail('Expected route "' . $expectedResolvedRouteName . '" to resolve');
             } else {
-                $this->assertEquals('Flow :: Functional Test: ' . $expectedResolvedRouteName, $resolvedRoute->getName());
+                $this->assertEquals('Neos.Flow :: Functional Test: ' . $expectedResolvedRouteName, $resolvedRoute->getName());
             }
         }
         $this->assertEquals($expectedResolvedUriPath, $resolvedUriPath);
@@ -320,7 +326,7 @@ class RoutingTest extends FunctionalTestCase
             'HTTP Method Test',
             'http-method-test',
             [
-                '@package' => 'TYPO3.Flow',
+                '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
                 '@controller' => 'ActionControllerTestA',
                 '@action' => 'second',
@@ -340,15 +346,16 @@ class RoutingTest extends FunctionalTestCase
     public function routerInitializesRoutesIfNotInjectedExplicitly()
     {
         $routeValues = [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Http\Fixtures',
             '@controller' => 'Foo',
             '@action' => 'index',
             '@format' => 'html'
         ];
-        $actualResult = $this->router->resolve($routeValues);
+        $baseUri = new Uri('http://localhost');
+        $actualResult = $this->router->resolve(new ResolveContext($baseUri, $routeValues, false));
 
-        $this->assertSame('typo3/flow/test/http/foo', $actualResult);
+        $this->assertSame('neos/flow/test/http/foo', (string)$actualResult);
     }
 
     /**
@@ -357,7 +364,7 @@ class RoutingTest extends FunctionalTestCase
     public function explicitlySpecifiedRoutesOverruleConfiguredRoutes()
     {
         $routeValues = [
-            '@package' => 'TYPO3.Flow',
+            '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Http\Fixtures',
             '@controller' => 'Foo',
             '@action' => 'index',
@@ -367,7 +374,7 @@ class RoutingTest extends FunctionalTestCase
             [
                 'uriPattern' => 'custom/uri/pattern',
                 'defaults' => [
-                    '@package' => 'TYPO3.Flow',
+                    '@package' => 'Neos.Flow',
                     '@subpackage' => 'Tests\Functional\Http\Fixtures',
                     '@controller' => 'Foo',
                     '@action' => 'index',
@@ -376,7 +383,9 @@ class RoutingTest extends FunctionalTestCase
             ]
         ];
         $this->router->setRoutesConfiguration($routesConfiguration);
-        $this->assertSame('custom/uri/pattern', $this->router->resolve($routeValues));
+        $baseUri = new Uri('http://localhost');
+        $actualResult = $this->router->resolve(new ResolveContext($baseUri, $routeValues, false));
+        $this->assertSame('custom/uri/pattern', (string)$actualResult);
 
         // reset router configuration for following tests
         $this->router->setRoutesConfiguration(null);

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Authentication;
+namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,15 +11,15 @@ namespace TYPO3\Flow\Tests\Unit\Security\Authentication;
  * source code.
  */
 
-use TYPO3\Flow\Security\Authentication\AuthenticationProviderInterface;
-use TYPO3\Flow\Security\Authentication\AuthenticationProviderResolver;
-use TYPO3\Flow\Security\RequestPatternResolver;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Security\Account;
-use TYPO3\Flow\Security\Authentication\AuthenticationProviderManager;
-use TYPO3\Flow\Security\Authentication\TokenInterface;
-use TYPO3\Flow\Security\Context;
-use TYPO3\Flow\Session\SessionInterface;
+use Neos\Flow\Security\Authentication\AuthenticationProviderInterface;
+use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
+use Neos\Flow\Security\RequestPatternResolver;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
+use Neos\Flow\Security\Authentication\TokenInterface;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Session\SessionInterface;
 
 /**
  * Test case for authentication provider manager
@@ -99,7 +99,7 @@ class AuthenticationProviderManagerTest extends UnitTestCase
         $token->expects($this->atLeastOnce())->method('isAuthenticated')->will($this->returnValue(true));
         $securityContext->expects($this->atLeastOnce())->method('getAuthenticationTokens')->will($this->returnValue([$token]));
 
-        $this->mockSession->expects($this->once())->method('addTag')->with('TYPO3-Flow-Security-Account-21232f297a57a5a743894a0e4a801fc3');
+        $this->mockSession->expects($this->once())->method('addTag')->with('Neos-Flow-Security-Account-21232f297a57a5a743894a0e4a801fc3');
 
         $this->authenticationProviderManager->_set('providers', []);
         $this->authenticationProviderManager->_set('securityContext', $securityContext);
@@ -138,7 +138,7 @@ class AuthenticationProviderManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\AuthenticationRequiredException
+     * @expectedException \Neos\Flow\Security\Exception\AuthenticationRequiredException
      */
     public function authenticateThrowsAnExceptionIfNoTokenCouldBeAuthenticated()
     {
@@ -157,7 +157,7 @@ class AuthenticationProviderManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\AuthenticationRequiredException
+     * @expectedException \Neos\Flow\Security\Exception\AuthenticationRequiredException
      */
     public function authenticateThrowsAnExceptionIfAuthenticateAllTokensIsTrueButATokenCouldNotBeAuthenticated()
     {
@@ -352,7 +352,7 @@ class AuthenticationProviderManagerTest extends UnitTestCase
         }));
         $this->mockSession->expects($this->once())->method('destroy')->will($this->returnCallback(function () use (&$loggedOutEmitted) {
             if (!$loggedOutEmitted) {
-                \PHPUnit_Framework_Assert::fail('emitLoggedOut was not called before destroy');
+                \PHPUnit\Framework\Assert::fail('emitLoggedOut was not called before destroy');
             }
         }));
 
@@ -397,7 +397,7 @@ class AuthenticationProviderManagerTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\InvalidAuthenticationProviderException
+     * @expectedException \Neos\Flow\Security\Exception\InvalidAuthenticationProviderException
      */
     public function anExceptionIsThrownIfTheConfiguredProviderDoesNotExist()
     {

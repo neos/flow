@@ -3,7 +3,7 @@
 Flow Annotation Reference
 =========================
 
-This reference was automatically generated from code on 2016-08-30
+This reference was automatically generated from code on 2017-03-29
 
 
 .. _`Flow Annotation Reference: After`:
@@ -263,15 +263,6 @@ Arguments
 * ``lazy`` (boolean): Whether the dependency should be injected instantly or if a lazy dependency
   proxy should be injected instead
 
-* ``setting`` (string): Path of a setting (without the package key) which should be injected into the property.
-  Example: session.name
-
-* ``package`` (string): Defines the package to be used for retrieving a setting specified via the "setting" parameter. If no package
-  is specified, we'll assume the package to be the same which contains the class where the Inject annotation is
-  used.
-  
-  Example: TYPO3.Flow
-
 
 
 
@@ -305,7 +296,7 @@ Arguments
   
   Note: This property is only supported for type "Settings"
   
-  Example: TYPO3.Flow
+  Example: Neos.Flow
 
 * ``type`` (string one of the ConfigurationManager::CONFIGURATION_TYPE_* constants): Type of Configuration (defaults to "Settings").
 

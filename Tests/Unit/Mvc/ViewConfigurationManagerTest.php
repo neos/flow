@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Mvc;
+namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,17 +11,18 @@ namespace TYPO3\Flow\Tests\Unit\Mvc;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\Mvc\ViewConfigurationManager;
-use TYPO3\Flow\Mvc\ActionRequest;
-use TYPO3\Flow\Cache\Frontend\VariableFrontend;
-use TYPO3\Eel\CompilingEvaluator;
+use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Mvc\ViewConfigurationManager;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Eel\CompilingEvaluator;
 
 /**
  * Testcase for the MVC ViewConfigurationManager
  *
  */
-class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
+class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
 {
 
     /**
@@ -50,7 +51,7 @@ class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
         $this->viewConfigurationManager = new ViewConfigurationManager();
 
         // eel evaluator
-        $eelEvaluator = new CompilingEvaluator();
+        $eelEvaluator = $this->createEvaluator();
         $this->inject($this->viewConfigurationManager, 'eelEvaluator', $eelEvaluator);
 
         // a dummy configuration manager is prepared
@@ -64,7 +65,7 @@ class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
 
         // a dummy request is prepared
         $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
-        $this->mockActionRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue('TYPO3.Flow'));
+        $this->mockActionRequest->expects($this->any())->method('getControllerPackageKey')->will($this->returnValue('Neos.Flow'));
         $this->mockActionRequest->expects($this->any())->method('getControllerSubpackageKey')->will($this->returnValue(''));
         $this->mockActionRequest->expects($this->any())->method('getControllerName')->will($this->returnValue('Standard'));
         $this->mockActionRequest->expects($this->any())->method('getControllerActionName')->will($this->returnValue('index'));
@@ -78,7 +79,7 @@ class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
     public function getViewConfigurationFindsMatchingConfigurationForRequest()
     {
         $matchingConfiguration = [
-            'requestFilter' => 'isPackage("TYPO3.Flow")',
+            'requestFilter' => 'isPackage("Neos.Flow")',
             'options' => 'a value'
         ];
 
@@ -101,12 +102,12 @@ class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
     public function getViewConfigurationUsedFilterConfigurationWithHigherWeight()
     {
         $matchingConfigurationOne = [
-            'requestFilter' => 'isPackage("TYPO3.Flow")',
+            'requestFilter' => 'isPackage("Neos.Flow")',
             'options' => 'a value'
         ];
 
         $matchingConfigurationTwo = [
-            'requestFilter' => 'isPackage("TYPO3.Flow") && isFormat("html")',
+            'requestFilter' => 'isPackage("Neos.Flow") && isFormat("html")',
             'options' => 'a value with higher weight'
         ];
 
@@ -121,5 +122,18 @@ class ViewConfigurationManagerTest extends \TYPO3\Flow\Tests\UnitTestCase
         $calculatedConfiguration = $this->viewConfigurationManager->getViewConfiguration($this->mockActionRequest);
 
         $this->assertEquals($calculatedConfiguration, $matchingConfigurationTwo);
+    }
+
+    /**
+     * @return CompilingEvaluator
+     */
+    protected function createEvaluator()
+    {
+        $stringFrontendMock = $this->getMockBuilder(StringFrontend::class)->setMethods([])->disableOriginalConstructor()->getMock();
+        $stringFrontendMock->expects(self::any())->method('get')->willReturn(false);
+
+        $evaluator = new CompilingEvaluator();
+        $evaluator->injectExpressionCache($stringFrontendMock);
+        return $evaluator;
     }
 }

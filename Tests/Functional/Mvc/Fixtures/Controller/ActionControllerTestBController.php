@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller;
+namespace Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Mvc\Fixtures\Controller;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Mvc\Controller\ActionController;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\Controller\ActionController;
 
 /**
  * An action controller test fixture
@@ -50,6 +50,18 @@ class ActionControllerTestBController extends ActionController
      * @return string
      */
     public function optionalObjectAction(TestObjectArgument $argument = null)
+    {
+        if ($argument === null) {
+            return 'null';
+        }
+        return $argument->getEmailAddress();
+    }
+
+    /**
+     * @param TestObjectArgument|null $argument
+     * @return string
+     */
+    public function optionalAnnotatedObjectAction(TestObjectArgument $argument = null)
     {
         if ($argument === null) {
             return 'null';
@@ -96,6 +108,15 @@ class ActionControllerTestBController extends ActionController
     }
 
     /**
+     * @param string|null $argument
+     * @return string
+     */
+    public function optionalNullableStringAction($argument = null)
+    {
+        return var_export($argument, true);
+    }
+
+    /**
      * @param integer $argument
      * @return string
      */
@@ -114,6 +135,15 @@ class ActionControllerTestBController extends ActionController
     }
 
     /**
+     * @param integer|null $argument
+     * @return string
+     */
+    public function optionalNullableIntegerAction($argument = null)
+    {
+        return var_export($argument, true);
+    }
+
+    /**
      * @param float $argument
      * @return string
      */
@@ -127,6 +157,15 @@ class ActionControllerTestBController extends ActionController
      * @return string
      */
     public function optionalFloatAction($argument = 112.34)
+    {
+        return var_export($argument, true);
+    }
+
+    /**
+     * @param float|null $argument
+     * @return string
+     */
+    public function optionalNullableFloatAction($argument = null)
     {
         return var_export($argument, true);
     }

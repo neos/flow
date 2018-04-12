@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file original="" product-name="TYPO3.Flow" source-language="en" datatype="plaintext" target-language="lv">
+  <file original="" product-name="Neos.Flow" source-language="en" datatype="plaintext" target-language="lv">
     <body>
       <!-- AlphanumericValidator -->
       <trans-unit id="1221551320" xml:space="preserve" approved="yes">
@@ -122,11 +122,11 @@
         </trans-unit>
         <trans-unit id="1238108068[1]">
           <source>This field must contain at least {0,number} character</source>
-          <target xml:lang="lv" state="needs-translation">This field must contain at least {0,number} character</target>
+          <target xml:lang="lv" state="translated">Šim laukam jāsatur vismaz {0,number} rakstzīmi</target>
         </trans-unit>
         <trans-unit id="1238108068[2]">
           <source>This field must contain at least {0,number} characters</source>
-          <target xml:lang="lv" state="needs-translation">This field must contain at least {0,number} characters</target>
+          <target xml:lang="lv" state="translated">Šim laukam jāsatur vismaz {0,number} rakstzīmi</target>
         </trans-unit>
       </group>
       <group id="1238108069" restype="x-gettext-plurals">
@@ -136,11 +136,11 @@
         </trans-unit>
         <trans-unit id="1238108069[1]">
           <source>This text may not exceed {0,number} character</source>
-          <target xml:lang="lv" state="needs-translation">This text may not exceed {0,number} character</target>
+          <target xml:lang="lv" state="translated">Šis teksts nedrīkst būt garāks par {0,number} rakstzīmi</target>
         </trans-unit>
         <trans-unit id="1238108069[2]">
           <source>This text may not exceed {0,number} characters</source>
-          <target xml:lang="lv" state="needs-translation">This text may not exceed {0,number} characters</target>
+          <target xml:lang="lv" state="translated">Šis teksts nedrīkst būt garāks par {0,number} rakstzīmēm</target>
         </trans-unit>
       </group>
       <!-- StringValidator -->
@@ -163,7 +163,7 @@
       <trans-unit id="1268676765" xml:space="preserve" approved="yes">
 				<source>The person name cannot be empty</source>
 			<target xml:lang="lv">Personas vārds nevar būt tukšs</target></trans-unit>
-      <!-- Package "TYPO3.Media" -->
+      <!-- Package "Neos.Media" -->
       <!-- ImageTypeValidator -->
       <trans-unit id="1327947256" xml:space="preserve" approved="yes">
 				<source>The given value is not a Image instance</source>

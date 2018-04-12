@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Policy;
+namespace Neos\Flow\Tests\Unit\Security\Policy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Security\Policy;
  * source code.
  */
 
-use TYPO3\Flow\Configuration\ConfigurationManager;
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\Security\Authorization\Privilege\AbstractPrivilege;
-use TYPO3\Flow\Security\Authorization\Privilege\PrivilegeTarget;
-use TYPO3\Flow\Security\Policy\PolicyService;
-use TYPO3\Flow\Security\Policy\Role;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Security\Authorization\Privilege\AbstractPrivilege;
+use Neos\Flow\Security\Authorization\Privilege\PrivilegeTarget;
+use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Flow\Security\Policy\Role;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for for the PolicyService
@@ -88,7 +88,7 @@ class PolicyServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\NoSuchRoleException
+     * @expectedException \Neos\Flow\Security\Exception\NoSuchRoleException
      */
     public function getRoleThrowsExceptionIfTheSpecifiedRoleIsNotConfigured()
     {
@@ -151,7 +151,7 @@ class PolicyServiceTest extends UnitTestCase
             ],
         ];
         $roles = $this->policyService->getRoles(true);
-        $this->assertSame(['Some.Package:SomeRole', 'Some.Package:SomeOtherRole', 'TYPO3.Flow:Everybody'], array_keys($roles));
+        $this->assertSame(['Some.Package:SomeRole', 'Some.Package:SomeOtherRole', 'Neos.Flow:Everybody'], array_keys($roles));
     }
 
     /**
@@ -256,7 +256,7 @@ class PolicyServiceTest extends UnitTestCase
             ],
         ];
 
-        $everybodyRole = $this->policyService->getRole('TYPO3.Flow:Everybody');
+        $everybodyRole = $this->policyService->getRole('Neos.Flow:Everybody');
         $this->assertCount(2, $everybodyRole->getPrivileges());
         $this->assertTrue($everybodyRole->getPrivilegeForTarget('Some.PrivilegeTarget:Identifier')->isAbstained());
         $this->assertTrue($everybodyRole->getPrivilegeForTarget('Some.OtherPrivilegeTarget:Identifier')->isAbstained());
@@ -280,7 +280,7 @@ class PolicyServiceTest extends UnitTestCase
                 ],
             ],
             'roles' => [
-                'TYPO3.Flow:Everybody' => [
+                'Neos.Flow:Everybody' => [
                     'privileges' => [
                         [
                             'privilegeTarget' => 'Some.PrivilegeTarget:Identifier',
@@ -299,7 +299,7 @@ class PolicyServiceTest extends UnitTestCase
             ],
         ];
 
-        $everybodyRole = $this->policyService->getRole('TYPO3.Flow:Everybody');
+        $everybodyRole = $this->policyService->getRole('Neos.Flow:Everybody');
         $this->assertTrue($everybodyRole->getPrivilegeForTarget('Some.PrivilegeTarget:Identifier')->isGranted());
     }
 
@@ -321,7 +321,7 @@ class PolicyServiceTest extends UnitTestCase
                 ],
             ],
             'roles' => [
-                'TYPO3.Flow:Everybody' => [
+                'Neos.Flow:Everybody' => [
                     'privileges' => [
                         [
                             'privilegeTarget' => 'Some.PrivilegeTarget:Identifier',
@@ -340,7 +340,7 @@ class PolicyServiceTest extends UnitTestCase
             ],
         ];
 
-        $everybodyRole = $this->policyService->getRole('TYPO3.Flow:Everybody');
+        $everybodyRole = $this->policyService->getRole('Neos.Flow:Everybody');
         $this->assertTrue($everybodyRole->getPrivilegeForTarget('Some.PrivilegeTarget:Identifier')->isDenied());
     }
 }

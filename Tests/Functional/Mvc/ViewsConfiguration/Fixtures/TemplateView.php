@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures;
+namespace Neos\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -10,14 +10,14 @@ namespace TYPO3\Flow\Tests\Functional\Mvc\ViewsConfiguration\Fixtures;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use TYPO3\Flow\Mvc\Controller\ControllerContext;
-use TYPO3\Flow\Mvc\View\EmptyView;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\View\AbstractView;
 
 /**
  * An empty view - a special case.
  *
  */
-final class TemplateView extends \TYPO3\Flow\Mvc\View\AbstractView
+final class TemplateView extends AbstractView
 {
     /**
      * @var array
@@ -55,7 +55,7 @@ final class TemplateView extends \TYPO3\Flow\Mvc\View\AbstractView
      *
      * @param string $key
      * @param mixed $value
-     * @return EmptyView instance of $this to allow chaining
+     * @return self instance of $this to allow chaining
      * @api
      */
     public function assign($key, $value)
@@ -67,7 +67,7 @@ final class TemplateView extends \TYPO3\Flow\Mvc\View\AbstractView
      * Dummy method to satisfy the ViewInterface
      *
      * @param array $values
-     * @return EmptyView instance of $this to allow chaining
+     * @return self instance of $this to allow chaining
      * @api
      */
     public function assignMultiple(array $values)

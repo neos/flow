@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Property;
+namespace Neos\Flow\Tests\Unit\Property;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,16 +11,16 @@ namespace TYPO3\Flow\Tests\Unit\Property;
  * source code.
  */
 
-use TYPO3\Flow\Property\PropertyMappingConfiguration;
-use TYPO3\Flow\Property\TypeConverterInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Property\PropertyMappingConfiguration;
+use Neos\Flow\Property\TypeConverterInterface;
+use Neos\Flow\Tests\UnitTestCase;
 
 require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
 
 /**
  * Testcase for the Property Mapper
  *
- * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration
+ * @covers \Neos\Flow\Property\PropertyMappingConfiguration
  */
 class PropertyMappingConfigurationTest extends UnitTestCase
 {
@@ -39,7 +39,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::getTargetPropertyName
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::getTargetPropertyName
      */
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
     {
@@ -49,7 +49,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldMap
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsFalseByDefault()
     {
@@ -59,7 +59,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldMap
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsTrueIfConfigured()
     {
@@ -70,7 +70,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldMap
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsTrueForAllowedProperties()
     {
@@ -81,7 +81,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldMap
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
      */
     public function shouldMapReturnsFalseForBlacklistedProperties()
     {
@@ -94,7 +94,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldSkip
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldSkip
      */
     public function shouldSkipReturnsFalseByDefault()
     {
@@ -104,7 +104,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
 
     /**
      * @test
-     * @covers \TYPO3\Flow\Property\PropertyMappingConfiguration::shouldSkip
+     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldSkip
      */
     public function shouldSkipReturnsTrueIfConfigured()
     {

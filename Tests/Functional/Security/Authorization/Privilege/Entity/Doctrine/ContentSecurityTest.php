@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
+namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,12 +11,12 @@ namespace TYPO3\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Do
  * source code.
  */
 
-use TYPO3\Flow\Cache\CacheManager;
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Tests\Functional\Security\Fixtures;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Tests\Functional\Aop;
-use TYPO3\Flow\Security;
+use Neos\Flow\Cache\CacheManager;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\Functional\Security\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Tests\Functional\Aop;
+use Neos\Flow\Security;
 
 /**
  * Testcase for content security using doctrine persistence
@@ -80,7 +80,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsAreAllowedToSeeHiddenRestrictableEntities()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Administrator']);
+        $this->authenticateRoles(['Neos.Flow:Administrator']);
 
         $defaultEntity = new Fixtures\RestrictableEntity('default');
         $hiddenEntity = new Fixtures\RestrictableEntity('hiddenEntity');
@@ -110,7 +110,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function customersAreNotAllowedToSeeHiddenRestrictableEntities()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $this->authenticateRoles(['Neos.Flow:Customer']);
 
         $defaultEntity = new Fixtures\RestrictableEntity('default');
         $hiddenEntity = new Fixtures\RestrictableEntity('hiddenEntity');
@@ -140,7 +140,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function customersAreNotAllowedToSeeDeletedRestrictableEntities()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $this->authenticateRoles(['Neos.Flow:Customer']);
 
         $defaultEntity = new Fixtures\RestrictableEntity('default');
         $deletedEntity = new Fixtures\RestrictableEntity('deletedEntry');
@@ -170,7 +170,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsCanSeeDeletedRestrictableEntities()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Administrator']);
+        $this->authenticateRoles(['Neos.Flow:Administrator']);
 
         $defaultEntity = new Fixtures\RestrictableEntity('default');
         $deletedEntity = new Fixtures\RestrictableEntity('hiddenEntity');
@@ -228,7 +228,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function customersCannotSeeOthersRestrictableEntites()
     {
-        $ownAccount = $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $ownAccount = $this->authenticateRoles(['Neos.Flow:Customer']);
         $ownAccount->setAccountIdentifier('ownAccount');
         $ownAccount->setAuthenticationProviderName('SomeProvider');
         $otherAccount = new Security\Account();
@@ -266,7 +266,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsCanSeeOthersRestrictableEntites()
     {
-        $ownAccount = $this->authenticateRoles(['TYPO3.Flow:Administrator', 'TYPO3.Flow:Customer']);
+        $ownAccount = $this->authenticateRoles(['Neos.Flow:Administrator', 'Neos.Flow:Customer']);
         $ownAccount->setAccountIdentifier('ownAccount');
         $ownAccount->setAuthenticationProviderName('SomeProvider');
         $otherAccount = new Security\Account();
@@ -304,7 +304,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function customersCannotSeeRestrictableEntitesWhichAreOwnedByAndi()
     {
-        $account = $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $account = $this->authenticateRoles(['Neos.Flow:Customer']);
         $account->setAccountIdentifier('MyAccount');
         $account->setAuthenticationProviderName('SomeProvider');
         $andisAccount = new Security\Account();
@@ -342,7 +342,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsCanSeeRestrictableEntitesWhichAreOwnedByAndi()
     {
-        $account = $this->authenticateRoles(['TYPO3.Flow:Administrator']);
+        $account = $this->authenticateRoles(['Neos.Flow:Administrator']);
         $account->setAccountIdentifier('MyAccount');
         $account->setAuthenticationProviderName('SomeProvider');
         $andisAccount = new Security\Account();
@@ -380,7 +380,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function customersCannotSeeTestEntityAAssociatedToATestEntityBWithValueAdmin()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $this->authenticateRoles(['Neos.Flow:Customer']);
 
         $testEntityB = new Fixtures\TestEntityB('Admin');
         $testEntityA = new Fixtures\TestEntityA($testEntityB);
@@ -412,7 +412,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsCanSeeTestEntityAAssociatedToATestEntityBWithValueAdmin()
     {
-        $this->authenticateRoles(['TYPO3.Flow:Administrator']);
+        $this->authenticateRoles(['Neos.Flow:Administrator']);
 
         $testEntityB = new Fixtures\TestEntityB('Admin');
         $testEntityA = new Fixtures\TestEntityA($testEntityB);
@@ -446,7 +446,7 @@ class ContentSecurityTest extends FunctionalTestCase
     {
         $cacheManager = $this->objectManager->get(CacheManager::class);
         $cacheManager->getCache('Flow_Persistence_Doctrine')->flush();
-        $myAccount = $this->authenticateRoles(['TYPO3.Flow:Customer']);
+        $myAccount = $this->authenticateRoles(['Neos.Flow:Customer']);
         $myAccount->setAccountIdentifier('MyAccount');
         $myAccount->setAuthenticationProviderName('SomeProvider');
         $andisAccount = new Security\Account();
@@ -487,7 +487,7 @@ class ContentSecurityTest extends FunctionalTestCase
      */
     public function administratorsCanSeeTestEntityAAssociatedToATestEntityBSomeoneElsesAccount()
     {
-        $myAccount = $this->authenticateRoles(['TYPO3.Flow:Administrator']);
+        $myAccount = $this->authenticateRoles(['Neos.Flow:Administrator']);
         $myAccount->setAccountIdentifier('MyAccount');
         $myAccount->setAuthenticationProviderName('SomeProvider');
         $andisAccount = new Security\Account();

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Functional\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,11 +11,11 @@ namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Persistence\Doctrine\Repository;
-use TYPO3\Flow\Persistence\QueryResultInterface;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Persistence\Doctrine\Repository;
+use Neos\Flow\Persistence\QueryResultInterface;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for basic repository operations
@@ -230,6 +230,33 @@ class RepositoryTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function findAllIteratorReturnsSubTypesOfTheManagedType()
+    {
+        $this->superEntityRepository = $this->objectManager->get(Fixtures\SuperEntityRepository::class);
+
+        $superEntity = new Fixtures\SuperEntity();
+        $superEntity->setContent('this is the super entity');
+        $this->superEntityRepository->add($superEntity);
+
+        $subEntity = new Fixtures\SubEntity();
+        $subEntity->setContent('this is the sub entity');
+        $this->superEntityRepository->add($subEntity);
+
+        $this->persistenceManager->persistAll();
+
+        $iterator = $this->superEntityRepository->findAllIterator();
+        $expectedCount = 0;
+
+        foreach ($this->superEntityRepository->iterate($iterator) as $entity) {
+            $expectedCount++;
+        }
+
+        $this->assertEquals(2, $expectedCount);
+    }
+
+    /**
+     * @test
+     */
     public function findByIdentifierReturnsSubTypesOfTheManagedType()
     {
         $this->superEntityRepository = $this->objectManager->get(Fixtures\SuperEntityRepository::class);
@@ -247,7 +274,7 @@ class RepositoryTest extends FunctionalTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     * @expectedException \Neos\Flow\Persistence\Exception\IllegalObjectTypeException
      */
     public function addingASuperTypeToAMoreSpecificRepositoryThrowsAnException()
     {

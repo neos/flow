@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Persistence\Fixture\Repository;
+namespace Neos\Flow\Tests\Persistence\Fixture\Repository;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Persistence\Fixture\Repository;
  * source code.
  */
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\Repository;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Persistence\Repository;
 
 /**
  * A repository claiming responsibility for a model that cannot be matched
@@ -23,7 +23,8 @@ use TYPO3\Flow\Persistence\Repository;
 class NonstandardEntityRepository extends Repository
 {
     /**
+     * Not using a ::class constant, since the class does not actually exist
      * @var string
      */
-    const ENTITY_CLASSNAME = \TYPO3\Flow\Tests\Persistence\Fixture\Model\Entity::class;
+    const ENTITY_CLASSNAME = 'Neos\Flow\Tests\Persistence\Fixture\Model\Entity';
 }

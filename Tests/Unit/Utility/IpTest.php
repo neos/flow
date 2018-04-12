@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Utility;
+namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,13 +11,13 @@ namespace TYPO3\Flow\Tests\Unit\Utility;
  * source code.
  */
 
-use TYPO3\Flow\Utility\Ip;
+use Neos\Flow\Utility\Ip;
 
 /**
  * Testcase for the Utility Ip class
  *
  */
-class IpTest extends \TYPO3\Flow\Tests\UnitTestCase
+class IpTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
      * Data provider with valid and invalid IP ranges

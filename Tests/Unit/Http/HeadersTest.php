@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Http;
+namespace Neos\Flow\Tests\Unit\Http;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Http;
  * source code.
  */
 
-use TYPO3\Flow\Http\Headers;
-use TYPO3\Flow\Http\Cookie;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Http\Headers;
+use Neos\Flow\Http\Cookie;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for the Http Headers class
@@ -238,6 +238,18 @@ class HeadersTest extends UnitTestCase
 
         $this->assertTrue($headers->hasCookie('cookie1'));
         $this->assertEquals('the value number 1', $headers->getCookie('cookie1')->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function cookiesWithInvalidNameAreIgnored()
+    {
+        $headers = new Headers();
+        $headers->set('Cookie', array('cookie-valid=this+is+valid; cookie[invalid]=this+is+invalid'));
+
+        $this->assertTrue($headers->hasCookie('cookie-valid'));
+        $this->assertFalse($headers->hasCookie('cookie[invalid]'));
     }
 
     /**

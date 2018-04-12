@@ -7,9 +7,9 @@
 
 -
   name: 'Functional Test: HTTP - FooController'
-  uriPattern: 'typo3/flow/test/http/foo'
+  uriPattern: 'neos/flow/test/http/foo'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Http\Fixtures'
     '@controller': 'Foo'
     '@action':     'index'
@@ -17,47 +17,47 @@
 
 -
   name: 'Functional Test: dynamic part without default'
-  uriPattern: 'typo3/flow/test/dynamic/part/without/default/{dynamic}'
+  uriPattern: 'neos/flow/test/dynamic/part/without/default/{dynamic}'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
 
 -
   name: 'Functional Test: dynamic part with default'
-  uriPattern: 'typo3/flow/test/dynamic/part/with/default/{dynamic}'
+  uriPattern: 'neos/flow/test/dynamic/part/with/default/{dynamic}'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
     dynamic: 'DynamicDefault'
 
 -
   name: 'Functional Test: optional dynamic part with default'
-  uriPattern: 'typo3/flow/test/optional/dynamic/part/with/default(/{optionalDynamic})'
+  uriPattern: 'neos/flow/test/optional/dynamic/part/with/default(/{optionalDynamic})'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
     optionalDynamic: 'OptionalDynamicDefault'
 
 -
   name: 'Functional Test: dynamic part case'
-  uriPattern: 'typo3/flow/test/dynamic/part/case/{dynamic1}/{dynamic2}'
+  uriPattern: 'neos/flow/test/dynamic/part/case/{dynamic1}/{dynamic2}'
   toLowerCase: false
   routeParts:
     dynamic2:
       toLowerCase: true
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
 
 -
   name: 'Functional Test: exceeding arguments 01'
-  uriPattern: 'typo3/flow/test/exceeding/arguments1'
+  uriPattern: 'neos/flow/test/exceeding/arguments1'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
     dynamic: 'DynamicDefault'
@@ -65,30 +65,30 @@
 
 -
   name: 'Functional Test: exceeding arguments 02'
-  uriPattern: 'typo3/flow/test/exceeding/arguments2/{dynamic}'
+  uriPattern: 'neos/flow/test/exceeding/arguments2/{dynamic}'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
   appendExceedingArguments: true
 
 -
   name: 'Functional Test: static route parts are case sensitive'
-  uriPattern: 'typo3/flow/test/Upper/Camel/Case'
+  uriPattern: 'neos/flow/test/Upper/Camel/Case'
 
 -
   name: 'Functional Test: controller route parts are case insensitive'
-  uriPattern: 'typo3/flow/test/{@package}/{@controller}/{@action}.{@format}'
+  uriPattern: 'neos/flow/test/{@package}/{@controller}/{@action}.{@format}'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'RoutingTestA'
 
 -
   name: 'Functional Test: httpMethods are respected'
-  uriPattern: 'typo3/flow/test/httpmethods'
+  uriPattern: 'neos/flow/test/httpmethods'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'ActionControllerTestA'
     '@action':     'first'
@@ -96,9 +96,9 @@
 
 -
   name: 'Functional Test: httpMethods are respected'
-  uriPattern: 'typo3/flow/test/httpmethods'
+  uriPattern: 'neos/flow/test/httpmethods'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'ActionControllerTestA'
     '@action':     'second'
@@ -106,9 +106,9 @@
 
 -
   name: 'Functional Test: Standard'
-  uriPattern: 'typo3/flow/test'
+  uriPattern: 'neos/flow/test'
   defaults:
-    '@package':    'TYPO3.Flow'
+    '@package':    'Neos.Flow'
     '@subpackage': 'Tests\Functional\Mvc\Fixtures'
     '@controller': 'Standard'
     '@action':     'index'

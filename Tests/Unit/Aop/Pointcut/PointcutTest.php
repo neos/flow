@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
+namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Aop\Pointcut;
-use TYPO3\Flow\Aop;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Aop\Pointcut;
+use Neos\Flow\Aop;
 
 /**
  * Testcase for the default AOP Pointcut implementation
@@ -39,7 +39,7 @@ class PointcutTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Aop\Exception\CircularPointcutReferenceException
+     * @expectedException \Neos\Flow\Aop\Exception\CircularPointcutReferenceException
      */
     public function matchesDetectsCircularMatchesAndThrowsAndException()
     {
@@ -123,14 +123,15 @@ class PointcutTest extends UnitTestCase
         $pointcutExpression = 'ThePointcutExpression';
         $aspectClassName = 'TheAspect';
         $className = 'TheClass';
+        $resultClassNameIndex = new Aop\Builder\ClassNameIndex();
 
         $targetClassNameIndex = new Aop\Builder\ClassNameIndex();
 
         $mockPointcutFilterComposite = $this->getMockBuilder(Pointcut\PointcutFilterComposite::class)->disableOriginalConstructor()->getMock();
-        $mockPointcutFilterComposite->expects($this->once())->method('reduceTargetClassNames')->with($targetClassNameIndex)->will($this->returnValue('someResult'));
+        $mockPointcutFilterComposite->expects($this->once())->method('reduceTargetClassNames')->with($targetClassNameIndex)->willReturn($resultClassNameIndex);
 
         $pointcut = new Pointcut\Pointcut($pointcutExpression, $mockPointcutFilterComposite, $aspectClassName, $className);
 
-        $this->assertEquals('someResult', $pointcut->reduceTargetClassNames($targetClassNameIndex));
+        $this->assertEquals($resultClassNameIndex, $pointcut->reduceTargetClassNames($targetClassNameIndex));
     }
 }

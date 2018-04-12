@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\I18n\Cldr;
+namespace Neos\Flow\Tests\Functional\I18n\Cldr;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,10 +11,10 @@ namespace TYPO3\Flow\Tests\Functional\I18n\Cldr;
  * source code.
  */
 
-use TYPO3\Flow\I18n;
-use TYPO3\Flow\I18n\Cldr\CldrRepository;
-use TYPO3\Flow\Tests\FunctionalTestCase;
-use TYPO3\Flow\Utility\Files;
+use Neos\Flow\I18n;
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Utility\Files;
 
 /**
  * Testcase for the I18N CLDR Repository

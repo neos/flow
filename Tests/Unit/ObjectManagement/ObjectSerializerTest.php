@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement;
+namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,14 +11,14 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement;
  * source code.
  */
 
-use TYPO3\Flow\ObjectManagement\Configuration\Configuration;
-use TYPO3\Flow\ObjectManagement\ObjectManager;
-use TYPO3\Flow\ObjectManagement\ObjectSerializer;
-use TYPO3\Flow\Persistence\PersistenceManagerInterface;
-use TYPO3\Flow\Reflection\ReflectionService;
-use TYPO3\Flow\Session\SessionInterface;
-use TYPO3\Flow\Tests\UnitTestCase;
-use TYPO3\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\Configuration\Configuration;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\ObjectManagement\ObjectSerializer;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
+use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Session\SessionInterface;
+use Neos\Flow\Tests\UnitTestCase;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * @testcase for the object serializer
@@ -409,8 +409,8 @@ class ObjectSerializerTest extends UnitTestCase
         }');
 
         $entityClassName = 'entityClass' . md5(uniqid(mt_rand(), true));
-        eval('class ' . $entityClassName . ' implements \\' . \TYPO3\Flow\ObjectManagement\Proxy\ProxyInterface::class .' {
-            public function Flow_Aop_Proxy_invokeJoinPoint(\\' . \TYPO3\Flow\Aop\JoinPointInterface::class . ' $joinPoint) {}
+        eval('class ' . $entityClassName . ' implements \\' . \Neos\Flow\ObjectManagement\Proxy\ProxyInterface::class .' {
+            public function Flow_Aop_Proxy_invokeJoinPoint(\\' . \Neos\Flow\Aop\JoinPointInterface::class . ' $joinPoint) {}
             public function __clone() {}
             public function __wakeup() {}
         }');
@@ -423,7 +423,7 @@ class ObjectSerializerTest extends UnitTestCase
 
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
         $mockReflectionService->expects($this->any())->method('getClassPropertyNames')->with($sessionClassName)->will($this->returnValue(['entityProperty']));
-        $mockReflectionService->expects($this->at(2))->method('isClassAnnotatedWith')->with($entityClassName, \TYPO3\Flow\Annotations\Entity::class)->will($this->returnValue(true));
+        $mockReflectionService->expects($this->at(2))->method('isClassAnnotatedWith')->with($entityClassName, \Neos\Flow\Annotations\Entity::class)->will($this->returnValue(true));
 
         /** @var ObjectSerializer $objectSerializer */
         $objectSerializer = $this->getMockBuilder(ObjectSerializer::class)->disableOriginalConstructor()->setMethods(['dummy'])->getMock();
@@ -458,8 +458,8 @@ class ObjectSerializerTest extends UnitTestCase
         }');
 
         $entityClassName = 'entityClass' . md5(uniqid(mt_rand(), true));
-        eval('class ' . $entityClassName . ' implements \\' . \TYPO3\Flow\ObjectManagement\Proxy\ProxyInterface::class .' {
-            public function Flow_Aop_Proxy_invokeJoinPoint(\\' . \TYPO3\Flow\Aop\JoinPointInterface::class . ' $joinPoint) {}
+        eval('class ' . $entityClassName . ' implements \\' . \Neos\Flow\ObjectManagement\Proxy\ProxyInterface::class .' {
+            public function Flow_Aop_Proxy_invokeJoinPoint(\\' . \Neos\Flow\Aop\JoinPointInterface::class . ' $joinPoint) {}
             public function __clone() {}
             public function __wakeup() {}
         }');
@@ -472,8 +472,8 @@ class ObjectSerializerTest extends UnitTestCase
 
         $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
         $mockReflectionService->expects($this->any())->method('getClassPropertyNames')->with($sessionClassName)->will($this->returnValue(['entityProperty']));
-        $mockReflectionService->expects($this->at(2))->method('isClassAnnotatedWith')->with($entityClassName, \TYPO3\Flow\Annotations\Entity::class)->will($this->returnValue(false));
-        $mockReflectionService->expects($this->at(3))->method('isClassAnnotatedWith')->with($entityClassName, \TYPO3\Flow\Annotations\ValueObject::class)->will($this->returnValue(true));
+        $mockReflectionService->expects($this->at(2))->method('isClassAnnotatedWith')->with($entityClassName, \Neos\Flow\Annotations\Entity::class)->will($this->returnValue(false));
+        $mockReflectionService->expects($this->at(3))->method('isClassAnnotatedWith')->with($entityClassName, \Neos\Flow\Annotations\ValueObject::class)->will($this->returnValue(true));
 
         /** @var ObjectSerializer $objectSerializer */
         $objectSerializer = $this->getMockBuilder(ObjectSerializer::class)->disableOriginalConstructor()->setMethods(['dummy'])->getMock();
@@ -511,7 +511,7 @@ class ObjectSerializerTest extends UnitTestCase
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
         $mockObjectManager->expects($this->any())->method('isRegistered')->will($this->returnValue(false));
 
-        $objectSerializer = $this->getAccessibleMock(\TYPO3\Flow\ObjectManagement\ObjectSerializer::class, array('dummy'), array(), '', false);
+        $objectSerializer = $this->getAccessibleMock(\Neos\Flow\ObjectManagement\ObjectSerializer::class, array('dummy'), array(), '', false);
         $objectSerializer->injectObjectManager($mockObjectManager);
 
         $objectSerializer->deserializeObjectsArray($someDataArray);
@@ -578,7 +578,7 @@ class ObjectSerializerTest extends UnitTestCase
      */
     public function buildStorageArrayCreatesTheCorrectArrayForAnArrayProperty()
     {
-        $objectSerializer = $this->getAccessibleMock(\TYPO3\Flow\ObjectManagement\ObjectSerializer::class, array('dummy'), array(), '', false);
+        $objectSerializer = $this->getAccessibleMock(\Neos\Flow\ObjectManagement\ObjectSerializer::class, array('dummy'), array(), '', false);
 
         $expectedArray = [
             'key1' => [

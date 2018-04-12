@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Command;
+namespace Neos\Flow\Tests\Functional\Command;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,11 +13,11 @@ namespace TYPO3\Flow\Tests\Functional\Command;
 
 
 
-use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Cli\CommandController;
-use TYPO3\Flow\ObjectManagement\ObjectManagerInterface;
-use TYPO3\Flow\Property\PropertyMapper;
-use TYPO3\Flow\Security\Context;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Cli\CommandController;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Property\PropertyMapper;
+use Neos\Flow\Security\Context;
 
 /**
  * A command controller used to execute behat steps in an isolated process.

@@ -32,7 +32,7 @@ PHP
 
 Flow was one of the first PHP projects taking advantage of namespaces and
 other features introduced in PHP version 5.3. By now we started using features of
-PHP 7.0, so make sure you have **PHP 7.0.0** or later available on your web server. Make
+PHP 7.1, so make sure you have **PHP 7.1.0** or later available on your web server. Make
 sure your PHP CLI binary is the **same version**!
 
 The default settings and extensions of the PHP distribution should work fine
@@ -41,7 +41,7 @@ and ``pdo_mysql`` are enabled, especially if you compiled PHP yourself.
 
 .. note::
 
-  Make sure the PHP functions ``system()``, ``shell_exec()``,
+  Make sure the PHP functions ``exec()``, ``shell_exec()``,
   ``escapeshellcmd()`` and ``escapeshellarg()`` are not disabled in you PHP
   installation. They are required for the system to run.
 

@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Aop\Fixtures;
+namespace Neos\Flow\Tests\Functional\Aop\Fixtures;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -21,10 +21,21 @@ class TargetClassWithPhp7Features
      *
      * @param string $aString
      * @param int $aNumber
+     * @param TargetClassWithPhp7Features $anObject
      * @return string
      */
-    public function methodWithStaticTypeDeclarations(string $aString, int $aNumber)
+    public function methodWithStaticTypeDeclarations(string $aString, int $aNumber, TargetClassWithPhp7Features $anObject)
     {
-        return "{$aString} and {$aNumber}";
+        return "{$aString} and {$aNumber} and {$anObject}";
+    }
+
+    public function methodWithStaticScalarReturnTypeDeclaration(): string
+    {
+        return 'it works';
+    }
+
+    public function methodWithStaticObjectReturnTypeDeclaration(): TargetClassWithPhp7Features
+    {
+        return $this;
     }
 }

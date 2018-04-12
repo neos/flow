@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Http\Client;
+namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,8 +11,8 @@ namespace TYPO3\Flow\Tests\Functional\Http\Client;
  * source code.
  */
 
-use TYPO3\Flow\Http\Client\CurlEngine;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Http\Client\CurlEngine;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the HTTP client internal request engine
@@ -34,6 +34,19 @@ class CurlEngineTest extends FunctionalTestCase
         parent::setUp();
         $curlEngine = $this->objectManager->get(CurlEngine::class);
         $this->browser->setRequestEngine($curlEngine);
+    }
+
+    /**
+     * Check if the curl engine can handle redirects
+     *
+     * @test
+     */
+    public function redirectsAreFollowed()
+    {
+        $this->browser->getRequestEngine()->setOption(CURLOPT_FOLLOWLOCATION, true);
+        $this->browser->setFollowRedirects(false);
+        $response = $this->browser->request('http://www.neos.io');
+        $this->assertStringStartsWith('<!DOCTYPE html>', $response->getContent());
     }
 
     /**

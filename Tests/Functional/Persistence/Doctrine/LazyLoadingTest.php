@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine;
+namespace Neos\Flow\Tests\Functional\Persistence\Doctrine;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -11,9 +11,9 @@ namespace TYPO3\Flow\Tests\Functional\Persistence\Doctrine;
  * source code.
  */
 
-use TYPO3\Flow\Persistence\Doctrine\PersistenceManager;
-use TYPO3\Flow\Tests\Functional\Persistence\Fixtures;
-use TYPO3\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for proxy initialization within doctrine lazy loading
@@ -26,9 +26,14 @@ class LazyLoadingTest extends FunctionalTestCase
     protected static $testablePersistenceEnabled = true;
 
     /**
-     * @var Fixtures\TestEntityRepository;
+     * @var Fixtures\TestEntityRepository
      */
     protected $testEntityRepository;
+
+    /**
+     * @var Fixtures\PostRepository
+     */
+    protected $postRepository;
 
     /**
      * @return void
@@ -39,6 +44,7 @@ class LazyLoadingTest extends FunctionalTestCase
         if (!$this->persistenceManager instanceof PersistenceManager) {
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
+        $this->postRepository = $this->objectManager->get(Fixtures\PostRepository::class);
         $this->testEntityRepository = $this->objectManager->get(Fixtures\TestEntityRepository::class);
     }
 
@@ -92,5 +98,46 @@ class LazyLoadingTest extends FunctionalTestCase
         $loadedRelatedEntity = $loadedEntity->getRelatedEntity();
 
         $this->assertEquals($loadedRelatedEntity->sayHello(), 'Hello Andi!');
+    }
+
+    /**
+     * @test
+     */
+    public function shutdownObjectMethodIsRegisterdForDoctrineProxy()
+    {
+        $image = new Fixtures\Image();
+        $post = new Fixtures\Post();
+        $post->setImage($image);
+
+        $this->postRepository->add($post);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+
+        $postIdentifier = $this->persistenceManager->getIdentifierByObject($post);
+
+        unset($post);
+        unset($image);
+
+        /*
+         * When hydrating the post a DoctrineProxy is generated for the image.
+         * On this proxy __wakeup() is called and the shutdownObject lifecycle method
+         * needs to be registered in the ObjectManager
+         */
+        $post = $this->persistenceManager->getObjectByIdentifier($postIdentifier, Fixtures\Post::class);
+
+        /*
+         * The CleanupObject is just a helper object to test that shutdownObject() on the Fixtures\Image is called
+         */
+        $cleanupObject = new Fixtures\CleanupObject();
+        $this->assertFalse($cleanupObject->getState());
+        $post->getImage()->setRelatedObject($cleanupObject);
+
+        /*
+         * When shutting down the ObjectManager shutdownObject() on Fixtures\Image is called
+         * and toggles the state on the cleanupObject
+         */
+        \Neos\Flow\Core\Bootstrap::$staticObjectManager->shutdown();
+
+        $this->assertTrue($cleanupObject->getState());
     }
 }

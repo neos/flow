@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
+namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -12,8 +12,8 @@ namespace TYPO3\Flow\Tests\Unit\Security\Cryptography;
  */
 
 use org\bovigo\vfs\vfsStream;
-use TYPO3\Flow\Security\Cryptography\RsaWalletServicePhp;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Security\Cryptography\RsaWalletServicePhp;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for for the PHP (OpenSSL) based RSAWalletService
@@ -42,6 +42,9 @@ class RsaWalletServicePhpTest extends UnitTestCase
     {
         vfsStream::setup('Foo');
         $settings['security']['cryptography']['RSAWalletServicePHP']['keystorePath'] = 'vfs://Foo/EncryptionKey';
+        $settings['security']['cryptography']['RSAWalletServicePHP']['openSSLConfiguration']['digest_alg'] = 'sha1';
+        $settings['security']['cryptography']['RSAWalletServicePHP']['openSSLConfiguration']['private_key_bits'] = 384;
+        $settings['security']['cryptography']['RSAWalletServicePHP']['openSSLConfiguration']['private_key_type'] = OPENSSL_KEYTYPE_RSA;
 
         $this->rsaWalletService = $this->getAccessibleMock(RsaWalletServicePhp::class, ['dummy']);
         $this->rsaWalletService->injectSettings($settings);
@@ -101,7 +104,7 @@ class RsaWalletServicePhpTest extends UnitTestCase
 
     /**
      * @test
-     * @expectedException \TYPO3\Flow\Security\Exception\DecryptionNotAllowedException
+     * @expectedException \Neos\Flow\Security\Exception\DecryptionNotAllowedException
      */
     public function decryptingWithAKeypairUUIDMarkedForPasswordUsageThrowsAnException()
     {

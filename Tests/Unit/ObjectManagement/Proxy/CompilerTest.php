@@ -1,8 +1,8 @@
 <?php
-namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy;
+namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 
 /*
- * This file is part of the TYPO3.Flow package.
+ * This file is part of the Neos.Flow package.
  *
  * (c) Contributors of the Neos Project - www.neos.io
  *
@@ -13,13 +13,13 @@ namespace TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy;
 
 require_once(__DIR__ . '/../Fixture/FooBarAnnotation.php');
 
-use TYPO3\Flow\Annotations\Inject;
-use TYPO3\Flow\Annotations\Scope;
-use TYPO3\Flow\Annotations\Session;
-use TYPO3\Flow\Annotations\Signal;
-use TYPO3\Flow\Annotations\Validate;
-use TYPO3\Flow\ObjectManagement\Proxy\Compiler;
-use TYPO3\Flow\Tests\UnitTestCase;
+use Neos\Flow\Annotations\Inject;
+use Neos\Flow\Annotations\Scope;
+use Neos\Flow\Annotations\Session;
+use Neos\Flow\Annotations\Signal;
+use Neos\Flow\Annotations\Validate;
+use Neos\Flow\ObjectManagement\Proxy\Compiler;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test cases for the Proxy Compiler
@@ -46,51 +46,51 @@ class CompilerTest extends UnitTestCase
         return [
             [
                 new Signal([]),
-                '@\TYPO3\Flow\Annotations\Signal'
+                '@\Neos\Flow\Annotations\Signal'
             ],
             [
                 new Scope(['value' => 'singleton']),
-                '@\TYPO3\Flow\Annotations\Scope("singleton")'
+                '@\Neos\Flow\Annotations\Scope("singleton")'
             ],
             [
                 new FooBarAnnotation(),
-                '@\TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(1.2)'
+                '@\Neos\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(1.2)'
             ],
             [
                 new FooBarAnnotation(new FooBarAnnotation()),
-                '@\TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(@\TYPO3\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(1.2))'
+                '@\Neos\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(@\Neos\Flow\Tests\Unit\ObjectManagement\Proxy\FooBarAnnotation(1.2))'
             ],
             [
                 $sessionWithAutoStart,
-                '@\TYPO3\Flow\Annotations\Session(autoStart=true)'
+                '@\Neos\Flow\Annotations\Session(autoStart=true)'
             ],
             [
                 new Session(),
-                '@\TYPO3\Flow\Annotations\Session'
+                '@\Neos\Flow\Annotations\Session'
             ],
             [
                 new Validate(['value' => 'foo1', 'type' => 'bar1']),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", argumentName="foo1")'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", argumentName="foo1")'
             ],
             [
                 new Validate(['type' => 'bar1', 'options' => ['minimum' => 2]]),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", options={ "minimum"=2 })'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", options={ "minimum"=2 })'
             ],
             [
                 new Validate(['type' => 'bar1', 'options' => ['foo' => ['bar' => 'baz']]]),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", options={ "foo"={ "bar"="baz" } })'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", options={ "foo"={ "bar"="baz" } })'
             ],
             [
                 new Validate(['type' => 'bar1', 'options' => ['foo' => 'hubbabubba', 'bar' => true]]),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", options={ "foo"="hubbabubba", "bar"=true })'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", options={ "foo"="hubbabubba", "bar"=true })'
             ],
             [
                 new Validate(['type' => 'bar1', 'options' => [new Inject([])]]),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", options={ @\TYPO3\Flow\Annotations\Inject })'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", options={ @\Neos\Flow\Annotations\Inject })'
             ],
             [
                 new Validate(['type' => 'bar1', 'options' => [new Validate(['type' => 'bar1', 'options' => ['foo' => 'hubbabubba']])]]),
-                '@\TYPO3\Flow\Annotations\Validate(type="bar1", options={ @\TYPO3\Flow\Annotations\Validate(type="bar1", options={ "foo"="hubbabubba" }) })'
+                '@\Neos\Flow\Annotations\Validate(type="bar1", options={ @\Neos\Flow\Annotations\Validate(type="bar1", options={ "foo"="hubbabubba" }) })'
             ],
         ];
     }
