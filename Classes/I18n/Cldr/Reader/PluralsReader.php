@@ -150,6 +150,10 @@ class PluralsReader
             return self::RULE_OTHER;
         }
 
+        if (!isset($this->rulesets[$locale->getLanguage()])) {
+            return self::RULE_OTHER;
+        }
+
         $ruleset = $this->rulesets[$locale->getLanguage()][$this->rulesetsIndices[$locale->getLanguage()]];
 
         if ($ruleset === null) {
@@ -223,6 +227,10 @@ class PluralsReader
     public function getPluralForms(Locale $locale)
     {
         if (!isset($this->rulesetsIndices[$locale->getLanguage()])) {
+            return [self::RULE_OTHER];
+        }
+
+        if (!isset($this->rulesets[$locale->getLanguage()])) {
             return [self::RULE_OTHER];
         }
 
