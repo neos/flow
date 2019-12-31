@@ -93,7 +93,7 @@ just concentrate on the business logic.
 	}
 
 The	logging is now done from an AOP *aspect*. It's just a class tagged with
-``@aspect`` and a method that implements the specific action, an
+``@aspect`` and a method that implements the specific action, a
 *before advice*. The expression after the ``@before`` tag tells the AOP framework
 to which method calls this action should be applied. It's called *pointcut expression*
 and has many possibilities, even for complex scenarios.
