@@ -781,7 +781,7 @@ methods.
         matcher: 'method(Acme\MyPackage\Controller\RestrictedController->adminAction())'
 
       'Acme.MyPackage:editOwnPost':
-        matcher: 'method(Acme\MyPackage\Controller\PostController->editAction(post.owner == current.userService.currentUser))'
+        matcher: 'method(Acme\MyPackage\Controller\PostController->editAction(post.owner.accounts.0 == current.securityContext.account))'
 
 
 
