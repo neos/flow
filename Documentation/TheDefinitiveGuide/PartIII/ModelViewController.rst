@@ -455,7 +455,7 @@ returned by the action method. However, this approach is not very flexible and
 ignores the separation of concerns as laid out by the Model View Controller pattern.
 Instead of rendering an output itself, a controller delegates this task to a view.
 
-Flow uses the Fluid template engine as the default view for action controllers. By
+Flow can use the Fluid template engine as view for action controllers. By
 following a naming convention for directories and template files, developers of a
 concrete controller don't need to configure the view or paths to the respective
 templates – they are resolved automatically by converting the combination of
