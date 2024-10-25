@@ -35,6 +35,8 @@ class NumberValidatorTest extends AbstractValidatorTestcase
 
     protected NumberParser|MockObject $mockNumberParser;
 
+    protected NumberParser|MockObject $mockNumberParser;
+
     /**
      * @return void
      */
