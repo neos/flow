@@ -94,8 +94,8 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
     {
-        $this->mockReflectionService->expects(self::any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->will(self::returnValue(false));
-        $this->mockReflectionService->expects(self::any())->method('getMethodParameters')->with('TheTargetType', '__construct')->will(self::returnValue([
+        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
+        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([
             'thePropertyName' => [
                 'type' => 'TheTypeOfSubObject',
                 'elementType' => null
@@ -111,12 +111,12 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldRemoveLeadingBackslashesForAnnotationParameters()
     {
-        $this->mockReflectionService->expects(self::any())->method('getMethodParameters')->with('TheTargetType', '__construct')->will(self::returnValue([]));
-        $this->mockReflectionService->expects(self::any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->will(self::returnValue(false));
-        $this->mockReflectionService->expects(self::any())->method('getClassPropertyNames')->with('TheTargetType')->will(self::returnValue([
+        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([]));
+        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
+        $this->mockReflectionService->expects($this->any())->method('getClassPropertyNames')->with('TheTargetType')->willReturn(([
             'thePropertyName'
         ]));
-        $this->mockReflectionService->expects(self::any())->method('getPropertyTagValues')->with('TheTargetType', 'thePropertyName')->will(self::returnValue([
+        $this->mockReflectionService->expects($this->any())->method('getPropertyTagValues')->with('TheTargetType', 'thePropertyName')->willReturn(([
             '\TheTypeOfSubObject'
         ]));
         $configuration = new PropertyMappingConfiguration();

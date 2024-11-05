@@ -79,7 +79,7 @@ class CommandTest extends UnitTestCase
      */
     public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments()
     {
-        $this->methodReflection->expects(self::atLeastOnce())->method('getParameters')->will(self::returnValue([]));
+        $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertFalse($this->command->hasArguments());
     }
 
@@ -89,7 +89,7 @@ class CommandTest extends UnitTestCase
     public function hasArgumentsReturnsTrueIfCommandExpectsArguments()
     {
         $parameterReflection = $this->createMock(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
-        $this->methodReflection->expects(self::atLeastOnce())->method('getParameters')->will(self::returnValue([$parameterReflection]));
+        $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([$parameterReflection]));
         self::assertTrue($this->command->hasArguments());
     }
 
@@ -98,7 +98,7 @@ class CommandTest extends UnitTestCase
      */
     public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments()
     {
-        $this->methodReflection->expects(self::atLeastOnce())->method('getParameters')->will(self::returnValue([]));
+        $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertSame([], $this->command->getArgumentDefinitions());
     }
 

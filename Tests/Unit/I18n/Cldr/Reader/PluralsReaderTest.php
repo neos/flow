@@ -44,13 +44,13 @@ class PluralsReaderTest extends UnitTestCase
         ];
 
         $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray'], [['fake/path']]);
-        $mockModel->expects(self::once())->method('getRawArray')->with('plurals')->will(self::returnValue($samplePluralRulesData));
+        $mockModel->expects($this->once())->method('getRawArray')->with('plurals')->willReturn(($samplePluralRulesData));
 
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
-        $mockRepository->expects(self::once())->method('getModel')->with('supplemental/plurals')->will(self::returnValue($mockModel));
+        $mockRepository->expects($this->once())->method('getModel')->with('supplemental/plurals')->willReturn(($mockModel));
 
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
-        $mockCache->expects(self::once())->method('has')->with('rulesets')->willReturn(false);
+        $mockCache->expects($this->once())->method('has')->with('rulesets')->willReturn(false);
         $matcher = self::exactly(2);
         $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
             if ($matcher->getInvocationCount() === 1) {

@@ -27,7 +27,7 @@ class AbstractPersistenceManagerTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->abstractPersistenceManager = $this->getMockBuilder(AbstractPersistenceManager::class)->setMethods(['initialize', 'persistAll', 'isNewObject', 'getObjectByIdentifier', 'createQueryForType', 'add', 'remove', 'update', 'getIdentifierByObject', 'clearState', 'isConnected'])->getMock();
+        $this->abstractPersistenceManager = $this->getMockBuilder(AbstractPersistenceManager::class)->onlyMethods(['initialize', 'persistAll', 'isNewObject', 'getObjectByIdentifier', 'createQueryForType', 'add', 'remove', 'update', 'getIdentifierByObject', 'clearState', 'isConnected'])->getMock();
     }
 
     /**
@@ -36,7 +36,7 @@ class AbstractPersistenceManagerTest extends UnitTestCase
     public function convertObjectToIdentityArrayConvertsAnObject()
     {
         $someObject = new \stdClass();
-        $this->abstractPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($someObject)->will(self::returnValue(123));
+        $this->abstractPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($someObject)->willReturn((123));
 
         $expectedResult = ['__identity' => 123];
         $actualResult = $this->abstractPersistenceManager->convertObjectToIdentityArray($someObject);
@@ -50,7 +50,7 @@ class AbstractPersistenceManagerTest extends UnitTestCase
     {
         $this->expectException(UnknownObjectException::class);
         $someObject = new \stdClass();
-        $this->abstractPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($someObject)->will(self::returnValue(null));
+        $this->abstractPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($someObject)->willReturn((null));
 
         $this->abstractPersistenceManager->convertObjectToIdentityArray($someObject);
     }

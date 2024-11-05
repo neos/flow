@@ -62,7 +62,7 @@ class PersistenceManagerTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->persistenceManager = $this->getMockBuilder(\Neos\Flow\Persistence\Doctrine\PersistenceManager::class)->setMethods(['emitAllObjectsPersisted'])->getMock();
+        $this->persistenceManager = $this->getMockBuilder(\Neos\Flow\Persistence\Doctrine\PersistenceManager::class)->onlyMethods(['emitAllObjectsPersisted'])->getMock();
 
         $this->mockEntityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
         $this->mockEntityManager->method('isOpen')->willReturn(true);
@@ -141,7 +141,7 @@ class PersistenceManagerTest extends UnitTestCase
         $this->mockUnitOfWork->method('getScheduledEntityDeletions')->willReturn($scheduledEntityDeletes);
         $this->mockUnitOfWork->method('getScheduledEntityInsertions')->willReturn($scheduledEntityInsertions);
 
-        $this->mockEntityManager->expects(self::once())->method('flush');
+        $this->mockEntityManager->expects($this->once())->method('flush');
 
         $this->persistenceManager->allowObject($mockObject);
         $this->persistenceManager->persistAllowedObjects();
@@ -153,10 +153,10 @@ class PersistenceManagerTest extends UnitTestCase
     public function persistAllAbortsIfConnectionIsClosed()
     {
         $mockEntityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
-        $mockEntityManager->expects(self::atLeastOnce())->method('isOpen')->willReturn(false);
+        $mockEntityManager->expects($this->atLeastOnce())->method('isOpen')->willReturn(false);
         $this->inject($this->persistenceManager, 'entityManager', $mockEntityManager);
 
-        $mockEntityManager->expects(self::never())->method('flush');
+        $mockEntityManager->expects($this->never())->method('flush');
         $this->persistenceManager->persistAll();
     }
 
@@ -165,8 +165,8 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function persistAllEmitsAllObjectsPersistedSignal()
     {
-        $this->mockEntityManager->expects(self::once())->method('flush');
-        $this->persistenceManager->expects(self::once())->method('emitAllObjectsPersisted');
+        $this->mockEntityManager->expects($this->once())->method('flush');
+        $this->persistenceManager->expects($this->once())->method('emitAllObjectsPersisted');
 
         $this->persistenceManager->persistAll();
     }
@@ -178,8 +178,8 @@ class PersistenceManagerTest extends UnitTestCase
     {
         $this->mockPing->willReturn(false);
 
-        $this->mockConnection->expects(self::once())->method('close');
-        $this->mockConnection->expects(self::once())->method('connect');
+        $this->mockConnection->expects($this->once())->method('close');
+        $this->mockConnection->expects($this->once())->method('connect');
 
         $this->persistenceManager->persistAll();
     }
@@ -192,8 +192,8 @@ class PersistenceManagerTest extends UnitTestCase
         $this->expectException(DBALException::class);
         $this->mockEntityManager->method('flush')->willThrowException(new DBALException('Dummy error that closed the entity manager'));
 
-        $this->mockConnection->expects(self::never())->method('close');
-        $this->mockConnection->expects(self::never())->method('connect');
+        $this->mockConnection->expects($this->never())->method('close');
+        $this->mockConnection->expects($this->never())->method('connect');
 
         $this->persistenceManager->persistAll();
     }

@@ -97,7 +97,7 @@ class FlowAnnotationDriverTest extends UnitTestCase
         $mockEntityManager = $this->getMockBuilder(EntityManager::class)->disableOriginalConstructor()->getMock();
         $mockEntityManager->expects(self::atLeastOnce())->method('getConnection')->willReturn($mockConnection);
 
-        $driver = $this->getAccessibleMock(FlowAnnotationDriver::class, ['dummy']);
+        $driver = $this->getAccessibleMock(FlowAnnotationDriver::class, []);
         /** @noinspection PhpUndefinedMethodInspection */
         $driver->_set('entityManager', $mockEntityManager);
         /** @noinspection PhpUndefinedMethodInspection */

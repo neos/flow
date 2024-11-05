@@ -36,7 +36,7 @@ class CldrModelTest extends UnitTestCase
         $sampleParsedFile3 = require(__DIR__ . '/../Fixtures/MockParsedCldrFile3.php');
 
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
-        $mockCache->expects(self::once())->method('has')->with(md5('foo;bar;baz'))->will(self::returnValue(false));
+        $mockCache->expects($this->once())->method('has')->with(md5('foo;bar;baz'))->willReturn((false));
 
         $mockCldrParser = $this->createMock(I18n\Cldr\CldrParser::class);
         $matcher = self::exactly(3);
