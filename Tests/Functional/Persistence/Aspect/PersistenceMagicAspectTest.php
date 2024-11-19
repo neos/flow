@@ -27,9 +27,6 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
      */
     protected static $testablePersistenceEnabled = true;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -84,7 +81,7 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
      * @test
      * @dataProvider sameValueObjectDataProvider
      */
-    public function valueObjectsWithTheSamePropertyValuesAreEqual(\Closure $closure): void
+    public function valueObjectsWithTheSamePropertyValuesAreEqual(object $valueObject1, object $valueObject2): void
     {
         [$valueObject1, $valueObject2] = $closure();
         self::assertEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
@@ -104,7 +101,7 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
      * @test
      * @dataProvider differentValueObjectDataProvider
      */
-    public function valueObjectWithDifferentPropertyValuesAreNotEqual(\Closure $closure): void
+    public function valueObjectWithDifferentPropertyValuesAreNotEqual(object $valueObject1, object $valueObject2): void
     {
         [$valueObject1, $valueObject2] = $closure();
         self::assertNotEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));

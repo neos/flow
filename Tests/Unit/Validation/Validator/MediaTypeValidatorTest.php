@@ -57,7 +57,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
      * @test
      * @dataProvider emptyItems
      */
-    public function validateAcceptsEmptyValue($item)
+    public function validateAcceptsEmptyValue($item): void
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
@@ -77,7 +77,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
      * @test
      * @dataProvider itemsWithAllowedMediaType
      */
-    public function validateAcceptsItemsWithAllowedMediaType($item)
+    public function validateAcceptsItemsWithAllowedMediaType($item): void
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
@@ -96,12 +96,10 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
      * @test
      * @dataProvider itemsWithUnhandledTypes
      */
-    public function validateRejectsItemsWithUnhandledTypes($item)
+    public function validateRejectsItemsWithUnhandledTypes($item): void
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
-
-
 
     public function itemsWithDisallowedMediaType(): array
     {
@@ -117,7 +115,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
      * @test
      * @dataProvider itemsWithDisallowedMediaType
      */
-    public function validateRejectsItemsWithDisallowedMediaType($item)
+    public function validateRejectsItemsWithDisallowedMediaType($item): void
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
@@ -134,7 +132,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
      * @test
      * @dataProvider itemsWithOtherMediaType
      */
-    public function validateRejectsItemsWithOtherMediaType($item)
+    public function validateRejectsItemsWithOtherMediaType($item): void
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }

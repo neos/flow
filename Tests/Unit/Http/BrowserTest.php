@@ -109,7 +109,7 @@ class BrowserTest extends UnitTestCase
         $requestEngine = $this->createMock(Client\RequestEngineInterface::class);
         $matcher = $this->exactly(2);
         $requestEngine->expects($matcher)
-            ->method('sendRequest')->willReturnCallback(function (...$parameters) use ($matcher) {
+            ->method('sendRequest')->willReturnCallback(function (...$parameters) use ($matcher, $initialUri, $redirectUri, $firstResponse, $secondResponse) {
             if ($matcher->getInvocationCount() === 1) {
                 $this->assertSame(self::callback(function (ServerRequestInterface $request) use ($initialUri) {
                     return (string)$request->getUri() === (string)$initialUri;

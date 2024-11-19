@@ -48,14 +48,14 @@ class CommandTest extends UnitTestCase
      * Method used to construct some test objects locally
      * @param string $arg
      */
-    public function dummyMethod($arg)
+    public function dummyMethod($arg): void
     {
     }
 
     /**
      * @return array
      */
-    public static function commandIdentifiers()
+    public static function commandIdentifiers(): array
     {
         return [
             [CacheCommandController::class, 'flush', 'neos.flow:cache:flush'],
@@ -68,7 +68,7 @@ class CommandTest extends UnitTestCase
      * @test
      * @dataProvider commandIdentifiers
      */
-    public function constructRendersACommandIdentifierByTheGivenControllerAndCommandName($controllerClassName, $commandName, $expectedCommandIdentifier)
+    public function constructRendersACommandIdentifierByTheGivenControllerAndCommandName($controllerClassName, $commandName, $expectedCommandIdentifier): void
     {
         $command = new Cli\Command($controllerClassName, $commandName);
         self::assertEquals($expectedCommandIdentifier, $command->getCommandIdentifier());
@@ -77,7 +77,7 @@ class CommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments()
+    public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments(): void
     {
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertFalse($this->command->hasArguments());
@@ -86,7 +86,7 @@ class CommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function hasArgumentsReturnsTrueIfCommandExpectsArguments()
+    public function hasArgumentsReturnsTrueIfCommandExpectsArguments(): void
     {
         $parameterReflection = $this->createMock(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([$parameterReflection]));
@@ -96,7 +96,7 @@ class CommandTest extends UnitTestCase
     /**
      * @test
      */
-    public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments()
+    public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments(): void
     {
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertSame([], $this->command->getArgumentDefinitions());

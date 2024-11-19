@@ -14,6 +14,7 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Testcase for the NumbersReader
@@ -111,6 +112,7 @@ class NumbersReaderTest extends UnitTestCase
             }
         });
 
+        /** @var MockObject|I18n\Cldr\Reader\NumbersReader $reader */
         $reader = $this->getAccessibleMock(I18n\Cldr\Reader\NumbersReader::class, ['parseFormat']);
         $reader->expects($this->once())->method('parseFormat')->with('mockFormatString')->willReturn(['mockParsedFormat']);
         $reader->injectCldrRepository($mockRepository);

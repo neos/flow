@@ -39,11 +39,8 @@ class DatesReaderTest extends UnitTestCase
     /**
      * Setting cache expectations is partially same for many tests, so it's been
      * extracted to this method.
-     *
-     * @param MockObject $mockCache
-     * @return array
      */
-    public function createCacheExpectations(MockObject $mockCache)
+    public function createCacheExpectations(MockObject $mockCache): void
     {
         $matcher = self::atLeast(3);
         $mockCache->expects($matcher)->method('has')->willReturnCallback(function (...$parameters) use ($matcher) {
@@ -88,7 +85,7 @@ class DatesReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function formatIsCorrectlyReadFromCldr()
+    public function formatIsCorrectlyReadFromCldr(): void
     {
         $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray', 'getElement'], [[]]);
         $mockModel->expects($this->once())->method('getElement')->with('dates/calendars/calendar[@type="gregorian"]/dateFormats/dateFormatLength[@type="medium"]/dateFormat/pattern')->willReturn(('mockFormatString'));
@@ -99,6 +96,7 @@ class DatesReaderTest extends UnitTestCase
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
         $this->createCacheExpectations($mockCache);
 
+        /** @var MockObject|I18n\Cldr\Reader\DatesReader $reader */
         $reader = $this->getAccessibleMock(I18n\Cldr\Reader\DatesReader::class, ['parseFormat']);
         $reader->expects($this->once())->method('parseFormat')->with('mockFormatString')->willReturn((['mockParsedFormat']));
         $reader->injectCldrRepository($mockRepository);
@@ -114,7 +112,7 @@ class DatesReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function dateTimeFormatIsParsedCorrectly()
+    public function dateTimeFormatIsParsedCorrectly(): void
     {
         $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getElement'], [[]]);
         $matcher = self::exactly(3);
@@ -154,9 +152,9 @@ class DatesReaderTest extends UnitTestCase
     /**
      * @test
      */
-    public function localizedLiteralsAreCorrectlyReadFromCldr()
+    public function localizedLiteralsAreCorrectlyReadFromCldr(): void
     {
-        $getRawArrayCallback = function () {
+        $getRawArrayCallback = static function () {
             $args = func_get_args();
             $mockDatesCldrData = require(__DIR__ . '/../../Fixtures/MockDatesParsedCldrData.php');
 
@@ -198,7 +196,7 @@ class DatesReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public static function formatStringsAndParsedFormats()
+    public static function formatStringsAndParsedFormats(): array
     {
         return [
             ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G']],
@@ -216,7 +214,7 @@ class DatesReaderTest extends UnitTestCase
      * @test
      * @dataProvider formatStringsAndParsedFormats
      */
-    public function formatStringsAreParsedCorrectly($format, $expectedResult)
+    public function formatStringsAreParsedCorrectly($format, $expectedResult): void
     {
         $reader = $this->getAccessibleMock(I18n\Cldr\Reader\DatesReader::class, []);
 

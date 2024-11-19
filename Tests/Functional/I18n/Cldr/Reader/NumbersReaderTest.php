@@ -19,10 +19,7 @@ use Neos\Flow\I18n;
 
 class NumbersReaderTest extends FunctionalTestCase
 {
-    /**
-     * @var NumbersReader
-     */
-    protected $numbersReader;
+    protected NumbersReader $numbersReader;
 
     protected function setUp(): void
     {
@@ -44,13 +41,6 @@ class NumbersReaderTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider currencyFormatExampleDataProvider
-     *
-     * @param string $localeName
-     * @param string $expected
-     * @throws I18n\Cldr\Reader\Exception\InvalidFormatLengthException
-     * @throws I18n\Cldr\Reader\Exception\InvalidFormatTypeException
-     * @throws I18n\Cldr\Reader\Exception\UnableToFindFormatException
-     * @throws I18n\Cldr\Reader\Exception\UnsupportedNumberFormatException
      */
     public function parseFormatFromCldr(string $localeName, array $expected): void
     {
@@ -70,10 +60,6 @@ class NumbersReaderTest extends FunctionalTestCase
     /**
      * @test
      * @dataProvider numberSystemDataProvider
-     *
-     * @param string $localeString
-     * @param string $expected
-     * @throws I18n\Exception\InvalidLocaleIdentifierException
      */
     public function getDefaultNumberingSystem(string $localeString, string $expected): void
     {
