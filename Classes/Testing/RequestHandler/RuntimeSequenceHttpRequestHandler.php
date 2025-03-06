@@ -27,7 +27,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class RuntimeSequenceHttpRequestHandler extends RuntimeSequenceInvokingRequestHandler implements HttpRequestHandlerInterface
 {
-    private ServerRequestInterface|null $httpRequest;
+    private ServerRequestInterface|null $httpRequest = null;
 
     /**
      * @param ServerRequestInterface $request
