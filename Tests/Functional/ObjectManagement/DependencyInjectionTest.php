@@ -71,6 +71,7 @@ class DependencyInjectionTest extends FunctionalTestCase
         self::assertSame(['iAm' => ['aConfigured' => 'arrayValue']], $objectC->getProtectedArrayPropertySetViaObjectsYaml());
         self::assertTrue($objectC->getProtectedBooleanTruePropertySetViaObjectsYaml());
         self::assertFalse($objectC->getProtectedBooleanFalsePropertySetViaObjectsYaml());
+        self::assertNull($objectC->getProtectedNullPropertySetViaObjectsYaml());
     }
 
     /**

@@ -61,6 +61,11 @@ class SingletonClassC
     protected $protectedBooleanFalsePropertySetViaObjectsYaml;
 
     /**
+     * @var null
+     */
+    protected $protectedNullPropertySetViaObjectsYaml;
+
+    /**
      * @var array
      */
     protected $protectedArrayPropertyWithSetterSetViaObjectsYaml = ['has' => 'some default value'];
@@ -121,6 +126,11 @@ class SingletonClassC
     public function getProtectedBooleanFalsePropertySetViaObjectsYaml()
     {
         return $this->protectedBooleanFalsePropertySetViaObjectsYaml;
+    }
+
+    public function getProtectedNullPropertySetViaObjectsYaml()
+    {
+        return $this->protectedNullPropertySetViaObjectsYaml;
     }
 
     /**
