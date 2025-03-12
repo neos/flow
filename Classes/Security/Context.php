@@ -202,22 +202,22 @@ class Context
      * Lets you switch off authorization checks (CSRF token, policies, content security, ...) for the runtime of $callback
      *
      * Usage:
-     * $this->securityContext->withoutAuthorizationChecks(function () use ($accountRepository, $username, $providerName, &$account) {
-     *   // this will disable the PersistenceQueryRewritingAspect for this one call
-     *   $account = $accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($username, $providerName)
-     * });
      *
-     * @param \Closure $callback
-     * @return void
-     * @throws \Exception
+     *     $account = $this->securityContext->withoutAuthorizationChecks(function () use ($accountRepository, $username, $providerName) {
+     *       // this will disable the PersistenceQueryRewritingAspect for this one call
+     *       return $accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($username, $providerName)
+     *     });
+     *
+     * @template T
+     * @param \Closure(): T $callback
+     * @return T the return value of $callback
      */
-    public function withoutAuthorizationChecks(\Closure $callback)
+    public function withoutAuthorizationChecks(\Closure $callback): mixed
     {
         $authorizationChecksAreAlreadyDisabled = $this->authorizationChecksDisabled;
         $this->authorizationChecksDisabled = true;
         try {
-            /** @noinspection PhpUndefinedMethodInspection */
-            $callback->__invoke();
+            return $callback();
         } finally {
             $this->authorizationChecksDisabled = $authorizationChecksAreAlreadyDisabled;
         }
