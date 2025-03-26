@@ -67,11 +67,10 @@ class BehatHelperCommandController extends CommandController
             $mappedArguments[] = $this->propertyMapper->convert($rawMethodArguments[$i+1], $rawMethodArguments[$i]);
         }
 
-        $result = null;
         try {
             if ($withoutSecurityChecks === true) {
-                $this->securityContext->withoutAuthorizationChecks(function () use ($testHelper, $methodName, $mappedArguments, &$result) {
-                    $result = call_user_func_array([$testHelper, $methodName], $mappedArguments);
+                $result = $this->securityContext->withoutAuthorizationChecks(function () use ($testHelper, $methodName, $mappedArguments) {
+                    return call_user_func_array([$testHelper, $methodName], $mappedArguments);
                 });
             } else {
                 $result = call_user_func_array([$testHelper, $methodName], $mappedArguments);

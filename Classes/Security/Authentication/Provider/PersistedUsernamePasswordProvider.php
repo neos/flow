@@ -12,7 +12,6 @@ namespace Neos\Flow\Security\Authentication\Provider;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Security\Account;
 use Neos\Flow\Security\AccountRepository;
 use Neos\Flow\Security\Authentication\Token\UsernamePasswordTokenInterface;
 use Neos\Flow\Security\Authentication\TokenInterface;
@@ -86,9 +85,6 @@ class PersistedUsernamePasswordProvider extends AbstractProvider
             throw new UnsupportedAuthenticationTokenException(sprintf('This provider cannot authenticate the given token. The token must implement %s', UsernamePasswordTokenInterface::class), 1217339840);
         }
 
-        /** @var Account|null $account */
-        $account = null;
-
         if ($authenticationToken->getAuthenticationStatus() !== TokenInterface::AUTHENTICATION_SUCCESSFUL) {
             $authenticationToken->setAuthenticationStatus(TokenInterface::NO_CREDENTIALS_GIVEN);
         }
@@ -101,8 +97,8 @@ class PersistedUsernamePasswordProvider extends AbstractProvider
         }
 
         $providerName = $this->options['lookupProviderName'] ?? $this->name;
-        $this->securityContext->withoutAuthorizationChecks(function () use ($username, &$account, $providerName) {
-            $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($username, $providerName);
+        $account = $this->securityContext->withoutAuthorizationChecks(function () use ($username, $providerName) {
+            return $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($username, $providerName);
         });
 
         $authenticationToken->setAuthenticationStatus(TokenInterface::WRONG_CREDENTIALS);
