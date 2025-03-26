@@ -42,6 +42,8 @@ Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassC:
       value: true
     protectedBooleanFalsePropertySetViaObjectsYaml:
       value: false
+    protectedNullPropertySetViaObjectsYaml:
+      value: null
     protectedArrayPropertyWithSetterSetViaObjectsYaml:
       value: {'and': 'something from Objects.yaml'}
   arguments:
