@@ -46,8 +46,6 @@ use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Package;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\GenericPackage;
-use Neos\Flow\Package\PackageInterface;
-use Neos\Flow\Package\PackageKeyAwareInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Reflection\ReflectionServiceFactory;

@@ -13,7 +13,6 @@ namespace Neos\Flow\Core;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Package;
-use Neos\Flow\Package\GenericPackage;
 use Neos\Utility\Files;
 
 /**
