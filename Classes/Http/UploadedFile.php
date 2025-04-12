@@ -73,9 +73,10 @@ class UploadedFile implements UploadedFileInterface
      * Depending on the value set file or stream variable
      *
      * @param string|StreamInterface|resource $streamOrFile
+     * @return void
      * @throws InvalidArgumentException
      */
-    protected function setStreamOrFile($streamOrFile): void
+    protected function setStreamOrFile($streamOrFile)
     {
         if (is_string($streamOrFile)) {
             $this->file = $streamOrFile;
@@ -173,13 +174,14 @@ class UploadedFile implements UploadedFileInterface
      * @see http://php.net/is_uploaded_file
      * @see http://php.net/move_uploaded_file
      * @param string $targetPath Path to which to move the uploaded file.
+     * @return void
      * @throws RuntimeException if the upload was not successful.
      * @throws InvalidArgumentException if the $path specified is invalid.
      * @throws RuntimeException on any error during the move operation, or on
      *     the second or subsequent call to the method.
      * @api PSR-7
      */
-    public function moveTo(string $targetPath): void
+    public function moveTo(string $targetPath)
     {
         $this->throwExceptionIfNotAccessible();
 
@@ -187,7 +189,6 @@ class UploadedFile implements UploadedFileInterface
             throw new InvalidArgumentException('Invalid path provided to move uploaded file to. Must be a non-empty string', 1479747624);
         }
 
-        /** @phpstan-ignore identical.alwaysTrue (FLOW_SAPITYPE can also be "Web") */
         if ($this->stream !== null || ($this->file !== null && FLOW_SAPITYPE === 'CLI')) {
             $this->moved = $this->writeFile($targetPath);
         }
@@ -274,9 +275,10 @@ class UploadedFile implements UploadedFileInterface
     }
 
     /**
+     * @return void
      * @throws RuntimeException if is moved or not ok
      */
-    protected function throwExceptionIfNotAccessible(): void
+    protected function throwExceptionIfNotAccessible()
     {
         if (!$this->isOk()) {
             throw new RuntimeException('UploadedFile has the following error: ' . Files::getUploadErrorMessage($this->error), 1479743608);

@@ -104,8 +104,9 @@ class ContentStream implements StreamInterface
      *
      * @param string|resource $stream
      * @param string $mode
+     * @return void
      */
-    public function replace(mixed $stream, $mode = 'r'): void
+    public function replace($stream, $mode = 'r')
     {
         $this->close();
         if (is_string($stream)) {
@@ -220,11 +221,12 @@ class ContentStream implements StreamInterface
      * If the stream is not seekable, this method will raise an exception;
      * otherwise, it will perform a seek(0).
      *
+     * @return bool
      * @see seek()
      * @link http://www.php.net/manual/en/function.fseek.php
      * @throws \RuntimeException on failure.
      */
-    public function rewind(): bool
+    public function rewind()
     {
         return $this->seek(0);
     }
@@ -367,8 +369,9 @@ class ContentStream implements StreamInterface
     /**
      * Throw an exception if the current resource is not readable.
      * @phpstan-assert resource $this->resource
+     * @return void
      */
-    protected function ensureResourceReadable(): void
+    protected function ensureResourceReadable()
     {
         if ($this->isReadable() === false) {
             throw new \RuntimeException('Stream is not readable.', 1453892039);
@@ -378,8 +381,9 @@ class ContentStream implements StreamInterface
     /**
      * Throw an exception if the current resource is not valid.
      * @phpstan-assert resource $this->resource
+     * @return void
      */
-    protected function ensureResourceOpen(): void
+    protected function ensureResourceOpen()
     {
         if (!$this->isValidResource($this->resource)) {
             throw new \RuntimeException('No resource available to apply operation', 1453891806);

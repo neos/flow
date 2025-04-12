@@ -53,6 +53,6 @@ class MiddlewaresChainFactory
             $middlewaresChain[] = $middleware;
         }
 
-        return new MiddlewaresChain(...$middlewaresChain);
+        return new MiddlewaresChain($middlewaresChain);
     }
 }

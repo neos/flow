@@ -42,9 +42,10 @@ class CurlEngine implements RequestEngineInterface
      *
      * @param integer $optionName One of the CURLOPT_* constants
      * @param mixed $value The value to set
+     * @return void
      * @throws \InvalidArgumentException
      */
-    public function setOption($optionName, $value): void
+    public function setOption($optionName, $value)
     {
         if ($optionName === CURLOPT_HTTPHEADER) {
             throw new InvalidArgumentException("Setting CURL headers is only possible via the request object and not by using the setOption method.", 1633334307);

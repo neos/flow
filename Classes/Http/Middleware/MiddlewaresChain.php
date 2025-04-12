@@ -31,7 +31,10 @@ final class MiddlewaresChain implements RequestHandlerInterface
      */
     private $stepCallbacks = [];
 
-    public function __construct(MiddlewareInterface ...$middlewaresChain)
+    /**
+     * @param MiddlewareInterface[] $middlewaresChain
+     */
+    public function __construct(array $middlewaresChain)
     {
         $this->chain = $middlewaresChain;
     }

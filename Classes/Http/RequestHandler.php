@@ -149,8 +149,9 @@ class RequestHandler implements HttpRequestHandlerInterface
     /**
      * Send the HttpResponse of the component context to the browser and flush all output buffers.
      * @param ResponseInterface $response
+     * @return void
      */
-    protected function sendResponse(ResponseInterface $response): void
+    protected function sendResponse(ResponseInterface $response)
     {
         ob_implicit_flush();
         foreach (ResponseInformationHelper::prepareHeaders($response) as $prepareHeader) {

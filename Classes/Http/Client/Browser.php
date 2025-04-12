@@ -148,7 +148,7 @@ class Browser implements ClientInterface
      * @throws InfiniteRedirectionException
      * @api
      */
-    public function request(string|UriInterface $uri, $method = 'GET', array $arguments = [], array $files = [], array $server = [], $content = null): ResponseInterface
+    public function request($uri, $method = 'GET', array $arguments = [], array $files = [], array $server = [], $content = null)
     {
         if (is_string($uri)) {
             $uri = new Uri($uri);

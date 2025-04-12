@@ -113,8 +113,8 @@ class Cookie
      *
      * @param string $name The cookie name as a valid token (RFC 2616)
      * @param mixed $value The value to store in the cookie. Must be possible to cast into a string.
-     * @param integer|\DateTimeInterface $expires Date and time after which this cookie expires.
-     * @param ?integer $maximumAge Number of seconds until the cookie expires.
+     * @param int|\DateTimeInterface $expires Date and time after which this cookie expires.
+     * @param ?int $maximumAge Number of seconds until the cookie expires.
      * @param ?string $domain The host to which the user agent will send this cookie
      * @param string $path The path describing the scope of this cookie
      * @param boolean $secure If this cookie should only be sent through a "secure" channel by the user agent
@@ -123,7 +123,7 @@ class Cookie
      * @api
      * @throws \InvalidArgumentException
      */
-    public function __construct($name, $value = null, int|\DateTimeInterface $expires = 0, ?int $maximumAge = null, $domain = null, $path = '/', $secure = false, $httpOnly = true, $sameSite = null)
+    public function __construct($name, $value = null, $expires = 0, $maximumAge = null, $domain = null, $path = '/', $secure = false, $httpOnly = true, $sameSite = null)
     {
         if (preg_match(self::PATTERN_TOKEN, $name) !== 1) {
             throw new \InvalidArgumentException('The parameter "name" passed to the Cookie constructor must be a valid token as per RFC 2616, Section 2.2.', 1345101977);
@@ -131,13 +131,17 @@ class Cookie
         if ($expires instanceof \DateTimeInterface) {
             $expires = $expires->getTimestamp();
         }
-        if ($maximumAge !== null) {
+        if (!is_int($expires)) {
+            throw new \InvalidArgumentException('The parameter "expires" passed to the Cookie constructor must be a unix timestamp or a DateTimeInterface object.', 1345108785);
+        }
+        /** @phpstan-ignore booleanAnd.alwaysFalse (until $maximumAge is typed ?int in php) */
+        if ($maximumAge !== null && !is_int($maximumAge)) {
             throw new \InvalidArgumentException('The parameter "maximumAge" passed to the Cookie constructor must be an integer value.', 1345108786);
         }
         if ($domain !== null && preg_match(self::PATTERN_DOMAIN, $domain) !== 1) {
             throw new \InvalidArgumentException('The parameter "domain" passed to the Cookie constructor must be a valid domain as per RFC 6265, Section 4.1.2.3.', 1345116246);
         }
-        if (preg_match(self::PATTERN_PATH, $path) !== 1) {
+        if ($path !== null && preg_match(self::PATTERN_PATH, $path) !== 1) {
             throw new \InvalidArgumentException('The parameter "path" passed to the Cookie constructor must be a valid path as per RFC 6265, Section 4.1.1.', 1345123078);
         }
 
