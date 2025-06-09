@@ -86,9 +86,10 @@ class DatetimeFormatterTest extends UnitTestCase
             [['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzz'], '18:49:36 BST'],
             [['EEE', [','], [' '], 'MMM', [' '], 'd', [','], [' '], ['\''], 'yy'], 'Thu, Jun 10, \'10'],
             [['hh', [' '], ['o'], ['\''], ['clock'], [' '], 'a', [','], [' '], 'zzzz'], '06 o\'clock p.m., Europe/London'],
-            [['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE', 'ccc'], '0210January1612ThursdayThu'],
+            [['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE'], '0210January1612Thursday'],
             [['QQQ', 'MMMMM', 'EEEEE', 'w', 'k'], 'Q26T2318'],
             [['GGGGG', 'K', 'S', 'W', 'qqqq', 'GGGG', 'V'], 'A6032nd quarterAnno Domini'],
+            [['QQ', 'yy', 'LLLL', 'D', 'F', 'ccc'], '0210January1612Thu'],
         ];
     }
 
