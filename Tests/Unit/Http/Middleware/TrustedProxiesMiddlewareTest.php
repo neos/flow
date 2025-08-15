@@ -347,6 +347,17 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * @test
      */
+    public function trustedClientIpV6AddressIsForwardedForAddressIfProxyTrusted()
+    {
+        $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.1'], 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
+        $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('https://acme.com'), ['HTTP_X_FORWARDED_FOR' => '2001:db8:cafe::17']);
+        $trustedRequest = $this->callWithRequest($request);
+        self::assertEquals('2001:db8:cafe::17', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
+    }
+
+    /**
+     * @test
+     */
     public function trustedClientIpAddressIsFirstForwardedForAddressIfAllProxiesTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
