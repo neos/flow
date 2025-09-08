@@ -12,6 +12,8 @@ namespace Neos\Flow\ObjectManagement\Proxy;
  */
 
 use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\PromotedParameterGenerator;
 use Neos\Flow\ObjectManagement\DependencyInjection\ProxyClassBuilder;
 
 final class ProxyConstructorGenerator extends ProxyMethodGenerator
@@ -30,7 +32,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         parent::__construct('__construct', $parameters, $flags, $body, $docBlock);
     }
 
-    public static function fromReflection(\Laminas\Code\Reflection\MethodReflection $reflectionMethod): static
+    public static function fromReflection(\Laminas\Code\Reflection\MethodReflection $reflectionMethod, bool $withOriginalArgumentSignature = false): static
     {
         $method = new static('__construct');
         $declaringClass = $reflectionMethod->getDeclaringClass();
@@ -56,6 +58,17 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         $docBlock->setWordWrap(false);
         $docBlock->setSourceDirty(false);
         $method->setDocBlock($docBlock);
+
+        if ($withOriginalArgumentSignature) {
+            foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+                $method->setParameter(
+                    $reflectionParameter->isPromoted()
+                        ? PromotedParameterGenerator::fromReflection($reflectionParameter)
+                        : ParameterGenerator::fromReflection($reflectionParameter)
+                );
+            }
+        }
+
         return $method;
     }
 
