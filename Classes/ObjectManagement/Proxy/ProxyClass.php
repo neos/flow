@@ -115,11 +115,11 @@ class ProxyClass
      * @throws \ReflectionException
      * @throws CannotBuildObjectException
      */
-    public function getConstructor(): ProxyConstructorGenerator
+    public function getConstructor(bool $withOriginalArgumentSignature = false): ProxyConstructorGenerator
     {
         if (!isset($this->constructor)) {
             if (method_exists($this->fullOriginalClassName, '__construct')) {
-                $this->constructor = ProxyConstructorGenerator::fromReflection(new MethodReflection($this->fullOriginalClassName, '__construct'));
+                $this->constructor = ProxyConstructorGenerator::fromReflection(new MethodReflection($this->fullOriginalClassName, '__construct'), $withOriginalArgumentSignature);
             } else {
                 $this->constructor = new ProxyConstructorGenerator();
                 $this->constructor->setFullOriginalClassName($this->fullOriginalClassName);
@@ -165,12 +165,12 @@ class ProxyClass
      * Adds a class property to this proxy class
      *
      * @param string $name Name of the property
-     * @param string $initialValueCode PHP code of the initial value assignment
+     * @param string|null $initialValueCode PHP code of the initial value assignment
      * @param string $visibility
      * @param string $docComment
      * @return void
      */
-    public function addProperty(string $name, string $initialValueCode, string $visibility = 'private', string $docComment = ''): void
+    public function addProperty(string $name, string|null $initialValueCode, string $visibility = 'private', string $docComment = ''): void
     {
         // TODO: Add support for PHP attributes?
         $this->properties[$name] = [
@@ -192,6 +192,15 @@ class ProxyClass
     public function addInterfaces(array $interfaceNames): void
     {
         $this->interfaces = array_merge($this->interfaces, $interfaceNames);
+    }
+
+    /**
+     * Inspect currently added interfaces for this proxy class
+     * @return array|string[]
+     */
+    public function getInterfaces(): array
+    {
+        return $this->interfaces;
     }
 
     /**
@@ -308,7 +317,7 @@ class ProxyClass
             if (!empty($attributes['docComment'])) {
                 $code .= '    ' . $attributes['docComment'] . "\n";
             }
-            $code .= '    ' . $attributes['visibility'] . ' $' . $name . ' = ' . $attributes['initialValueCode'] . ";\n";
+            $code .= '    ' . $attributes['visibility'] . ' $' . $name . ($attributes['initialValueCode'] ? (' = ' . $attributes['initialValueCode']) : '') . ";\n";
         }
         return $code;
     }

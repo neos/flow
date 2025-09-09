@@ -467,6 +467,7 @@ Neos\Flow\Session\SessionInterface:
   factoryMethodName: getCurrentSession
 
 Neos\Flow\Session\Data\SessionKeyValueStore:
+  scope: singleton
   properties:
     cache:
       object:
@@ -477,6 +478,7 @@ Neos\Flow\Session\Data\SessionKeyValueStore:
             value: Flow_Session_Storage
 
 Neos\Flow\Session\Data\SessionMetaDataStore:
+  scope: singleton
   properties:
     cache:
       object:
