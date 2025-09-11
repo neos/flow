@@ -2,15 +2,16 @@
 namespace Neos\Flow\ObjectManagement\Proxy;
 
 use Doctrine\Persistence\Proxy as DoctrineProxy;
-use Exception;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Utility\ObjectAccess;
-use Traversable;
 
 /**
- *
+ * This is a mutable container to hold references to entities (class & identifier) for serialization.
+ * Userland code should never (have to) interact with this, it is used in proxy classes only. You might
+ * see references to it in serialized object strings.
+ * @internal
  */
 #[Flow\Proxy(false)]
 final class RelatedEntitiesContainer implements \IteratorAggregate

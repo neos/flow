@@ -19,8 +19,6 @@ use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Persistence\Aspect\PersistenceMagicInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Utility\Arrays;
-use Neos\Utility\Exception\PropertyNotAccessibleException;
-use Neos\Utility\ObjectAccess;
 
 /**
  * Methods used to serialize objects used by proxy classes.
