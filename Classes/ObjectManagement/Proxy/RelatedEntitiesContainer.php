@@ -16,18 +16,18 @@ use Neos\Utility\ObjectAccess;
 #[Flow\Proxy(false)]
 final class RelatedEntitiesContainer implements \IteratorAggregate
 {
-    protected array $relatedEntities = [];
+    protected array $e = [];
 
     public function getIterator(): \Generator
     {
-        foreach ($this->relatedEntities as $entityInformation) {
+        foreach ($this->e as $entityInformation) {
             yield $entityInformation;
         }
     }
 
     public function reset(): void
     {
-        $this->relatedEntities = [];
+        $this->e = [];
     }
 
     public function appendRelatedEntity(string $originalPropertyName, string $path, object $propertyValue): void
@@ -42,11 +42,11 @@ final class RelatedEntitiesContainer implements \IteratorAggregate
             $identifier = current(ObjectAccess::getProperty($propertyValue, '_identifier', true));
         }
 
-        $this->relatedEntities[$originalPropertyName . '.' . $path] = [
-            'propertyName' => $originalPropertyName,
-            'entityType' => $className,
-            'identifier' => $identifier,
-            'entityPath' => $path
+        $this->e[$originalPropertyName . '.' . $path] = [
+            'n' => $originalPropertyName,
+            'c' => $className,
+            'i' => $identifier,
+            'p' => $path
         ];
     }
 }

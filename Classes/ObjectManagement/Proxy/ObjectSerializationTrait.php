@@ -84,7 +84,12 @@ trait ObjectSerializationTrait
                     }
                     continue;
                 }
-                if ($className !== false && (Bootstrap::$staticObjectManager->getScope($className) === Configuration::SCOPE_SINGLETON || $className === DependencyProxy::class)) {
+                if ($className !== false &&
+                    (
+                        Bootstrap::$staticObjectManager->getScope($className) === Configuration::SCOPE_SINGLETON
+                        || Bootstrap::$staticObjectManager->getScope($className) === Configuration::SCOPE_SESSION
+                        || $className === DependencyProxy::class
+                    )) {
                     continue;
                 }
             }
@@ -114,7 +119,18 @@ trait ObjectSerializationTrait
                 throw new \RuntimeException(sprintf('The class "%s" has an entity reference Flow could not detect, please add a Flow\\Proxy annotation with "forceSerializationCode" set to "true".', 1756936954));
             }
             $this->Flow_Persistence_RelatedEntitiesContainer->appendRelatedEntity($originalPropertyName, $path, $propertyValue);
-            $this->$originalPropertyName = Arrays::setValueByPath($this->$originalPropertyName, $path, null);
+            /**
+             * The idea of setting to null here is to prevent serialization after we found an entity, BUT this logic
+             * is heavily flawed in today's PHP world. Type hinting might make null an invalid value. Also
+             * Arrays::setValueByPath() only works on "Array-like" not on objects, therefore
+             * we don't handle direct properties of $this (path empty string) at all here.
+             * They are skipped for serialization in Flow_serializeRelatedEntities so we don't need to unset.
+             * This still leaves the option of types going awry somewhere, but at the moment there
+             * isn't really a better solution at hand and the case should be super rare.
+             */
+            if ($path !== '') {
+                $this->$originalPropertyName = Arrays::setValueByPath($this->$originalPropertyName, $path, null);
+            }
             $foundEntity = true;
         }
 
@@ -132,11 +148,11 @@ trait ObjectSerializationTrait
         if (isset($this->Flow_Persistence_RelatedEntitiesContainer)) {
             $persistenceManager = Bootstrap::$staticObjectManager->get(PersistenceManagerInterface::class);
             foreach ($this->Flow_Persistence_RelatedEntitiesContainer as $entityInformation) {
-                $entity = $persistenceManager->getObjectByIdentifier($entityInformation['identifier'], $entityInformation['entityType'], true);
-                if (isset($entityInformation['entityPath'])) {
-                    $this->{$entityInformation['propertyName']} = Arrays::setValueByPath($this->{$entityInformation['propertyName']}, $entityInformation['entityPath'], $entity);
+                $entity = $persistenceManager->getObjectByIdentifier($entityInformation['i'], $entityInformation['c'], true);
+                if (isset($entityInformation['p'])) {
+                    $this->{$entityInformation['n']} = Arrays::setValueByPath($this->{$entityInformation['n']}, $entityInformation['p'], $entity);
                 } else {
-                    $this->{$entityInformation['propertyName']} = $entity;
+                    $this->{$entityInformation['n']} = $entity;
                 }
             }
 
