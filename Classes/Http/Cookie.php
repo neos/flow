@@ -211,7 +211,7 @@ class Cookie
                             // assume a Session cookie with an expiry date of 0.
                             $expiresAttribute = 0;
                         }
-                    break;
+                        break;
                     case 'MAX-AGE':
                         if (preg_match(self::PATTERN_MAX_AGE, $attributeValue) === 1) {
                             $maxAgeAttribute = (int)$attributeValue;
