@@ -363,4 +363,62 @@ class DependencyInjectionTest extends FunctionalTestCase
         $object = new PrototypeClassL('override');
         self::assertSame('override', $object->value);
     }
+
+    /**
+     * Test that proxy constructors support PHP 8+ named arguments (issue #3076)
+     *
+     * @test
+     */
+    public function prototypeObjectsCanBeInstantiatedWithNamedArguments(): void
+    {
+        $valueObject = new Fixtures\ValueObjectClassA('test-value');
+        $object = new Fixtures\ClassWithNamedConstructorArguments(
+            valueObject: $valueObject,
+            stringValue: 'named-value'
+        );
+
+        self::assertSame($valueObject, $object->getValueObject());
+        self::assertSame('named-value', $object->getStringValue());
+    }
+
+    /**
+     * Test that named arguments work with positional arguments
+     *
+     * @test
+     */
+    public function prototypeObjectsCanBeInstantiatedWithPositionalArguments(): void
+    {
+        $valueObject = new Fixtures\ValueObjectClassA('test-value');
+        $object = new Fixtures\ClassWithNamedConstructorArguments($valueObject, 'positional-value');
+
+        self::assertSame($valueObject, $object->getValueObject());
+        self::assertSame('positional-value', $object->getStringValue());
+    }
+
+    /**
+     * Test that named arguments work with default values
+     *
+     * @test
+     */
+    public function prototypeObjectsCanBeInstantiatedWithNamedArgumentsAndDefaults(): void
+    {
+        $valueObject = new Fixtures\ValueObjectClassA('test-value');
+        $object = new Fixtures\ClassWithNamedConstructorArguments(valueObject: $valueObject);
+
+        self::assertSame($valueObject, $object->getValueObject());
+        self::assertSame('default', $object->getStringValue());
+    }
+
+    /**
+     * Test that constructor injection still works with named argument support
+     *
+     * @test
+     */
+    public function singletonObjectsWithConstructorInjectionStillWorkWithNamedArgumentSupport(): void
+    {
+        $singleton = $this->objectManager->get(Fixtures\SingletonWithConstructorInjection::class);
+
+        self::assertInstanceOf(Fixtures\SingletonClassA::class, $singleton->getSingletonA());
+        self::assertNull($singleton->getOptionalValue());
+    }
 }

@@ -115,11 +115,11 @@ class ProxyClass
      * @throws \ReflectionException
      * @throws CannotBuildObjectException
      */
-    public function getConstructor(bool $withOriginalArgumentSignature = false): ProxyConstructorGenerator
+    public function getConstructor(): ProxyConstructorGenerator
     {
         if (!isset($this->constructor)) {
             if (method_exists($this->fullOriginalClassName, '__construct')) {
-                $this->constructor = ProxyConstructorGenerator::fromReflection(new MethodReflection($this->fullOriginalClassName, '__construct'), $withOriginalArgumentSignature);
+                $this->constructor = ProxyConstructorGenerator::fromReflection(new MethodReflection($this->fullOriginalClassName, '__construct'));
             } else {
                 $this->constructor = new ProxyConstructorGenerator();
                 $this->constructor->setFullOriginalClassName($this->fullOriginalClassName);
