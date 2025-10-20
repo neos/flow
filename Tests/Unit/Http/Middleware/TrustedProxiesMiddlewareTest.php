@@ -349,6 +349,9 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
      */
     public function trustedClientIpV6AddressIsForwardedForAddressIfProxyTrusted()
     {
+        if (PHP_VERSION_ID < 80316 || (PHP_VERSION_ID >= 80400 && PHP_VERSION_ID < 80403)) {
+            $this->markTestSkipped('This test requires PHP 8.3.16+ or 8.4.3+, see https://github.com/neos/flow-development-collection/pull/3491#issuecomment-3423451375');
+        }
         $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.1'], 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('https://acme.com'), ['HTTP_X_FORWARDED_FOR' => '2001:db8:cafe::17']);
         $trustedRequest = $this->callWithRequest($request);
