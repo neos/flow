@@ -14,6 +14,7 @@ namespace Neos\Flow\Persistence\Doctrine\Mapping\Driver;
  */
 
 use Doctrine\Common\Annotations\Reader;
+use Neos\Flow\ObjectManagement\Proxy\Compiler;
 use Neos\Flow\Reflection\ReflectionService;
 use ReflectionClass;
 use ReflectionMethod;
@@ -36,8 +37,9 @@ class FlowAnotationReader implements Reader
      */
     public function getClassAnnotations(ReflectionClass $class)
     {
+        $className = $this->getUnproxiedClassName($class->getName());
         $indexedAnnotations = [];
-        foreach ($this->reflectionService->getClassAnnotations($class->getName()) as $annotation) {
+        foreach ($this->reflectionService->getClassAnnotations($className) as $annotation) {
             $indexedAnnotations[get_class($annotation)] = $annotation;
         }
         return $indexedAnnotations;
@@ -53,7 +55,8 @@ class FlowAnotationReader implements Reader
      */
     public function getClassAnnotation(ReflectionClass $class, $annotationName)
     {
-        return $this->reflectionService->getClassAnnotation($class->getName(), $annotationName);
+        $className = $this->getUnproxiedClassName($class->getName());
+        return $this->reflectionService->getClassAnnotation($className, $annotationName);
     }
 
     /**
@@ -64,8 +67,9 @@ class FlowAnotationReader implements Reader
      */
     public function getMethodAnnotations(ReflectionMethod $method)
     {
+        $className = $this->getUnproxiedClassName($method->class);
         $indexedAnnotations = [];
-        foreach ($this->reflectionService->getMethodAnnotations($method->class, $method->getName()) as $annotation) {
+        foreach ($this->reflectionService->getMethodAnnotations($className, $method->getName()) as $annotation) {
             $indexedAnnotations[get_class($annotation)] = $annotation;
         }
         return $indexedAnnotations;
@@ -81,7 +85,8 @@ class FlowAnotationReader implements Reader
      */
     public function getMethodAnnotation(ReflectionMethod $method, $annotationName)
     {
-        return $this->reflectionService->getMethodAnnotation($method->class, $method->getName(), $annotationName);
+        $className = $this->getUnproxiedClassName($method->class);
+        return $this->reflectionService->getMethodAnnotation($className, $method->getName(), $annotationName);
     }
 
     /**
@@ -92,8 +97,9 @@ class FlowAnotationReader implements Reader
      */
     public function getPropertyAnnotations(ReflectionProperty $property)
     {
+        $className = $this->getUnproxiedClassName($property->class);
         $indexedAnnotations = [];
-        foreach ($this->reflectionService->getPropertyAnnotations($property->class, $property->getName()) as $annotation) {
+        foreach ($this->reflectionService->getPropertyAnnotations($className, $property->getName()) as $annotation) {
             $indexedAnnotations[get_class($annotation)] = $annotation;
         }
         return $indexedAnnotations;
@@ -109,6 +115,18 @@ class FlowAnotationReader implements Reader
      */
     public function getPropertyAnnotation(ReflectionProperty $property, $annotationName)
     {
-        return $this->reflectionService->getPropertyAnnotation($property->class, $property->getName(), $annotationName);
+        $className = $this->getUnproxiedClassName($property->class);
+        return $this->reflectionService->getPropertyAnnotation($className, $property->getName(), $annotationName);
+    }
+
+    /**
+     * Returns the classname after stripping a potentially present Compiler::ORIGINAL_CLASSNAME_SUFFIX.
+     *
+     * @param string $className
+     * @return string
+     */
+    protected function getUnproxiedClassName($className)
+    {
+        return preg_replace('/' . Compiler::ORIGINAL_CLASSNAME_SUFFIX . '$/', '', $className);
     }
 }
