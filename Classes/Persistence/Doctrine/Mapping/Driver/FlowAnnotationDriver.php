@@ -11,8 +11,6 @@ namespace Neos\Flow\Persistence\Doctrine\Mapping\Driver;
  * source code.
  */
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\IndexedReader;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver as DoctrineMappingDriverInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,7 +56,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
     protected $reflectionService;
 
     /**
-     * @var AnnotationReader
+     * @var FlowAnotationReader
      */
     protected $reader;
 
@@ -78,21 +76,13 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
     protected $tableNameLengthLimit = null;
 
     /**
-     * Initializes a new AnnotationDriver that uses the given AnnotationReader for reading
-     * docblock annotations.
-     */
-    public function __construct()
-    {
-        $this->reader = new IndexedReader(new AnnotationReader());
-    }
-
-    /**
      * @param ReflectionService $reflectionService
      * @return void
      */
     public function injectReflectionService(ReflectionService $reflectionService)
     {
         $this->reflectionService = $reflectionService;
+        $this->reader = new FlowAnotationReader($reflectionService);
     }
 
     /**
