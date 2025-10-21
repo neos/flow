@@ -133,9 +133,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
     {
         $className = $this->getUnproxiedClassName($className);
         try {
-            $classSchema = $this->getClassSchema($className);
-
-            return $classSchema->isAggregateRoot();
+            return $this->getClassSchema($className)->isAggregateRoot();
         } catch (ClassSchemaNotFoundException $exception) {
             throw new ClassSchemaNotFoundException('No class schema found for "' . $className . '". The class should probably marked as entity or value object! This happened while examining "' . $propertySourceHint . '"', 1340185197);
         }
@@ -157,7 +155,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
 
             return $classSchema->getModelType() === ClassSchema::MODELTYPE_VALUEOBJECT;
         } catch (ClassSchemaNotFoundException $exception) {
-            throw new ClassSchemaNotFoundException('No class schema found for "' . $className . '". The class should probably marked as entity or value object! This happened while examining "' . $propertySourceHint . '"', 1340185197);
+            throw new ClassSchemaNotFoundException('No class schema found for "' . $className . '". The class should probably marked as entity or value object! This happened while examining "' . $propertySourceHint . '"', 1340185197, $exception);
         }
     }
 
