@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Persistence\Fixtures;
 
 /*
@@ -10,8 +12,6 @@ namespace Neos\Flow\Tests\Functional\Persistence\Fixtures;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
-use Neos\Flow\Annotations as Flow;
 
 /**
  * Class CommonObject
@@ -28,7 +28,7 @@ class CommonObject
      * @param string $foo
      * @return $this
      */
-    public function setFoo($foo = null)
+    public function setFoo($foo = null): self
     {
         $this->foo = $foo;
         return $this;
@@ -37,7 +37,7 @@ class CommonObject
     /**
      * @return string
      */
-    public function getFoo()
+    public function getFoo(): string
     {
         return $this->foo;
     }
