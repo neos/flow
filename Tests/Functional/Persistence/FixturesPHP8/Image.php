@@ -16,52 +16,32 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
  */
+#[FLow\Entity]
 class Image
 {
-    /**
-     * @var string
-     * @ORM\Column(nullable=true)
-     */
-    protected $data;
+    #[ORM\Column(nullable: true)]
+    protected ?string $data;
 
-    /**
-     * @Flow\Transient
-     * @var CleanupObject
-     */
-    protected $relatedObject;
+    #[Flow\Transient]
+    protected ?CleanupObject $relatedObject;
 
-    /**
-     * @return string
-     */
-    public function getData()
+    public function getData(): ?string
     {
         return $this->data;
     }
 
-    /**
-     * @param string $data
-     * @return void
-     */
-    public function setData($data)
+    public function setData(?string $data): void
     {
         $this->data = $data;
     }
 
-    /**
-     * @return CleanupObject
-     */
-    public function getRelatedObject()
+    public function getRelatedObject(): ?CleanupObject
     {
         return $this->relatedObject;
     }
 
-    /**
-     * @param CleanupObject $relatedObject
-     */
-    public function setRelatedObject(?CleanupObject $relatedObject = null)
+    public function setRelatedObject(?CleanupObject $relatedObject = null): void
     {
         $this->relatedObject = $relatedObject;
     }

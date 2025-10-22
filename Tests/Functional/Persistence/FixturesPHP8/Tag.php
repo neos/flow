@@ -15,25 +15,18 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class Tag
 {
-    /**
-     * @var string
-     */
-    protected $name = '';
+    protected string $name = '';
 
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

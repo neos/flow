@@ -16,21 +16,14 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple value object for persistence tests
- *
- * @Flow\ValueObject(embedded=false)
- * @ORM\Table(name="persistence_php8_testvalueobjectwithdatetimeproperty")
  */
+#[Flow\ValueObject(embedded: false)]
+#[ORM\Table(name: 'persistence_php8_testvalueobjectwithdatetimeproperty')]
 class TestValueObjectWithDateTimeProperty
 {
-    /**
-     * @var \DateTime
-     */
-    protected $value1;
+    protected \DateTime $value1;
 
-    /**
-     * @param \DateTime $value1
-     */
-    public function __construct($value1)
+    public function __construct(\DateTime $value1)
     {
         $this->value1 = $value1;
     }

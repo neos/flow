@@ -18,58 +18,49 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
- * @ORM\HasLifecycleCallbacks
- * @ORM\InheritanceType("JOINED")
  */
+#[Flow\Entity]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\InheritanceType('JOINED')]
 class Post
 {
-    /**
-     * @var string
-     */
-    protected $title = '';
+    protected string $title = '';
 
-    /**
-     * @var Image
-     * @ORM\OneToOne
-     */
-    protected $image;
+    #[ORM\OneToOne]
+    protected Image $image;
 
-    /**
-     * @var Image
-     * @ORM\OneToOne
-     */
-    protected $thumbnail;
+    #[ORM\OneToOne]
+    protected Image $thumbnail;
 
     /**
      * Yeah, only one comment allowed for a post ;-)
      * But that's the easiest option for our functional test.
-     *
-     * @var Comment
-     * @ORM\OneToOne
-     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    protected $comment;
+    #[ORM\OneToOne]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    protected Comment $comment;
 
     /**
      * @var Collection<Tag>
-     * @ORM\OneToMany
      */
-    protected $tags;
+    #[ORM\OneToMany]
+    protected Collection $tags;
 
     /**
+     * Still annotated because nested Attributes require PHP 8.1
+     * @todo Adjust to attributes for Flow 8.4 when the min PHP version will be 8.1
+     *
      * @var Collection<Post>
      * @ORM\ManyToMany
      * @ORM\JoinTable(inverseJoinColumns={@ORM\JoinColumn(name="related_post_id")})
      */
-    protected $related;
+    protected Collection $related;
 
     /**
      * @var TestValueObject
-     * @ORM\ManyToOne
      */
-    protected $author;
+    #[ORM\ManyToOne]
+    protected TestValueObject $author;
 
     public function __construct()
     {
@@ -77,93 +68,58 @@ class Post
         $this->related = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     * @ORM\PrePersist
-     */
-    public function getTitle()
+    #[ORM\PrePersist]
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return void
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @param Image $image
-     */
-    public function setImage($image)
+    public function setImage(Image $image): void
     {
         $this->image = $image;
     }
 
-    /**
-     * @return Image
-     */
-    public function getImage()
+    public function getImage(): Image
     {
         return $this->image;
     }
 
-    /**
-     * @param $comment
-     * @return void
-     */
-    public function setComment($comment)
+    public function setComment(Comment $comment): void
     {
         $this->comment = $comment;
     }
 
-    /**
-     * @return Comment
-     */
-    public function getComment()
+    public function getComment(): Comment
     {
         return $this->comment;
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function addTag(Tag $tag)
+    public function addTag(Tag $tag): void
     {
         $this->tags->add($tag);
     }
 
-    /**
-     * @param Tag $tag
-     */
-    public function removeTag(Tag $tag)
+    public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
     }
 
-    /**
-     * @return Collection
-     */
-    public function getTags()
+    public function getTags(): Collection
     {
         return $this->tags;
     }
 
-    /**
-     * @return TestValueObject
-     */
-    public function getAuthor()
+    public function getAuthor(): TestValueObject
     {
         return $this->author;
     }
 
-    /**
-     * @param TestValueObject $author
-     */
-    public function setAuthor(TestValueObject $author)
+    public function setAuthor(TestValueObject $author): void
     {
         $this->author = $author;
     }

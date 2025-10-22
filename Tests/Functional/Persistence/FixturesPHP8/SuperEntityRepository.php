@@ -16,8 +16,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A repository for SuperEntity and SubEntity
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class SuperEntityRepository extends Repository
 {
     /**

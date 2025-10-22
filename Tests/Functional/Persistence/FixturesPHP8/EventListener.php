@@ -11,13 +11,15 @@ namespace Neos\Flow\Tests\Functional\Persistence\FixturesPHP8;
  * source code.
  */
 
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
 use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample event subscriber
- *
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class EventListener
 {
     public $preFlushCalled = false;
@@ -26,17 +28,17 @@ class EventListener
 
     public $postFlushCalled = false;
 
-    public function preFlush(\Doctrine\ORM\Event\PreFlushEventArgs $args)
+    public function preFlush(PreFlushEventArgs $args)
     {
         $this->preFlushCalled = true;
     }
 
-    public function onFlush(\Doctrine\ORM\Event\OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args)
     {
         $this->onFlushCalled = true;
     }
 
-    public function postFlush(\Doctrine\ORM\Event\PostFlushEventArgs $args)
+    public function postFlush(PostFlushEventArgs $args)
     {
         $this->postFlushCalled = true;
     }

@@ -16,30 +16,19 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class Comment
 {
-    /**
-     * @var string
-     */
-    protected $content = '';
+    protected string $content = '';
 
-    /**
-     * @return string
-     * @ORM\PrePersist
-     */
-    public function getContent()
+    #[ORM\PrePersist]
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     * @return void
-     */
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }

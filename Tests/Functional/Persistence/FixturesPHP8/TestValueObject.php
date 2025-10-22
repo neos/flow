@@ -16,10 +16,9 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple value object for persistence tests
- *
- * @Flow\ValueObject(embedded=false)
- * @ORM\Table(name="persistence_php8_testvalueobject")
  */
+#[Flow\ValueObject(embedded: false)]
+#[ORM\Table(name: 'persistence_php8_testvalueobject')]
 class TestValueObject
 {
     /**

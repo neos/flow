@@ -16,8 +16,8 @@ use Neos\Flow\Persistence\Repository;
 
 /**
  * A repository for the test entities
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class ExtendedTypesEntityRepository extends Repository
 {
 }

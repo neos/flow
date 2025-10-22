@@ -15,9 +15,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class SubSubEntity extends SubEntity
 {
 }

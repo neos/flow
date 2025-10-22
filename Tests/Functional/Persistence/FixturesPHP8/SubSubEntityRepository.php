@@ -17,8 +17,8 @@ use Neos\Flow\Persistence\QueryResultInterface;
 
 /**
  * A repository for SubSubEntity
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class SubSubEntityRepository extends Repository
 {
     /**

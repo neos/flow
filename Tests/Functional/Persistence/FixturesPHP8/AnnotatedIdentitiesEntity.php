@@ -15,51 +15,32 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity that has properties with an Identity annotation
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class AnnotatedIdentitiesEntity
 {
-    /**
-     * @Flow\Identity
-     * @var string
-     */
-    protected $author;
+    #[Flow\Identity]
+    protected string $author;
 
-    /**
-     * @Flow\Identity
-     * @var string
-     */
-    protected $title;
+    #[Flow\Identity]
+    protected string $title;
 
-    /**
-     * @param string $author
-     */
-    public function setAuthor($author)
+    public function setAuthor(string $author): void
     {
         $this->author = $author;
     }
 
-    /**
-     * @return string
-     */
-    public function getAuthor()
+    public function getAuthor(): string
     {
         return $this->author;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

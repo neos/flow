@@ -20,63 +20,38 @@ use Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\SubEntity as ImportedSub
 
 /**
  * A simple entity for persistence tests
- *
- * @Flow\Entity
- * @ORM\Table(name="persistence_php8_testentity")
  */
+#[Flow\Entity]
+#[ORM\Table(name: 'persistence_php8_testentity')]
 class TestEntity
 {
-    /**
-     * @var ObjectManagerInterface
-     * @Flow\Inject
-     */
-    protected $objectManager;
+    #[Flow\Inject]
+    protected ObjectManagerInterface $objectManager;
 
-    /**
-     * @var string
-     * @Flow\Validate(type="StringLength", options={"minimum"=3})
-     */
-    protected $name = '';
+    #[Flow\Validate(type: "StringLength", options:["minimum" => 3])]
+    protected string $name = '';
 
-    /**
-     * @var TestEntity
-     * @ORM\ManyToOne
-     */
-    protected $relatedEntity;
+    #[ORM\ManyToOne]
+    protected TestEntity $relatedEntity;
 
     /**
      * @var Collection<ImportedSubEntity>
-     * @ORM\OneToMany(mappedBy="parentEntity", cascade={"all"})
      */
-    protected $subEntities;
+    #[ORM\OneToMany(mappedBy: "parentEntity", cascade: ["all"])]
+    protected Collection $subEntities;
 
-    /**
-     * @var TestValueObject
-     * @ORM\ManyToOne
-     */
-    protected $relatedValueObject;
+    #[ORM\ManyToOne]
+    protected TestValueObject $relatedValueObject;
 
-    /**
-     * @var string
-     * @Flow\Validate(type="NotEmpty", validationGroups={"SomeOther"})
-     */
-    protected $description = 'This is some text';
+    #[Flow\Validate(type: "NotEmpty", validationGroups: ["SomeOther"])]
+    protected string $description = 'This is some text';
 
-    /**
-     * @var TestEmbeddedValueObject
-     */
-    protected $embeddedValueObject;
+    protected TestEmbeddedValueObject $embeddedValueObject;
 
-    /**
-     * @var array
-     */
-    protected $arrayProperty = [];
+    protected array $arrayProperty = [];
 
-    /**
-     * @var TestEmbeddable
-     * @ORM\Embedded(class="Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEmbeddable")
-     */
-    protected $embedded;
+    #[ORM\Embedded(class: "Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEmbeddable")]
+    protected TestEmbeddable $embedded;
 
     /**
      * Constructor
@@ -88,95 +63,60 @@ class TestEntity
         $this->embeddedValueObject = new TestEmbeddedValueObject();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
-    public function setDescription($description)
+    public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @param array $arrayProperty
-     * @return void
-     */
-    public function setArrayProperty($arrayProperty)
+    public function setArrayProperty(array $arrayProperty): void
     {
         $this->arrayProperty = $arrayProperty;
     }
 
-    /**
-     * @return array
-     */
-    public function getArrayProperty()
+    public function getArrayProperty(): array
     {
         return $this->arrayProperty;
     }
 
-    /**
-     * @return string
-     */
-    public function sayHello()
+    public function sayHello(): string
     {
         return 'Hello';
     }
 
-    /**
-     * @param TestEntity $relatedEntity
-     * @return void
-     */
-    public function setRelatedEntity(TestEntity $relatedEntity)
+    public function setRelatedEntity(TestEntity $relatedEntity): void
     {
         $this->relatedEntity = $relatedEntity;
     }
 
-    /**
-     * @return TestEntity
-     */
-    public function getRelatedEntity()
+    public function getRelatedEntity(): TestEntity
     {
         return $this->relatedEntity;
     }
 
     /**
      * @param Collection<ImportedSubEntity> $subEntities
-     * @return void
      */
-    public function setSubEntities(Collection $subEntities)
+    public function setSubEntities(Collection $subEntities): void
     {
         $this->subEntities = $subEntities;
     }
 
-    /**
-     * @param ImportedSubEntity $subEntity
-     * @return void
-     */
-    public function addSubEntity(ImportedSubEntity $subEntity)
+    public function addSubEntity(ImportedSubEntity $subEntity): void
     {
         $this->subEntities->add($subEntity);
     }
@@ -184,65 +124,42 @@ class TestEntity
     /**
      * @return Collection<ImportedSubEntity>
      */
-    public function getRelatedEntities()
+    public function getRelatedEntities(): Collection
     {
         return $this->subEntities;
     }
 
-    /**
-     * @return ObjectManagerInterface
-     */
-    public function getObjectManager()
+    public function getObjectManager(): ObjectManagerInterface
     {
         return $this->objectManager;
     }
 
-    /**
-     * @param TestValueObject $relatedValueObject
-     * @return void
-     */
-    public function setRelatedValueObject($relatedValueObject)
+    public function setRelatedValueObject(TestValueObject $relatedValueObject): void
     {
         $this->relatedValueObject = $relatedValueObject;
     }
 
-    /**
-     * @return TestValueObject
-     */
-    public function getRelatedValueObject()
+    public function getRelatedValueObject(): TestValueObject
     {
         return $this->relatedValueObject;
     }
 
-    /**
-     * @return TestEmbeddable
-     */
-    public function getEmbedded()
+    public function getEmbedded(): TestEmbeddable
     {
         return $this->embedded;
     }
 
-    /**
-     * @param TestEmbeddable $embedded
-     */
-    public function setEmbedded($embedded)
+    public function setEmbedded(TestEmbeddable $embedded): void
     {
         $this->embedded = $embedded;
     }
 
-    /**
-     * @param TestEmbeddedValueObject $embeddedValueObject
-     * @return void
-     */
-    public function setEmbeddedValueObject($embeddedValueObject)
+    public function setEmbeddedValueObject(TestEmbeddedValueObject $embeddedValueObject): void
     {
         $this->embeddedValueObject = $embeddedValueObject;
     }
 
-    /**
-     * @return TestEmbeddedValueObject
-     */
-    public function getEmbeddedValueObject()
+    public function getEmbeddedValueObject(): TestEmbeddedValueObject
     {
         return $this->embeddedValueObject;
     }

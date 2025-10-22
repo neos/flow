@@ -16,10 +16,9 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
- * @ORM\InheritanceType("JOINED")
  */
+#[Flow\Entity]
+#[ORM\InheritanceType('JOINED')]
 abstract class AbstractEntity
 {
 }

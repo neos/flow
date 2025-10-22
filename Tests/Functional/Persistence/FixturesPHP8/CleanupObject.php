@@ -13,20 +13,14 @@ namespace Neos\Flow\Tests\Functional\Persistence\FixturesPHP8;
 
 class CleanupObject
 {
-    /**
-     * @var boolean
-     */
-    protected $state = false;
+    protected bool $state = false;
 
-    public function toggleState()
+    public function toggleState(): void
     {
         $this->state = !$this->state;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getState()
+    public function getState(): bool
     {
         return $this->state;
     }

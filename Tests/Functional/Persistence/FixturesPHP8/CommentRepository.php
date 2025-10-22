@@ -16,8 +16,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A repository for comments
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class CommentRepository extends Repository
 {
     /**

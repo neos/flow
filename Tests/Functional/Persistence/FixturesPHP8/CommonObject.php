@@ -19,25 +19,15 @@ use Neos\Flow\Annotations as Flow;
  */
 class CommonObject
 {
-    /**
-     * @var string
-     */
-    protected $foo;
+    protected ?string $foo;
 
-    /**
-     * @param string $foo
-     * @return $this
-     */
-    public function setFoo($foo = null)
+    public function setFoo(?string $foo = null): self
     {
         $this->foo = $foo;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getFoo()
+    public function getFoo(): ?string
     {
         return $this->foo;
     }

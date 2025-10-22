@@ -16,31 +16,20 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
- * @ORM\InheritanceType("JOINED")
  */
+#[Flow\Entity]
+#[ORM\InheritanceType('JOINED')]
 class SuperEntity
 {
-    /**
-     * @var string
-     * @Flow\Validate(type="NotEmpty")
-     */
-    protected $content;
+    #[Flow\Validate(type: 'NotEmpty')]
+    protected string $content;
 
-    /**
-     * @return string
-     */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    /**
-     * @param string $content
-     * @return void
-     */
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }

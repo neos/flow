@@ -16,51 +16,32 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A test entity used by Entity with IndexedRelation
- *
- * @Flow\Scope("prototype")
- * @Flow\Entity
  */
+#[Flow\Scope('prototype')]
+#[Flow\Entity]
 class RelatedIndexEntity
 {
-    /**
-     * @var string
-     */
-    protected $sorting;
+    protected string $sorting;
 
-    /**
-     * @var EntityWithIndexedRelation
-     * @ORM\ManyToOne
-     */
-    protected $entityWithIndexedRelation;
+    #[ORM\ManyToOne]
+    protected EntityWithIndexedRelation $entityWithIndexedRelation;
 
-    /**
-     * @return string
-     */
-    public function getSorting()
+    public function getSorting(): string
     {
         return $this->sorting;
     }
 
-    /**
-     * @param string $sorting
-     */
-    public function setSorting($sorting)
+    public function setSorting(string $sorting): void
     {
         $this->sorting = $sorting;
     }
 
-    /**
-     * @param EntityWithIndexedRelation $entityWithIndexedRelation
-     */
-    public function setEntityWithIndexedRelation($entityWithIndexedRelation)
+    public function setEntityWithIndexedRelation(EntityWithIndexedRelation $entityWithIndexedRelation): void
     {
         $this->entityWithIndexedRelation = $entityWithIndexedRelation;
     }
 
-    /**
-     * @return EntityWithIndexedRelation
-     */
-    public function getEntityWithIndexedRelation()
+    public function getEntityWithIndexedRelation(): EntityWithIndexedRelation
     {
         return $this->entityWithIndexedRelation;
     }

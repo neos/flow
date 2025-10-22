@@ -16,56 +16,35 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple entity for persistence tests
- *
- * @Flow\Entity
- * @ORM\Table(name="persistence_php8_compsitekeytestentity")
  */
+#[Flow\Entity]
+#[ORM\Table(name: 'persistence_php8_compsitekeytestentity')]
 class CompositeKeyTestEntity
 {
-    /**
-     * @var string
-     * @ORM\Id
-     * @ORM\Column(length=20)
-     */
-    protected $name = '';
+    #[ORM\Id]
+    #[ORM\Column(length: 20)]
+    protected string $name = '';
 
-    /**
-     * @var TestEntity
-     * @ORM\Id
-     * @ORM\ManyToOne
-     */
-    protected $relatedEntity;
+    #[ORM\Id]
+    #[ORM\ManyToOne]
+    protected TestEntity $relatedEntity;
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    /**
-     * @param TestEntity $relatedEntity
-     * @return void
-     */
-    public function setRelatedEntity(TestEntity $relatedEntity)
+    public function setRelatedEntity(TestEntity $relatedEntity): void
     {
         $this->relatedEntity = $relatedEntity;
     }
 
-    /**
-     * @return TestEntity
-     */
-    public function getRelatedEntity()
+    public function getRelatedEntity(): TestEntity
     {
         return $this->relatedEntity;
     }

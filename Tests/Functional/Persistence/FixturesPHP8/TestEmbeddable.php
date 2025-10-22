@@ -16,31 +16,23 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple Doctrine ORM 2.5 embeddable for persistence tests
- *
- * @ORM\Embeddable
  */
+#[ORM\Embeddable]
 class TestEmbeddable
 {
     /**
-     * @var string
      * TODO: Making this nullable is just a workaround for when the parent class is proxied and cloned,
      *       which will currently lead to the embeddable being null.
-     * @ORM\Column(nullable=true)
      */
-    protected $value;
+    #[ORM\Column(nullable: true)]
+    protected string $value;
 
-    /**
-     * @param string $value The string value of this value object
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }

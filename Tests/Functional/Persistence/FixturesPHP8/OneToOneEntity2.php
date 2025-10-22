@@ -16,16 +16,14 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple entity for persistence tests of OneToOne relations.
- *
- * @Flow\Entity
- * @ORM\Table(name="persistence_php8_onetooneentity2")
  */
+#[Flow\Entity]
+#[ORM\Table(name: 'persistence_php8_onetooneentity2')]
 class OneToOneEntity2
 {
     /**
      * Bidirectional relation inverse side
-     * @var OneToOneEntity
-     * @ORM\OneToOne(mappedBy="bidirectionalRelation")
      */
-    protected $bidirectionalRelation;
+    #[ORM\OneToOne(mappedBy: 'bidirectionalRelation')]
+    protected OneToOneEntity $bidirectionalRelation;
 }

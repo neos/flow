@@ -16,73 +16,44 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A sample entity for tests
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class SubEntity extends SuperEntity
 {
-    /**
-     * @var TestEntity
-     * @ORM\ManyToOne(inversedBy="subEntities")
-     */
-    protected $parentEntity;
+    #[ORM\ManyToOne(inversedBy: 'subEntities')]
+    protected TestEntity $parentEntity;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(nullable=true)
-     */
-    protected $date;
+    #[ORM\Column(nullable: true)]
+    protected \DateTime $date;
 
-    /**
-     * @var string
-     */
-    protected $someProperty = '';
+    protected string $someProperty = '';
 
-    /**
-     * @param TestEntity $parentEntity
-     * @return void
-     */
-    public function setParentEntity(TestEntity $parentEntity)
+    public function setParentEntity(TestEntity $parentEntity): void
     {
         $this->parentEntity = $parentEntity;
     }
 
-    /**
-     * @return TestEntity
-     */
-    public function getParentEntity()
+    public function getParentEntity(): TestEntity
     {
         return $this->parentEntity;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDate()
+    public function getDate(): \DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $date
-     */
-    public function setDate($date)
+    public function setDate(\DateTime $date): void
     {
         $this->date = $date;
     }
 
-    /**
-     * @return string
-     */
-    public function getSomeProperty()
+    public function getSomeProperty(): string
     {
         return $this->someProperty;
     }
 
-    /**
-     * @param string $someProperty
-     */
-    public function setSomeProperty($someProperty)
+    public function setSomeProperty(string $someProperty): void
     {
         $this->someProperty = $someProperty;
     }

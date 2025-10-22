@@ -24,224 +24,135 @@ use Doctrine\ORM\Mapping as ORM;
  * \Doctrine\DBAL\Types\Type::DATE
  * \Doctrine\DBAL\Types\Type::TIME
  * \Doctrine\DBAL\Types\Type::OBJECT
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class ExtendedTypesEntity
 {
-    /**
-     * @var CommonObject
-     * @ORM\Column(type="object", nullable=true)
-     */
-    protected $commonObject;
+    #[ORM\Column(type: 'object', nullable: true)]
+    protected ?CommonObject $commonObject;
 
-    /**
-     * @var array
-     * @ORM\Column(type="simple_array", nullable=true)
-     */
-    protected $simpleArray;
+    #[ORM\Column(type: 'simple_array', nullable: true)]
+    protected ?array $simpleArray;
 
-    /**
-     * @var array
-     * @ORM\Column(type="json_array", nullable=true)
-     */
-    protected $jsonArray;
+    #[ORM\Column(type: 'json_array', nullable: true)]
+    protected ?array $jsonArray;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $dateTime;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected ?\DateTime $dateTime;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetimetz", nullable=true)
-     */
-    protected $dateTimeTz;
+    #[ORM\Column(type: 'datetimetz', nullable: true)]
+    protected ?\DateTime $dateTimeTz;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="date", nullable=true)
-     */
-    protected $date;
+    #[ORM\Column(type: 'date', nullable: true)]
+    protected ?\DateTime $date;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="time", nullable=true)
-     */
-    protected $time;
+    #[ORM\Column(type: 'time', nullable: true)]
+    protected ?\DateTime $time;
 
-    /**
-     * @var \DateTimeImmutable
-     * @ORM\Column(nullable=true)
-     */
-    protected $dateTimeImmutable;
+    #[ORM\Column(nullable: true)]
+    protected ?\DateTimeImmutable $dateTimeImmutable;
 
     /**
      * This is possible for b/c - see #1673
-     * @var \DateTimeInterface
-     * @ORM\Column(nullable=true)
      */
-    protected $dateTimeInterface;
+    #[ORM\Column(nullable: true)]
+    protected \DateTimeInterface $dateTimeInterface;
 
-    /**
-     * @param \DateTime $time
-     * @return $this
-     */
-    public function setTime(\DateTime $time)
+    public function setTime(?\DateTime $time): self
     {
         $this->time = $time;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getTime()
+    public function getTime(): ?\DateTime
     {
         return $this->time;
     }
 
-    /**
-     * @param \DateTime $date
-     * @return $this
-     */
-    public function setDate(?\DateTime $date = null)
+    public function setDate(?\DateTime $date = null): self
     {
         $this->date = $date;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDate()
+    public function getDate(): ?\DateTime
     {
         return $this->date;
     }
 
-    /**
-     * @param \DateTime $dateTimeTz
-     * @return $this
-     */
-    public function setDateTimeTz(?\DateTime $dateTimeTz = null)
+    public function setDateTimeTz(?\DateTime $dateTimeTz = null): self
     {
         $this->dateTimeTz = $dateTimeTz;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDateTimeTz()
+    public function getDateTimeTz(): ?\DateTime
     {
         return $this->dateTimeTz;
     }
 
-    /**
-     * @param \DateTime $dateTime
-     * @return $this
-     */
-    public function setDateTime(?\DateTime $dateTime = null)
+    public function setDateTime(?\DateTime $dateTime = null): self
     {
         $this->dateTime = $dateTime;
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getDateTime()
+    public function getDateTime(): ?\DateTime
     {
         return $this->dateTime;
     }
 
-    /**
-     * @param \DateTimeImmutable $dateTime
-     * @return $this
-     */
-    public function setDateTimeImmutable(?\DateTimeImmutable $dateTime = null)
+    public function setDateTimeImmutable(?\DateTimeImmutable $dateTime = null): self
     {
         $this->dateTimeImmutable = $dateTime;
         return $this;
     }
 
-    /**
-     * @return \DateTimeImmutable
-     */
-    public function getDateTimeImmutable()
+    public function getDateTimeImmutable(): ?\DateTimeImmutable
     {
         return $this->dateTimeImmutable;
     }
 
-    /**
-     * @param \DateTimeInterface $dateTime
-     * @return $this
-     */
-    public function setDateTimeInterface(?\DateTimeInterface $dateTime = null)
+    public function setDateTimeInterface(?\DateTimeInterface $dateTime = null): self
     {
         $this->dateTimeInterface = $dateTime;
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface
-     */
-    public function getDateTimeInterface()
+    public function getDateTimeInterface(): ?\DateTimeInterface
     {
         return $this->dateTimeInterface;
     }
 
-    /**
-     * @param CommonObject $commonObject
-     * @return $this
-     */
-    public function setCommonObject(?CommonObject $commonObject = null)
+    public function setCommonObject(?CommonObject $commonObject = null): self
     {
         $this->commonObject = $commonObject;
         return $this;
     }
 
-    /**
-     * @return CommonObject
-     */
-    public function getCommonObject()
+    public function getCommonObject(): ?CommonObject
     {
         return $this->commonObject;
     }
 
-    /**
-     * @param array $simpleArray
-     * @return $this
-     */
-    public function setSimpleArray(?array $simpleArray = null)
+    public function setSimpleArray(?array $simpleArray = null): self
     {
         $this->simpleArray = $simpleArray;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getSimpleArray()
+    public function getSimpleArray(): ?array
     {
         return $this->simpleArray;
     }
 
-    /**
-     * @param array $jsonArray
-     * @return $this
-     */
-    public function setJsonArray(?array $jsonArray = null)
+    public function setJsonArray(?array $jsonArray = null): self
     {
         $this->jsonArray = $jsonArray;
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getJsonArray()
+    public function getJsonArray(): ?array
     {
         return $this->jsonArray;
     }

@@ -18,23 +18,23 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A sample entity that has a property with an indexed relation
- *
- * @Flow\Scope("prototype")
- * @Flow\Entity
  */
+#[Flow\Scope('prototype')]
+#[Flow\Entity]
 class EntityWithIndexedRelation
 {
     /**
      * @var Collection<AnnotatedIdentitiesEntity>
-     * @ORM\ManyToMany(indexBy="author")
      */
-    protected $annotatedIdentitiesEntities;
+    #[ORM\ManyToMany(indexBy: 'author')]
+    protected Collection $annotatedIdentitiesEntities;
 
     /**
      * @var Collection<RelatedIndexEntity>
      * @ORM\OneToMany(indexBy="sorting", mappedBy="entityWithIndexedRelation")
      */
-    protected $relatedIndexEntities;
+    #[ORM\OneToMany(indexBy: 'sorting', mappedBy: 'entityWithIndexedRelation')]
+    protected Collection $relatedIndexEntities;
 
     /**
      * Constructor
@@ -46,42 +46,38 @@ class EntityWithIndexedRelation
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $annotatedIdentitiesEntities
+     * @param Collection<AnnotatedIdentitiesEntity> $annotatedIdentitiesEntities
      */
-    public function setAnnotatedIdentitiesEntities($annotatedIdentitiesEntities)
+    public function setAnnotatedIdentitiesEntities(Collection $annotatedIdentitiesEntities): void
     {
         $this->annotatedIdentitiesEntities = $annotatedIdentitiesEntities;
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection<AnnotatedIdentitiesEntity>
      */
-    public function getAnnotatedIdentitiesEntities()
+    public function getAnnotatedIdentitiesEntities(): Collection
     {
         return $this->annotatedIdentitiesEntities;
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $relatedIndexEntities
+     * @param Collection<RelatedIndexEntity> $relatedIndexEntities
      */
-    public function setRelatedIndexEntities($relatedIndexEntities)
+    public function setRelatedIndexEntities(Collection $relatedIndexEntities): void
     {
         $this->relatedIndexEntities = $relatedIndexEntities;
     }
 
     /**
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection<RelatedIndexEntity>
      */
-    public function getRelatedIndexEntities()
+    public function getRelatedIndexEntities(): Collection
     {
         return $this->relatedIndexEntities;
     }
 
-    /**
-     * @param string $sorting
-     * @param RelatedIndexEntity $relatedIndexEntity
-     */
-    public function setRelatedIndexEntity($sorting, RelatedIndexEntity $relatedIndexEntity)
+    public function setRelatedIndexEntity(string $sorting, RelatedIndexEntity $relatedIndexEntity): void
     {
         $relatedIndexEntity->setSorting($sorting);
         $relatedIndexEntity->setEntityWithIndexedRelation($this);

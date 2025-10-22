@@ -16,32 +16,18 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple value object for persistence tests
- *
- * @Flow\ValueObject(embedded=false)
- * @ORM\Table(name="persistence_php8_testvalueobjectwithconstructorlogic2")
  */
+#[Flow\ValueObject(embedded: false)]
+#[ORM\Table(name: 'persistence_php8_testvalueobjectwithconstructorlogic2')]
 class TestValueObjectWithConstructorLogicAndInversedPropertyOrder
 {
-    /**
-     * @var int
-     */
-    protected $calculatedValue;
+    protected int $calculatedValue;
 
-    /**
-     * @var string
-     */
-    protected $value2;
+    protected string $value2;
 
-    /**
-     * @var string
-     */
-    protected $value1;
+    protected string $value1;
 
-    /**
-     * @param string $value2
-     * @param string $value1
-     */
-    public function __construct($value2, $value1)
+    public function __construct(string $value2, string $value1)
     {
         $this->value1 = trim($value1);
         $this->value2 = trim($value2);

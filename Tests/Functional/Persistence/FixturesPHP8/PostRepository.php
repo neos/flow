@@ -15,8 +15,8 @@ use Neos\Flow\Persistence\Doctrine\Repository;
 
 /**
  * A repository for posts
- * @Neos\Flow\Annotations\Scope("singleton")
  */
+#[\Neos\Flow\Annotations\Scope('singleton')]
 class PostRepository extends Repository
 {
     /**

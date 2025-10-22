@@ -16,17 +16,12 @@ use Neos\Flow\Aop\JoinPointInterface;
 
 /**
  * An aspect for testing aop within entities
- *
- * @Flow\Aspect
  */
+#[Flow\Aspect]
 class TestEntityAspect
 {
-    /**
-     * @Flow\Around("method(public Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEntity->sayHello())")
-     * @param JoinPointInterface $joinPoint
-     * @return string
-     */
-    public function concreteMethodInAbstractClassAdvice(JoinPointInterface $joinPoint)
+    #[Flow\Around('method(public Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEntity->sayHello())')]
+    public function concreteMethodInAbstractClassAdvice(JoinPointInterface $joinPoint): string
     {
         $result = $joinPoint->getAdviceChain()->proceed($joinPoint);
         return $result . ' Andi!';

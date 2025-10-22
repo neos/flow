@@ -17,8 +17,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A repository for the test entities
- * @Flow\Scope("singleton")
  */
+#[Flow\Scope('singleton')]
 class TestEntityRepository extends Repository
 {
     /**

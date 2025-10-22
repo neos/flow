@@ -16,44 +16,28 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A sample entity that has a property with a Id annotation
- *
- * @Flow\Entity
  */
+#[Flow\Entity]
 class AnnotatedIdEntity
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\SequenceGenerator(sequenceName="annotatedidentity_seq")
-     * @var string
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\SequenceGenerator(sequenceName: 'annotatedidentity_seq')]
+    protected string $id;
 
-    /**
-     * @var string
-     */
-    protected $title;
+    protected string $title;
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    /**
-     * @return string
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

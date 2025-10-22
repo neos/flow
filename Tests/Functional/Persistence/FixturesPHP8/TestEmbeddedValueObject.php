@@ -16,29 +16,19 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * A simple embedded value object for persistence tests
- *
- * @Flow\ValueObject(embedded=true)
  */
+#[Flow\ValueObject(embedded: true)]
 class TestEmbeddedValueObject
 {
-    /**
-     * @var string
-     * @ORM\Column(nullable=true)
-     */
-    protected $value;
+    #[ORM\Column(nullable: true)]
+    protected string $value;
 
-    /**
-     * @param string $value The string value of this value object
-     */
-    public function __construct($value = '')
+    public function __construct(string $value = '')
     {
         $this->value = $value;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }

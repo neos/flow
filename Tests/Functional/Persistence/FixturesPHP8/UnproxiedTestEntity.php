@@ -17,44 +17,30 @@ use Neos\Flow\Utility\Algorithms;
 
 /**
  * A simple entity for persistence tests that is not proxied (no AOP/DI)
- *
- * @Flow\Entity
- * @Flow\Proxy(false)
- * @ORM\Table(name="persistence_php8_unproxiedtestentity")
  */
+#[Flow\Entity]
+#[Flow\Proxy(false)]
+#[ORM\Table(name: "persistence_php8_unproxiedtestentity")]
 class UnproxiedTestEntity
 {
-    /**
-     * @var string
-     * @ORM\Id
-     * @ORM\Column(length=40)
-     */
-    protected $uuid;
+    #[ORM\Id]
+    #[ORM\Column(length: 40)]
+    protected string $uuid;
 
-    /**
-     * @var string
-     * @Flow\Validate(type="StringLength", options={"minimum"=3})
-     */
-    protected $name = '';
+    #[Flow\Validate(type: "StringLength", options: ["minimum" => 3])]
+    protected string $name = '';
 
     public function __construct()
     {
         $this->uuid = Algorithms::generateUUID();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
