@@ -314,7 +314,7 @@ class ProxyClassBuilder
                             } elseif ($this->objectConfigurations[$argumentValueObjectName]->getScope() === Configuration::SCOPE_PROTOTYPE) {
                                 $assignments[$argumentPosition] = $assignmentPrologue . 'new \\' . $argumentValueObjectName . '(' . $this->buildMethodParametersCode($argumentValue->getArguments()) . ')';
                             } else {
-                                $assignments[$argumentPosition] = $assignmentPrologue . '\Neos\Flow\Core\Bootstrap::$staticObjectManager->get(\'' . $argumentValueObjectName . '\')';
+                                $assignments[$argumentPosition] = $assignmentPrologue . '\Neos\Flow\Core\Bootstrap::$staticObjectManager->get(\\' . $argumentValueObjectName . '::class)';
                             }
                         } else {
                             if (str_contains($argumentValue, '.')) {
@@ -336,7 +336,7 @@ class ProxyClassBuilder
                                 $this->logger->debug(sprintf('Class "%s" will get prototype "%s" injected via constructor, this is deprecated.', $objectConfiguration->getClassName(), $argumentObjectConfiguration->getClassName()));
                             }
 
-                            $assignments[$argumentPosition] = $assignmentPrologue . '\Neos\Flow\Core\Bootstrap::$staticObjectManager->get(\'' . $argumentValue . '\')';
+                            $assignments[$argumentPosition] = $assignmentPrologue . '\Neos\Flow\Core\Bootstrap::$staticObjectManager->get(\\' . $argumentValue . '::class)';
                             $doReturnCode = true;
                         }
                         break;

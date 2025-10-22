@@ -61,6 +61,11 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         # Always include original parameters to support named arguments (issue #3076)
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = ParameterGenerator::fromReflection($reflectionParameter);
+            // workaround necessary for variadic parameters, which cannot be optional/with default
+            if ($reflectionParameter->isVariadic()) {
+                $method->setParameter($parameter);
+                continue;
+            }
 
             $parameterType = $parameter->getType();
             if ($parameterType !== null && $parameterType !== 'mixed' && !str_starts_with($parameterType, '?') && !str_contains($parameterType, 'null')) {
@@ -116,28 +121,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
 
     protected function buildAssignMethodArgumentsCode(): string
     {
-        $parameters = $this->getParameters();
-        if (empty($parameters)) {
-            // No parameters, use func_get_args() for backward compatibility
-            return '$arguments = func_get_args();' . PHP_EOL;
-        }
-
-        # Build arguments array from actual parameters to support both named and positional arguments
-        # Only include arguments that were actually provided (to allow DI to fill in missing ones)
-        # Use a unique variable name to avoid conflicts if a parameter is named $arguments
-        $code = '$methodArguments = func_get_args();' . PHP_EOL;
-        $code .= '$arguments = [];' . PHP_EOL;
-        $index = 0;
-        foreach ($parameters as $parameter) {
-            // Use func_num_args() to check if this parameter was actually provided
-            // This allows DI to inject values for parameters that weren't explicitly passed
-            $code .= 'if (func_num_args() > ' . $index . ') {' . PHP_EOL;
-            $code .= '    $arguments[' . $index . '] = $methodArguments[' . $index . '];' . PHP_EOL;
-            $code .= '}' . PHP_EOL;
-            $index++;
-        }
-
-        return $code;
+        return '$arguments = func_get_args();' . PHP_EOL;
     }
 
     /**
