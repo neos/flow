@@ -36,7 +36,7 @@ class Configuration
 
     /**
      * Name of the class the object is based on
-     * @var string $className
+     * @var string|null $className
      */
     protected $className;
 
@@ -160,7 +160,7 @@ class Configuration
     /**
      * Returns the class name
      *
-     * @return string Name of the implementing class of this object
+     * @return string|null Name of the implementing class of this object
      */
     public function getClassName()
     {

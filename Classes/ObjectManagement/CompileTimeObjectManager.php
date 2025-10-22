@@ -344,6 +344,21 @@ class CompileTimeObjectManager extends ObjectManager
                     }
                 }
             }
+            if ($objectConfiguration->getAutowiring() === Configuration::AUTOWIRING_MODE_ON) {
+                $constructorArguments = $objectConfiguration->getArguments();
+                foreach ($constructorArguments as $index => $argument) {
+                    if ($argument === null) {
+                        $objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS][$index] = null;
+                        continue;
+                    }
+                    $objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS][$index] = [
+                        self::KEY_ARGUMENT_TYPE => $argument->getType(),
+                        self::KEY_ARGUMENT_VALUE => $argument->getValue(),
+                        'wm' => $argument->getAutowiring()
+                    ];
+                }
+            }
+
         }
         $this->configurationCache->set('objects', $objects);
         return $objects;

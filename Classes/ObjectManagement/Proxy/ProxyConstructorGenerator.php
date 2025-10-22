@@ -61,27 +61,6 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         # Always include original parameters to support named arguments (issue #3076)
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = ParameterGenerator::fromReflection($reflectionParameter);
-            // workaround necessary for variadic parameters, which cannot be optional/with default
-            if ($reflectionParameter->isVariadic()) {
-                $method->setParameter($parameter);
-                continue;
-            }
-
-            $parameterType = $parameter->getType();
-            if ($parameterType !== null && $parameterType !== 'mixed' && !str_starts_with($parameterType, '?') && !str_contains($parameterType, 'null')) {
-                # For union types, add |null instead of ? prefix
-                if (str_contains($parameterType, '|')) {
-                    $parameter->setType($parameterType . '|null');
-                } else {
-                    # For simple types, use ? prefix
-                    $parameter->setType('?' . ltrim($parameterType, '\\'));
-                }
-            }
-
-            if (!$reflectionParameter->isDefaultValueAvailable()) {
-                $parameter->setDefaultValue(null);
-            }
-
             $method->setParameter($parameter);
         }
 
@@ -121,7 +100,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
 
     protected function buildAssignMethodArgumentsCode(): string
     {
-        return '$arguments = func_get_args();' . PHP_EOL;
+        return '';
     }
 
     /**
@@ -151,7 +130,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         ) {
             return '';
         }
-        return "parent::{$methodName}(...\$arguments);" . PHP_EOL;
+        return "parent::{$methodName}(...func_get_args());" . PHP_EOL;
     }
 
     /**

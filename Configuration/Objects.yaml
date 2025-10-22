@@ -278,8 +278,8 @@ Neos\Flow\Mvc\Routing\RouterCachingService:
             value: Flow_Mvc_Routing_Resolve
 
 Neos\Flow\Mvc\ViewConfigurationManager:
-  properties:
-    cache:
+  arguments:
+    3:
       object:
         factoryObjectName: Neos\Flow\Cache\CacheManager
         factoryMethodName: getCache

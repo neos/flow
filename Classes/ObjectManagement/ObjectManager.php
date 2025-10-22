@@ -21,6 +21,7 @@ use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Security\Context;
+use Neos\Utility\Arrays;
 
 /**
  * Object Manager
@@ -34,6 +35,9 @@ class ObjectManager implements ObjectManagerInterface
     protected const KEY_SCOPE = 's';
     protected const KEY_FACTORY = 'f';
     protected const KEY_FACTORY_ARGUMENTS = 'fa';
+
+    protected const KEY_CONSTRUCTOR_ARGUMENTS = 'ca';
+
     protected const KEY_ARGUMENT_TYPE = 't';
     protected const KEY_ARGUMENT_VALUE = 'v';
     protected const KEY_CLASS_NAME = 'c';
@@ -220,16 +224,35 @@ class ObjectManager implements ObjectManagerInterface
         }
 
         $className = $this->getClassNameByObjectName($objectName);
+
+        if (isset($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS])) {
+            foreach ($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS] as $index => $argument) {
+                if ($argument === null || $argument['wm'] === 0) {
+                    continue;
+                }
+                $constructorArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
+            }
+        }
+
         if ($className === false) {
             $hint = ($objectName[0] === '\\') ? ' Hint: You specified an object name with a leading backslash!' : '';
             throw new Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.' . $hint, 1264589155);
+        }
+
+        if (isset($this->objects[$className][self::KEY_CONSTRUCTOR_ARGUMENTS])) {
+            foreach ($this->objects[$className][self::KEY_CONSTRUCTOR_ARGUMENTS] as $index => $argument) {
+                if ($argument === null || $argument['wm'] === 0) {
+                    continue;
+                }
+                $constructorArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
+            }
         }
 
         if (!isset($this->objects[$objectName]) || $this->objects[$objectName][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_PROTOTYPE) {
             return $this->instantiateClass($className, $constructorArguments);
         }
 
-        $this->objects[$objectName][self::KEY_INSTANCE] = $this->instantiateClass($className, []);
+        $this->objects[$objectName][self::KEY_INSTANCE] = $this->instantiateClass($className, $constructorArguments);
         return $this->objects[$objectName][self::KEY_INSTANCE];
     }
 
@@ -561,6 +584,59 @@ class ObjectManager implements ObjectManagerInterface
             unset($this->classesBeingInstantiated[$className]);
             throw $exception;
         }
+    }
+
+    private function getConfiguredArgument(int $argumentType, mixed $argumentValue): mixed
+    {
+        if ($argumentType === ObjectConfigurationArgument::ARGUMENT_TYPES_SETTING) {
+            return Arrays::getValueByPath($this->allSettings, $argumentValue);
+        }
+
+        if ($argumentType === ObjectConfigurationArgument::ARGUMENT_TYPES_STRAIGHTVALUE) {
+            return $argumentValue;
+        }
+
+        if ($argumentType !== ObjectConfigurationArgument::ARGUMENT_TYPES_OBJECT) {
+            return null;
+        }
+
+        if (!$argumentValue instanceof ObjectConfiguration) {
+            if (str_contains($argumentValue, '.')) {
+                $settingPath = explode('.', $argumentValue);
+                $argumentValue = Arrays::getValueByPath($this->allSettings, $settingPath);
+            }
+            $argumentObjectConfiguration = $this->objects[$argumentValue] ?? null;
+            if ($argumentObjectConfiguration === null) {
+                throw new \RuntimeException('broken');
+            }
+            return $this->get($argumentValue);
+        }
+
+        $argumentValueObjectName = $argumentValue->getObjectName();
+        $argumentValueClassName = $argumentValue->getClassName();
+        if ($argumentValueClassName === null) {
+            $methodName = $argumentValue->getFactoryMethodName();
+            return $this->get($argumentValue->getFactoryObjectName())->$methodName(...$this->buildMethodArguments($argumentValue->getFactoryArguments()));
+        }
+
+        if ($this->objects[$argumentValueObjectName][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_PROTOTYPE) {
+            return new $argumentValueObjectName(...$this->buildMethodArguments($argumentValue->getArguments()));
+        }
+
+        return $this->get($argumentValueObjectName);
+    }
+
+    protected function buildMethodArguments(array $argumentConfigurations): array
+    {
+        $result = [];
+        /** @var ObjectConfigurationArgument|null $argument */
+        foreach ($argumentConfigurations as $argument) {
+            if ($argument === null || $argument->getAutowiring() === 0) {
+                continue;
+            }
+            $result[] = $this->getConfiguredArgument($argument->getType(), $argument->getValue());
+        }
+        return $result;
     }
 
     /**
