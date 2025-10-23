@@ -16,7 +16,6 @@ use Neos\Flow\Composer\Exception\MissingPackageManifestException;
 use Neos\Flow\Package\Package;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Package\PackageManager;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
