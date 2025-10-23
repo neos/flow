@@ -19,6 +19,7 @@ use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\ObjectManagement\Exception\ProxyCompilerException;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\BaseTestCase;
+use Neos\Utility\ObjectAccess;
 use ReflectionAttribute;
 use ReflectionClass;
 
@@ -342,18 +343,9 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
                 $constructorParameters = [];
                 foreach ($constructor->getParameters() as $parameter) {
                     $parameterName = $parameter->getName();
-                    $parameterValue = null;
-                    if ($reflectionClass->hasProperty($parameterName) && $reflectionClass->getProperty($parameterName)->isPublic()) {
-                        $parameterValue = $value->$parameterName;
-                    } else {
-                        $getterMethodName = 'get' . ucfirst($parameterName);
-                        if ($reflectionClass->hasMethod($getterMethodName) && $reflectionClass->getMethod($getterMethodName)->isPublic()) {
-                            $parameterValue = $value->$getterMethodName();
-                        }
-                    }
+                    $parameterValue = ObjectAccess::getProperty($value, $parameterName);
                     if ($parameter->isDefaultValueAvailable()) {
-                        $parameterDefaultValue = $parameter->getDefaultValue();
-                        if ($parameterDefaultValue !== $parameterValue) {
+                        if ($parameterValue !== $parameter->getDefaultValue()) {
                             $parameterValueAsString = self::renderAttributeArgument($parameterValue);
                             $constructorParameters[$parameterName] = "{$parameterName}: {$parameterValueAsString}";
                         }
