@@ -11,8 +11,6 @@ namespace Neos\Flow\Tests\Functional\Persistence\FixturesPHP8;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-
 /**
  * Class CommonObject
  * Representation of an object handled as "\Doctrine\DBAL\Types\Type::OBJECT"
