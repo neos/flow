@@ -304,26 +304,6 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
         return "#[$attributeAsString]";
     }
 
-    private static function renderAttributeInstantiation(ReflectionAttribute $attribute): string
-    {
-        $attributeAsString = '\\' . $attribute->getName() . ':' . get_debug_type($attribute) ;
-        if (count($attribute->getArguments()) > 0) {
-            $argumentsAsString = [];
-            foreach ($attribute->getArguments() as $argumentName => $argumentValue) {
-                $argumentAsString = self::renderAttributeArgument($argumentValue);
-                if (is_int($argumentName)) {
-                    $argumentsAsString[] = $argumentAsString;
-                } else {
-                    $argumentsAsString[] = "$argumentName: $argumentAsString";
-                }
-            }
-            $attributeAsString .= '(' . implode(', ', $argumentsAsString) . ')';
-        } else {
-            $attributeAsString .= '()';
-        }
-        return "new $attributeAsString";
-    }
-
     private static function renderAttributeArgument(mixed $value): string
     {
         if (is_object($value)) {
