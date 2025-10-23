@@ -17,7 +17,6 @@ use Neos\Cache\Frontend\PhpFrontend;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\ObjectManagement\Exception\ProxyCompilerException;
-use Neos\Flow\ObjectManagement\Exception\UnsupportedAttributeException;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\BaseTestCase;
 use ReflectionAttribute;
