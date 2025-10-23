@@ -188,6 +188,7 @@ abstract class AbstractMethodInterceptorBuilder
             if ($declaredReturnType === 'never') {
                 $advicesCode .= '
                 $adviceChain->proceed($joinPoint);
+                $methodArguments = $joinPoint->getMethodArguments();
 ';
             } else {
                 $advicesCode .= '
