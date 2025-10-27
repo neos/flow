@@ -17,8 +17,6 @@ use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageFactory;
-use Neos\Flow\Package\PackageManager;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
@@ -32,20 +30,13 @@ class PackageFactoryTest extends UnitTestCase
     protected $packageFactory;
 
     /**
-     * @var PackageManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockPackageManager;
-
-    /**
      */
     protected function setUp(): void
     {
         ComposerUtility::flushCaches();
         vfsStream::setup('Packages');
-        $this->mockPackageManager = $this->getMockBuilder(PackageManager::class)->disableOriginalConstructor()->getMock();
-        ObjectAccess::setProperty($this->mockPackageManager, 'composerManifestData', [], true);
 
-        $this->packageFactory = new PackageFactory($this->mockPackageManager);
+        $this->packageFactory = new PackageFactory();
     }
 
     /**
