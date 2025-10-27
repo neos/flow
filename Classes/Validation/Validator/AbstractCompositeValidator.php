@@ -79,6 +79,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
             $options
         );
         $this->validators = new \SplObjectStorage();
+        $this->validatedInstancesContainer = new \SplObjectStorage();
     }
 
     /**
@@ -113,9 +114,10 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
      *
      * @param ValidatorInterface $validator The validator to remove
      * @throws NoSuchValidatorException
+     * @return void
      * @api
      */
-    public function removeValidator(ValidatorInterface $validator): void
+    public function removeValidator(ValidatorInterface $validator)
     {
         if (!$this->validators->contains($validator)) {
             throw new NoSuchValidatorException('Cannot remove validator because its not in the conjunction.', 1207020177);

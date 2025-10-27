@@ -85,9 +85,10 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
     }
 
     /**
+     * @param object $object
      * @return boolean
      */
-    protected function isUninitializedProxy(object $object)
+    protected function isUninitializedProxy($object)
     {
         return ($object instanceof DoctrineProxy && $object->__isInitialized() === false);
     }
@@ -163,7 +164,7 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      * @return void
      * @api
      */
-    public function addPropertyValidator(string $propertyName, ValidatorInterface $validator)
+    public function addPropertyValidator($propertyName, ValidatorInterface $validator)
     {
         if (!isset($this->propertyValidators[$propertyName])) {
             /** @var \SplObjectStorage<ValidatorInterface,mixed> $storage */
@@ -179,16 +180,19 @@ class GenericObjectValidator extends AbstractValidator implements ObjectValidato
      * @param ?string $propertyName Name of the property to return validators for
      * @return ($propertyName is null ? array<string,\SplObjectStorage<ValidatorInterface,mixed>> : \SplObjectStorage<ValidatorInterface,mixed>)
      */
-    public function getPropertyValidators(?string $propertyName = null)
+    public function getPropertyValidators($propertyName = null)
     {
-        if ($propertyName !== null) {
-            $propertyValidators = $this->propertyValidators[$propertyName] ?? null;
-            if (!$propertyValidators) {
-                /** @var \SplObjectStorage<ValidatorInterface,mixed> $propertyValidators */
-                $propertyValidators = new \SplObjectStorage();
-            }
-            return $propertyValidators;
+        if ($propertyName === null) {
+            return $this->propertyValidators;
         }
-        return $this->propertyValidators;
+        if (is_string($propertyName)) {
+            $propertyValidators = $this->propertyValidators[$propertyName] ?? null;
+            if ($propertyValidators instanceof \SplObjectStorage) {
+                return $propertyValidators;
+            }
+        }
+        /** @var \SplObjectStorage<ValidatorInterface,mixed> $propertyValidators */
+        $propertyValidators = new \SplObjectStorage();
+        return $propertyValidators;
     }
 }

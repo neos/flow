@@ -187,6 +187,7 @@ class ValidatorResolver
         }
 
         if ($methodValidateAnnotations === null) {
+            /** @var Flow\Validate[] $validateAnnotations */
             $validateAnnotations = $this->reflectionService->getMethodAnnotations($className, $methodName, Flow\Validate::class);
             $methodValidateAnnotations = array_map(function ($validateAnnotation) {
                 return [
@@ -336,6 +337,7 @@ class ValidatorResolver
                 $needsCollectionValidator = TypeHandling::isCollectionType($propertyTargetClassName);
                 $needsObjectValidator = (!TypeHandling::isSimpleType($propertyTargetClassName) && $this->objectManager->isRegistered($propertyTargetClassName) && $this->objectManager->getScope($propertyTargetClassName) === Configuration::SCOPE_PROTOTYPE);
 
+                /** @var Flow\Validate[] $validateAnnotations */
                 $validateAnnotations = $this->reflectionService->getPropertyAnnotations($targetClassName, $classPropertyName, Flow\Validate::class);
                 foreach ($validateAnnotations as $validateAnnotation) {
                     if ($validateAnnotation->type === null) {
