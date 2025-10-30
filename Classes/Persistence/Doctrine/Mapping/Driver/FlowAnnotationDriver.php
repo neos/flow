@@ -158,7 +158,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
      * @throws ORM\MappingException
      * @throws \UnexpectedValueException
      */
-    public function loadMetadataForClass($className, ClassMetadata $metadata): void
+    public function loadMetadataForClass($className, ClassMetadata $metadata)
     {
         /**
          * This is the actual type we have at this point, but we cannot change the
@@ -1062,7 +1062,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
      * Returns whether the class with the specified name is transient. Only non-transient
      * classes, that is entities and mapped superclasses, should have their metadata loaded.
      */
-    public function isTransient(string $className): bool
+    public function isTransient($className)
     {
         return str_contains($className, Compiler::ORIGINAL_CLASSNAME_SUFFIX) ||
             (
@@ -1077,7 +1077,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
     /**
      * Returns the names of all mapped (non-transient) classes known to this driver.
      */
-    public function getAllClassNames(): array
+    public function getAllClassNames()
     {
         if (is_array($this->classNames)) {
             return $this->classNames;
