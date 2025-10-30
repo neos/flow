@@ -34,7 +34,7 @@ class ExtendedTypesEntity
     #[ORM\Column(type: 'simple_array', nullable: true)]
     protected ?array $simpleArray;
 
-    #[ORM\Column(type: 'json_array', nullable: true)]
+    #[ORM\Column(type: 'flow_json_array', nullable: true)]
     protected ?array $jsonArray;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
