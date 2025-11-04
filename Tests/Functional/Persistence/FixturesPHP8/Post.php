@@ -47,13 +47,10 @@ class Post
     protected Collection $tags;
 
     /**
-     * Still annotated because nested Attributes require PHP 8.1
-     * @todo Adjust to attributes for Flow 8.4 when the min PHP version will be 8.1
-     *
      * @var Collection<Post>
-     * @ORM\ManyToMany
-     * @ORM\JoinTable(inverseJoinColumns={@ORM\JoinColumn(name="related_post_id")})
      */
+    #[ORM\ManyToMany]
+    #[ORM\JoinTable(inverseJoinColumns: [new ORM\JoinColumn(name: 'related_post_id')])]
     protected Collection $related;
 
     /**
