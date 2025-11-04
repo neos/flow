@@ -45,61 +45,12 @@ class RequestBuilder
 		)
 		/x';
 
-    /**
-     * @var Environment
-     */
-    protected $environment;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @var PackageManager
-     */
-    protected $packageManager;
-
-    /**
-     * @var CommandManager
-     */
-    protected $commandManager;
-
-    /**
-     * @param Environment $environment
-     * @return void
-     */
-    public function injectEnvironment(Environment $environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param PackageManager $packageManager
-     * @return void
-     */
-    public function injectPackageManager(PackageManager $packageManager)
-    {
-        $this->packageManager = $packageManager;
-    }
-
-    /**
-     * @param CommandManager $commandManager
-     * @return void
-     */
-    public function injectCommandManager(CommandManager $commandManager)
-    {
-        $this->commandManager = $commandManager;
-    }
+    public function __construct(
+        protected Environment $environment,
+        protected ObjectManagerInterface $objectManager,
+        protected PackageManager $packageManager,
+        protected CommandManager $commandManager
+    ) {}
 
     /**
      * Builds a CLI request object from a command line.

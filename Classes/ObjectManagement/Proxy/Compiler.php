@@ -37,30 +37,15 @@ class Compiler
     public const ORIGINAL_CLASSNAME_SUFFIX = '_Original';
 
     /**
-     * @var CompileTimeObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var PhpFrontend
-     */
-    protected $classesCache;
-
-    /**
-     * @var ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
      * @var array
      */
-    protected $proxyClasses = [];
+    protected array $proxyClasses = [];
 
     /**
      * Hardcoded list of Flow sub packages which must be immune proxying for security, technical or conceptual reasons.
      * @var array
      */
-    protected $excludedSubPackages = ['Neos\Flow\Aop', 'Neos\Flow\Cor', 'Neos\Flow\Obj', 'Neos\Flow\Pac', 'Neos\Flow\Ref', 'Neos\Flow\Uti'];
+    protected array $excludedSubPackages = ['Neos\Flow\Aop', 'Neos\Flow\Cor', 'Neos\Flow\Obj', 'Neos\Flow\Pac', 'Neos\Flow\Ref', 'Neos\Flow\Uti'];
 
     /**
      * Length of the prefix that will be checked for exclusion of proxy building.
@@ -75,44 +60,18 @@ class Compiler
      *
      * @var array
      */
-    protected $storedProxyClasses = [];
+    protected array $storedProxyClasses = [];
 
     /**
      * Compiler constructor.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public PhpFrontend $classesCache,
+        public CompileTimeObjectManager $objectManager,
+        public ReflectionService $reflectionService
+
+    ) {
         $this->excludedSubPackagesLength = strlen('Neos\Flow') + 4;
-    }
-
-    /**
-     * @param CompileTimeObjectManager $objectManager
-     * @return void
-     */
-    public function injectObjectManager(CompileTimeObjectManager $objectManager): void
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * Injects the cache for storing the renamed original classes and proxy classes
-     *
-     * @param PhpFrontend $classesCache
-     * @return void
-     * @Flow\Autowiring(false)
-     */
-    public function injectClassesCache(PhpFrontend $classesCache): void
-    {
-        $this->classesCache = $classesCache;
-    }
-
-    /**
-     * @param ReflectionService $reflectionService
-     * @return void
-     */
-    public function injectReflectionService(ReflectionService $reflectionService): void
-    {
-        $this->reflectionService = $reflectionService;
     }
 
     /**

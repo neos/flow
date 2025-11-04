@@ -14,31 +14,10 @@ use Neos\Flow\ObjectManagement\ObjectManagerInterface;
  */
 class Dispatcher
 {
-    /**
-     * @var \Neos\Flow\SignalSlot\Dispatcher
-     */
-    protected $signalDispatcher;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param \Neos\Flow\SignalSlot\Dispatcher $signalDispatcher
-     */
-    public function injectSignalDispatcher(\Neos\Flow\SignalSlot\Dispatcher $signalDispatcher)
-    {
-        $this->signalDispatcher = $signalDispatcher;
-    }
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
+    public function __construct(
+        protected \Neos\Flow\SignalSlot\Dispatcher $signalDispatcher,
+        protected ObjectManagerInterface $objectManager
+    ) {}
 
     /**
      * Try processing the request until it is successfully marked "dispatched"

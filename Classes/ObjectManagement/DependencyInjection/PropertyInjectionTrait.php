@@ -22,14 +22,14 @@ trait PropertyInjectionTrait
      * Does a property injection lazily with fallbacks.
      * Used in proxy classes.
      *
-     * @param string $propertyObjectName
+     * @param class-string $propertyObjectName
      * @param string $propertyClassName
      * @param string $propertyName
      * @param string $setterArgumentHash
      * @param callable $lazyInjectionResolver
      * @return void
      */
-    private function Flow_Proxy_LazyPropertyInjection($propertyObjectName, $propertyClassName, $propertyName, $setterArgumentHash, callable $lazyInjectionResolver)
+    private function Flow_Proxy_LazyPropertyInjection(string $propertyObjectName, string $propertyClassName, string $propertyName, string $setterArgumentHash, callable $lazyInjectionResolver): void
     {
         $injection_reference = &$this->$propertyName;
         $this->$propertyName = \Neos\Flow\Core\Bootstrap::$staticObjectManager->getInstance($propertyObjectName);

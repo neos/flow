@@ -483,7 +483,6 @@ class Scripts
         $logger = $bootstrap->getEarlyInstance(PsrLoggerFactoryInterface::class)->get('systemLogger');
         $packageManager = $bootstrap->getEarlyInstance(PackageManager::class);
 
-        $objectManager->injectAllSettings($configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS));
         $objectManager->injectReflectionService($reflectionService);
         $objectManager->injectConfigurationManager($configurationManager);
         $objectManager->injectConfigurationCache($cacheManager->getCache('Flow_Object_Configuration'));
@@ -510,7 +509,6 @@ class Scripts
 
         $objectManager = new ObjectManager($bootstrap->getContext());
 
-        $objectManager->injectAllSettings($configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS));
         $objectManager->setObjects($objectConfigurationCache->get('objects'));
 
         foreach ($bootstrap->getEarlyInstances() as $objectName => $instance) {

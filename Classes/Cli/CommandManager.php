@@ -27,42 +27,19 @@ use Neos\Flow\Reflection\ReflectionService;
 class CommandManager
 {
     /**
-     * @var array<Command>
+     * @var array<Command>|null
      */
-    protected $availableCommands = null;
+    protected array|null $availableCommands = null;
 
     /**
-     * @var array
+     * @var array|null
      */
-    protected $shortCommandIdentifiers = null;
+    protected array|null $shortCommandIdentifiers = null;
 
-    /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param Bootstrap $bootstrap
-     * @return void
-     */
-    public function injectBootstrap(Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
-    }
+    public function __construct(
+        private readonly Bootstrap $bootstrap,
+        private readonly ObjectManagerInterface $objectManager
+    ) {}
 
     /**
      * Returns an array of all commands

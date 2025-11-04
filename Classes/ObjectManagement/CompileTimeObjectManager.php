@@ -18,6 +18,7 @@ use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\ObjectManagement\Configuration\Configuration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationParser;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty as Property;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;
@@ -136,10 +137,12 @@ class CompileTimeObjectManager extends ObjectManager
 
         $rawCustomObjectConfigurations = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_OBJECTS);
 
-        $configurationBuilder = new ConfigurationBuilder();
-        $configurationBuilder->injectReflectionService($this->reflectionService);
-        $configurationBuilder->injectLogger($this->logger);
-        $configurationBuilder->injectExcludeClassesFromConstructorAutowiring($this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.object.dependencyInjection.excludeClassesFromConstructorAutowiring'));
+        $configurationBuilder = new ConfigurationBuilder(
+            $this->reflectionService,
+            new ConfigurationParser($this->reflectionService),
+            $this->logger,
+            $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.object.dependencyInjection.excludeClassesFromConstructorAutowiring')
+        );
 
         $this->objectConfigurations = $configurationBuilder->buildObjectConfigurations($this->registeredClassNames, $rawCustomObjectConfigurations);
 
@@ -214,18 +217,19 @@ class CompileTimeObjectManager extends ObjectManager
      */
     protected function registerClassFiles(array $packages): array
     {
+        $allSettings = $this->configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS);
         $includeClassesConfiguration = [];
-        if (isset($this->allSettings['Neos']['Flow']['object']['includeClasses'])) {
-            if (!is_array($this->allSettings['Neos']['Flow']['object']['includeClasses'])) {
+        if (isset($allSettings['Neos']['Flow']['object']['includeClasses'])) {
+            if (!is_array($allSettings['Neos']['Flow']['object']['includeClasses'])) {
                 throw new InvalidConfigurationTypeException('The setting "Neos.Flow.object.includeClasses" is invalid, it must be an array if set. Check the syntax in the YAML file.', 1422357285);
             }
 
-            $includeClassesConfiguration = $this->allSettings['Neos']['Flow']['object']['includeClasses'];
+            $includeClassesConfiguration = $allSettings['Neos']['Flow']['object']['includeClasses'];
         }
 
         $availableClassNames = ['' => ['DateTime']];
 
-        $shouldRegisterFunctionalTestClasses = (bool)($this->allSettings['Neos']['Flow']['object']['registerFunctionalTestClasses'] ?? false);
+        $shouldRegisterFunctionalTestClasses = (bool)($allSettings['Neos']['Flow']['object']['registerFunctionalTestClasses'] ?? false);
 
         foreach ($packages as $packageKey => $package) {
             $packageType = (string)$package->getComposerManifest('type');
@@ -396,9 +400,6 @@ class CompileTimeObjectManager extends ObjectManager
             return $this->objects[$objectName][self::KEY_INSTANCE];
         }
 
-        if (isset($this->objectConfigurations[$objectName]) && count($this->objectConfigurations[$objectName]->getArguments()) > 0) {
-            throw new Exception\CannotBuildObjectException('Cannot build object "' . $objectName . '" because constructor injection is not available in the compile time Object Manager. Refactor your code to use setter injection instead. Configuration source: ' . $this->objectConfigurations[$objectName]->getConfigurationSourceHint() . '. Build stack: ' . implode(', ', $this->objectNameBuildStack), 1297090026);
-        }
         if (!isset($this->objects[$objectName])) {
             throw new Exception\UnknownObjectException('Cannot build object "' . $objectName . '" because it is unknown to the compile time Object Manager.', 1301477694);
         }

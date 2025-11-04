@@ -301,6 +301,15 @@ Neos\Flow\ObjectManagement\ObjectManager:
 Neos\Flow\ObjectManagement\CompileTimeObjectManager:
   autowiring: off
 
+Neos\Flow\ObjectManagement\Proxy\Compiler:
+  arguments:
+    1:
+      object:
+        factoryObjectName: Neos\Flow\Cache\CacheManager
+        factoryMethodName: getCache
+        arguments:
+          1:
+            value: Flow_Object_Classes
 #                                                                          #
 # Persistence                                                              #
 #                                                                          #
@@ -350,20 +359,6 @@ Neos\Flow\Reflection\ReflectionService:
 #  scope: singleton
 
 #                                                                          #
-# ResourceManagement                                                       #
-#                                                                          #
-
-Neos\Flow\ResourceManagement\ResourceManager:
-  properties:
-    statusCache:
-      object:
-        factoryObjectName: Neos\Flow\Cache\CacheManager
-        factoryMethodName: getCache
-        arguments:
-          1:
-            value: Flow_Resource_Status
-
-#                                                                          #
 # Security                                                                 #
 #                                                                          #
 
@@ -374,14 +369,6 @@ Neos\Flow\Security\Authentication\AuthenticationManagerInterface:
 Neos\Flow\Security\Cryptography\RsaWalletServiceInterface:
   className: Neos\Flow\Security\Cryptography\RsaWalletServicePhp
   scope: singleton
-  properties:
-    keystoreCache:
-      object:
-        factoryObjectName: Neos\Flow\Cache\CacheManager
-        factoryMethodName: getCache
-        arguments:
-          1:
-            value: Flow_Security_Cryptography_RSAWallet
 
 Neos\Flow\Security\Authorization\PrivilegeManagerInterface:
   className: Neos\Flow\Security\Authorization\PrivilegeManager

@@ -56,7 +56,6 @@ class DispatchMiddlewareTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->dispatchMiddleware = new DispatchMiddleware();
 
         $this->mockRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
         $httpResponse = new Response();
@@ -67,7 +66,7 @@ class DispatchMiddlewareTest extends UnitTestCase
         $this->mockHttpRequest->method('getUploadedFiles')->willReturn([]);
 
         $this->mockDispatcher = $this->getMockBuilder(Dispatcher::class)->getMock();
-        $this->inject($this->dispatchMiddleware, 'dispatcher', $this->mockDispatcher);
+        $this->dispatchMiddleware = new DispatchMiddleware($this->mockDispatcher);
 
         $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
         $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->mockActionRequest);
