@@ -44,10 +44,10 @@
         "ramsey/uuid": "^3.0 || ^4.0",
         "laminas/laminas-code": "^4.10",
 
-        "doctrine/orm": "^2.12.0",
+        "doctrine/orm": "^2.17.0",
         "doctrine/migrations": "^3.0",
         "doctrine/dbal": "^2.13 || ^3",
-        "doctrine/common": "^3.0.3",
+        "doctrine/common": "^3.1.0",
         "doctrine/annotations": "^1.12",
 
         "symfony/yaml": "^5.1||^6.0",
