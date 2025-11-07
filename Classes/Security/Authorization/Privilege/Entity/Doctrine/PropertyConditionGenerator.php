@@ -204,9 +204,7 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
         if (is_array($this->operand) === false && ($this->operand instanceof \Traversable) === false) {
             throw new InvalidPolicyException(sprintf('The "in" operator needs an array as operand! Got: "%s"', $this->operand), 1416313526);
         }
-        if (!is_array($this->operandDefinition)) {
-            throw new \Exception('Cannot assign iterable operands to non-array operand definition', 1743959938);
-        }
+        $this->operandDefinition = [];
         foreach ($this->operand as $iterator => $singleOperandValueDefinition) {
             $this->operandDefinition['inOperandValue' . $iterator] = $singleOperandValueDefinition;
         }
@@ -254,8 +252,8 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
         } elseif ($targetEntity->isSingleValuedAssociation($targetEntityPropertyName) === true && $targetEntity->isAssociationInverseSide($targetEntityPropertyName) === true) {
             throw new InvalidQueryRewritingConstraintException(
                 'Single valued properties from the inverse side are not supported in a content security constraint path! Got: "'
-                    . $this->path . ' ' . $this->operator . ' ' . json_encode($this->operandDefinition) . '"'
-                , 1416397754
+                    . $this->path . ' ' . $this->operator . ' ' . json_encode($this->operandDefinition) . '"',
+                1416397754
             );
         } elseif ($targetEntity->isCollectionValuedAssociation($targetEntityPropertyName) === true) {
             return $this->getSqlForPropertyContains($sqlFilter, $quoteStrategy, $targetEntity, $targetTableAlias, $targetEntityPropertyName);
@@ -381,9 +379,6 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
             $currentReferencedOperandName = $operandAlias . $joinColumn['referencedColumnName'];
             if (is_object($this->operand)) {
                 $type = TypeHandling::getTypeForValue($this->operand);
-                if ($type === false) {
-                    throw new \Exception('Could not resolve type for ' . get_debug_type($this->operand), 1743930563);
-                }
                 $operandMetadataInfo = $this->entityManager->getClassMetadata($type);
                 $currentReferencedValueOfOperand = $operandMetadataInfo->getFieldValue($this->operand, $operandMetadataInfo->getFieldForColumn($joinColumn['referencedColumnName']));
                 $this->setParameter($sqlFilter, $currentReferencedOperandName, $currentReferencedValueOfOperand, $associationMapping['type']);
@@ -391,9 +386,6 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
                 foreach ($this->operandDefinition as $operandIterator => $singleOperandValue) {
                     if (is_object($singleOperandValue)) {
                         $type = TypeHandling::getTypeForValue($singleOperandValue);
-                        if ($type === false) {
-                            throw new \Exception('Could not resolve type for ' . get_debug_type($singleOperandValue), 1743930566);
-                        }
                         $operandMetadataInfo = $this->entityManager->getClassMetadata($type);
                         $currentReferencedValueOfOperand = $operandMetadataInfo->getFieldValue($singleOperandValue, $operandMetadataInfo->getFieldForColumn($joinColumn['referencedColumnName']));
                         $this->setParameter($sqlFilter, $operandIterator, $currentReferencedValueOfOperand, $associationMapping['type']);
@@ -466,6 +458,7 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
                 $subselectConstraint = $subselectQuery->equals($propertyName, $this->operand);
                 break;
             case '!=':
+                /** @phpstan-ignore argument.type */
                 $subselectConstraint = $subselectQuery->logicalNot($subselectQuery->equals($propertyName, $this->operand));
                 break;
             case '<':
@@ -489,7 +482,7 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
             default:
                 throw new \Exception(sprintf('Invalid operator "%s".', $this->operator), 1699025734);
         }
-
+        /** @var @phpstan-ignore argument.type */
         $subselectQuery->matching($subselectConstraint);
         return $subselectQuery;
     }
@@ -517,10 +510,10 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
                 }
                 $parameter = implode(',', $parameters);
             } elseif (!($this->getRawParameterValue($operandDefinition) === null || ($this->operator === 'in' && $this->getRawParameterValue($operandDefinition) === []))) {
-                if (!is_string($operandDefinition)) {
-                    throw new \Exception('SQL filter parameters must be of type string, ' . get_debug_type($operandDefinition) . ' given.', 1743929393);
+                if (is_array($operandDefinition)) {
+                    throw new \Exception('SQL filter parameters must not be an array', 1743929393);
                 }
-                $parameter = $sqlFilter->getParameter($operandDefinition);
+                $parameter = $sqlFilter->getParameter((string) $operandDefinition);
             }
         } catch (\InvalidArgumentException $exception) {
         }
@@ -598,7 +591,7 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
      */
     protected function setParameter(DoctrineSqlFilter $sqlFilter, $name, $value, $type = null)
     {
-        /** @phpstan-ignore argument.type (currently, doctrine also can handle integers) */
+        /** @var @phpstan-ignore argument.type */
         $sqlFilter->setParameter($name, $value, $type);
         $this->parameters[$name] = $value;
     }

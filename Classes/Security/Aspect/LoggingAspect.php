@@ -50,6 +50,7 @@ class LoggingAspect
     public function logManagerAuthenticate(JoinPointInterface $joinPoint)
     {
         if ($joinPoint->hasException()) {
+            /** @var \Exception $exception */
             $exception = $joinPoint->getException();
             if (!$exception instanceof NoTokensAuthenticatedException) {
                 $this->securityLogger->notice(sprintf('Authentication failed: "%s" #%d', $exception->getMessage(), $exception->getCode()), $this->getLogEnvironmentFromJoinPoint($joinPoint));
