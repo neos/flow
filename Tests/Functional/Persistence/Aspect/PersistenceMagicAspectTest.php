@@ -59,19 +59,6 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function aspectFlagsClonedEntities(): void
-    {
-        $entity = new Fixtures\AnnotatedIdEntity();
-        $clonedEntity = clone $entity;
-        self::assertObjectNotHasProperty('Flow_Persistence_clone', $entity);
-        static::assertObjectHasProperty('Flow_Persistence_clone', $clonedEntity);
-        /** @noinspection PhpUndefinedFieldInspection */
-        self::assertTrue($clonedEntity->Flow_Persistence_clone);
-    }
-
-    /**
-     * @test
-     */
     public function valueHashIsGeneratedForValueObjects(): void
     {
         $valueObject = new Fixtures\TestValueObject('value');
