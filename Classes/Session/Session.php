@@ -300,11 +300,11 @@ class Session implements CookieEnabledInterface
         if (!$this->sessionMetaData) {
             throw new \Exception('Missing session metadata');
         }
-        if (!$this->sessionCookie) {
-            throw new \Exception('Missing session cookie');
-        }
         if ($this->remote === true) {
             throw new Exception\OperationNotSupportedException(sprintf('Tried to renew the session identifier on a remote session (%s).', $this->sessionMetaData->sessionIdentifier->value), 1354034230);
+        }
+        if (!$this->sessionCookie) {
+            throw new \Exception('Missing session cookie');
         }
 
         $this->sessionMetaDataStore->remove($this->sessionMetaData);
