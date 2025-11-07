@@ -188,24 +188,6 @@ class ExtendedTypesEntity
     }
 
     /**
-     * @param CommonObject|null $commonObject
-     * @return $this
-     */
-    public function setCommonObject(?CommonObject $commonObject = null): self
-    {
-        $this->commonObject = $commonObject;
-        return $this;
-    }
-
-    /**
-     * @return ?CommonObject
-     */
-    public function getCommonObject(): ?CommonObject
-    {
-        return $this->commonObject;
-    }
-
-    /**
      * @param array|null $simpleArray
      * @return $this
      */

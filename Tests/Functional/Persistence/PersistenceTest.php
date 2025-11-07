@@ -485,33 +485,6 @@ class PersistenceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function commonObjectIsPersistedAndIsReconstituted(): void
-    {
-        if ($this->objectManager->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Neos.Flow.persistence.backendOptions.driver') === 'pdo_pgsql') {
-            static::markTestSkipped('Doctrine ORM on PostgreSQL cannot store serialized data, thus storing objects with Type::OBJECT would fail. See http://www.doctrine-project.org/jira/browse/DDC-3241');
-        }
-
-        $commonObject = new Fixtures\CommonObject();
-        $commonObject->setFoo('foo');
-
-        $extendedTypesEntity = new Fixtures\ExtendedTypesEntity();
-        $extendedTypesEntity->setCommonObject($commonObject);
-
-        $this->persistenceManager->add($extendedTypesEntity);
-        $this->persistenceManager->persistAll();
-        $this->persistenceManager->clearState();
-
-        /**  @var Fixtures\ExtendedTypesEntity $persistedExtendedTypesEntity */
-        $persistedExtendedTypesEntity = $this->extendedTypesEntityRepository->findAll()->getFirst();
-
-        self::assertInstanceOf(Fixtures\ExtendedTypesEntity::class, $persistedExtendedTypesEntity);
-        self::assertInstanceOf(Fixtures\CommonObject::class, $persistedExtendedTypesEntity->getCommonObject());
-        self::assertEquals('foo', $persistedExtendedTypesEntity->getCommonObject()->getFoo());
-    }
-
-    /**
-     * @test
-     */
     public function jsonArrayIsPersistedAndIsReconstituted(): void
     {
         $extendedTypesEntity = new Fixtures\ExtendedTypesEntity();
