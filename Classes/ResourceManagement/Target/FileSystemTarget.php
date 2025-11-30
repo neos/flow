@@ -255,8 +255,9 @@ class FileSystemTarget implements TargetInterface
      *
      * @param ResourceMetaDataInterface $resource
      * @param CollectionInterface $collection
+     * @return void
      */
-    protected function handleMissingData(ResourceMetaDataInterface $resource, CollectionInterface $collection): void
+    protected function handleMissingData(ResourceMetaDataInterface $resource, CollectionInterface $collection)
     {
         $message = sprintf('Could not publish resource %s with SHA1 hash %s of collection %s because there seems to be no corresponding data in the storage.', $resource->getFilename(), $resource->getSha1(), $collection->getName());
         $this->messageCollector->append($message);
@@ -324,7 +325,7 @@ class FileSystemTarget implements TargetInterface
     protected function publishFile($sourceStream, $relativeTargetPathAndFilename)
     {
         $pathInfo = UnicodeFunctions::pathinfo($relativeTargetPathAndFilename);
-        if (array_key_exists(strtolower($pathInfo['extension']), $this->excludedExtensions) && $this->excludedExtensions[strtolower($pathInfo['extension'])] === true) {
+        if (array_key_exists('extension', $pathInfo) && array_key_exists(strtolower($pathInfo['extension']), $this->excludedExtensions) && $this->excludedExtensions[strtolower($pathInfo['extension'])] === true) {
             throw new TargetException(sprintf('Could not publish resource into publishing target "%s" because the filename extension "%s" is excluded.', $this->name, strtolower($pathInfo['extension'])), 1447148472);
         }
 

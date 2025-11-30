@@ -196,8 +196,11 @@ class ResourceManager
      * @throws Exception
      * @api
      */
-    public function importResourceFromContent(string $content, $filename, $collectionName = ResourceManager::DEFAULT_PERSISTENT_COLLECTION_NAME, $forcedPersistenceObjectIdentifier = null)
+    public function importResourceFromContent($content, $filename, $collectionName = ResourceManager::DEFAULT_PERSISTENT_COLLECTION_NAME, $forcedPersistenceObjectIdentifier = null)
     {
+        if (!is_string($content)) {
+            throw new Exception(sprintf('Tried to import content into the resource collection "%s" but the given content was a %s instead of a string.', $collectionName, gettype($content)), 1380878115);
+        }
         $this->initialize();
 
         if (!isset($this->collections[$collectionName])) {
@@ -633,7 +636,7 @@ class ResourceManager
             throw new Exception('The given upload file "' . strip_tags($pathInfo['basename']) . '" was not uploaded through PHP. As it could pose a security risk it cannot be imported.', 1422461503);
         }
 
-        if (array_key_exists(strtolower($pathInfo['extension']), $this->settings['extensionsBlockedFromUpload']) && $this->settings['extensionsBlockedFromUpload'][strtolower($pathInfo['extension'])] === true) {
+        if (array_key_exists('extension', $pathInfo) && array_key_exists(strtolower($pathInfo['extension']), $this->settings['extensionsBlockedFromUpload']) && $this->settings['extensionsBlockedFromUpload'][strtolower($pathInfo['extension'])] === true) {
             throw new Exception('The extension of the given upload file "' . strip_tags($pathInfo['basename']) . '" is excluded. As it could pose a security risk it cannot be imported.', 1447148472);
         }
 

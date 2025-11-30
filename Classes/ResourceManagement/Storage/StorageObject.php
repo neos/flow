@@ -98,7 +98,7 @@ class StorageObject implements ResourceMetaDataInterface
     public function setFilename($filename)
     {
         $pathInfo = UnicodeFunctions::pathinfo($filename);
-        $extension = '.' . strtolower($pathInfo['extension']);
+        $extension = (isset($pathInfo['extension']) ? '.' . strtolower($pathInfo['extension']) : '');
         $this->filename = $pathInfo['filename'] . $extension;
         $this->mediaType = MediaTypes::getMediaTypeFromFilename($this->filename);
     }
