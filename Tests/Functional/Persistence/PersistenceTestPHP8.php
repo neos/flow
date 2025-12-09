@@ -29,10 +29,6 @@ use Neos\Utility\ObjectAccess;
  */
 class PersistenceTestPHP8 extends FunctionalTestCase
 {
-    public function __construct()
-    {
-        parent::__construct(static::class);
-    }
     /**
      * @var boolean
      */
