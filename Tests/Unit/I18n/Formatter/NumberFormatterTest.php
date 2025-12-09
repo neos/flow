@@ -57,7 +57,7 @@ class NumberFormatterTest extends UnitTestCase
      *
      * @var array
      */
-    protected $templateFormat = [
+    protected static $templateFormat = [
         'positivePrefix' => '',
         'positiveSuffix' => '',
         'negativePrefix' => '-',
@@ -111,12 +111,12 @@ class NumberFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleNumbersAndParsedFormats()
+    public static function sampleNumbersAndParsedFormats()
     {
         return [
-            [1234.567, '01234,5670', array_merge($this->templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])],
-            [0.10004, '0,1', array_merge($this->templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4])],
-            [1000.23, '1 000,25', array_merge($this->templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])]
+            [1234.567, '01234,5670', array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])],
+            [0.10004, '0,1', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4])],
+            [1000.23, '1 000,25', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])]
         ];
     }
 
@@ -136,22 +136,22 @@ class NumberFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function customFormatsAndFormatterNumbers()
+    public static function customFormatsAndFormatterNumbers()
     {
         return [
             [
                 1234.567, '00000.0000',
-                array_merge($this->templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 4, 'minIntegerDigits' => 5]),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 4, 'minIntegerDigits' => 5]),
                 '01234,5670',
             ],
             [
                 0.10004, '0.0###',
-                array_merge($this->templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4]),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4]),
                 '0,1',
             ],
             [
                 -1099.99, '#,##0.0;(#)',
-                array_merge($this->templateFormat, ['minDecimalDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'negativePrefix' => '(', 'negativeSuffix' => ')']),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'negativePrefix' => '(', 'negativeSuffix' => ')']),
                 '(1 100,0)'
             ],
         ];
@@ -180,46 +180,46 @@ class NumberFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleDataForSpecificFormattingMethods()
+    public static function sampleDataForSpecificFormattingMethods()
     {
         return [
             [
                 9999.9,
-                array_merge($this->templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
+                array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
                 '9 999,9', NumbersReader::FORMAT_TYPE_DECIMAL
             ],
             [
                 0.85,
-                array_merge($this->templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%']),
+                array_merge(self::$templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%']),
                 '85%', NumbersReader::FORMAT_TYPE_PERCENT],
             [
                 5.5,
-                array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
                 '5,50 zł', NumbersReader::FORMAT_TYPE_CURRENCY, 'zł'
             ],
             [
                 100.00,
-                array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
                 '100 Yen', NumbersReader::FORMAT_TYPE_CURRENCY, 'Yen', 'JPY'
             ],
             [
                 100.567,
-                array_merge($this->templateFormat, ['minDecimalDigits' => 3, 'maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 3, 'maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'positiveSuffix' => ' ¤', 'negativeSuffix' => ' ¤']),
                 '100,57 €', NumbersReader::FORMAT_TYPE_CURRENCY, '€'
             ],
             [
                 acos(8),
-                array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
                 'NaN', NumbersReader::FORMAT_TYPE_DECIMAL
             ],
             [
                 log(0),
-                array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
                 '-∞', NumbersReader::FORMAT_TYPE_PERCENT
             ],
             [
                 -log(0),
-                array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
+                array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3]),
                 '∞', NumbersReader::FORMAT_TYPE_CURRENCY
             ],
         ];

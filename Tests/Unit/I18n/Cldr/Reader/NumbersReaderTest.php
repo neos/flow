@@ -33,7 +33,7 @@ class NumbersReaderTest extends UnitTestCase
      *
      * @var array
      */
-    protected $templateFormat = [
+    protected static $templateFormat = [
         'positivePrefix' => '',
         'positiveSuffix' => '',
         'negativePrefix' => '-',
@@ -128,13 +128,13 @@ class NumbersReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public function formatStringsAndParsedFormats(): array
+    public static function formatStringsAndParsedFormats(): array
     {
         return [
-            ['#,##0.###', array_merge($this->templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
-            ['#,##,##0%', array_merge($this->templateFormat, ['positiveSuffix' => '%', 'negativeSuffix' => '%', 'multiplier' => 100, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 2])],
-            ['¤ #,##0.00;¤ #,##0.00-', array_merge($this->templateFormat, ['positivePrefix' => '¤ ', 'negativePrefix' => '¤ ', 'negativeSuffix' => '-', 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
-            ['#,##0.05', array_merge($this->templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])],
+            ['#,##0.###', array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
+            ['#,##,##0%', array_merge(self::$templateFormat, ['positiveSuffix' => '%', 'negativeSuffix' => '%', 'multiplier' => 100, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 2])],
+            ['¤ #,##0.00;¤ #,##0.00-', array_merge(self::$templateFormat, ['positivePrefix' => '¤ ', 'negativePrefix' => '¤ ', 'negativeSuffix' => '-', 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
+            ['#,##0.05', array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])],
         ];
     }
 
