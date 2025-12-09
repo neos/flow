@@ -185,10 +185,18 @@ class DispatcherTest extends UnitTestCase
         $forwardException->setNextRequest($nextRequest);
 
         $this->mockParentRequest->expects(self::atLeastOnce())->method('isDispatched')->willReturn(false);
+        $matcher = self::exactly(2);
 
-        $this->mockController->expects(self::exactly(2))->method('processRequest')
-            ->withConsecutive([$this->mockActionRequest], [$this->mockParentRequest])
-            ->willReturnOnConsecutiveCalls(self::throwException(new StopActionException()), self::throwException($forwardException));
+        $this->mockController->expects($matcher)->method('processRequest')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame($this->mockActionRequest, $parameters[0]);
+                return self::throwException(new StopActionException());
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame($this->mockParentRequest, $parameters[0]);
+                return self::throwException($forwardException);
+            }
+        });
 
         $this->dispatcher->dispatch($this->mockActionRequest, $this->actionResponse);
     }

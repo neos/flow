@@ -91,11 +91,17 @@ class ActionControllerTest extends UnitTestCase
      */
     public function resolveViewObjectNameReturnsObjectNameOfCustomViewWithoutFormatSuffixIfItExists()
     {
-        $this->mockObjectManager->expects(self::exactly(2))->method('getCaseSensitiveObjectName')
-            ->withConsecutive(
-                ['some\package\subpackage\view\thecontroller\theactiontheformat'],
-                ['some\package\subpackage\view\thecontroller\theaction']
-            )->willReturnOnConsecutiveCalls(null, 'ResolvedObjectName');
+        $matcher = self::exactly(2);
+        $this->mockObjectManager->expects($matcher)->method('getCaseSensitiveObjectName')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('some\package\subpackage\view\thecontroller\theactiontheformat', $parameters[0]);
+                return null;
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('some\package\subpackage\view\thecontroller\theaction', $parameters[0]);
+                return 'ResolvedObjectName';
+            }
+        });
 
         self::assertSame('ResolvedObjectName', $this->actionController->_call('resolveViewObjectName'));
     }
@@ -106,11 +112,16 @@ class ActionControllerTest extends UnitTestCase
     public function resolveViewObjectNameRespectsViewFormatToObjectNameMap()
     {
         $this->actionController->_set('viewFormatToObjectNameMap', ['html' => 'Foo', 'theFormat' => 'Some\Custom\View\Object\Name']);
-        $this->mockObjectManager->expects(self::exactly(2))->method('getCaseSensitiveObjectName')
-            ->withConsecutive(
-                ['some\package\subpackage\view\thecontroller\theactiontheformat'],
-                ['some\package\subpackage\view\thecontroller\theaction']
-            )->willReturn(null);
+        $matcher = self::exactly(2);
+        $this->mockObjectManager->expects($matcher)->method('getCaseSensitiveObjectName')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('some\package\subpackage\view\thecontroller\theactiontheformat', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('some\package\subpackage\view\thecontroller\theaction', $parameters[0]);
+            }
+            return null;
+        });
 
         self::assertSame('Some\Custom\View\Object\Name', $this->actionController->_call('resolveViewObjectName'));
     }

@@ -436,7 +436,15 @@ class CacheManagerTest extends UnitTestCase
 
         if ($needsAopProxyClassRebuild) {
             $objectClassesCache->expects(self::once())->method('flush');
-            $objectConfigurationCache->method('remove')->withConsecutive(['allAspectClassesUpToDate'], ['allCompiledCodeUpToDate']);
+            $matcher = $this->exactly(2);
+            $objectConfigurationCache->expects($matcher)->method('remove')->willReturnCallback(function (...$parameters) use ($matcher) {
+                if ($matcher->getInvocationCount() === 1) {
+                    $this->assertSame('allAspectClassesUpToDate', $parameters[0]);
+                }
+                if ($matcher->getInvocationCount() === 2) {
+                    $this->assertSame('allCompiledCodeUpToDate', $parameters[0]);
+                }
+            });
         } else {
             $objectClassesCache->expects(self::never())->method('flush');
             $objectConfigurationCache->expects(self::never())->method('remove')->with('allAspectClassesUpToDate');

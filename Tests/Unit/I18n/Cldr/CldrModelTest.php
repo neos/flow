@@ -39,7 +39,21 @@ class CldrModelTest extends UnitTestCase
         $mockCache->expects(self::once())->method('has')->with(md5('foo;bar;baz'))->will(self::returnValue(false));
 
         $mockCldrParser = $this->createMock(I18n\Cldr\CldrParser::class);
-        $mockCldrParser->expects(self::exactly(3))->method('getParsedData')->withConsecutive(['foo'], ['bar'], ['baz'])->willReturnOnConsecutiveCalls($sampleParsedFile1, $sampleParsedFile2, $sampleParsedFile3);
+        $matcher = self::exactly(3);
+        $mockCldrParser->expects($matcher)->method('getParsedData')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('foo', $parameters[0]);
+                return $sampleParsedFile1;
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('bar', $parameters[0]);
+                return $sampleParsedFile2;
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('baz', $parameters[0]);
+                return $sampleParsedFile3;
+            }
+        });
 
         $this->model = new I18n\Cldr\CldrModel($samplePaths);
         $this->model->injectCache($mockCache);

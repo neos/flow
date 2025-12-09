@@ -62,8 +62,17 @@ class AbstractPersistenceManagerTest extends UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $this->abstractPersistenceManager->expects(self::exactly(2))->method('getIdentifierByObject')
-            ->withConsecutive([$object1], [$object2])->willReturnOnConsecutiveCalls('identifier1', 'identifier2');
+        $matcher = self::exactly(2);
+        $this->abstractPersistenceManager->expects($matcher)->method('getIdentifierByObject')->willReturnCallback(function (...$parameters) use ($matcher, $object1, $object2) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame($object1, $parameters[0]);
+                return 'identifier1';
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame($object2, $parameters[0]);
+                return 'identifier2';
+            }
+        });
 
         $originalArray = ['foo' => 'bar', 'object1' => $object1, 'baz' => ['object2' => $object2]];
         $expectedResult = ['foo' => 'bar', 'object1' => ['__identity' => 'identifier1'], 'baz' => ['object2' => ['__identity' => 'identifier2']]];
@@ -79,8 +88,17 @@ class AbstractPersistenceManagerTest extends UnitTestCase
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $this->abstractPersistenceManager->expects(self::exactly(2))->method('getIdentifierByObject')
-            ->withConsecutive([$object1], [$object2])->willReturnOnConsecutiveCalls('identifier1', 'identifier2');
+        $matcher = self::exactly(2);
+        $this->abstractPersistenceManager->expects($matcher)->method('getIdentifierByObject')->willReturnCallback(function (...$parameters) use ($matcher, $object1, $object2) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame($object1, $parameters[0]);
+                return 'identifier1';
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame($object2, $parameters[0]);
+                return 'identifier2';
+            }
+        });
 
         $originalArray = ['foo' => 'bar', 'object1' => $object1, 'baz' => new \ArrayObject(['object2' => $object2])];
         $expectedResult = ['foo' => 'bar', 'object1' => ['__identity' => 'identifier1'], 'baz' => ['object2' => ['__identity' => 'identifier2']]];

@@ -40,7 +40,20 @@ class FormatResolverTest extends UnitTestCase
     public function placeholdersAreResolvedCorrectly()
     {
         $mockNumberFormatter = $this->createMock(I18n\Formatter\NumberFormatter::class);
-        $mockNumberFormatter->method('format')->withConsecutive([1, $this->sampleLocale], [2, $this->sampleLocale, ['percent']])->willReturnOnConsecutiveCalls('1.0', '200%');
+        $matcher = $this->exactly(2);
+        $mockNumberFormatter->expects($matcher)->method('format')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame(1, $parameters[0]);
+                $this->assertSame($this->sampleLocale, $parameters[1]);
+                return '1.0';
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame(2, $parameters[0]);
+                $this->assertSame($this->sampleLocale, $parameters[1]);
+                $this->assertSame(['percent'], $parameters[2]);
+                return '200%';
+            }
+        });
 
         $formatResolver = $this->getAccessibleMock(I18n\FormatResolver::class, ['getFormatter']);
         $formatResolver->expects(self::exactly(2))->method('getFormatter')->with('number')->will(self::returnValue($mockNumberFormatter));
@@ -89,10 +102,17 @@ class FormatResolverTest extends UnitTestCase
     {
         $this->expectException(I18n\Exception\UnknownFormatterException::class);
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager
-            ->method('isRegistered')
-            ->withConsecutive(['foo'], ['Neos\Flow\I18n\Formatter\FooFormatter'])
-            ->willReturn(false);
+        $matcher = $this->exactly(2);
+        $mockObjectManager->expects($matcher)
+            ->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('foo', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('Neos\Flow\I18n\Formatter\FooFormatter', $parameters[0]);
+            }
+            return false;
+        });
 
         $formatResolver = new I18n\FormatResolver();
         $formatResolver->injectObjectManager($mockObjectManager);

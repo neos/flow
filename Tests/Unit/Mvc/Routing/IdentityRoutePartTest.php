@@ -391,16 +391,30 @@ class IdentityRoutePartTest extends UnitTestCase
         $existingObjectPathMapping->setIdentifier('AnotherIdentifier');
 
         $this->identityRoutePart->expects(self::once())->method('createPathSegmentForObject')->with($object)->will(self::returnValue('The/Path/Segment'));
-        $this->mockObjectPathMappingRepository->expects(self::exactly(3))->method('findOneByObjectTypeUriPatternAndPathSegment')
-            ->withConsecutive(
-                ['stdClass', 'SomeUriPattern', 'The/Path/Segment', false],
-                ['stdClass', 'SomeUriPattern', 'The/Path/Segment-1', false],
-                ['stdClass', 'SomeUriPattern', 'The/Path/Segment-2', false]
-            )->willReturnOnConsecutiveCalls(
-                $existingObjectPathMapping,
-                $existingObjectPathMapping,
-                null
-            );
+        $matcher = self::exactly(3);
+        $this->mockObjectPathMappingRepository->expects($matcher)->method('findOneByObjectTypeUriPatternAndPathSegment')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('stdClass', $parameters[0]);
+                $this->assertSame('SomeUriPattern', $parameters[1]);
+                $this->assertSame('The/Path/Segment', $parameters[2]);
+                $this->assertSame(false, $parameters[3]);
+                return $existingObjectPathMapping;
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('stdClass', $parameters[0]);
+                $this->assertSame('SomeUriPattern', $parameters[1]);
+                $this->assertSame('The/Path/Segment-1', $parameters[2]);
+                $this->assertSame(false, $parameters[3]);
+                return $existingObjectPathMapping;
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('stdClass', $parameters[0]);
+                $this->assertSame('SomeUriPattern', $parameters[1]);
+                $this->assertSame('The/Path/Segment-2', $parameters[2]);
+                $this->assertSame(false, $parameters[3]);
+                return null;
+            }
+        });
 
         $expectedObjectPathMapping = new ObjectPathMapping();
         $expectedObjectPathMapping->setObjectType('stdClass');
@@ -433,11 +447,23 @@ class IdentityRoutePartTest extends UnitTestCase
         $existingObjectPathMapping->setIdentifier('AnotherIdentifier');
 
         $this->identityRoutePart->expects(self::once())->method('createPathSegmentForObject')->with($object)->will(self::returnValue('The/Path/Segment'));
-        $this->mockObjectPathMappingRepository->expects(self::exactly(2))->method('findOneByObjectTypeUriPatternAndPathSegment')
-            ->withConsecutive(
-                ['stdClass', 'SomeUriPattern', 'The/Path/Segment', true],
-                ['stdClass', 'SomeUriPattern', 'The/Path/Segment-1', true]
-            )->willReturnOnConsecutiveCalls($existingObjectPathMapping, null);
+        $matcher = self::exactly(2);
+        $this->mockObjectPathMappingRepository->expects($matcher)->method('findOneByObjectTypeUriPatternAndPathSegment')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('stdClass', $parameters[0]);
+                $this->assertSame('SomeUriPattern', $parameters[1]);
+                $this->assertSame('The/Path/Segment', $parameters[2]);
+                $this->assertSame(true, $parameters[3]);
+                return $existingObjectPathMapping;
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('stdClass', $parameters[0]);
+                $this->assertSame('SomeUriPattern', $parameters[1]);
+                $this->assertSame('The/Path/Segment-1', $parameters[2]);
+                $this->assertSame(true, $parameters[3]);
+                return null;
+            }
+        });
 
         $expectedObjectPathMapping = new ObjectPathMapping();
         $expectedObjectPathMapping->setObjectType('stdClass');

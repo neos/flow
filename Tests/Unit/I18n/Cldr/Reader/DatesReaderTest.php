@@ -45,9 +45,44 @@ class DatesReaderTest extends UnitTestCase
      */
     public function createCacheExpectations(MockObject $mockCache)
     {
-        $mockCache->expects(self::atLeast(3))->method('has')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedLiterals'])->willReturn(true);
-        $mockCache->expects(self::atLeast(3))->method('get')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedLiterals'])->willReturn([]);
-        $mockCache->expects(self::atLeast(3))->method('set')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedLiterals']);
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('has')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedLiterals', $parameters[0]);
+            }
+            return true;
+        });
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('get')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedLiterals', $parameters[0]);
+            }
+            return [];
+        });
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedLiterals', $parameters[0]);
+            }
+        });
     }
 
     /**
@@ -82,17 +117,23 @@ class DatesReaderTest extends UnitTestCase
     public function dateTimeFormatIsParsedCorrectly()
     {
         $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getElement'], [[]]);
+        $matcher = self::exactly(3);
         $mockModel->expects(
-            self::exactly(3)
-        )->method('getElement')->withConsecutive(
-            ['dates/calendars/calendar[@type="gregorian"]/dateTimeFormats/dateTimeFormatLength[@type="full"]/dateTimeFormat/pattern'],
-            ['dates/calendars/calendar[@type="gregorian"]/dateFormats/dateFormatLength[@type="full"]/dateFormat/pattern'],
-            ['dates/calendars/calendar[@type="gregorian"]/timeFormats/timeFormatLength[@type="full"]/timeFormat/pattern']
-        )->willReturnOnConsecutiveCalls(
-            'foo {0} {1} bar',
-            'dMy',
-            'hms'
-        );
+            $matcher
+        )->method('getElement')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('dates/calendars/calendar[@type="gregorian"]/dateTimeFormats/dateTimeFormatLength[@type="full"]/dateTimeFormat/pattern', $parameters[0]);
+                return 'foo {0} {1} bar';
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('dates/calendars/calendar[@type="gregorian"]/dateFormats/dateFormatLength[@type="full"]/dateFormat/pattern', $parameters[0]);
+                return 'dMy';
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('dates/calendars/calendar[@type="gregorian"]/timeFormats/timeFormatLength[@type="full"]/timeFormat/pattern', $parameters[0]);
+                return 'hms';
+            }
+        });
 
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects(self::exactly(3))->method('getModelForLocale')->with($this->sampleLocale)->will(self::returnValue($mockModel));

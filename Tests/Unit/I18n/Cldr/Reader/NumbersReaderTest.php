@@ -72,9 +72,44 @@ class NumbersReaderTest extends UnitTestCase
         $mockRepository->expects(self::once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn($mockModel);
 
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
-        $mockCache->expects(self::atLeast(3))->method('has')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedSymbols'])->willReturn(true);
-        $mockCache->expects(self::atLeast(3))->method('get')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedSymbols'])->willReturn([]);
-        $mockCache->expects(self::atLeast(3))->method('set')->withConsecutive(['parsedFormats'], ['parsedFormatsIndices'], ['localizedSymbols']);
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('has')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedSymbols', $parameters[0]);
+            }
+            return true;
+        });
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('get')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedSymbols', $parameters[0]);
+            }
+            return [];
+        });
+        $matcher = self::atLeast(3);
+        $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('parsedFormats', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('parsedFormatsIndices', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 3) {
+                $this->assertSame('localizedSymbols', $parameters[0]);
+            }
+        });
 
         $reader = $this->getAccessibleMock(I18n\Cldr\Reader\NumbersReader::class, ['parseFormat']);
         $reader->expects(self::once())->method('parseFormat')->with('mockFormatString')->willReturn(['mockParsedFormat']);

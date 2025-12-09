@@ -455,9 +455,28 @@ class AbstractControllerTest extends UnitTestCase
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
         $controller->_set('arguments', $controllerArguments);
+        $matcher = self::atLeast(2);
 
-        $this->mockActionRequest->expects(self::atLeast(2))->method('hasArgument')->withConsecutive(['foo'], ['baz'])->willReturn(true);
-        $this->mockActionRequest->expects(self::atLeast(2))->method('getArgument')->withConsecutive(['foo'], ['baz'])->willReturnOnConsecutiveCalls('bar', 'quux');
+        $this->mockActionRequest->expects($matcher)->method('hasArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('foo', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('baz', $parameters[0]);
+            }
+            return true;
+        });
+        $matcher = self::atLeast(2);
+        $this->mockActionRequest->expects($matcher)->method('getArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('foo', $parameters[0]);
+                return 'bar';
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('baz', $parameters[0]);
+                return 'quux';
+            }
+        });
 
         $controller->_call('mapRequestArgumentsToControllerArguments');
         self::assertEquals('bar', $controllerArguments['foo']->getValue());
@@ -484,8 +503,18 @@ class AbstractControllerTest extends UnitTestCase
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
         $controller->_call('initializeController', $this->mockActionRequest, $this->actionResponse);
         $controller->_set('arguments', $controllerArguments);
+        $matcher = self::exactly(2);
 
-        $this->mockActionRequest->expects(self::exactly(2))->method('hasArgument')->withConsecutive(['foo'], ['baz'])->willReturnOnConsecutiveCalls(true, false);
+        $this->mockActionRequest->expects($matcher)->method('hasArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('foo', $parameters[0]);
+                return true;
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('baz', $parameters[0]);
+                return false;
+            }
+        });
         $this->mockActionRequest->expects(self::once())->method('getArgument')->with('foo')->willReturn('bar');
 
         $controller->_call('mapRequestArgumentsToControllerArguments');

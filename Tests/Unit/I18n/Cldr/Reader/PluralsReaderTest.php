@@ -51,7 +51,15 @@ class PluralsReaderTest extends UnitTestCase
 
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
         $mockCache->expects(self::once())->method('has')->with('rulesets')->willReturn(false);
-        $mockCache->expects(self::exactly(2))->method('set')->withConsecutive(['rulesets'], ['rulesetsIndices']);
+        $matcher = self::exactly(2);
+        $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame('rulesets', $parameters[0]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame('rulesetsIndices', $parameters[0]);
+            }
+        });
 
         $this->reader = new PluralsReader();
         $this->reader->injectCldrRepository($mockRepository);
