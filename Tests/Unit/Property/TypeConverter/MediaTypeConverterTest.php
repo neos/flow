@@ -76,7 +76,7 @@ class MediaTypeConverterTest extends UnitTestCase
     /**
      * Data provider
      */
-    public function contentTypesBodiesAndExpectedUnifiedArguments()
+    public static function contentTypesBodiesAndExpectedUnifiedArguments()
     {
         return [
             ['application/json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],

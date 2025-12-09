@@ -22,7 +22,7 @@ class PackageOrderResolverTest extends \Neos\Flow\Tests\UnitTestCase
      *
      * @return array
      */
-    public function packagesAndDependenciesOrder()
+    public static function packagesAndDependenciesOrder()
     {
         return [
             [

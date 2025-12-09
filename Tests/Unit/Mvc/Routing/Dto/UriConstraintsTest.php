@@ -33,7 +33,7 @@ class UriConstraintsTest extends UnitTestCase
         self::assertSame('/some/overridden/path', (string)$mergedUriConstraints->toUri());
     }
 
-    public function applyToDataProvider()
+    public static function applyToDataProvider()
     {
         return [
             ['constraints' => [UriConstraints::CONSTRAINT_SCHEME => 'http'], 'templateUri' => 'http://some-domain.tld', 'forceAbsoluteUri' => false, 'expectedUri' => '/'],
@@ -358,7 +358,7 @@ class UriConstraintsTest extends UnitTestCase
         self::assertSame('some/path', $uriConstraints->getPathConstraint());
     }
 
-    public function fromUriDataProvider()
+    public static function fromUriDataProvider()
     {
         return [
             ['uri' => '', 'expectedConstraints' => []],

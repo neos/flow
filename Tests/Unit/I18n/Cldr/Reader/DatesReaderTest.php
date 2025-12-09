@@ -198,7 +198,7 @@ class DatesReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public function formatStringsAndParsedFormats()
+    public static function formatStringsAndParsedFormats()
     {
         return [
             ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G']],

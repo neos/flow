@@ -294,7 +294,7 @@ class SecurityEntryPointMiddlewareTest extends UnitTestCase
     /**
      * @return array
      */
-    public function processMergesArgumentsWithRoutingMatchResultsDataProvider()
+    public static function processMergesArgumentsWithRoutingMatchResultsDataProvider()
     {
         return [
             [

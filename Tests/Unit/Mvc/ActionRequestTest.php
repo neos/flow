@@ -174,7 +174,7 @@ class ActionRequestTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public function caseSensitiveObjectNames()
+    public static function caseSensitiveObjectNames()
     {
         return [
             [
@@ -339,7 +339,7 @@ class ActionRequestTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public function invalidControllerNames()
+    public static function invalidControllerNames()
     {
         return [
             //[42],
@@ -375,7 +375,7 @@ class ActionRequestTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public function invalidActionNames()
+    public static function invalidActionNames()
     {
         return [
             //[42],

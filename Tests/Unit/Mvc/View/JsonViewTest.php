@@ -162,7 +162,7 @@ class JsonViewTest extends UnitTestCase
      * data provider for testTransformValueWithObjectIdentifierExposure()
      * @return array
      */
-    public function objectIdentifierExposureTestData()
+    public static function objectIdentifierExposureTestData()
     {
         $output = [];
 
@@ -208,7 +208,7 @@ class JsonViewTest extends UnitTestCase
     /**
      * A data provider
      */
-    public function exposeClassNameSettingsAndResults()
+    public static function exposeClassNameSettingsAndResults()
     {
         $className = 'DummyClass' . md5(uniqid(mt_rand(), true));
         $namespace = 'Neos\Flow\Tests\Unit\Mvc\View\\' . $className;

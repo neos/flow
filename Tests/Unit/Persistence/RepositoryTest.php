@@ -33,7 +33,7 @@ class RepositoryTest extends UnitTestCase
     /**
      * dataProvider for constructSetsObjectTypeFromClassName
      */
-    public function modelAndRepositoryClassNames()
+    public static function modelAndRepositoryClassNames()
     {
         $idSuffix = uniqid();
         return [

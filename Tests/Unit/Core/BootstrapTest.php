@@ -23,7 +23,7 @@ class BootstrapTest extends UnitTestCase
     /**
      * @return array
      */
-    public function commandIdentifiersAndCompiletimeControllerInfo()
+    public static function commandIdentifiersAndCompiletimeControllerInfo()
     {
         return [
             [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true],

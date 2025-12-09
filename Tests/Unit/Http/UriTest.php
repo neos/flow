@@ -46,7 +46,7 @@ class UriTest extends UnitTestCase
     /**
      * Uri strings
      */
-    public function uriStrings()
+    public static function uriStrings()
     {
         return [
             ['http://flow.neos.io/x'],
@@ -119,7 +119,7 @@ class UriTest extends UnitTestCase
     /**
      * URIs for testing host parsing
      */
-    public function hostTestUris()
+    public static function hostTestUris()
     {
         return [
             ['http://www.neos.io/about/project', 'www.neos.io'],
@@ -148,7 +148,7 @@ class UriTest extends UnitTestCase
         self::assertEquals($plainHost, $uri->getHost());
     }
 
-    public function uriStringTestUris()
+    public static function uriStringTestUris()
     {
         return [
             ['http://username:password@subdomain.domain.com:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'],

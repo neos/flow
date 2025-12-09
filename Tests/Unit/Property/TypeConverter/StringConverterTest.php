@@ -90,7 +90,7 @@ class StringConverterTest extends UnitTestCase
     }
 
 
-    public function arrayToStringDataProvider()
+    public static function arrayToStringDataProvider()
     {
         return [
             [['Foo', 'Bar', 'Baz'], 'Foo,Bar,Baz', []],

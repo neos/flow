@@ -64,7 +64,7 @@ class FileSystemTargetTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getPublicStaticResourceUriDataProvider()
+    public static function getPublicStaticResourceUriDataProvider()
     {
         return [
             ['baseUri' => 'http://localhost/', 'relativePathAndFilename' => 'SomeFilename.jpg', 'expectedResult' => 'http://localhost/SomeFilename.jpg'],
@@ -112,7 +112,7 @@ class FileSystemTargetTest extends UnitTestCase
     /**
      * @return array
      */
-    public function getPublicPersistentResourceUriDataProvider()
+    public static function getPublicPersistentResourceUriDataProvider()
     {
         return [
             ['baseUri' => 'http://localhost/', 'relativePublicationPath' => 'some/path/', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/some/path/SomeFilename.jpg'],

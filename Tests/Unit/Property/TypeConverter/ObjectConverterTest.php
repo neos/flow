@@ -60,7 +60,7 @@ class ObjectConverterTest extends UnitTestCase
         self::assertEquals(0, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    public function dataProviderForCanConvert()
+    public static function dataProviderForCanConvert()
     {
         return [
             [true, false, false], // is entity => cannot convert

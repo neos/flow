@@ -408,7 +408,7 @@ class RequestBuilderTest extends UnitTestCase
      *
      * @return array
      */
-    public function quotedValues()
+    public static function quotedValues()
     {
         return [
             ["'value with spaces'", 'value with spaces'],
@@ -447,7 +447,7 @@ class RequestBuilderTest extends UnitTestCase
      *
      * @return array
      */
-    public function arrayCliArgumentValues()
+    public static function arrayCliArgumentValues()
     {
         return [
             [

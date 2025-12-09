@@ -18,9 +18,8 @@ use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for for the PHP (OpenSSL) based RSAWalletService
- *
- * @requires function openssl_pkey_new
  */
+#[\PHPUnit\Framework\Attributes\RequiresFunction('openssl_pkey_new')]
 class RsaWalletServicePhpTest extends UnitTestCase
 {
     /**

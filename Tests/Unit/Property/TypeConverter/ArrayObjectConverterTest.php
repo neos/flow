@@ -43,7 +43,7 @@ class ArrayObjectConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    public function arrayObjectDataProvider(): array
+    public static function arrayObjectDataProvider(): array
     {
         return [
             [new \ArrayObject(['Foo', 1, true, 'Bar']), ['Foo', 1, true, 'Bar']],

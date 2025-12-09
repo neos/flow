@@ -24,7 +24,7 @@ class RoleTest extends UnitTestCase
      *
      * @return array
      */
-    public function roleIdentifiersAndPackageKeysAndNames(): array
+    public static function roleIdentifiersAndPackageKeysAndNames(): array
     {
         return [
             ['Neos.Flow:Everybody', 'Everybody', 'Neos.Flow', 'A role for everybody', 'The role is automatically assigned to every session'],

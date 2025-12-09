@@ -22,7 +22,7 @@ use Psr\Http\Message\UriInterface;
  */
 class UriTest extends UnitTestCase
 {
-    public function matchRequestDataProvider()
+    public static function matchRequestDataProvider()
     {
         return [
             ['uriPath' => '', 'pattern' => '.*', 'shouldMatch' => true],

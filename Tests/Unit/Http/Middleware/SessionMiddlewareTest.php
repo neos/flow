@@ -137,7 +137,7 @@ class SessionMiddlewareTest extends UnitTestCase
         $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
     }
 
-    public function sessionCookieSettingsProvider(): array
+    public static function sessionCookieSettingsProvider(): array
     {
         return [
             ['sessionCookieSettings' => [], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'],
@@ -172,7 +172,7 @@ class SessionMiddlewareTest extends UnitTestCase
         $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
     }
 
-    public function cookieValueDataProvider(): array
+    public static function cookieValueDataProvider(): array
     {
         return [
             ['sessionCookieValue' => 123, 'expectedNewCookieValue' => '123'],

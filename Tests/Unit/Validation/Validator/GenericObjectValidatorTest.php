@@ -53,7 +53,7 @@ class GenericObjectValidatorTest extends AbstractValidatorTestcase
     /**
      * @return array
      */
-    public function dataProviderForValidator()
+    public static function dataProviderForValidator()
     {
         $error1 = new Error\Error('error1', 1);
         $error2 = new Error\Error('error2', 2);

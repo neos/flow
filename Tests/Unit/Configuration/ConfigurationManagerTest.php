@@ -784,7 +784,7 @@ class ConfigurationManagerTest extends UnitTestCase
         putenv($envVarName);
     }
 
-    public function replaceVariablesInPhpStringReplacesEnvMarkersDataProvider(): \Traversable
+    public static function replaceVariablesInPhpStringReplacesEnvMarkersDataProvider(): \Traversable
     {
         yield 'lower case env variables are not replaced' => ['envVarName' => '', 'envVarValue' => '', 'setting' => '%env:neos_flow_test_unit_configuration_lower_case_environment_variable%', 'expectedResult' => '%env:neos_flow_test_unit_configuration_lower_case_environment_variable%'];
         yield 'non-existing environment variables evaluate to false' => ['envVarName' => '', 'envVarValue' => '', 'setting' => '%env:NEOS_FLOW_TESTS_UNIT_CONFIGURATION_NON_EXISTING_ENVIRONMENT_VARIABLE%', 'expectedResult' => false];

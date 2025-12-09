@@ -79,7 +79,7 @@ class DatetimeFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function parsedFormatsAndFormattedDatetimes()
+    public static function parsedFormatsAndFormattedDatetimes()
     {
         return [
             [['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'],
@@ -111,7 +111,7 @@ class DatetimeFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function customFormatsAndFormattedDatetimes()
+    public static function customFormatsAndFormattedDatetimes()
     {
         return [
             ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'],
@@ -140,7 +140,7 @@ class DatetimeFormatterTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleDataForSpecificFormattingMethods()
+    public static function sampleDataForSpecificFormattingMethods()
     {
         return [
             [

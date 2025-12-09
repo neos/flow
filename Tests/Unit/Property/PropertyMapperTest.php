@@ -47,7 +47,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validSourceTypes()
+    public static function validSourceTypes()
     {
         return [
             ['someString', ['string']],
@@ -72,7 +72,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidSourceTypes()
+    public static function invalidSourceTypes()
     {
         return [
             [null]
@@ -488,7 +488,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function convertCallsCanConvertFromWithTheFullNormalizedTargetTypeDataProvider()
+    public static function convertCallsCanConvertFromWithTheFullNormalizedTargetTypeDataProvider()
     {
         return [
             ['source' => 'foo', 'fullTargetType' => 'string'],
@@ -523,7 +523,7 @@ class PropertyMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function convertCallsCanConvertFromWithNullableTargetTypeDataProvider()
+    public static function convertCallsCanConvertFromWithNullableTargetTypeDataProvider()
     {
         return [
             ['source' => 'foo', 'fullTargetType' => 'string|null'],

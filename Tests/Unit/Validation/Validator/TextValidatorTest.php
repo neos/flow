@@ -52,7 +52,7 @@ class TextValidatorTest extends AbstractValidatorTestcase
     /**
      * @return array
      */
-    public function validInput()
+    public static function validInput()
     {
         return [
             ['this is a very simple string'],
@@ -76,7 +76,7 @@ class TextValidatorTest extends AbstractValidatorTestcase
      * Data provider with invalid input for TextValidator.
      * @return array
      */
-    public function invalidInput()
+    public static function invalidInput()
     {
         return [
             ['<span style="color: #BBBBBB;">a nice text</span>']

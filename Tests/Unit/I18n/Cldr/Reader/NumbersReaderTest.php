@@ -158,7 +158,7 @@ class NumbersReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public function unsupportedFormats(): array
+    public static function unsupportedFormats(): array
     {
         return [
             ['0.###E0'],

@@ -102,8 +102,8 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * RFC 2616 / 14.23 (Host)
      * @test
-     * @backupGlobals disabled
      */
+    #[\PHPUnit\Framework\Attributes\BackupGlobals(false)]
     public function portInProxyHeaderIsAcknowledged()
     {
         $server = array_merge($_SERVER, [
@@ -125,8 +125,8 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
      * RFC 2616 / 14.23 (Host)
      *
      * @test_disabled
-     * @backupGlobals disabled
      */
+    #[\PHPUnit\Framework\Attributes\BackupGlobals(false)]
     public function portInProxyHeaderIsAcknowledgedWithIpv6()
     {
         $server = array_merge($_SERVER, [
@@ -148,7 +148,7 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public function serverEnvironmentsForClientIpAddresses()
+    public static function serverEnvironmentsForClientIpAddresses()
     {
         return [
             [[], '17.172.224.47'],
@@ -195,7 +195,7 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public function serverEnvironmentsForForwardedHeader()
+    public static function serverEnvironmentsForForwardedHeader()
     {
         return [
             [['HTTP_FORWARDED' => 'for=209.85.148.101; proto=https; host=www.acme.org'], '209.85.148.101', 'https', 'www.acme.org', null],
@@ -477,7 +477,7 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * @return array
      */
-    public function forwardHeaderTestsDataProvider()
+    public static function forwardHeaderTestsDataProvider()
     {
         return [
             [

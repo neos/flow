@@ -51,7 +51,7 @@ class ArrayFromObjectConverterTest extends UnitTestCase
         self::assertEquals(['second' => new \stdClass()], $this->converter->getSourceChildPropertiesToBeConverted($source));
     }
 
-    public function objectToArrayDataProvider()
+    public static function objectToArrayDataProvider()
     {
         return [
             [['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'], ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass']],

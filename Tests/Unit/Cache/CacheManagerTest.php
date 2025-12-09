@@ -405,7 +405,7 @@ class CacheManagerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function configurationFileChangesNeedAopProxyClassesRebuild()
+    public static function configurationFileChangesNeedAopProxyClassesRebuild()
     {
         return [
             ['A/Different/Package/Configuration/Routes.yaml', false],

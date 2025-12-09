@@ -59,7 +59,7 @@ class EmailAddressValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function validAddresses()
+    public static function validAddresses()
     {
         return [
             ['simple@example.com'],
@@ -100,7 +100,7 @@ class EmailAddressValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function invalidAddresses()
+    public static function invalidAddresses()
     {
         return [
             ['Abc.example.com'], // (no @ character)
@@ -131,7 +131,7 @@ class EmailAddressValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function addressesWithWarnings()
+    public static function addressesWithWarnings()
     {
         return [
             ['1234567890123456789012345678901234567890123456789012345678901234xyz@example.com'], // (local part is longer than 64 characters)

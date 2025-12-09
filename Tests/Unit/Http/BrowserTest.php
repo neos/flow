@@ -78,8 +78,8 @@ class BrowserTest extends UnitTestCase
 
     /**
      * @test
-     * @depends automaticHeadersAreSetOnEachRequest
      */
+    #[\PHPUnit\Framework\Attributes\Depends('automaticHeadersAreSetOnEachRequest')]
     public function automaticHeadersCanBeRemovedAgain()
     {
         $requestEngine = $this->createMock(Client\RequestEngineInterface::class);

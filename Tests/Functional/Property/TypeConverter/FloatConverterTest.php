@@ -38,7 +38,7 @@ class FloatConverterTest extends FunctionalTestCase
     /**
      * @return array Signature: string $locale, string $source, float $expectedResult
      */
-    public function localeParsingDataProvider()
+    public static function localeParsingDataProvider()
     {
         return [
             ['de', '13,20', 13.2],

@@ -122,7 +122,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * data provider for addPropertyAcceptsValidPropertyTypes
      */
-    public function validPropertyTypes()
+    public static function validPropertyTypes()
     {
         return [
             ['integer'],
@@ -165,7 +165,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * data provider for addPropertyRejectsInvalidPropertyTypes
      */
-    public function invalidPropertyTypes()
+    public static function invalidPropertyTypes()
     {
         return [
             ['string<string>'],
@@ -232,7 +232,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @return array
      */
-    public function collectionTypes()
+    public static function collectionTypes()
     {
         return [
             ['array'],
@@ -257,7 +257,7 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * @return array
      */
-    public function nullableTypes()
+    public static function nullableTypes()
     {
         return [
             ['?string'],

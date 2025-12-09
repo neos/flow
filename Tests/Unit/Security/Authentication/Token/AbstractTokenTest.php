@@ -64,7 +64,7 @@ class AbstractTokenTest extends UnitTestCase
     /**
      * @return array
      */
-    public function authenticationStatusAndIsAuthenticated()
+    public static function authenticationStatusAndIsAuthenticated()
     {
         return [
             [TokenInterface::NO_CREDENTIALS_GIVEN, false],

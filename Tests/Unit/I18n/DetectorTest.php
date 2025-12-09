@@ -61,7 +61,7 @@ class DetectorTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleHttpAcceptLanguageHeaders()
+    public static function sampleHttpAcceptLanguageHeaders()
     {
         return [
             ['pl, en-gb;q=0.8, en;q=0.7', new I18n\Locale('en_GB')],
@@ -85,7 +85,7 @@ class DetectorTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleLocaleIdentifiers()
+    public static function sampleLocaleIdentifiers()
     {
         return [
             ['en_GB', new I18n\Locale('en_GB')],

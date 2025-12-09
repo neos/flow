@@ -72,7 +72,7 @@ class PluralsReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public function quantities()
+    public static function quantities()
     {
         return [
             [

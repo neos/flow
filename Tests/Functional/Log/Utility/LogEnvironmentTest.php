@@ -19,7 +19,7 @@ class LogEnvironmentTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function fromMethodNameDataProvider(): array
+    public static function fromMethodNameDataProvider(): array
     {
         return [
             'packageKeyCanBeDetermined' => [

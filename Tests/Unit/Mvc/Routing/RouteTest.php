@@ -477,7 +477,7 @@ class RouteTest extends UnitTestCase
     /**
      * Data provider
      */
-    public function matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider()
+    public static function matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider()
     {
         $object = new \stdClass();
         return [
@@ -1251,7 +1251,7 @@ class RouteTest extends UnitTestCase
     /**
      * Data provider
      */
-    public function compareAndRemoveMatchingDefaultValuesDataProvider()
+    public static function compareAndRemoveMatchingDefaultValuesDataProvider()
     {
         return [
             [

@@ -25,7 +25,7 @@ class ApplicationContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function allowedContexts()
+    public static function allowedContexts()
     {
         return [
             ['Production'],
@@ -53,7 +53,7 @@ class ApplicationContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function forbiddenContexts()
+    public static function forbiddenContexts()
     {
         return [
             ['MySpecialContexz'],
@@ -78,7 +78,7 @@ class ApplicationContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function isMethods()
+    public static function isMethods()
     {
         return [
             'Development' => [
@@ -154,7 +154,7 @@ class ApplicationContextTest extends UnitTestCase
         self::assertSame('Production', (string) $rootContext);
     }
 
-    public function getHierarchyDataProvider(): array
+    public static function getHierarchyDataProvider(): array
     {
         return [
             ['contextString' => 'Development', 'expectedResult' => ['Development']],

@@ -66,7 +66,7 @@ class BooleanConverterTest extends UnitTestCase
         self::assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 
-    public function convertFromDataProvider()
+    public static function convertFromDataProvider()
     {
         return [
             ['', false],

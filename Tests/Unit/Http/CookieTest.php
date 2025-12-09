@@ -23,7 +23,7 @@ class CookieTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidCookieNames()
+    public static function invalidCookieNames()
     {
         return [
             ['foo bar'],
@@ -45,7 +45,7 @@ class CookieTest extends UnitTestCase
     /**
      * @return array
      */
-    public function validCookieNames()
+    public static function validCookieNames()
     {
         return [
             ['foo'],
@@ -103,7 +103,7 @@ class CookieTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidExpiresParameters()
+    public static function invalidExpiresParameters()
     {
         return [
             ['foo'],
@@ -163,7 +163,7 @@ class CookieTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidDomains()
+    public static function invalidDomains()
     {
         return [
             [' me.com'],
@@ -198,7 +198,7 @@ class CookieTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidPaths()
+    public static function invalidPaths()
     {
         return [
             ['/foo;'],
@@ -320,7 +320,7 @@ class CookieTest extends UnitTestCase
      *
      * @return array
      */
-    public function cookiesAndTheirStringRepresentations()
+    public static function cookiesAndTheirStringRepresentations()
     {
         $expiredCookie = new Cookie('foo', 'bar');
         $expiredCookie->expire();

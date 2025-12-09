@@ -24,7 +24,7 @@ class UtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleHttpAcceptLanguageHeaders()
+    public static function sampleHttpAcceptLanguageHeaders()
     {
         return [
             ['pl, en-gb;q=0.8, en;q=0.7', ['pl', 'en-gb', 'en']],
@@ -49,7 +49,7 @@ class UtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function filenamesWithLocale()
+    public static function filenamesWithLocale()
     {
         return [
             ['foobar.en_GB.ext', 'en_GB'],
@@ -79,7 +79,7 @@ class UtilityTest extends UnitTestCase
      *
      * @return array
      */
-    public function sampleHaystackStringsAndNeedleStrings()
+    public static function sampleHaystackStringsAndNeedleStrings()
     {
         return [
             ['teststring', 'test', 'beginning'],

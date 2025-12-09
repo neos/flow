@@ -37,7 +37,7 @@ class TranslatorTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function idAndLocaleForTranslation()
+    public static function idAndLocaleForTranslation()
     {
         return [
             ['authentication.username', new I18n\Locale('en'), 'Username'],
@@ -60,7 +60,7 @@ class TranslatorTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function labelAndLocaleForTranslation()
+    public static function labelAndLocaleForTranslation()
     {
         return [
             ['Update', new I18n\Locale('en'), 'Update'],
@@ -81,7 +81,7 @@ class TranslatorTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function labelAndArgumentsForTranslation()
+    public static function labelAndArgumentsForTranslation()
     {
         return [
             ['The given value is expected to be {0}.', ['foo'], 'The given value is expected to be foo.'],

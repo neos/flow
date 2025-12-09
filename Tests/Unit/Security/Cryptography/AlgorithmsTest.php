@@ -26,7 +26,7 @@ class AlgorithmsTest extends UnitTestCase
      *
      * @return array
      */
-    public function pbkdf2TestVectors()
+    public static function pbkdf2TestVectors()
     {
         $output = [];
 

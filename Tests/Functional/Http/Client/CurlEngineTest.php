@@ -17,9 +17,8 @@ use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the HTTP client internal request engine
- *
- * @requires extension curl
  */
+#[\PHPUnit\Framework\Attributes\RequiresPhpExtension('curl')]
 class CurlEngineTest extends FunctionalTestCase
 {
     /**

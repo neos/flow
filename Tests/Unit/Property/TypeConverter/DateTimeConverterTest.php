@@ -141,7 +141,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @return array
      * @see convertFromStringTests()
      */
-    public function convertFromStringDataProvider()
+    public static function convertFromStringDataProvider()
     {
         return [
             ['1308174051', '', false],
@@ -192,7 +192,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider()
     {
         return [
             ['1308174051'],
@@ -217,7 +217,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider()
     {
         return [
             ['1308174051'],
@@ -299,7 +299,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @return array
      * @see convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified
      */
-    public function invalidDatePartKeyValuesDataProvider()
+    public static function invalidDatePartKeyValuesDataProvider()
     {
         return [
             [['day' => '13.0', 'month' => '10', 'year' => '2010']],
@@ -448,7 +448,7 @@ class DateTimeConverterTest extends UnitTestCase
      * @return array
      * @see convertFromArrayTests()
      */
-    public function convertFromArrayDataProvider()
+    public static function convertFromArrayDataProvider()
     {
         return [
             [['date' => '2005-08-15T15:52:01+01:00'], true],

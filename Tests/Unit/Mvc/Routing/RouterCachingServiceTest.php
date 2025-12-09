@@ -182,7 +182,7 @@ class RouterCachingServiceTest extends UnitTestCase
     /**
      * Data provider for containsObjectDetectsObjectsInVariousSituations()
      */
-    public function containsObjectDetectsObjectsInVariousSituationsDataProvider()
+    public static function containsObjectDetectsObjectsInVariousSituationsDataProvider()
     {
         $object = new \stdClass();
         return [

@@ -397,7 +397,7 @@ class ActionControllerTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function argumentTestsDataProvider()
+    public static function argumentTestsDataProvider()
     {
         return [
             'required string            '       => ['requiredString', 'some String', '\'some String\'', 200],

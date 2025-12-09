@@ -32,7 +32,7 @@ class NumbersReaderTest extends FunctionalTestCase
     }
 
 
-    public function currencyFormatExampleDataProvider(): array
+    public static function currencyFormatExampleDataProvider(): array
     {
         return [
             ['de', ['positivePrefix' => '', 'positiveSuffix' => " ¤", 'negativePrefix' => '-', 'negativeSuffix' => " ¤", 'multiplier' => 1, 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'minIntegerDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.0,]],
@@ -59,7 +59,7 @@ class NumbersReaderTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function numberSystemDataProvider(): array
+    public static function numberSystemDataProvider(): array
     {
         return [
             ['de', 'latn'],

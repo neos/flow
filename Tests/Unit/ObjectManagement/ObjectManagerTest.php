@@ -22,7 +22,7 @@ use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguratio
 
 class ObjectManagerTest extends UnitTestCase
 {
-    public function factoryGenerationDataProvider()
+    public static function factoryGenerationDataProvider()
     {
         return [
             'generatePrototype' => [

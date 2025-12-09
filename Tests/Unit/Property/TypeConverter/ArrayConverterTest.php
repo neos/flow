@@ -50,7 +50,7 @@ class ArrayConverterTest extends UnitTestCase
         self::assertEquals($sourceArray, $this->converter->convertFrom($sourceArray, 'array'));
     }
 
-    public function stringToArrayDataProvider()
+    public static function stringToArrayDataProvider()
     {
         return [
             ['Foo,Bar,Baz', ['Foo', 'Bar', 'Baz'], []],

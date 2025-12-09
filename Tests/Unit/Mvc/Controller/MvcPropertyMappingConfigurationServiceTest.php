@@ -28,7 +28,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForgenerateTrustedPropertiesToken()
+    public static function dataProviderForgenerateTrustedPropertiesToken()
     {
         return [
             'Simple Case - Empty' => [
@@ -88,7 +88,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      *
      * @return array
      */
-    public function dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues()
+    public static function dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues()
     {
         return [
             'Overriding form fields (string overridden by array) - 1' => [

@@ -83,7 +83,7 @@ class ResponseInformationHelperTest extends UnitTestCase
         self::assertSame($response->getHeaders(), $compliantResponse->getHeaders());
     }
 
-    public function makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider(): array
+    public static function makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider(): array
     {
         return [
             ['GET', [], 200, [], 200],
@@ -126,7 +126,7 @@ class ResponseInformationHelperTest extends UnitTestCase
         self::assertSame($expoectedStatus, $compliantResponse->getStatusCode());
     }
 
-    public function makeStandardsCompliantEnsures304BasedOnEtagDataProvider(): array
+    public static function makeStandardsCompliantEnsures304BasedOnEtagDataProvider(): array
     {
         return [
             ['GET', [], 200, [], 200],

@@ -44,7 +44,7 @@ class CountValidatorTest extends AbstractValidatorTestcase
     /**
      * @return array
      */
-    public function countables()
+    public static function countables()
     {
         $splObjectStorage = new \SplObjectStorage();
         $splObjectStorage->attach(new \stdClass);
@@ -77,7 +77,7 @@ class CountValidatorTest extends AbstractValidatorTestcase
 
     /**
      */
-    public function nonCountables()
+    public static function nonCountables()
     {
         $splObjectStorage = new \SplObjectStorage();
         $splObjectStorage->attach(new \stdClass);

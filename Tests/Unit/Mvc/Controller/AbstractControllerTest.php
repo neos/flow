@@ -97,7 +97,7 @@ class AbstractControllerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function addFlashMessageDataProvider()
+    public static function addFlashMessageDataProvider()
     {
         return [
             [

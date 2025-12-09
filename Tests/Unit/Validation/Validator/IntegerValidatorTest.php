@@ -44,7 +44,7 @@ class IntegerValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function validIntegers()
+    public static function validIntegers()
     {
         return [
             [1029437],
@@ -68,7 +68,7 @@ class IntegerValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function invalidIntegers()
+    public static function invalidIntegers()
     {
         return [
             ['not a number'],

@@ -60,7 +60,7 @@ class CurrencyReaderTest extends UnitTestCase
      *
      * @return array
      */
-    public function fractions()
+    public static function fractions()
     {
         return [
             ['ADP', 0, 0],

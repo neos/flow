@@ -55,7 +55,7 @@ class CommandTest extends UnitTestCase
     /**
      * @return array
      */
-    public function commandIdentifiers()
+    public static function commandIdentifiers()
     {
         return [
             [CacheCommandController::class, 'flush', 'neos.flow:cache:flush'],

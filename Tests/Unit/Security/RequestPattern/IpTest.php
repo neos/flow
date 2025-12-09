@@ -25,7 +25,7 @@ class IpTest extends UnitTestCase
     /**
      * Data provider with valid and invalid IP ranges
      */
-    public function validAndInvalidIpPatterns()
+    public static function validAndInvalidIpPatterns()
     {
         return [
             ['127.0.0.1', '127.0.0.1', true],

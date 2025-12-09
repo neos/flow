@@ -43,7 +43,7 @@ class TypedArrayConverterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function canConvertFromDataProvider()
+    public static function canConvertFromDataProvider()
     {
         return [
             ['targetType' => 'SomeTargetType', 'expectedResult' => false],

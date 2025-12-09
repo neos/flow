@@ -35,7 +35,7 @@ class MvcPropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @return array Signature: $methodToTestForFluentInterface [, $argumentsForMethod = array() ]
      */
-    public function fluentInterfaceMethodsDataProvider()
+    public static function fluentInterfaceMethodsDataProvider()
     {
         return [
             ['allowCreationForSubProperty', ['some.property.path']],

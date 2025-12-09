@@ -19,7 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ProxyClassTest extends UnitTestCase
 {
-    public function proxyClassesDataProvider(): array
+    public static function proxyClassesDataProvider(): array
     {
         return [
             [

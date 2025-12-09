@@ -23,7 +23,7 @@ class UriTemplateTest extends UnitTestCase
     /**
      * Uri template strings
      */
-    public function templateStrings()
+    public static function templateStrings()
     {
         $variables1 = ['var' => 'value', 'hello' => 'Hello World!'];
         $variables2 = ['var' => 'value', 'hello' => 'Hello World!', 'path' => '/foo/bar'];

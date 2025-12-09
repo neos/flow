@@ -19,7 +19,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 class RouteTagsTest extends UnitTestCase
 {
-    public function createFromTagThrowsExceptionForInvalidTagsDataProvider()
+    public static function createFromTagThrowsExceptionForInvalidTagsDataProvider()
     {
         return [
             ['tag' => 'späcial'],

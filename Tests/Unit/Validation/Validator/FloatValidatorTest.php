@@ -44,7 +44,7 @@ class FloatValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function validFloats()
+    public static function validFloats()
     {
         return [
             [1029437.234726],
@@ -70,7 +70,7 @@ class FloatValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function invalidFloats()
+    public static function invalidFloats()
     {
         return [
             [1029437],

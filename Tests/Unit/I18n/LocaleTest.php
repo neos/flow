@@ -24,7 +24,7 @@ class LocaleTest extends UnitTestCase
      *
      * @return array
      */
-    public function invalidLocaleIdentifiers()
+    public static function invalidLocaleIdentifiers()
     {
         return [
             [''],

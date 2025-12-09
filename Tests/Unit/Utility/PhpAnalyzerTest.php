@@ -22,7 +22,7 @@ class PhpAnalyzerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function sampleClasses()
+    public static function sampleClasses()
     {
         return [
             ['phpCode' => '', 'namespace' => null, 'className' => null, 'fqn' => null],

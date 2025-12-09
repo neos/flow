@@ -256,7 +256,7 @@ class ContextTest extends UnitTestCase
     /**
      * @return array
      */
-    public function separateActiveAndInactiveTokensDataProvider()
+    public static function separateActiveAndInactiveTokensDataProvider()
     {
         return [
             [
@@ -457,7 +457,7 @@ class ContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function authenticationStrategies()
+    public static function authenticationStrategies()
     {
         $data = [];
         $settings = [];
@@ -504,7 +504,7 @@ class ContextTest extends UnitTestCase
      *
      * @return array
      */
-    public function csrfProtectionStrategies()
+    public static function csrfProtectionStrategies()
     {
         $data = [];
         $settings = [];

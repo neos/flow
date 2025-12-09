@@ -79,7 +79,7 @@ class PersistentResourceTest extends UnitTestCase
     /**
      * @return array
      */
-    public function invalidSha1Values()
+    public static function invalidSha1Values()
     {
         return [
           [''],

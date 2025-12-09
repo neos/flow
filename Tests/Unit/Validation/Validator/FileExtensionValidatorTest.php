@@ -44,7 +44,7 @@ class FileExtensionValidatorTest extends AbstractValidatorTestcase
         return $mock;
     }
 
-    public function emptyItems(): array
+    public static function emptyItems(): array
     {
         return [
             [null],

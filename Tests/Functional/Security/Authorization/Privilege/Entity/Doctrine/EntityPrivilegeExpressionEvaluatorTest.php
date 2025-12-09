@@ -44,7 +44,7 @@ class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function expressions()
+    public static function expressions()
     {
         return [
             [

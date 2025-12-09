@@ -44,7 +44,7 @@ class LabelValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function validLabels()
+    public static function validLabels()
     {
         return [
             [''],
@@ -64,7 +64,7 @@ class LabelValidatorTest extends AbstractValidatorTestcase
      *
      * @return array
      */
-    public function invalidLabels()
+    public static function invalidLabels()
     {
         return [
             ['<tags> are not allowed'],

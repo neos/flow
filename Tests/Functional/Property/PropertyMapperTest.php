@@ -369,7 +369,7 @@ class PropertyMapperTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function invalidTypeConverterConfigurationsForOverridingTargetTypes()
+    public static function invalidTypeConverterConfigurationsForOverridingTargetTypes()
     {
         $configurationWithNoSetting = new PropertyMappingConfiguration();
 

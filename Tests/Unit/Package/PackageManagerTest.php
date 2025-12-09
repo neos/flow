@@ -278,7 +278,7 @@ class PackageManagerTest extends UnitTestCase
      *
      * @return array
      */
-    public function packageKeysAndPaths()
+    public static function packageKeysAndPaths()
     {
         return [
             ['Neos.YetAnotherTestPackage', 'vfs://Test/Packages/Application/Neos.YetAnotherTestPackage/'],
@@ -417,7 +417,7 @@ class PackageManagerTest extends UnitTestCase
     /**
      * @return array
      */
-    public function composerNamesAndPackageKeys()
+    public static function composerNamesAndPackageKeys()
     {
         return [
             ['imagine/Imagine', 'imagine.Imagine'],

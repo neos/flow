@@ -38,7 +38,7 @@ class FormatResolverTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function placeholderAndDateValues(): array
+    public static function placeholderAndDateValues(): array
     {
         $date = new \DateTime('@1322228231');
         return [

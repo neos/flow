@@ -25,7 +25,7 @@ class HostTest extends UnitTestCase
     /**
      * Data provider with URIs and host patterns
      */
-    public function uriAndHostPatterns()
+    public static function uriAndHostPatterns()
     {
         return [
             ['http://neos.io/index.php', 'neos.*', true, 'Assert that wildcard matches.'],

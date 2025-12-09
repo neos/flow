@@ -108,7 +108,7 @@ class RoutingTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function routeTestsDataProvider(): array
+    public static function routeTestsDataProvider(): array
     {
         return [
             // non existing route is not matched:
@@ -235,7 +235,7 @@ class RoutingTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function resolveTestsDataProvider(): array
+    public static function resolveTestsDataProvider(): array
     {
         $defaults = ['@package' => 'Neos.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
         return [
@@ -313,7 +313,7 @@ class RoutingTest extends FunctionalTestCase
     /**
      * @return array
      */
-    public function requestMethodAcceptArray(): array
+    public static function requestMethodAcceptArray(): array
     {
         return [
             ['GET', 404],

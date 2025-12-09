@@ -36,7 +36,7 @@ class PluralsReaderTest extends FunctionalTestCase
      *
      * @return array
      */
-    public function quantities(): array
+    public static function quantities(): array
     {
         return [
             [

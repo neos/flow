@@ -40,7 +40,7 @@ class CompilerTest extends UnitTestCase
         $this->compiler = $this->getAccessibleMock(Compiler::class, null);
     }
 
-    public function annotationsAndStrings(): array
+    public static function annotationsAndStrings(): array
     {
         $sessionWithAutoStart = new Session();
         $sessionWithAutoStart->autoStart = true;
@@ -178,7 +178,7 @@ class CompilerTest extends UnitTestCase
         $this->assertSame($expectedResult, Compiler::renderAttribute($attribute));
     }
 
-    public function stripOpeningPhpTagCorrectlyStripsPhpTagDataProvider(): array
+    public static function stripOpeningPhpTagCorrectlyStripsPhpTagDataProvider(): array
     {
         return [
             // no (valid) php file
@@ -210,7 +210,7 @@ class CompilerTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    public function classCodeExamples(): array
+    public static function classCodeExamples(): array
     {
         return [
             [

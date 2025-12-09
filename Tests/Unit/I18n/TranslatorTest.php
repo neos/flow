@@ -248,7 +248,7 @@ class TranslatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function translateByOriginalLabelDataProvider()
+    public static function translateByOriginalLabelDataProvider()
     {
         return [
             ['originalLabel' => 'Some label', 'translatedLabel' => 'Translated label', 'expectedResult' => 'Translated label'],
@@ -281,7 +281,7 @@ class TranslatorTest extends UnitTestCase
     /**
      * @return array
      */
-    public function translateByIdDataProvider()
+    public static function translateByIdDataProvider()
     {
         return [
             ['id' => 'some.id', 'translatedId' => 'Translated id', 'expectedResult' => 'Translated id'],

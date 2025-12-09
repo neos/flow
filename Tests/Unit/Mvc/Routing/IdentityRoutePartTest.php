@@ -203,7 +203,7 @@ class IdentityRoutePartTest extends UnitTestCase
      * data provider for findValueToMatchTests()
      * @return array
      */
-    public function findValueToMatchProvider()
+    public static function findValueToMatchProvider()
     {
         return [
             ['staticPattern/Foo', 'staticPattern', '/Foo', 'staticPattern'],
@@ -536,7 +536,7 @@ class IdentityRoutePartTest extends UnitTestCase
      * data provider for createPathSegmentForObjectTests()
      * @return array
      */
-    public function createPathSegmentForObjectProvider()
+    public static function createPathSegmentForObjectProvider()
     {
         $object = new \stdClass();
         $object->property1 = 'Property1Value';

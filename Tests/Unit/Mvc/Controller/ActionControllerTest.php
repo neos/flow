@@ -271,7 +271,7 @@ class ActionControllerTest extends UnitTestCase
         $this->actionController->processRequest($this->mockRequest, $mockResponse);
     }
 
-    public function supportedAndRequestedMediaTypes()
+    public static function supportedAndRequestedMediaTypes()
     {
         return [
             // supported, Accept header, expected
@@ -376,7 +376,7 @@ class ActionControllerTest extends UnitTestCase
         $this->actionController->_call('resolveView');
     }
 
-    public function ignoredValidationArgumentsProvider()
+    public static function ignoredValidationArgumentsProvider()
     {
         return [
             [false, false],

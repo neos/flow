@@ -90,7 +90,7 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
         self::assertEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
     }
 
-    public function sameValueObjectDataProvider(): array
+    public static function sameValueObjectDataProvider(): array
     {
         // These need to be provided as closures so that the construction happens inside the test and not outside of the test environment.
         return [
@@ -110,7 +110,7 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
         self::assertNotEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
     }
 
-    public function differentValueObjectDataProvider(): array
+    public static function differentValueObjectDataProvider(): array
     {
         // These need to be provided as closures so that the construction happens inside the test and not outside of the test environment.
         return [

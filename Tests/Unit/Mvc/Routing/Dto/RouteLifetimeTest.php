@@ -61,7 +61,7 @@ class RouteLifetimeTest extends UnitTestCase
         self::assertTrue($lifetime->isInfinite());
     }
 
-    public function mergeReturnsLowerLifetimeOfNonNullValuesDataProvider(): array
+    public static function mergeReturnsLowerLifetimeOfNonNullValuesDataProvider(): array
     {
         return [
             [100, 200, 100],

@@ -31,7 +31,7 @@ class FlowAnnotationDriverTest extends UnitTestCase
      *
      * @return array
      */
-    public function classNameToTableNameMappings(): array
+    public static function classNameToTableNameMappings(): array
     {
         return [
             ['SomePackage\Domain\Model\Blob', 'somepackage_domain_model_blob'],
@@ -58,7 +58,7 @@ class FlowAnnotationDriverTest extends UnitTestCase
      *
      * @return array
      */
-    public function classAndPropertyNameToJoinTableNameMappings(): array
+    public static function classAndPropertyNameToJoinTableNameMappings(): array
     {
         return [
             [64, 'SomePackage\Domain\Model\Blob', 'propertyName', 'somepackage_domain_model_blob_propertyname_join'],

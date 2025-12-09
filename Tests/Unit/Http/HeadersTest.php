@@ -222,7 +222,7 @@ class HeadersTest extends UnitTestCase
     /**
      * Data provider with valid cache control headers
      */
-    public function cacheControlHeaders()
+    public static function cacheControlHeaders()
     {
         return [
             ['public', 'public'],
@@ -402,7 +402,7 @@ class HeadersTest extends UnitTestCase
     /**
      * Data provider for the test below
      */
-    public function cacheDirectivesAndExampleValues()
+    public static function cacheDirectivesAndExampleValues()
     {
         return [
             ['public', true],

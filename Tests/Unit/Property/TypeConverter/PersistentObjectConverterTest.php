@@ -82,7 +82,7 @@ class PersistentObjectConverterTest extends UnitTestCase
     /**
      * @return array
      */
-    public function dataProviderForCanConvert()
+    public static function dataProviderForCanConvert()
     {
         return [
             [true, false, true], // is entity => can convert

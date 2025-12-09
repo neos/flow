@@ -43,7 +43,7 @@ class MethodOverrideMiddlewareTest extends UnitTestCase
         $this->mockResponse = $this->getMockBuilder(ResponseInterface::class)->getMock();
     }
 
-    public function matchingRequests_dataProvider(): \Traversable
+    public static function matchingRequests_dataProvider(): \Traversable
     {
         yield 'parsedBody (__method)' => ['method' => 'POST', 'headers' => [], 'parsedBody' => ['__method' => 'PUT'], 'expectedMethod' => 'PUT'];
         yield 'header (X-Http-Method-Override)' => ['method' => 'POST', 'headers' => ['X-Http-Method-Override' => 'PATCH'], 'parsedBody' => [], 'expectedMethod' => 'PATCH'];
@@ -70,7 +70,7 @@ class MethodOverrideMiddlewareTest extends UnitTestCase
         $this->middleware->process($mockRequest, $this->mockRequestHandler);
     }
 
-    public function nonMatchingRequests_dataProvider(): \Traversable
+    public static function nonMatchingRequests_dataProvider(): \Traversable
     {
         yield 'POST request' => ['method' => 'POST', 'headers' => [], 'parsedBody' => ['foo' => 'bar']];
         yield 'GET request with X-Http-Method-Override and X-Http-Method header' => ['method' => 'GET', 'headers' => ['X-Http-Method-Override' => 'PATCH', 'X-Http-Method' => 'DELETE'], 'parsedBody' => []];

@@ -45,7 +45,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         return $mock;
     }
 
-    public function emptyItems(): array
+    public static function emptyItems(): array
     {
         return [
             [null],
@@ -82,7 +82,7 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithUnhandledTypes(): array
+    public static function itemsWithUnhandledTypes(): array
     {
         return [
             [12],

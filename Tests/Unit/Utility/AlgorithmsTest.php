@@ -72,7 +72,7 @@ class AlgorithmsTest extends UnitTestCase
     /**
      * signature: $regularExpression, $charactersClass
      */
-    public function randomStringCharactersDataProvider()
+    public static function randomStringCharactersDataProvider()
     {
         return [
             ['/^[#~+]{64}$/', '#~+'],
