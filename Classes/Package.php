@@ -66,9 +66,11 @@ class Package extends BasePackage
         $dispatcher = $bootstrap->getSignalSlotDispatcher();
 
         $dispatcher->connect(Mvc\Dispatcher::class, 'afterControllerInvocation', function ($request) use ($bootstrap) {
-            // No auto-persistence if there is no PersistenceManager registered
+            // No auto-persistence if there is no PersistenceManager loaded
+            // This signal will not be fired at compile time, as it's only emitted for web requests which happen at runtime.
             if (
-                $bootstrap->getObjectManager()->has(Persistence\PersistenceManagerInterface::class)
+                /** @phpstan-ignore-next-line the object manager interface doesn't specify this method */
+                $bootstrap->getObjectManager()->hasInstance(Persistence\PersistenceManagerInterface::class)
             ) {
                 if (!$request instanceof Mvc\ActionRequest || SecurityHelper::hasSafeMethod($request->getHttpRequest()) !== true) {
                     $bootstrap->getObjectManager()->get(Persistence\PersistenceManagerInterface::class)->persistAll();
