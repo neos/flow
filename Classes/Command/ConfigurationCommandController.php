@@ -78,7 +78,7 @@ class ConfigurationCommandController extends CommandController
                 $this->outputLine('<b>Configuration "%s" was empty!</b>', [$typeAndPath]);
                 return;
             }
-            $configuration = self::truncateArrayAtDepth($configuration, $depth);
+            $configuration = is_array($configuration) ? self::truncateArrayAtDepth($configuration, $depth) : $configuration;
             $yaml = Yaml::dump($configuration, 99);
             $this->outputLine('<b>Configuration "%s":</b>', [$typeAndPath]);
             $this->outputLine();
