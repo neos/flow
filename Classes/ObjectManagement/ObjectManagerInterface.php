@@ -110,7 +110,7 @@ interface ObjectManagerInterface extends ContainerInterface
      * Returns the implementation class name for the specified object
      *
      * @param string $objectName The object name
-     * @return string|false The class name corresponding to the given object name or false if no such object is registered
+     * @return class-string|false The class name corresponding to the given object name or false if no such object is registered
      * @api
      */
     public function getClassNameByObjectName($objectName);
