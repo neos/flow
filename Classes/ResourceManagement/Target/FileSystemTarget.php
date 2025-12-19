@@ -331,6 +331,11 @@ class FileSystemTarget implements TargetInterface
 
         $targetPathAndFilename = $this->path . $relativeTargetPathAndFilename;
         $streamMetaData = stream_get_meta_data($sourceStream);
+
+        if (!array_key_exists('uri', $streamMetaData)) {
+            throw new TargetException(sprintf('Could not publish stream into resource publishing target "%s" because the source is not a local file.', $this->name), 1766167707);
+        }
+
         $sourcePathAndFilename = $streamMetaData['uri'];
 
         if (@fstat($sourceStream) === false) {
