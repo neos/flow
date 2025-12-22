@@ -299,8 +299,8 @@ class ReflectionService
             $this->initialize();
         }
         $className = $this->cleanClassName($className);
-
-        return array_key_exists($className, $this->classReflectionData);
+        /** @phpstan-ignore booleanAnd.rightAlwaysTrue (not exactly sure why this is needed) */
+        return isset($this->classReflectionData[$className]) && is_array($this->classReflectionData[$className]);
     }
 
     /**
@@ -1476,7 +1476,7 @@ class ReflectionService
 
         if (
             isset($this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_PARAMETERS][$parameter->getName()][self::DATA_PARAMETER_TYPE]) &&
-            $this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_PARAMETERS][$parameter->getName()][self::DATA_PARAMETER_TYPE] !== $this->cleanClassName($parameterAnnotation[0])
+            $this->classReflectionData[$className][self::DATA_CLASS_METHODS][$methodName][self::DATA_METHOD_PARAMETERS][$parameter->getName()][self::DATA_PARAMETER_TYPE] !== $this->cleanTypeName($parameterAnnotation[0])
         ) {
             $this->log('  Wrong type in @param for "' . $method->getName() . '::' . $parameter->getName() . '": "' . $parameterAnnotation[0] . '"', LogLevel::DEBUG);
         }
@@ -1691,7 +1691,7 @@ class ReflectionService
         }
 
         if (!$declaredType) {
-            throw new \Exception('Invalid type for ' . $className . '::$' . $propertyName, 1744046737);
+            return false;
         }
 
         if ($this->isPropertyAnnotatedWith($className, $propertyName, ORM\Id::class)) {
@@ -1927,7 +1927,7 @@ class ReflectionService
             }
         }
         if (!isset($parameterInformation[self::DATA_PARAMETER_TYPE]) && $parameterType !== null) {
-            $parameterInformation[self::DATA_PARAMETER_TYPE] = $this->cleanClassName($parameterType);
+            $parameterInformation[self::DATA_PARAMETER_TYPE] = $this->cleanTypeName($parameterType);
         } elseif (!isset($parameterInformation[self::DATA_PARAMETER_TYPE])) {
             $parameterInformation[self::DATA_PARAMETER_TYPE] = 'mixed';
         }
@@ -2084,16 +2084,24 @@ class ReflectionService
     }
 
     /**
+     * Clean a given type from possibly prefixed backslash
+     * @return string
+     */
+    protected function cleanTypeName(string $className): string
+    {
+        return ltrim($className, '\\');
+    }
+
+    /**
      * Clean a given class name from possibly prefixed backslash
      * @return class-string
      */
     protected function cleanClassName(string $className): string
     {
-        $className = ltrim($className, '\\');
-        if (!class_exists($className)) {
-            throw new \Exception('Invalid class ' . $className, 1744047892);
+        $className = $this->cleanTypeName($className);
+        if (!class_exists($className) && !interface_exists($className) && !trait_exists($className) && !enum_exists($className)) {
+            throw ClassLoadingForReflectionFailedException::forClassName($className, $className);
         }
-
         return $className;
     }
 
