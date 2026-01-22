@@ -53,6 +53,9 @@ class TestEntity
     #[ORM\Embedded(class: "Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEmbeddable")]
     protected TestEmbeddable $embedded;
 
+    #[ORM\Column(type: 'string', enumType: EnumForAProperty::class)]
+    protected EnumForAProperty $enumForAProperty = EnumForAProperty::IS_A;
+
     /**
      * Constructor
      */
@@ -162,5 +165,15 @@ class TestEntity
     public function getEmbeddedValueObject(): TestEmbeddedValueObject
     {
         return $this->embeddedValueObject;
+    }
+
+    public function getEnumForAProperty(): EnumForAProperty
+    {
+        return $this->enumForAProperty;
+    }
+
+    public function setEnumForAProperty(EnumForAProperty $enumForAProperty): void
+    {
+        $this->enumForAProperty = $enumForAProperty;
     }
 }
