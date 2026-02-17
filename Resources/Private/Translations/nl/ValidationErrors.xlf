@@ -250,7 +250,7 @@
       </trans-unit>
       <trans-unit id="1327865764" xml:space="preserve">
         <source>The file extension "{0}" is not allowed.</source>
-        <target state="needs-translation" state-qualifier="leveraged-mt">De bestandsextensie "{0}" is niet toegestaan.</target>
+        <target state="translated">De bestandsextensie "{0}" is niet toegestaan.</target>
       </trans-unit>
     </body>
   </file>
