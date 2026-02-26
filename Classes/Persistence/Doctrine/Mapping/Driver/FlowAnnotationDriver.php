@@ -1126,12 +1126,13 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
             $mapping['fieldName'] = $fieldName;
         }
 
-        $mapping['type'] = ($columnAnnotation->type === 'string') ? null : $columnAnnotation->type;
+        $mapping['type'] = $columnAnnotation->type;
         $mapping['scale'] = $columnAnnotation->scale;
         $mapping['length'] = $columnAnnotation->length;
         $mapping['unique'] = $columnAnnotation->unique;
         $mapping['nullable'] = $columnAnnotation->nullable;
         $mapping['precision'] = $columnAnnotation->precision;
+        $mapping['enumType'] = $columnAnnotation->enumType;
 
         if ($columnAnnotation->options) {
             $mapping['options'] = $columnAnnotation->options;

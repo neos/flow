@@ -18,6 +18,8 @@ use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Persistence\Doctrine\QueryResult;
 use Neos\Flow\Persistence\Exception;
 use Neos\Flow\Persistence\Exception\ObjectValidationFailedException;
+use Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\EnumForAProperty;
+use Neos\Flow\Tests\Functional\Persistence\FixturesPHP8\TestEntity;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\ObjectAccess;
 
@@ -719,6 +721,19 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         $testEntity->setName('Another name');
         $this->testEntityRepository->update($testEntity);
         self::assertTrue($this->persistenceManager->hasUnpersistedChanges());
+    }
+
+    public function enumPropertyCanBePersisted()
+    {
+        $testEntity = new TestEntity();
+        $testEntity->setEnumForAProperty(EnumForAProperty::IS_B);
+        $this->testEntityRepository->add($testEntity);
+        $this->persistenceManager->persistAll();
+        $this->persistenceManager->clearState();
+
+        /** @var FixturesPHP8\TestEntity $testEntity */
+        $testEntity = $this->testEntityRepository->findAll()->getFirst();
+        self::assertEquals(EnumForAProperty::IS_B, $testEntity->getEnumForAProperty());
     }
 
     /**
