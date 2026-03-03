@@ -17,6 +17,7 @@ use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Core\Booting\Step;
 use Neos\Flow\Http\Helper\SecurityHelper;
 use Neos\Flow\ObjectManagement\Proxy\Compiler;
+use Neos\Flow\ObjectManagement\Proxy\XdebugPathMappingBuilder;
 use Neos\Flow\Package\Package as BasePackage;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\ResourceManagement\ResourceManager;
@@ -157,6 +158,7 @@ class Package extends BasePackage
         $dispatcher->connect(AuthenticationProviderManager::class, 'successfullyAuthenticated', Context::class, 'refreshRoles');
         $dispatcher->connect(AuthenticationProviderManager::class, 'loggedOut', Context::class, 'refreshTokens');
 
+        $dispatcher->connect(Compiler::class, 'afterCompile', XdebugPathMappingBuilder::class, 'buildFromCompiledClasses');
         $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
             $annotationsCacheFlusher = $bootstrap->getObjectManager()->get(AnnotationsCacheFlusher::class);
             $annotationsCacheFlusher->flushConfigurationCachesByCompiledClass(array_keys($compiledClasses));
