@@ -16,8 +16,8 @@ namespace Neos\Flow\Cache;
 use Neos\Cache\Exception\NoSuchCacheException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\ConfigurationManager;
-use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Log\Utility\LogEnvironment;
+use Neos\Flow\Reflection\ReflectionService;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -58,6 +58,26 @@ final class AnnotationsCacheFlusher
      */
     private $annotationToCachesMap = [];
 
+    public function injectLogger(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
+
+    public function injectConfigurationManager(ConfigurationManager $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    public function injectCacheManager(CacheManager $cacheManager): void
+    {
+        $this->cacheManager = $cacheManager;
+    }
+
+    public function injectReflectionService(ReflectionService $reflectionService): void
+    {
+        $this->reflectionService = $reflectionService;
+    }
+
     /**
      * Register an annotation that should trigger a cache flush
      *
@@ -70,11 +90,11 @@ final class AnnotationsCacheFlusher
     }
 
     /**
-     * A slot that flushes caches as needed if classes with specific annotations have changed @see registerAnnotation()
-     *
-     * @param array<string> $classNames The full class names of the classes that got compiled
+     * A slot that flushes caches as needed if classes with specific annotations have changed @param array<string> $classNames The full class names of the classes that got compiled
      * @return void
      * @throws NoSuchCacheException
+     * @see registerAnnotation()
+     *
      */
     public function flushConfigurationCachesByCompiledClass(array $classNames): void
     {
