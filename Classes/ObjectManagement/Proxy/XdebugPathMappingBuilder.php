@@ -72,7 +72,7 @@ class XdebugPathMappingBuilder
             '#',
             '# Ensure you are using xdebug >= v3.5 with enabled path mapping.',
             '# Configuration in your php.ini:',
-            '# xdebug.mode = develop',
+            '# xdebug.mode = debug',
             '# xdebug.path_mapping = 1',
             '#',
             '# ----------------------------------------------------------------',
