@@ -19,7 +19,7 @@ commands that may be available, use::
 
   ./flow help
 
-The following reference was automatically generated from code on 2025-01-28
+The following reference was automatically generated from code on 2026-03-12
 
 
 .. _`Flow Command Reference: NEOS.FLOW`:
@@ -68,9 +68,6 @@ If fatal errors caused by a package prevent the compile time bootstrap
 from running, the removal of any temporary data can be forced by specifying
 the option **--force**.
 
-This command does not remove the precompiled data provided by frozen
-packages unless the **--force** option is used.
-
 
 
 Options
@@ -87,9 +84,9 @@ Related commands
 ``neos.flow:cache:warmup``
   Warm up caches
 ``neos.flow:package:freeze``
-  Freeze a package
+  Freeze a package <b>(DEPRECATED)</b>
 ``neos.flow:package:refreeze``
-  Refreeze a package
+  Refreeze a package <b>(DEPRECATED)</b>
 
 
 
@@ -942,7 +939,7 @@ Related commands
 ``neos.flow:package:freeze``
 ****************************
 
-**Freeze a package**
+**Freeze a package &lt;b&gt;(DEPRECATED)&lt;/b&gt;**
 
 This function marks a package as **frozen** in order to improve performance
 in a development context. While a package is frozen, any modification of files
@@ -971,9 +968,9 @@ Related commands
 ^^^^^^^^^^^^^^^^
 
 ``neos.flow:package:unfreeze``
-  Unfreeze a package
+  Unfreeze a package <b>(DEPRECATED)</b>
 ``neos.flow:package:refreeze``
-  Refreeze a package
+  Refreeze a package <b>(DEPRECATED)</b>
 
 
 
@@ -1004,7 +1001,7 @@ Options
 ``neos.flow:package:refreeze``
 ******************************
 
-**Refreeze a package**
+**Refreeze a package &lt;b&gt;(DEPRECATED)&lt;/b&gt;**
 
 Refreezes a currently frozen package: all precompiled information is removed
 and file monitoring will consider the package exactly once, on the next
@@ -1028,7 +1025,7 @@ Related commands
 ^^^^^^^^^^^^^^^^
 
 ``neos.flow:package:freeze``
-  Freeze a package
+  Freeze a package <b>(DEPRECATED)</b>
 ``neos.flow:cache:flush``
   Flush all caches
 
@@ -1054,7 +1051,7 @@ Related commands
 ``neos.flow:package:unfreeze``
 ******************************
 
-**Unfreeze a package**
+**Unfreeze a package &lt;b&gt;(DEPRECATED)&lt;/b&gt;**
 
 Unfreezes a previously frozen package. On the next request, this package will
 be considered again by the file monitoring and related services – if they are
@@ -1077,7 +1074,7 @@ Related commands
 ^^^^^^^^^^^^^^^^
 
 ``neos.flow:package:freeze``
-  Freeze a package
+  Freeze a package <b>(DEPRECATED)</b>
 ``neos.flow:cache:flush``
   Flush all caches
 
