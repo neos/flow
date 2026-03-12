@@ -23,3 +23,9 @@ Neos:
       # by specifying corresponding regular expressions that don't match classes to exclude.
       #
       includeClasses: []
+
+      proxy:
+        # If enabled, a mapping file for Xdebug (>= v3.5) will be created in the .xdebug directory
+        # of the Flow root. This file can be used to map proxy classes to their original
+        # source files for debugging. Should only be enabled in development environments.
+        enableXdebugPathMapping: false
