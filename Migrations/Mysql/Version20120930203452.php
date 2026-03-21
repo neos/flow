@@ -59,6 +59,12 @@ class Version20120930203452 extends AbstractMigration
         $this->addSql("RENAME TABLE typo3_flow3_security_account TO typo3_flow_security_account");
         $this->addSql("RENAME TABLE typo3_flow3_security_authorization_resource_securitypubli_6180a TO typo3_flow_security_authorization_resource_securitypublis_861cb");
         $this->addSql("RENAME TABLE typo3_flow3_security_policy_role TO typo3_flow_security_policy_role");
+
+        // Explicitly normalize the FK constraint name after the table rename.
+        // Old MariaDB auto-renamed it (typo3_flow_resource_resource_ibfk_1 already set); MariaDB 12+ does not (typo3_flow3_resource_resource_ibfk_1 still present).
+        $this->addSql("ALTER TABLE typo3_flow_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow_resource_resource ADD CONSTRAINT typo3_flow_resource_resource_ibfk_1 FOREIGN KEY (resourcepointer) REFERENCES typo3_flow_resource_resourcepointer (hash)");
     }
 
     /**
@@ -110,5 +116,10 @@ class Version20120930203452 extends AbstractMigration
         $this->addSql("RENAME TABLE typo3_flow_security_account TO typo3_flow3_security_account");
         $this->addSql("RENAME TABLE typo3_flow_security_authorization_resource_securitypublis_861cb TO typo3_flow3_security_authorization_resource_securitypubli_6180a");
         $this->addSql("RENAME TABLE typo3_flow_security_policy_role TO typo3_flow3_security_policy_role");
+
+        // Explicitly normalize the FK constraint name after the table rename back.
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource ADD CONSTRAINT typo3_flow3_resource_resource_ibfk_1 FOREIGN KEY (resourcepointer) REFERENCES typo3_flow3_resource_resourcepointer (hash)");
     }
 }
