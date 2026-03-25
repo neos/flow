@@ -22,6 +22,12 @@ class Version20110824124835 extends AbstractMigration
         $this->addSql("RENAME TABLE flow3_resource_resourcepointer TO typo3_flow3_resource_resourcepointer");
         $this->addSql("RENAME TABLE flow3_resource_securitypublishingconfiguration TO typo3_flow3_security_authorization_resource_securitypublis_6180a");
         $this->addSql("RENAME TABLE flow3_security_account TO typo3_flow3_security_account");
+
+        // Explicitly normalize the FK constraint name after the table rename.
+        // Old MariaDB auto-renamed it (typo3_flow3_resource_resource_ibfk_1 already set); MariaDB 12+ does not (flow3_resource_resource_ibfk_1 still present).
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource DROP FOREIGN KEY IF EXISTS flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE typo3_flow3_resource_resource ADD CONSTRAINT typo3_flow3_resource_resource_ibfk_1 FOREIGN KEY (flow3_resource_resourcepointer) REFERENCES typo3_flow3_resource_resourcepointer (hash)");
     }
 
     /**
@@ -37,5 +43,10 @@ class Version20110824124835 extends AbstractMigration
         $this->addSql("RENAME TABLE typo3_flow3_resource_resourcepointer TO flow3_resource_resourcepointer");
         $this->addSql("RENAME TABLE typo3_flow3_security_authorization_resource_securitypublis_6180a TO flow3_resource_securitypublishingconfiguration");
         $this->addSql("RENAME TABLE typo3_flow3_security_account TO flow3_security_account");
+
+        // Explicitly normalize the FK constraint name after the table rename back.
+        $this->addSql("ALTER TABLE flow3_resource_resource DROP FOREIGN KEY IF EXISTS typo3_flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE flow3_resource_resource DROP FOREIGN KEY IF EXISTS flow3_resource_resource_ibfk_1");
+        $this->addSql("ALTER TABLE flow3_resource_resource ADD CONSTRAINT flow3_resource_resource_ibfk_1 FOREIGN KEY (flow3_resource_resourcepointer) REFERENCES flow3_resource_resourcepointer (hash)");
     }
 }
