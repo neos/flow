@@ -37,26 +37,6 @@ class Compiler
     public const ORIGINAL_CLASSNAME_SUFFIX = '_Original';
 
     /**
-     * @var CompileTimeObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var PhpFrontend
-     */
-    protected $classesCache;
-
-    /**
-     * @var ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
-     * @var SignalSlotDispatcher
-     */
-    private $signalSlotDispatcher;
-
-    /**
      * @var array
      */
     protected array $proxyClasses = [];
@@ -72,8 +52,9 @@ class Compiler
      * See above.
      *
      * @var int
+     * strlen('Neos\Flow') + 4
      */
-    protected $excludedSubPackagesLength;
+    protected int $excludedSubPackagesLength = 13;
 
     /**
      * The final map of proxy classes that end up in the cache.
@@ -88,11 +69,10 @@ class Compiler
     public function __construct(
         public PhpFrontend $classesCache,
         public CompileTimeObjectManager $objectManager,
-        public ReflectionService $reflectionService
+        public ReflectionService $reflectionService,
+        public SignalSlotDispatcher $signalSlotDispatcher
 
-    ) {
-        $this->excludedSubPackagesLength = strlen('Neos\Flow') + 4;
-    }
+    ) {}
 
     /**
      * Returns a proxy class object for the specified original class.
