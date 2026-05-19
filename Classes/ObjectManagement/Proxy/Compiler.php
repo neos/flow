@@ -72,7 +72,8 @@ class Compiler
         public ReflectionService $reflectionService,
         public SignalSlotDispatcher $signalSlotDispatcher
 
-    ) {}
+    ) {
+    }
 
     /**
      * Returns a proxy class object for the specified original class.

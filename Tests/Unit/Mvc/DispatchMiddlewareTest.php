@@ -56,7 +56,6 @@ class DispatchMiddlewareTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-
         $this->mockRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
         $httpResponse = new Response();
         $this->mockRequestHandler->method('handle')->willReturn($httpResponse);

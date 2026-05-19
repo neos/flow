@@ -39,7 +39,8 @@ class CommandManager
     public function __construct(
         private readonly Bootstrap $bootstrap,
         private readonly ObjectManagerInterface $objectManager
-    ) {}
+    ) {
+    }
 
     /**
      * Returns an array of all commands

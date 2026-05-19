@@ -42,7 +42,8 @@ final readonly class ConfigurationProperty
         private Configuration|null $objectConfiguration = null,
         private bool $lazyLoading = true,
         private int $autowiring = Configuration::AUTOWIRING_MODE_ON
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the name of the property

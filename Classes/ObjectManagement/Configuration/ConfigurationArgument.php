@@ -36,7 +36,8 @@ final readonly class ConfigurationArgument
         protected mixed $value,
         protected int $type = self::ARGUMENT_TYPES_STRAIGHTVALUE,
         protected int $autowiring = Configuration::AUTOWIRING_MODE_ON
-    ) {}
+    ) {
+    }
 
     /**
      * Returns the index (position) of the argument

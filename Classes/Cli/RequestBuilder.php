@@ -50,7 +50,8 @@ class RequestBuilder
         protected ObjectManagerInterface $objectManager,
         protected PackageManager $packageManager,
         protected CommandManager $commandManager
-    ) {}
+    ) {
+    }
 
     /**
      * Builds a CLI request object from a command line.

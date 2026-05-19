@@ -17,7 +17,8 @@ class Dispatcher
     public function __construct(
         protected \Neos\Flow\SignalSlot\Dispatcher $signalDispatcher,
         protected ObjectManagerInterface $objectManager
-    ) {}
+    ) {
+    }
 
     /**
      * Try processing the request until it is successfully marked "dispatched"

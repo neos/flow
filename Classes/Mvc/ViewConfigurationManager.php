@@ -32,7 +32,8 @@ class ViewConfigurationManager
         protected ConfigurationManager $configurationManager,
         protected CompilingEvaluator $eelEvaluator,
         protected VariableFrontend $cache
-    ) {}
+    ) {
+    }
 
     /**
      * This method walks through the view configuration and applies

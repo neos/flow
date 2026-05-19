@@ -4,7 +4,6 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\ObjectManagement\Configuration\Configuration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
-use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationParser;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty;
 use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;

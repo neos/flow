@@ -58,7 +58,8 @@ class ProxyClassBuilder
         protected ConfigurationManager $configurationManager,
         protected CacheManager $cacheManager,
         protected CompileTimeObjectManager $objectManager,
-    ) {}
+    ) {
+    }
 
     /**
      * Analyzes the object configuration provided by the compile-time object manager and builds

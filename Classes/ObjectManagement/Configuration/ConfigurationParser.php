@@ -14,7 +14,8 @@ readonly class ConfigurationParser
 {
     public function __construct(
         private ReflectionService $reflectionService
-    ) {}
+    ) {
+    }
 
     /**
      * Builds an object configuration object from a generic configuration container.

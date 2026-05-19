@@ -48,7 +48,8 @@ readonly class ConfigurationBuilder
         protected ConfigurationParser $configurationParser,
         protected LoggerInterface $logger,
         protected array $excludeClassesFromConstructorAutowiring = []
-    ) {}
+    ) {
+    }
 
     /**
      * Traverses through the given class and interface names and builds a base object configuration

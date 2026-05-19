@@ -36,7 +36,8 @@ final class DependencyProxy
     public function __construct(
         protected string $className,
         protected \Closure $builder
-    ) {}
+    ) {
+    }
 
     /**
      * Activate the dependency and set it in the object.

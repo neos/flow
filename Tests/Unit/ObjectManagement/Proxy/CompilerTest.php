@@ -13,17 +13,13 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 
 require_once(__DIR__ . '/../Fixture/FooBarAnnotation.php');
 
-use Neos\Cache\Frontend\PhpFrontend;
 use Neos\Flow\Annotations\Entity;
 use Neos\Flow\Annotations\Inject;
 use Neos\Flow\Annotations\Scope;
 use Neos\Flow\Annotations\Session;
 use Neos\Flow\Annotations\Signal;
 use Neos\Flow\Annotations\Validate;
-use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
-use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\ObjectManagement\Proxy\Compiler;
-use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ExampleEnum;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\FooBarAnnotation;
 use Neos\Flow\Tests\UnitTestCase;
@@ -41,9 +37,6 @@ class CompilerTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $cacheMock = $this->getMockBuilder(PhpFrontend::class)->disableOriginalConstructor()->getMock();
-        $objectManagerMock = $this->getMockBuilder(CompileTimeObjectManager::class)->disableOriginalConstructor()->getMock();
-        $reflectionserviceMock = $this->getMockBuilder(ReflectionService::class)->getMock();
         $this->compiler = $this->getAccessibleMock(Compiler::class, null, [], '', false);
     }
 
