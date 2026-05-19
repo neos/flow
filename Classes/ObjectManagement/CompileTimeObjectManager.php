@@ -362,7 +362,6 @@ class CompileTimeObjectManager extends ObjectManager
                     ];
                 }
             }
-
         }
         $this->configurationCache->set('objects', $objects);
         return $objects;
@@ -410,7 +409,7 @@ class CompileTimeObjectManager extends ObjectManager
 
         $this->objectNameBuildStack[] = $objectName;
 
-        $object = parent::get($objectName);
+        $object = parent::get($objectName, ...$constructorArguments);
         /** @var Configuration $objectConfiguration */
         $objectConfiguration = $this->objectConfigurations[$objectName];
         foreach ($objectConfiguration->getProperties() as $propertyName => $property) {

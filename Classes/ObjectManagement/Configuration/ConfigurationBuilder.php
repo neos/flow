@@ -161,9 +161,9 @@ readonly class ConfigurationBuilder
             }
         }
 
-        $this->autowireArguments($objectConfigurations);
-        $this->autowireProperties($objectConfigurations);
-        $this->wireFactoryArguments($objectConfigurations);
+        $objectConfigurations = $this->autowireArguments($objectConfigurations);
+        $objectConfigurations = $this->autowireProperties($objectConfigurations);
+        $objectConfigurations = $this->wireFactoryArguments($objectConfigurations);
 
         return $objectConfigurations;
     }
@@ -214,7 +214,7 @@ readonly class ConfigurationBuilder
      * @param array<Configuration> &$objectConfigurations
      * @return void
      */
-    protected function wireFactoryArguments(array $objectConfigurations): void
+    protected function wireFactoryArguments(array $objectConfigurations): array
     {
         foreach ($objectConfigurations as $objectConfiguration) {
             foreach ($objectConfiguration->getFactoryArguments() as $index => $argument) {
@@ -231,6 +231,8 @@ readonly class ConfigurationBuilder
                 $objectConfiguration->setFactoryArgument(new ConfigurationArgument($argument->getIndex(), $argumentObjectName, ConfigurationArgument::ARGUMENT_TYPES_OBJECT, $argument->getAutowiring()));
             }
         }
+
+        return $objectConfigurations;
     }
 
     /**
@@ -246,7 +248,7 @@ readonly class ConfigurationBuilder
      * @throws InvalidConfigurationException
      * @throws \ReflectionException
      */
-    protected function autowireArguments(array $objectConfigurations): void
+    protected function autowireArguments(array $objectConfigurations): array
     {
         foreach ($objectConfigurations as $objectConfiguration) {
             $className = $objectConfiguration->getClassName();
@@ -313,6 +315,8 @@ readonly class ConfigurationBuilder
 
             $objectConfiguration->setArguments($arguments);
         }
+
+        return $objectConfigurations;
     }
 
     /**
@@ -326,7 +330,7 @@ readonly class ConfigurationBuilder
      * @throws InvalidClassException
      * @throws \ReflectionException
      */
-    protected function autowireProperties(array $objectConfigurations): void
+    protected function autowireProperties(array $objectConfigurations): array
     {
         foreach ($objectConfigurations as $objectConfiguration) {
             $className = $objectConfiguration->getClassName();
@@ -443,5 +447,7 @@ readonly class ConfigurationBuilder
 
             $objectConfiguration->setProperties($properties);
         }
+
+        return $objectConfigurations;
     }
 }

@@ -36,22 +36,7 @@ class ConfigurationBuilderTest extends UnitTestCase
         $configurationArray['arguments'][1]['setting'] = 'Neos.Foo.Bar';
         $configurationArray['properties']['someProperty']['setting'] = 'Neos.Bar.Baz';
 
-        $reflectionServiceMock = $this->createMock(ReflectionService::class);
-        $reflectionServiceMock
-                ->expects(self::once())
-                ->method('getPropertyNamesByAnnotation')
-                ->with(__CLASS__, Flow\Inject::class)
-                ->will(self::returnValue(['dummyProperty']));
-
-        $reflectionServiceMock
-                ->expects(self::once())
-                ->method('isPropertyPrivate')
-                ->with(__CLASS__, 'dummyProperty')
-                ->will(self::returnValue(true));
-
-        $lopgerMock = $this->createMock(LoggerInterface::class);
-
-        $configurationBuilder = new ConfigurationBuilder($reflectionServiceMock, new ConfigurationParser($reflectionServiceMock), $lopgerMock);
+        $configurationBuilder = $this->prepareConfigurationBuilder($this->reflectionServiceMockWithDummyProperty());
         $configurationBuilder->buildObjectConfigurations(['Neos.Flow.Testing' => [__CLASS__]], ['Neos.Flow.Testing' => [__CLASS__ => $configurationArray]]);
     }
 
@@ -65,10 +50,8 @@ class ConfigurationBuilderTest extends UnitTestCase
         $configurationArray['properties']['someProperty']['object']['name'] = 'Foo';
         $configurationArray['properties']['someProperty']['object']['className'] = 'foobar';
 
-        $configurationBuilder = $this->getAccessibleMock(ConfigurationBuilder::class, ['dummy']);
-        $dummyObjectConfiguration = [$configurationBuilder->_call('parseConfigurationArray', 'Foo', $configurationArray, __CLASS__)];
-
-        $configurationBuilder->_callRef('autowireProperties', $dummyObjectConfiguration);
+        $configurationBuilder = $this->prepareConfigurationBuilder($this->reflectionServiceMock());
+        $configurationBuilder->buildObjectConfigurations(['Neos.Flow.Testing' => ['Foo']], ['Neos.Flow.Testing' => [__CLASS__ => $configurationArray]]);
     }
 
     /**
@@ -81,34 +64,45 @@ class ConfigurationBuilderTest extends UnitTestCase
             'factoryObjectName' => 'TestFactory',
         ];
 
-        $configurationBuilder = $this->getAccessibleMock(ConfigurationBuilder::class, ['dummy']);
-        $dummyObjectConfiguration = [$configurationBuilder->_call('parseConfigurationArray', __CLASS__, $configurationArray)];
+        $configurationBuilder = $this->prepareConfigurationBuilder($this->reflectionServiceMock());
 
-        $reflectionServiceMock = $this->createMock(ReflectionService::class);
-
-        $reflectionServiceMock
-            ->method('hasMethod')
-            ->with(__CLASS__, '__construct')
-            ->will($this->returnValue(true));
-
-        $reflectionServiceMock
-            ->method('getMethodParameters')
-            ->with(__CLASS__, '__construct')
-            ->will($this->returnValue([
-                'testArray' => [
-                    'position' => 0,
-                    'optional' => false,
-                    'class' => null,
-                    'allowsNull' => false
-                ]
-            ]));
-
-        $configurationBuilder->injectReflectionService($reflectionServiceMock);
         try {
-            $configurationBuilder->_callRef('autowireArguments', $dummyObjectConfiguration);
+            $objectConfigurations = $configurationBuilder->buildObjectConfigurations(['Neos.Flow.Testing' => [__CLASS__]], ['Neos.Flow.Testing' => [__CLASS__ => $configurationArray]]);
         } catch (UnresolvedDependenciesException $e) {
             self::fail('Factory created objects should not throw UnresolvedDependenciesException by autowiring constructor arguments');
         }
-        self::assertEquals([], $dummyObjectConfiguration[0]->getArguments());
+        self::assertEquals($configurationArray['factoryObjectName'], $objectConfigurations[__CLASS__]->getFactoryObjectName());
+    }
+
+    protected function prepareConfigurationBuilder(ReflectionService $reflectionServiceMock): ConfigurationBuilder
+    {
+        $loggerMock = $this->createMock(LoggerInterface::class);
+
+        $configurationBuilder = new ConfigurationBuilder($reflectionServiceMock, new ConfigurationParser($reflectionServiceMock), $loggerMock);
+        return $configurationBuilder;
+    }
+
+    protected function reflectionServiceMockWithDummyProperty(): ReflectionService
+    {
+        $reflectionServiceMock = $this->createMock(ReflectionService::class);
+        $reflectionServiceMock
+            ->expects(self::once())
+            ->method('getPropertyNamesByAnnotation')
+            ->with(__CLASS__, Flow\Inject::class)
+            ->will(self::returnValue(['dummyProperty']));
+
+        $reflectionServiceMock
+            ->expects(self::once())
+            ->method('isPropertyPrivate')
+            ->with(__CLASS__, 'dummyProperty')
+            ->will(self::returnValue(true));
+
+        return $reflectionServiceMock;
+    }
+
+    protected function reflectionServiceMock(): ReflectionService
+    {
+        $reflectionServiceMock = $this->createMock(ReflectionService::class);
+        return $reflectionServiceMock;
     }
 }

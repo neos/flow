@@ -357,7 +357,7 @@ class DependencyInjectionTest extends FunctionalTestCase
     public function constructorSettingsInjectionViaInjectAnnotation(): void
     {
         $object = $this->objectManager->get(PrototypeClassL::class);
-        self::assertInstanceOf(ProxyInterface::class, $object);
+        self::assertInstanceOf(PrototypeClassL::class, $object);
         self::assertSame('injected setting', $object->value);
 
         $object = new PrototypeClassL('override');

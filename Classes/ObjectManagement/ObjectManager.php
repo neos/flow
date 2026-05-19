@@ -225,6 +225,9 @@ class ObjectManager implements ObjectManagerInterface
         }
 
         $this->objects[$objectName][self::KEY_INSTANCE] = $this->instantiateClass($className, $constructorArguments);
+        if ($objectName !== $className && isset($this->objects[$className]) && $this->objects[$className][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_SINGLETON) {
+            $this->objects[$className][self::KEY_INSTANCE] = $this->objects[$objectName][self::KEY_INSTANCE];
+        }
         return $this->objects[$objectName][self::KEY_INSTANCE];
     }
 
@@ -561,7 +564,7 @@ class ObjectManager implements ObjectManagerInterface
     protected function autowireArguments($configuration, $existingArguments): array
     {
         foreach ($configuration as $index => $argument) {
-            if ($argument === null || $argument['wm'] === 0) {
+            if (isset($existingArguments[$index - 1])) {
                 continue;
             }
             $existingArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
