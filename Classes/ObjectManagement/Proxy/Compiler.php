@@ -71,7 +71,6 @@ class Compiler
         public CompileTimeObjectManager $objectManager,
         public ReflectionService $reflectionService,
         public SignalSlotDispatcher $signalSlotDispatcher
-
     ) {
     }
 
