@@ -415,8 +415,10 @@ class ProxyClassBuilder
 
         $callBuildMethodsAndAdvicesArrayCode = "\n        \$this->Flow_Aop_Proxy_buildMethodsAndAdvicesArray();\n";
         $proxyClass->getConstructor()->addPreParentCallCode($callBuildMethodsAndAdvicesArrayCode);
-        $proxyClass->getMethod('__wakeup')->setReturnType('void')->addPreParentCallCode($callBuildMethodsAndAdvicesArrayCode);
-        $proxyClass->getMethod('__clone')->setReturnType('void')->addPreParentCallCode($callBuildMethodsAndAdvicesArrayCode);
+        $proxyClass->getMethod('__wakeup')->addPreParentCallCode($callBuildMethodsAndAdvicesArrayCode);
+        $proxyClass->getMethod('__wakeup')->setReturnType('void');
+        $proxyClass->getMethod('__clone')->addPreParentCallCode($callBuildMethodsAndAdvicesArrayCode);
+        $proxyClass->getMethod('__clone')->setReturnType('void');
 
         if (!$this->reflectionService->hasMethod($targetClassName, '__wakeup')) {
             $proxyClass->getMethod('__wakeup')->addPostParentCallCode(<<<PHP
@@ -443,6 +445,8 @@ class ProxyClassBuilder
      * @param ClassNameIndex $treatedSubClasses Already treated (sub) classes to avoid duplication
      * @return ClassNameIndex The new collection of already treated classes
      * @throws CannotBuildObjectException
+     * @throws ClassLoadingForReflectionFailedException
+     * @throws InvalidClassException
      * @throws \ReflectionException
      */
     protected function proxySubClassesOfClassToEnsureAdvices(string $className, ClassNameIndex $targetClassNameCandidates, ClassNameIndex $treatedSubClasses): ClassNameIndex

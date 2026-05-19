@@ -213,7 +213,7 @@ readonly class ConfigurationBuilder
      *
      *
      * @param array<Configuration> &$objectConfigurations
-     * @return void
+     * @return array<Configuration>
      */
     protected function wireFactoryArguments(array $objectConfigurations): array
     {
@@ -240,13 +240,13 @@ readonly class ConfigurationBuilder
      * If mandatory constructor arguments have not been defined yet, this function tries to autowire
      * them if possible.
      *
-     * @param array<Configuration> &$objectConfigurations
-     * @return void
+     * @param array<Configuration> $objectConfigurations
+     * @return array<Configuration>
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
+     * @throws InvalidConfigurationException
      * @throws InvalidObjectConfigurationException
      * @throws UnresolvedDependenciesException
-     * @throws InvalidConfigurationException
      * @throws \ReflectionException
      */
     protected function autowireArguments(array $objectConfigurations): array
@@ -323,8 +323,8 @@ readonly class ConfigurationBuilder
     /**
      * This function tries to find yet unmatched dependencies which need to be injected via "inject*" setter methods.
      *
-     * @param array<Configuration> &$objectConfigurations
-     * @return void
+     * @param array<Configuration> $objectConfigurations
+     * @return array<Configuration>
      * @throws ObjectException if an injected property is private
      * @throws UnknownClassException
      * @throws ClassLoadingForReflectionFailedException

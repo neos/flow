@@ -279,6 +279,7 @@ class ProxyClassBuilder
      * @param Configuration $propertyConfiguration Configuration of the object to inject
      * @return string[] lines of PHP code
      * @throws UnknownObjectException
+     * @throws InvalidConfigurationTypeException
      */
     protected function buildPropertyInjectionCodeByConfiguration(Configuration $objectConfiguration, $propertyName, Configuration $propertyConfiguration): array
     {
@@ -550,9 +551,7 @@ class ProxyClassBuilder
 
     /**
      * @param class-string $customFactoryObjectName
-     * @param string $customFactoryMethodName
-     * @param array $arguments
-     * @return string
+     * @throws InvalidConfigurationTypeException
      */
     protected function buildCustomFactoryCall(string $customFactoryObjectName, string $customFactoryMethodName, array $arguments): string
     {
@@ -566,6 +565,8 @@ class ProxyClassBuilder
      * @param class-string $className
      * @param ProxyClass $proxyClass
      * @return void
+     * @throws ClassLoadingForReflectionFailedException
+     * @throws InvalidClassException
      * @throws ObjectException
      * @throws \ReflectionException
      */

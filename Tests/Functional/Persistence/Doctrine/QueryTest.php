@@ -329,11 +329,10 @@ class QueryTest extends FunctionalTestCase
      */
     public function comlexQueryWithJoinsCanBeExecutedAfterDeserialization(): void
     {
-        /** @noinspection PhpParamsInspection */
-        $postEntityRepository = new Fixtures\PostRepository();
+        $postEntityRepository = $this->objectManager->get(Fixtures\PostRepository::class);
         $postEntityRepository->removeAll();
 
-        $commentRepository = new Fixtures\CommentRepository();
+        $commentRepository = $this->objectManager->get(Fixtures\CommentRepository::class);
         $commentRepository->removeAll();
 
         $testEntity1 = new Fixtures\Post();
