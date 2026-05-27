@@ -175,16 +175,22 @@ class PersistentObjectConverterTest extends UnitTestCase
         ]));
 
         $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setVirtualPropertyName')->willReturn((true));
+        $matcher = $this->exactly(2);
         $this->mockReflectionService
-            ->expects($this->exactly(2))
-            ->method('getMethodParameters')
-            ->withConsecutive(
-                [self::equalTo('TheTargetType'), self::equalTo('__construct')],
-                [self::equalTo('TheTargetType'), self::equalTo('setVirtualPropertyName')]
-            )
-            ->willReturn(([
+            ->expects($matcher)
+            ->method('getMethodParameters')->willReturnCallback(function (...$parameters) use ($matcher) {
+            if ($matcher->getInvocationCount() === 1) {
+                $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
+                $this->assertSame(self::equalTo('__construct'), $parameters[1]);
+            }
+            if ($matcher->getInvocationCount() === 2) {
+                $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
+                $this->assertSame(self::equalTo('setVirtualPropertyName'), $parameters[1]);
+            }
+            return [
                 ['type' => 'TheTypeOfSubObject']
-            ]));
+            ];
+        });
         $configuration = $this->buildConfiguration([]);
         self::assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'virtualPropertyName', $configuration));
     }
