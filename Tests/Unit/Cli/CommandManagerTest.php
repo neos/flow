@@ -44,9 +44,7 @@ final class CommandManagerTest extends UnitTestCase
     {
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
         $this->commandManager = $this->getMockBuilder(Cli\CommandManager::class)->onlyMethods(['getAvailableCommands'])->getMock();
-
-        $mockBootstrap = $this->createMock(Bootstrap::class);
-        $this->commandManager->injectBootstrap($mockBootstrap);
+        $this->commandManager->injectBootstrap($this->createMock(Bootstrap::class));
     }
 
     /**

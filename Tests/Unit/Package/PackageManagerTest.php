@@ -57,14 +57,11 @@ final class PackageManagerTest extends UnitTestCase
         vfsStream::setup('Test');
         $mockBootstrap = $this->createMock(Bootstrap::class);
         $mockBootstrap->method('getSignalSlotDispatcher')->willReturn(($this->createMock(Dispatcher::class)));
-
-        $mockApplicationContext = $this->createMock(ApplicationContext::class);
-        $mockBootstrap->method('getContext')->willReturn(($mockApplicationContext));
+        $mockBootstrap->method('getContext')->willReturn(($this->createMock(ApplicationContext::class)));
 
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockBootstrap->method('getObjectManager')->willReturn(($mockObjectManager));
-        $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockObjectManager->method('get')->with(ReflectionService::class)->willReturn(($mockReflectionService));
+        $mockObjectManager->method('get')->with(ReflectionService::class)->willReturn(($this->createMock(ReflectionService::class)));
 
         mkdir('vfs://Test/Packages/Application', 0700, true);
         mkdir('vfs://Test/Configuration');

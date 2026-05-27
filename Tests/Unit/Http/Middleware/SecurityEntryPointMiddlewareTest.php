@@ -97,8 +97,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockRequestHandler->method('handle')->willthrowException($this->mockAuthenticationRequiredException);
 
         $this->mockTokenWithEntryPoint = $this->createMock(TokenInterface::class);
-        $mockEntryPoint = $this->createMock(EntryPointInterface::class);
-        $this->mockTokenWithEntryPoint->method('getAuthenticationEntryPoint')->willReturn($mockEntryPoint);
+        $this->mockTokenWithEntryPoint->method('getAuthenticationEntryPoint')->willReturn($this->createMock(EntryPointInterface::class));
     }
 
     protected function buildMockHttpRequest($queryParams = [], $parsedBody = [])
@@ -182,8 +181,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
     private function createMockTokenWithEntryPoint(): MockObject
     {
         $mockAuthenticationToken = $this->createMock(TokenInterface::class);
-        $mockEntryPoint = $this->createMock(EntryPointInterface::class);
-        $mockAuthenticationToken->method('getAuthenticationEntryPoint')->willReturn($mockEntryPoint);
+        $mockAuthenticationToken->method('getAuthenticationEntryPoint')->willReturn($this->createMock(EntryPointInterface::class));
         return $mockAuthenticationToken;
     }
 

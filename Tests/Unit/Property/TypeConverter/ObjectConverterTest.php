@@ -41,11 +41,10 @@ final class ObjectConverterTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
 
         $this->converter = new ObjectConverter();
         $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
-        $this->inject($this->converter, 'objectManager', $mockObjectManager);
+        $this->inject($this->converter, 'objectManager', $this->createStub(ObjectManagerInterface::class));
     }
 
     /**

@@ -62,9 +62,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
         $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
-
-        $mockViewConfigurationManager = $this->createMock(Mvc\ViewConfigurationManager::class);
-        $this->inject($this->actionController, 'viewConfigurationManager', $mockViewConfigurationManager);
+        $this->inject($this->actionController, 'viewConfigurationManager', $this->createStub(Mvc\ViewConfigurationManager::class));
     }
 
     /**

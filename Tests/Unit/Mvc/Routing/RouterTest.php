@@ -86,8 +86,6 @@ final class RouterTest extends UnitTestCase
         $mockUri->method('withFragment')->willReturn($mockUri);
         $mockUri->method('withPath')->willReturn($mockUri);
         $this->mockHttpRequest->method('getUri')->willReturn($mockUri);
-
-        $mockActionRequest = $this->createMock(ActionRequest::class);
     }
 
     /**

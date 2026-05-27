@@ -83,10 +83,8 @@ final class SessionManagerTest extends UnitTestCase
         $mockRequestHandler->method('getHttpRequest')->willReturn(($httpRequest));
         $mockRequestHandler->method('getHttpResponse')->willReturn(($httpResponse));
 
-        $mockSecurityContext = $this->createMock(Context::class);
-
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($mockSecurityContext));
+        $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($this->createMock(Context::class)));
     }
 
     /**

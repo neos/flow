@@ -52,9 +52,7 @@ final class PolicyServiceTest extends UnitTestCase
             return $this->mockPolicyConfiguration;
         });
         $this->inject($this->policyService, 'configurationManager', $mockConfigurationManager);
-
-        $mockObjectManager = $this->createMock(ObjectManager::class);
-        $this->inject($this->policyService, 'objectManager', $mockObjectManager);
+        $this->inject($this->policyService, 'objectManager', $this->createStub(ObjectManager::class));
 
         $this->mockPrivilege = $this->getAccessibleMock(AbstractPrivilege::class, ['matchesSubject'], [], '', false);
     }

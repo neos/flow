@@ -31,7 +31,6 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         vfsStream::setup('Packages');
-        $mockPackageManager = $this->createMock(PackageManager::class);
         $this->compileTimeObjectManager = $this->getAccessibleMock(CompileTimeObjectManager::class, [], [], '', false);
         $this->compileTimeObjectManager->injectLogger($this->createMock(LoggerInterface::class));
         $configurations = [

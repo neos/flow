@@ -63,9 +63,8 @@ final class PrivilegeManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockSecurityContext = $this->createMock(Context::class);
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
 
-        $this->privilegeManager = new PrivilegeManager($mockObjectManager, $this->mockSecurityContext);
+        $this->privilegeManager = new PrivilegeManager($this->createStub(ObjectManagerInterface::class), $this->mockSecurityContext);
 
         $this->grantPrivilege = $this->createMock(AbstractPrivilege::class);
         $this->grantPrivilege->method('getPermission')->willReturn((PrivilegeInterface::GRANT));

@@ -60,8 +60,7 @@ final class RoutingMiddlewareTest extends UnitTestCase
         $this->routingMiddleware = new RoutingMiddleware();
 
         $this->mockRouter = $this->createMock(Router::class);
-        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
-        $this->inject($this->mockRouter, 'configurationManager', $mockConfigurationManager);
+        $this->inject($this->mockRouter, 'configurationManager', $this->createStub(ConfigurationManager::class));
 
         $this->inject($this->routingMiddleware, 'router', $this->mockRouter);
 

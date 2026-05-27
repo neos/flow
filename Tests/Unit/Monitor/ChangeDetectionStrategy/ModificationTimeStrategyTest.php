@@ -34,10 +34,8 @@ final class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
     {
         vfsStream::setup('testDirectory');
 
-        $cache = $this->createMock(\Neos\Cache\Frontend\StringFrontend::class);
-
         $this->strategy = new \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy();
-        $this->strategy->injectCache($cache);
+        $this->strategy->injectCache($this->createStub(\Neos\Cache\Frontend\StringFrontend::class));
     }
 
     /**

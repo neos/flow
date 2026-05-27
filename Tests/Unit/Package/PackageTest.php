@@ -33,7 +33,6 @@ final class PackageTest extends UnitTestCase
     {
         ComposerUtility::flushCaches();
         vfsStream::setup('Packages');
-        $mockPackageManager = $this->createMock(\Neos\Flow\Package\PackageManager::class);
     }
 
     /**
