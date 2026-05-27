@@ -145,7 +145,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         ];
         $mockHash = '12345';
 
-        $hashService = $this->getAccessibleMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class, ['appendHmac']);
+        $hashService = $this->getAccessibleMock(HashService::class, ['appendHmac']);
         $hashService->expects($this->once())->method('appendHmac')->with(serialize($formFieldArray))->willReturn((serialize($formFieldArray) . $mockHash));
 
         $requestHashService = $this->getAccessibleMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class, []);
@@ -158,7 +158,6 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 
     /**
      * @test
-     * @doesNotPerformAssertions
      */
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
     {

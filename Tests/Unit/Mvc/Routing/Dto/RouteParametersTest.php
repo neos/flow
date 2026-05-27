@@ -21,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 class RouteParametersTest extends UnitTestCase
 {
-    public function withParameterThrowsExceptionForInvalidParameterValuesDataProvider()
+    public static function withParameterThrowsExceptionForInvalidParameterValuesDataProvider()
     {
         return [
             ['parameterValue' => new \stdClass()],

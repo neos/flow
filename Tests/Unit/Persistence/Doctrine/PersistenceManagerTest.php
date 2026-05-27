@@ -83,7 +83,7 @@ class PersistenceManagerTest extends UnitTestCase
 
         $allowedObjectsContainer = new AllowedObjectsContainer();
         $this->inject($this->persistenceManager, 'allowedObjects', $allowedObjectsContainer);
-        $allowedObjectsListener = $this->getMockBuilder(AllowedObjectsListener::class)->setMethods(['ping'])->getMock();
+        $allowedObjectsListener = $this->getMockBuilder(AllowedObjectsListener::class)->onlyMethods(['ping'])->getMock();
         $this->inject($allowedObjectsListener, 'allowedObjects', $allowedObjectsContainer);
         $this->inject($allowedObjectsListener, 'logger', $this->mockSystemLogger);
         $this->inject($allowedObjectsListener, 'throwableStorage', $mockThrowableStorage);

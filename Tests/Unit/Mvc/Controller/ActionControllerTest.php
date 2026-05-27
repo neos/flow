@@ -339,9 +339,8 @@ class ActionControllerTest extends UnitTestCase
      */
     public function processRequestUsesContentTypeFromRenderedView($supportedMediaTypes, $acceptHeader, $expected): void
     {
-        $this->actionController = $this->getAccessibleMock(ActionController::class, ['resolveActionMethodName', 'theActionAction', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'resolveView']);
+        $this->actionController = $this->getAccessibleMock(ActionActionController::class, ['resolveActionMethodName', 'initializeActionMethodArguments', 'initializeActionMethodValidators', 'resolveView']);
         $this->actionController->method('resolveActionMethodName')->willReturn('theActionAction');
-        $this->actionController->method('theActionAction')->willReturn(null);
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
@@ -430,5 +429,12 @@ class ActionControllerTest extends UnitTestCase
         }
 
         $this->actionController->_call('initializeActionMethodValidators');
+    }
+}
+
+class ActionActionController extends ActionController {
+    public function theActionAction(): null
+    {
+        return null;
     }
 }

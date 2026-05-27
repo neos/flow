@@ -248,7 +248,7 @@ class PackageManagerTest extends UnitTestCase
             ComposerUtility::writeComposerManifest($packagePath, $packageKey, ['type' => 'flow-test', 'autoload' => []]);
         }
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['updateShortcuts', 'emitPackageStatesUpdated'], [], '', false);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, [], [], '', false);
         $packageManager->_set('packagesBasePath', 'vfs://Test/Packages/');
         $packageManager->_set('packageInformationCacheFilePath', 'vfs://Test/Configuration/PackageStates.php');
 
@@ -446,7 +446,7 @@ class PackageManagerTest extends UnitTestCase
             ]
         ];
 
-        $packageManager = $this->getAccessibleMock(PackageManager::class, ['resolvePackageDependencies'], ['', '']);
+        $packageManager = $this->getAccessibleMock(PackageManager::class, [], ['', '']);
         $packageManager->_set('packageStatesConfiguration', $packageStatesConfiguration);
 
         self::assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));

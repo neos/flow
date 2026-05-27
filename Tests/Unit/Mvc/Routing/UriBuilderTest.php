@@ -211,7 +211,7 @@ class UriBuilderTest extends UnitTestCase
     public function uriForInSubRequestWithExplicitEmptySubpackageKeyDoesNotUseRequestSubpackageKey()
     {
         /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $mockSubRequest */
-        $mockSubRequest = $this->getMockBuilder(Mvc\ActionRequest::class)->onlyMethods([])->disableOriginalConstructor()->getMock();
+        $mockSubRequest = $this->getMockBuilder(Mvc\ActionRequest::class)->disableOriginalConstructor()->getMock();
         $mockSubRequest->expects($this->any())->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
         $mockSubRequest->expects($this->any())->method('getMainRequest')->willReturn(($this->mockMainRequest));
         $mockSubRequest->expects($this->any())->method('isMainRequest')->willReturn((false));

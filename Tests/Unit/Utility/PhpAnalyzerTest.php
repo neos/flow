@@ -45,7 +45,7 @@ class PhpAnalyzerTest extends UnitTestCase
      * @test
      * @dataProvider sampleClasses
      */
-    public function extractNamespaceTests($phpCode, $namespace)
+    public function extractNamespaceTests($phpCode, $namespace, $className, $fqn)
     {
         $phpAnalyzer = new PhpAnalyzer($phpCode);
         self::assertSame($namespace, $phpAnalyzer->extractNamespace());
@@ -58,7 +58,7 @@ class PhpAnalyzerTest extends UnitTestCase
      * @test
      * @dataProvider sampleClasses
      */
-    public function extractClassNameTests($phpCode, $namespace, $className)
+    public function extractClassNameTests($phpCode, $namespace, $className, $fqn)
     {
         $phpAnalyzer = new PhpAnalyzer($phpCode);
         self::assertSame($className, $phpAnalyzer->extractClassName());

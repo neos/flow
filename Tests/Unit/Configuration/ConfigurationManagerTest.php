@@ -1354,10 +1354,13 @@ class ConfigurationManagerTest extends UnitTestCase
             return [];
         });
 
-        $configurationManager = $this->getAccessibleConfigurationManager([]);
+        $configurationManager = $this->getAccessibleConfigurationManager();
 
-        $configurationManager->registerConfigurationType(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, function (array $packages, ApplicationContext $context) {
-            return [];
+        $configurationManager->registerConfigurationType(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, new class implements LoaderInterface {
+            public function load(array $packages, ApplicationContext $context): array
+            {
+                return [];
+            }
         });
 
         $mockRoutesLoader = $this->getAccessibleMock(RoutesLoader::class, [], [$mockYamlSource, $configurationManager], '', true, true, true, false, true);

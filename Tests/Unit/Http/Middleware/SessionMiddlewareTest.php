@@ -156,7 +156,7 @@ class SessionMiddlewareTest extends UnitTestCase
      * @test
      * @dataProvider sessionCookieSettingsProvider
      */
-    public function newSessionCookiesTakeSessionCookieSettingsIntoAccount(array $sessionCookieSettings, string $expectedCookie): void
+    public function newSessionCookiesTakeSessionCookieSettingsIntoAccount(array $sessionCookieSettings, string $expectedNewCookieValue): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn(['session_cookie_name' => 'session-id']);
 
@@ -165,8 +165,8 @@ class SessionMiddlewareTest extends UnitTestCase
             'cookie' => array_merge($this->defaultSessionCookieSettings, $sessionCookieSettings),
         ]);
 
-        $this->mockSessionManager->expects($this->once())->method('initializeCurrentSessionFromCookie')->willReturnCallback(static function (Cookie $cookie) use ($expectedCookie) {
-            self::assertSame($expectedCookie, (string)$cookie);
+        $this->mockSessionManager->expects($this->once())->method('initializeCurrentSessionFromCookie')->willReturnCallback(static function (Cookie $cookie) use ($expectedNewCookieValue) {
+            self::assertSame($expectedNewCookieValue, (string)$cookie);
         });
 
         $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);

@@ -445,6 +445,8 @@ class CacheManagerTest extends UnitTestCase
                 if ($matcher->numberOfInvocations() === 2) {
                     $this->assertSame('allCompiledCodeUpToDate', $parameters[0]);
                 }
+
+                return true;
             });
         } else {
             $objectClassesCache->expects($this->never())->method('flush');

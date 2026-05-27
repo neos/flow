@@ -329,18 +329,18 @@ class ContextTest extends UnitTestCase
     {
         $mockRequestPatterns = [];
         foreach ($patterns as $pattern) {
-            $mockRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('RequestPattern_' . $pattern['type'])->getMock();
+            $mockRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('RequestPattern_' . $pattern['type'] . '_' . mt_rand())->getMock();
             $mockRequestPattern->expects($this->any())->method('matchRequest')->with($this->mockActionRequest)->willReturn(($pattern['matchesRequest']));
             $mockRequestPatterns[] = $mockRequestPattern;
         }
 
         $mockToken = $this->createMock(TokenInterface::class);
         $mockToken->expects($this->once())->method('hasRequestPatterns')->willReturn(($mockRequestPatterns !== []));
-        $mockToken->expects($this->any())->method('getRequestPatterns')->willReturn(($mockRequestPatterns));
+        $mockToken->method('getRequestPatterns')->willReturn(($mockRequestPatterns));
 
         $this->mockTokenAndProviderFactory->expects($this->once())->method('getTokens')->willReturn([$mockToken]);
 
-        $this->securityContext = $this->getAccessibleMock(Context::class, []);
+        $this->securityContext = $this->getAccessibleMock(Context::class);
         $this->inject($this->securityContext, 'objectManager', $this->mockObjectManager);
         $this->inject($this->securityContext, 'tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
         $settings = [];

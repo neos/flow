@@ -29,7 +29,7 @@ class NumberParserTest extends UnitTestCase
      *
      * @var array
      */
-    protected static $sampleLocalizedSymbols = [
+    protected $sampleLocalizedSymbols = [
         'decimal' => ',',
         'group' => ' ',
         'percentSign' => '%',
