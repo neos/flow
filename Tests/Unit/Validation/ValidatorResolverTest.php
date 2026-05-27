@@ -67,10 +67,10 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Foo', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Neos\Flow\Validation\Validator\FooValidator', $parameters[0]);
             }
             return false;
@@ -99,11 +99,11 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Foo', $parameters[0]);
                 return false;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Neos\Flow\Validation\Validator\FooValidator', $parameters[0]);
                 return true;
             }
@@ -121,10 +121,10 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('DateTime', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(DateTimeValidator::class, $parameters[0]);
             }
             return true;
@@ -154,11 +154,11 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Mypkg:My', $parameters[0]);
                 return false;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Mypkg\Validation\Validator\MyValidator', $parameters[0]);
                 return true;
             }
@@ -177,11 +177,11 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Mypkg.Foo:My', $parameters[0]);
                 return false;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Mypkg\Foo\Validation\Validator\MyValidator', $parameters[0]);
                 return true;
             }
@@ -200,11 +200,11 @@ class ValidatorResolverTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $matcher = self::atLeast(2);
         $this->mockObjectManager->expects($matcher)->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Foo', $parameters[0]);
                 return false;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Neos\Flow\Validation\Validator\FooValidator', $parameters[0]);
                 return true;
             }
@@ -289,10 +289,10 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $matcher = self::exactly(2);
         $mockReflectionService->expects($matcher)->method('getAllImplementationClassNamesForInterface')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ValidatorInterface::class, $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(PolyTypeObjectValidatorInterface::class, $parameters[0]);
             }
             return [];
@@ -371,13 +371,13 @@ class ValidatorResolverTest extends UnitTestCase
         $conjunction1 = $this->getMockBuilder(ConjunctionValidator::class)->disableOriginalConstructor()->getMock();
         $matcher = self::exactly(3);
         $conjunction1->expects($matcher)->method('addValidator')->willReturnCallback(function (...$parameters) use ($matcher, $mockStringValidator, $mockFooValidator, $mockBarValidator) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($mockStringValidator, $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($mockFooValidator, $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame($mockBarValidator, $parameters[0]);
             }
         });
@@ -385,10 +385,10 @@ class ValidatorResolverTest extends UnitTestCase
         $conjunction2 = $this->getMockBuilder(ConjunctionValidator::class)->disableOriginalConstructor()->getMock();
         $matcher = self::exactly(2);
         $conjunction2->expects($matcher)->method('addValidator')->willReturnCallback(function (...$parameters) use ($matcher, $mockArrayValidator, $mockQuuxValidator) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($mockArrayValidator, $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($mockQuuxValidator, $parameters[0]);
             }
         });
@@ -396,32 +396,32 @@ class ValidatorResolverTest extends UnitTestCase
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, ['createValidator'], [], '', false);
         $matcher = self::exactly(7);
         $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ConjunctionValidator::class, $parameters[0]);
                 return $conjunction1;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('string', $parameters[0]);
                 return $mockStringValidator;
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame(ConjunctionValidator::class, $parameters[0]);
                 return $conjunction2;
             }
-            if ($matcher->getInvocationCount() === 4) {
+            if ($matcher->numberOfInvocations() === 4) {
                 $this->assertSame('array', $parameters[0]);
                 return $mockArrayValidator;
             }
-            if ($matcher->getInvocationCount() === 5) {
+            if ($matcher->numberOfInvocations() === 5) {
                 $this->assertSame('Foo', $parameters[0]);
                 $this->assertSame(['bar' => 'baz'], $parameters[1]);
                 return $mockFooValidator;
             }
-            if ($matcher->getInvocationCount() === 6) {
+            if ($matcher->numberOfInvocations() === 6) {
                 $this->assertSame('Bar', $parameters[0]);
                 return $mockBarValidator;
             }
-            if ($matcher->getInvocationCount() === 7) {
+            if ($matcher->numberOfInvocations() === 7) {
                 $this->assertSame('Neos\TestPackage\Quux', $parameters[0]);
                 return $mockQuuxValidator;
             }
@@ -493,15 +493,15 @@ class ValidatorResolverTest extends UnitTestCase
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, ['createValidator'], [], '', false);
         $matcher = self::exactly(3);
         $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ConjunctionValidator::class, $parameters[0]);
                 return $conjunction1;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('string', $parameters[0]);
                 return $mockStringValidator;
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('Neos\TestPackage\Quux', $parameters[0]);
                 return $mockQuuxValidator;
             }
@@ -567,15 +567,15 @@ class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_set('objectManager', $mockObjectManager);
         $matcher = self::exactly(3);
         $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName, $highPriorityValidatorClassName, $lowPriorityValidatorClassName) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName . 'Validator', $parameters[0]);
                 return null;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($highPriorityValidatorClassName, $parameters[0]);
                 return $mockHighPriorityValidator;
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame($lowPriorityValidatorClassName, $parameters[0]);
                 return $mockLowPriorityValidator;
             }
@@ -600,11 +600,11 @@ class ValidatorResolverTest extends UnitTestCase
         $mockObjectManager->method('isRegistered')->willReturn(true);
         $matcher = self::exactly(2);
         $mockObjectManager->expects($matcher)->method('getScope')->willReturnCallback(function (...$parameters) use ($matcher, $entityClassName, $otherClassName) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($entityClassName, $parameters[0]);
                 return Configuration::SCOPE_PROTOTYPE;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($otherClassName, $parameters[0]);
                 return null;
             }
@@ -615,12 +615,12 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->method('getClassPropertyNames')->willReturn(['entityProperty', 'otherProperty']);
         $matcher = self::exactly(2);
         $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('entityProperty', $parameters[1]);
                 return ['var' => [$entityClassName]];
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('otherProperty', $parameters[1]);
                 return ['var' => [$otherClassName]];
@@ -629,12 +629,12 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->expects($this->exactly(2))->method('isPropertyAnnotatedWith')->willReturn(false);
         $matcher = self::exactly(2);
         $mockReflectionService->expects($matcher)->method('getPropertyAnnotations')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('entityProperty', $parameters[1]);
                 $this->assertSame(Annotations\Validate::class, $parameters[2]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('otherProperty', $parameters[1]);
                 $this->assertSame(Annotations\Validate::class, $parameters[2]);
@@ -683,10 +683,10 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $matcher = self::exactly(2);
         $mockReflectionService->expects($matcher)->method('getAllImplementationClassNamesForInterface')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ValidatorInterface::class, $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(PolyTypeObjectValidatorInterface::class, $parameters[0]);
             }
             return [];
@@ -749,17 +749,17 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->method('getClassPropertyNames')->with($className)->willReturn(['foo', 'bar', 'baz']);
         $matcher = self::exactly(3);
         $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $className) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($className, $parameters[0]);
                 $this->assertSame('foo', $parameters[1]);
                 return $propertyTagsValues['bar'];
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($className, $parameters[0]);
                 $this->assertSame('bar', $parameters[1]);
                 return $propertyTagsValues['foo'];
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame($className, $parameters[0]);
                 $this->assertSame('baz', $parameters[1]);
                 return $propertyTagsValues['baz'];
@@ -768,19 +768,19 @@ class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->expects($this->exactly(3))->method('isPropertyAnnotatedWith')->willReturn(false);
         $matcher = self::exactly(3);
         $mockReflectionService->expects($matcher)->method('getPropertyAnnotations')->willReturnCallback(function (...$parameters) use ($matcher, $mockObject) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('foo', $parameters[1]);
                 $this->assertSame(Annotations\Validate::class, $parameters[2]);
                 return $validateAnnotations['foo'];
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('bar', $parameters[1]);
                 $this->assertSame(Annotations\Validate::class, $parameters[2]);
                 return $validateAnnotations['bar'];
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('baz', $parameters[1]);
                 $this->assertSame(Annotations\Validate::class, $parameters[2]);
@@ -798,24 +798,24 @@ class ValidatorResolverTest extends UnitTestCase
         $matcher = self::exactly(6);
 
         $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $className, $mockObjectValidator) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Foo', $parameters[0]);
                 $this->assertSame(['bar' => 'baz'], $parameters[1]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Bar', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('Baz', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 4) {
+            if ($matcher->numberOfInvocations() === 4) {
                 $this->assertSame('Neos\TestPackage\Quux', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 5) {
+            if ($matcher->numberOfInvocations() === 5) {
                 $this->assertSame(CollectionValidator::class, $parameters[0]);
                 $this->assertSame(['elementType' => 'Neos\TestPackage\Quux', 'validationGroups' => ['Default']], $parameters[1]);
             }
-            if ($matcher->getInvocationCount() === 6) {
+            if ($matcher->numberOfInvocations() === 6) {
                 $this->assertSame($className . 'Validator', $parameters[0]);
             }
             return $mockObjectValidator;

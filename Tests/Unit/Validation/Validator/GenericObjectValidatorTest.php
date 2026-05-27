@@ -200,6 +200,6 @@ class GenericObjectValidatorTest extends AbstractValidatorTestcase
         $validator->validate($object);
         $validator->validate($object);
 
-        self::assertEquals(1, $matcher->getInvocationCount());
+        self::assertEquals(1, $matcher->numberOfInvocations());
     }
 }

@@ -40,16 +40,16 @@ class CldrModelTest extends UnitTestCase
 
         $mockCldrParser = $this->createMock(I18n\Cldr\CldrParser::class);
         $matcher = self::exactly(3);
-        $mockCldrParser->expects($matcher)->method('getParsedData')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+        $mockCldrParser->expects($matcher)->method('getParsedData')->willReturnCallback(function (...$parameters) use ($matcher, $sampleParsedFile1, $sampleParsedFile2, $sampleParsedFile3) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('foo', $parameters[0]);
                 return $sampleParsedFile1;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('bar', $parameters[0]);
                 return $sampleParsedFile2;
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('baz', $parameters[0]);
                 return $sampleParsedFile3;
             }

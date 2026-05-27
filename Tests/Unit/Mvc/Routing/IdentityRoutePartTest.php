@@ -393,21 +393,21 @@ class IdentityRoutePartTest extends UnitTestCase
         $this->identityRoutePart->expects($this->once())->method('createPathSegmentForObject')->with($object)->willReturn(('The/Path/Segment'));
         $matcher = self::exactly(3);
         $this->mockObjectPathMappingRepository->expects($matcher)->method('findOneByObjectTypeUriPatternAndPathSegment')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment', $parameters[2]);
                 $this->assertSame(false, $parameters[3]);
                 return $existingObjectPathMapping;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-1', $parameters[2]);
                 $this->assertSame(false, $parameters[3]);
                 return $existingObjectPathMapping;
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-2', $parameters[2]);
@@ -449,14 +449,14 @@ class IdentityRoutePartTest extends UnitTestCase
         $this->identityRoutePart->expects($this->once())->method('createPathSegmentForObject')->with($object)->willReturn(('The/Path/Segment'));
         $matcher = self::exactly(2);
         $this->mockObjectPathMappingRepository->expects($matcher)->method('findOneByObjectTypeUriPatternAndPathSegment')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment', $parameters[2]);
                 $this->assertSame(true, $parameters[3]);
                 return $existingObjectPathMapping;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-1', $parameters[2]);

@@ -75,39 +75,39 @@ class NumbersReaderTest extends UnitTestCase
         $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
         $matcher = self::atLeast(3);
         $mockCache->expects($matcher)->method('has')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('parsedFormats', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('parsedFormatsIndices', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('localizedSymbols', $parameters[0]);
             }
             return true;
         });
         $matcher = self::atLeast(3);
         $mockCache->expects($matcher)->method('get')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('parsedFormats', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('parsedFormatsIndices', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('localizedSymbols', $parameters[0]);
             }
             return [];
         });
         $matcher = self::atLeast(3);
         $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('parsedFormats', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('parsedFormatsIndices', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('localizedSymbols', $parameters[0]);
             }
         });

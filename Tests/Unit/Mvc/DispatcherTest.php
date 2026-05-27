@@ -188,11 +188,11 @@ class DispatcherTest extends UnitTestCase
         $matcher = self::exactly(2);
 
         $this->mockController->expects($matcher)->method('processRequest')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($this->mockActionRequest, $parameters[0]);
                 return self::throwException(new StopActionException());
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($this->mockParentRequest, $parameters[0]);
                 return self::throwException($forwardException);
             }

@@ -439,10 +439,10 @@ class CacheManagerTest extends UnitTestCase
             $objectClassesCache->expects($this->once())->method('flush');
             $matcher = $this->exactly(2);
             $objectConfigurationCache->expects($matcher)->method('remove')->willReturnCallback(function (...$parameters) use ($matcher) {
-                if ($matcher->getInvocationCount() === 1) {
+                if ($matcher->numberOfInvocations() === 1) {
                     $this->assertSame('allAspectClassesUpToDate', $parameters[0]);
                 }
-                if ($matcher->getInvocationCount() === 2) {
+                if ($matcher->numberOfInvocations() === 2) {
                     $this->assertSame('allCompiledCodeUpToDate', $parameters[0]);
                 }
             });

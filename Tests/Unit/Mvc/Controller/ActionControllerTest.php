@@ -93,11 +93,11 @@ class ActionControllerTest extends UnitTestCase
     {
         $matcher = self::exactly(2);
         $this->mockObjectManager->expects($matcher)->method('getCaseSensitiveObjectName')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('some\package\subpackage\view\thecontroller\theactiontheformat', $parameters[0]);
                 return null;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('some\package\subpackage\view\thecontroller\theaction', $parameters[0]);
                 return 'ResolvedObjectName';
             }
@@ -114,10 +114,10 @@ class ActionControllerTest extends UnitTestCase
         $this->actionController->_set('viewFormatToObjectNameMap', ['html' => 'Foo', 'theFormat' => 'Some\Custom\View\Object\Name']);
         $matcher = self::exactly(2);
         $this->mockObjectManager->expects($matcher)->method('getCaseSensitiveObjectName')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('some\package\subpackage\view\thecontroller\theactiontheformat', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('some\package\subpackage\view\thecontroller\theaction', $parameters[0]);
             }
             return null;

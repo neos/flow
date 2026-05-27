@@ -43,12 +43,12 @@ class FormatResolverTest extends UnitTestCase
         $mockNumberFormatter = $this->createMock(I18n\Formatter\NumberFormatter::class);
         $matcher = $this->exactly(2);
         $mockNumberFormatter->expects($matcher)->method('format')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(1, $parameters[0]);
                 $this->assertSame($this->sampleLocale, $parameters[1]);
                 return '1.0';
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(2, $parameters[0]);
                 $this->assertSame($this->sampleLocale, $parameters[1]);
                 $this->assertSame(['percent'], $parameters[2]);
@@ -107,10 +107,10 @@ class FormatResolverTest extends UnitTestCase
         $matcher = $this->exactly(2);
         $mockObjectManager->expects($matcher)
             ->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('foo', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Neos\Flow\I18n\Formatter\FooFormatter', $parameters[0]);
             }
             return false;

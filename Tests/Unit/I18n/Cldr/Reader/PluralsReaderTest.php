@@ -53,10 +53,10 @@ class PluralsReaderTest extends UnitTestCase
         $mockCache->expects($this->once())->method('has')->with('rulesets')->willReturn(false);
         $matcher = self::exactly(2);
         $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('rulesets', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('rulesetsIndices', $parameters[0]);
             }
         });

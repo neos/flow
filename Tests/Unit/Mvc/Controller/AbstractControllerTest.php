@@ -458,21 +458,21 @@ class AbstractControllerTest extends UnitTestCase
         $matcher = self::atLeast(2);
 
         $this->mockActionRequest->expects($matcher)->method('hasArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('foo', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('baz', $parameters[0]);
             }
             return true;
         });
         $matcher = self::atLeast(2);
         $this->mockActionRequest->expects($matcher)->method('getArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('foo', $parameters[0]);
                 return 'bar';
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('baz', $parameters[0]);
                 return 'quux';
             }
@@ -506,11 +506,11 @@ class AbstractControllerTest extends UnitTestCase
         $matcher = self::exactly(2);
 
         $this->mockActionRequest->expects($matcher)->method('hasArgument')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('foo', $parameters[0]);
                 return true;
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('baz', $parameters[0]);
                 return false;
             }

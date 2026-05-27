@@ -1342,13 +1342,13 @@ class ConfigurationManagerTest extends UnitTestCase
         $mockYamlSource = $this->getMockBuilder(YamlSource::class)->onlyMethods(['load', 'save'])->getMock();
         $matcher = self::atLeast(3);
         $mockYamlSource->expects($matcher)->method('load')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame('Flow/Configuration/Testing/System1/Routes.Foo', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('Flow/Configuration/Testing/Routes.Foo', $parameters[0]);
             }
-            if ($matcher->getInvocationCount() === 3) {
+            if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('Flow/Configuration/Routes.Foo', $parameters[0]);
             }
             return [];

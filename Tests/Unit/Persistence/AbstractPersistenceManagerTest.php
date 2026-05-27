@@ -64,11 +64,11 @@ class AbstractPersistenceManagerTest extends UnitTestCase
         $object2 = new \stdClass();
         $matcher = self::exactly(2);
         $this->abstractPersistenceManager->expects($matcher)->method('getIdentifierByObject')->willReturnCallback(function (...$parameters) use ($matcher, $object1, $object2) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($object1, $parameters[0]);
                 return 'identifier1';
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($object2, $parameters[0]);
                 return 'identifier2';
             }
@@ -90,11 +90,11 @@ class AbstractPersistenceManagerTest extends UnitTestCase
         $object2 = new \stdClass();
         $matcher = self::exactly(2);
         $this->abstractPersistenceManager->expects($matcher)->method('getIdentifierByObject')->willReturnCallback(function (...$parameters) use ($matcher, $object1, $object2) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($object1, $parameters[0]);
                 return 'identifier1';
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($object2, $parameters[0]);
                 return 'identifier2';
             }
