@@ -20,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 class DebugExceptionHandlerTest extends UnitTestCase
 {
-    public static function splitExceptionMessageDataProvider()
+    public static function splitExceptionMessageDataProvider(): array
     {
         return [
             [
