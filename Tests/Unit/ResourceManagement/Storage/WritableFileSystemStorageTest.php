@@ -40,7 +40,7 @@ final class WritableFileSystemStorageTest extends UnitTestCase
     {
         $this->mockDirectory = vfsStream::setup('WritableFileSystemStorageTest');
 
-        $this->writableFileSystemStorage = $this->getAccessibleMock(WritableFileSystemStorage::class, null, ['testStorage', ['path' => 'vfs://WritableFileSystemStorageTest/']]);
+        $this->writableFileSystemStorage = $this->getAccessibleMock(WritableFileSystemStorage::class, [], ['testStorage', ['path' => 'vfs://WritableFileSystemStorageTest/']]);
 
         $mockEnvironment = $this->createMock(Environment::class);
         $mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://WritableFileSystemStorageTest/'));
