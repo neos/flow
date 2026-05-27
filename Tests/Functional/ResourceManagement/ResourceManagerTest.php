@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ResourceManagement;
 
 /*
@@ -19,17 +22,12 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the ResourceManager
  */
-class ResourceManagerTest extends FunctionalTestCase
+final class ResourceManagerTest extends FunctionalTestCase
 {
     /**
      * @var ResourceManager
      */
     protected $resourceManager;
-
-    /**
-     * @var ResourceRepository
-     */
-    protected $resourceRepository;
 
     /**
      * @var boolean
@@ -46,7 +44,7 @@ class ResourceManagerTest extends FunctionalTestCase
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
         $this->resourceManager = $this->objectManager->get(ResourceManager::class);
-        $this->resourceRepository = $this->objectManager->get(ResourceRepository::class);
+        $resourceRepository = $this->objectManager->get(ResourceRepository::class);
     }
 
     /**

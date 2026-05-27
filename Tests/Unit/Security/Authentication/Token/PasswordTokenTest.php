@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
@@ -20,7 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Testcase for password authentication token
  */
-class PasswordTokenTest extends UnitTestCase
+final class PasswordTokenTest extends UnitTestCase
 {
     /**
      * @var PasswordToken
@@ -44,10 +47,10 @@ class PasswordTokenTest extends UnitTestCase
     {
         $this->token = new PasswordToken();
 
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $this->mockActionRequest = $this->createMock(ActionRequest::class);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockActionRequest->expects($this->any())->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $this->mockActionRequest->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
     }
 
     /**
@@ -98,10 +101,10 @@ class PasswordTokenTest extends UnitTestCase
         self::assertEquals(['password' => 'verysecurepassword'], $this->token->getCredentials());
 
         $secondToken = new PasswordToken();
-        $secondMockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $secondMockActionRequest = $this->createMock(ActionRequest::class);
 
-        $secondMockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $secondMockActionRequest->expects($this->any())->method('getHttpRequest')->willReturn(($secondMockHttpRequest));
+        $secondMockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $secondMockActionRequest->method('getHttpRequest')->willReturn(($secondMockHttpRequest));
         $secondMockHttpRequest->expects($this->atLeastOnce())->method('getMethod')->willReturn(('GET'));
         $secondToken->updateCredentials($secondMockActionRequest);
         self::assertEquals(['password' => ''], $secondToken->getCredentials());

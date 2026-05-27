@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the AbstractXmlParser class
  */
-class AbstractXmlParserTest extends UnitTestCase
+final class AbstractXmlParserTest extends UnitTestCase
 {
     /**
      * @test

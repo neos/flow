@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -20,13 +23,9 @@ require_once('AbstractValidatorTestcase.php');
 /**
  * Testcase for the DateTime validator
  */
-class DateTimeValidatorTest extends AbstractValidatorTestcase
+final class DateTimeValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = DateTimeValidator::class;
-
-    protected Locale $sampleLocale;
-
-    protected mixed $mockObjectManagerReturnValues;
 
     protected $mockDatetimeParser;
 
@@ -36,8 +35,8 @@ class DateTimeValidatorTest extends AbstractValidatorTestcase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->sampleLocale = new Locale('en_GB');
-        $this->mockObjectManagerReturnValues[Locale::class] = $this->sampleLocale;
+        $sampleLocale = new Locale('en_GB');
+        $mockObjectManagerReturnValues[Locale::class] = $sampleLocale;
 
         $this->mockDatetimeParser = $this->createMock(I18n\Parser\DatetimeParser::class);
     }

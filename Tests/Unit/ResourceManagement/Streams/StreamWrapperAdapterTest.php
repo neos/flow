@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the StreamWrapperAdapter class
  */
-class StreamWrapperAdapterTest extends UnitTestCase
+final class StreamWrapperAdapterTest extends UnitTestCase
 {
     /**
      * @var StreamWrapperAdapter
@@ -44,7 +47,7 @@ class StreamWrapperAdapterTest extends UnitTestCase
     public function getRegisteredStreamWrappersReturnsRegisteredStreamWrappers()
     {
         $mockStreamWrapper1ClassName = get_class($this->mockStreamWrapper);
-        $mockStreamWrapper2 = $this->createMock(StreamWrapperInterface::class);
+        $mockStreamWrapper2 = $this->createStub(StreamWrapperInterface::class);
         $mockStreamWrapper2ClassName = get_class($mockStreamWrapper2);
 
         StreamWrapperAdapter::registerStreamWrapper('mockScheme1', $mockStreamWrapper1ClassName);

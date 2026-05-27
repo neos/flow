@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Functional tests for the Lazy Dependency Injection features
  *
  */
-class LazyDependencyInjectionTest extends FunctionalTestCase
+final class LazyDependencyInjectionTest extends FunctionalTestCase
 {
     /**
      * @test

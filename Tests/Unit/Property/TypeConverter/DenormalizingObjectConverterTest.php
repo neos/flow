@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -212,6 +215,6 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
         $result = $typeConverter->convertFrom(12264.123, FloatBasedValueObject::class);
 
         $this->assertInstanceOf(FloatBasedValueObject::class, $result);
-        $this->assertEquals(12264.123, $result->getValue());
+        $this->assertEqualsWithDelta(12264.123, $result->getValue(), PHP_FLOAT_EPSILON);
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -20,7 +23,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the regular expression validator
  *
  */
-class RegularExpressionValidatorTest extends AbstractValidatorTestcase
+final class RegularExpressionValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = RegularExpressionValidator::class;
 

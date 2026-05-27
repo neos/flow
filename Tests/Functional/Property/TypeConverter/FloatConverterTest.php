@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Error\Messages\Error as FlowError;
  * Testcase for the Float converter
  *
  */
-class FloatConverterTest extends FunctionalTestCase
+final class FloatConverterTest extends FunctionalTestCase
 {
     /**
      * @var FloatConverter
@@ -36,19 +39,16 @@ class FloatConverterTest extends FunctionalTestCase
     }
 
     /**
-     * @return array Signature: string $locale, string $source, float $expectedResult
+     * @return \Iterator<(int | string), mixed> Signature: string $locale, string $source, float $expectedResult
      */
-    public static function localeParsingDataProvider(): array
+    public static function localeParsingDataProvider(): \Iterator
     {
-        return [
-            ['de', '13,20', 13.2],
-            ['de', '112,777', 112.777],
-            ['de', '10.423,58', 10423.58],
-
-            ['en', '14.42', 14.42],
-            ['en', '10,423.58', 10423.58],
-            ['en', '10,42358', (float)1042358],
-        ];
+        yield ['de', '13,20', 13.2];
+        yield ['de', '112,777', 112.777];
+        yield ['de', '10.423,58', 10423.58];
+        yield ['en', '14.42', 14.42];
+        yield ['en', '10,423.58', 10423.58];
+        yield ['en', '10,42358', (float)1042358];
     }
 
     /**

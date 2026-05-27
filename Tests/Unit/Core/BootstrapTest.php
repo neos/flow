@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Core;
 
 /*
@@ -18,24 +21,22 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Bootstrap class
  */
-class BootstrapTest extends UnitTestCase
+final class BootstrapTest extends UnitTestCase
 {
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function commandIdentifiersAndCompiletimeControllerInfo()
+    public static function commandIdentifiersAndCompiletimeControllerInfo(): \Iterator
     {
-        return [
-            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true],
-            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'flow:core:shell', true],
-            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'core:shell', false],
-            [['neos.flow:core:*', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true],
-            [['neos.flow:core:*', 'neos.flow:cache:flush'], 'flow:core:shell', true],
-            [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:help:help', false],
-            [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow:cache:flush', true],
-            [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow5:core:shell', false],
-            [['neos.flow:core:*', 'neos.flow:cache:*'], 'typo3:core:shell', false],
-        ];
+        yield [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true];
+        yield [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'flow:core:shell', true];
+        yield [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'core:shell', false];
+        yield [['neos.flow:core:*', 'neos.flow:cache:flush'], 'neos.flow:core:shell', true];
+        yield [['neos.flow:core:*', 'neos.flow:cache:flush'], 'flow:core:shell', true];
+        yield [['neos.flow:core:shell', 'neos.flow:cache:flush'], 'neos.flow:help:help', false];
+        yield [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow:cache:flush', true];
+        yield [['neos.flow:core:*', 'neos.flow:cache:*'], 'flow5:core:shell', false];
+        yield [['neos.flow:core:*', 'neos.flow:cache:*'], 'typo3:core:shell', false];
     }
 
     /**

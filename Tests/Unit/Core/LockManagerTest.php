@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Core;
 
 /*
@@ -20,17 +23,12 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the LockManager
  */
-class LockManagerTest extends UnitTestCase
+final class LockManagerTest extends UnitTestCase
 {
     /**
      * @var LockManager|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $lockManager;
-
-    /**
-     * @var vfsStreamDirectory
-     */
-    protected $mockLockDirectory;
 
     /**
      * @var vfsStreamFile
@@ -45,12 +43,12 @@ class LockManagerTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->mockLockDirectory = vfsStream::setup('LockPath');
-        $this->mockLockFile = vfsStream::newFile(md5(FLOW_PATH_ROOT) . '_Flow.lock')->at($this->mockLockDirectory);
-        $this->mockLockFlagFile = vfsStream::newFile(md5(FLOW_PATH_ROOT) . '_FlowIsLocked')->at($this->mockLockDirectory);
+        $mockLockDirectory = vfsStream::setup('LockPath');
+        $this->mockLockFile = vfsStream::newFile(md5(FLOW_PATH_ROOT) . '_Flow.lock')->at($mockLockDirectory);
+        $this->mockLockFlagFile = vfsStream::newFile(md5(FLOW_PATH_ROOT) . '_FlowIsLocked')->at($mockLockDirectory);
 
         $this->lockManager = $this->getMockBuilder(LockManager::class)->onlyMethods(['getLockPath', 'doExit'])->disableOriginalConstructor()->getMock();
-        $this->lockManager->expects($this->atLeastOnce())->method('getLockPath')->willReturn(($this->mockLockDirectory->url() . '/'));
+        $this->lockManager->expects($this->atLeastOnce())->method('getLockPath')->willReturn(($mockLockDirectory->url() . '/'));
         $this->lockManager->__construct();
     }
 

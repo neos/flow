@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -26,7 +29,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Testcase for the MVC RoutingMiddleware
  */
-class RoutingMiddlewareTest extends UnitTestCase
+final class RoutingMiddlewareTest extends UnitTestCase
 {
     /**
      * @var RoutingMiddleware
@@ -39,11 +42,6 @@ class RoutingMiddlewareTest extends UnitTestCase
     protected $mockRouter;
 
     /**
-     * @var ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockConfigurationManager;
-
-    /**
      * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockRequestHandler;
@@ -54,11 +52,6 @@ class RoutingMiddlewareTest extends UnitTestCase
     protected $mockHttpRequest;
 
     /**
-     * @var UriInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockRequestUri;
-
-    /**
      * Sets up this test case
      *
      */
@@ -66,21 +59,21 @@ class RoutingMiddlewareTest extends UnitTestCase
     {
         $this->routingMiddleware = new RoutingMiddleware();
 
-        $this->mockRouter = $this->getMockBuilder(Router::class)->getMock();
-        $this->mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
-        $this->inject($this->mockRouter, 'configurationManager', $this->mockConfigurationManager);
+        $this->mockRouter = $this->createMock(Router::class);
+        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
+        $this->inject($this->mockRouter, 'configurationManager', $mockConfigurationManager);
 
         $this->inject($this->routingMiddleware, 'router', $this->mockRouter);
 
-        $this->mockRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
         $httpResponse = new Response();
         $this->mockRequestHandler->method('handle')->willReturn($httpResponse);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $this->mockHttpRequest->method('withAttribute')->with(ServerRequestAttributes::ROUTING_RESULTS)->willReturn($this->mockHttpRequest);
 
-        $this->mockRequestUri = $this->getMockBuilder(UriInterface::class)->getMock();
-        $this->mockHttpRequest->method('getUri')->willReturn($this->mockRequestUri);
+        $mockRequestUri = $this->createMock(UriInterface::class);
+        $this->mockHttpRequest->method('getUri')->willReturn($mockRequestUri);
     }
 
     /**

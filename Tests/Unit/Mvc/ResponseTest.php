@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC Generic ActionResponse
  */
-class ResponseTest extends UnitTestCase
+final class ResponseTest extends UnitTestCase
 {
     /**
      * @test
@@ -28,6 +31,6 @@ class ResponseTest extends UnitTestCase
         $response->setContent('SomeContent');
 
         $expected = 'SomeContent';
-        self::assertEquals($expected, $response->getContent());
+        self::assertSame($expected, $response->getContent());
     }
 }

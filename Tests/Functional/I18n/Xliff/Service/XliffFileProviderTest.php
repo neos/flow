@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n\Xliff\Service;
 
 /*
@@ -23,7 +25,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcases for the XLIFF file provider
  */
-class XliffFileProviderTest extends FunctionalTestCase
+final class XliffFileProviderTest extends FunctionalTestCase
 {
     /**
      * @var XliffFileProvider
@@ -48,10 +50,8 @@ class XliffFileProviderTest extends FunctionalTestCase
 
         ComposerUtility::flushCaches();
 
-        $mockPackageManager = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockPackageManager->expects($this->any())
+        $mockPackageManager = $this->createMock(PackageManager::class);
+        $mockPackageManager
             ->method('getFlowPackages')
             ->willReturn(($packages));
         $this->inject($this->fileProvider, 'packageManager', $mockPackageManager);

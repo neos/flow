@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
@@ -27,7 +30,7 @@ use Neos\Flow\Annotations as Flow;
  * Testcase for the object configuration builder
  *
  */
-class ConfigurationBuilderTest extends UnitTestCase
+final class ConfigurationBuilderTest extends UnitTestCase
 {
     /**
      * @test
@@ -227,19 +230,19 @@ class ConfigurationBuilderTest extends UnitTestCase
         $reflectionServiceMock
             ->method('hasMethod')
             ->with(__CLASS__, '__construct')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $reflectionServiceMock
             ->method('getMethodParameters')
             ->with(__CLASS__, '__construct')
-            ->will($this->returnValue([
+            ->willReturn([
                 'testArray' => [
                     'position' => 0,
                     'optional' => false,
                     'class' => null,
                     'allowsNull' => false
                 ]
-            ]));
+            ]);
 
         $configurationBuilder->injectReflectionService($reflectionServiceMock);
         try {

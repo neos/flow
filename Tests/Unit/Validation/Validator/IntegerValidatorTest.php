@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the integer validator
  *
  */
-class IntegerValidatorTest extends AbstractValidatorTestcase
+final class IntegerValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = IntegerValidator::class;
 
@@ -42,16 +45,14 @@ class IntegerValidatorTest extends AbstractValidatorTestcase
     /**
      * Data provider with valid integers
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validIntegers()
+    public static function validIntegers(): \Iterator
     {
-        return [
-            [1029437],
-            ['12345'],
-            ['+12345'],
-            ['-12345']
-        ];
+        yield [1029437];
+        yield ['12345'];
+        yield ['+12345'];
+        yield ['-12345'];
     }
 
     /**
@@ -66,15 +67,13 @@ class IntegerValidatorTest extends AbstractValidatorTestcase
     /**
      * Data provider with invalid integers
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidIntegers()
+    public static function invalidIntegers(): \Iterator
     {
-        return [
-            ['not a number'],
-            [3.1415],
-            ['12345.987']
-        ];
+        yield ['not a number'];
+        yield [3.1415];
+        yield ['12345.987'];
     }
 
     /**
@@ -91,6 +90,6 @@ class IntegerValidatorTest extends AbstractValidatorTestcase
      */
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        self::assertEquals(1, count($this->validator->validate('not a number')->getErrors()));
+        self::assertCount(1, $this->validator->validate('not a number')->getErrors());
     }
 }

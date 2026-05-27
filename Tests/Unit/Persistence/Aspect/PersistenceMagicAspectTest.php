@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Aspect;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the PersistenceMagicAspect
  */
-class PersistenceMagicAspectTest extends UnitTestCase
+final class PersistenceMagicAspectTest extends UnitTestCase
 {
     /**
      * @var PersistenceMagicAspect
@@ -56,7 +59,7 @@ class PersistenceMagicAspectTest extends UnitTestCase
     public function cloneObjectMarksTheObjectAsCloned()
     {
         $object = new \stdClass();
-        $this->mockJoinPoint->expects($this->any())->method('getProxy')->willReturn(($object));
+        $this->mockJoinPoint->method('getProxy')->willReturn(($object));
 
         $this->persistenceMagicAspect->cloneObject($this->mockJoinPoint);
         self::assertTrue($object->Flow_Persistence_clone);
@@ -76,6 +79,6 @@ class PersistenceMagicAspectTest extends UnitTestCase
         $this->mockPersistenceManager->expects($this->atLeastOnce())->method('registerNewObject')->with($object);
         $this->persistenceMagicAspect->generateUuid($this->mockJoinPoint);
 
-        self::assertEquals(36, strlen($object->Persistence_Object_Identifier));
+        self::assertSame(36, strlen($object->Persistence_Object_Identifier));
     }
 }

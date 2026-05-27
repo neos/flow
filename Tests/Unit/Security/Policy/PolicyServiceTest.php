@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Policy;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for for the PolicyService
  */
-class PolicyServiceTest extends UnitTestCase
+final class PolicyServiceTest extends UnitTestCase
 {
     /**
      * @var PolicyService
@@ -36,16 +39,6 @@ class PolicyServiceTest extends UnitTestCase
     protected $mockPolicyConfiguration = [];
 
     /**
-     * @var ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockConfigurationManager;
-
-    /**
-     * @var ObjectManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockObjectManager;
-
-    /**
      * @var AbstractPrivilege|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockPrivilege;
@@ -54,14 +47,14 @@ class PolicyServiceTest extends UnitTestCase
     {
         $this->policyService = new PolicyService();
 
-        $this->mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_POLICY)->will(self::returnCallBack(function () {
+        $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
+        $mockConfigurationManager->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_POLICY)->willReturnCallback(function () {
             return $this->mockPolicyConfiguration;
-        }));
-        $this->inject($this->policyService, 'configurationManager', $this->mockConfigurationManager);
+        });
+        $this->inject($this->policyService, 'configurationManager', $mockConfigurationManager);
 
-        $this->mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $this->inject($this->policyService, 'objectManager', $this->mockObjectManager);
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $this->inject($this->policyService, 'objectManager', $mockObjectManager);
 
         $this->mockPrivilege = $this->getAccessibleMock(AbstractPrivilege::class, ['matchesSubject'], [], '', false);
     }
@@ -236,6 +229,7 @@ class PolicyServiceTest extends UnitTestCase
 
         $privilegeTarget = $this->policyService->getPrivilegeTargetByIdentifier('Some.PrivilegeTarget:Identifier');
         self::assertInstanceOf(PrivilegeTarget::class, $privilegeTarget);
+        $this->assertInstanceOf(\Neos\Flow\Security\Authorization\Privilege\PrivilegeTarget::class, $privilegeTarget);
         self::assertSame('Some.PrivilegeTarget:Identifier', $privilegeTarget->getIdentifier());
     }
 

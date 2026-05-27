@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Builder;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the Abstract Method Interceptor Builder
  *
  */
-class AbstractMethodInterceptorBuilderTest extends UnitTestCase
+final class AbstractMethodInterceptorBuilderTest extends UnitTestCase
 {
     /**
      * @test
@@ -78,8 +81,8 @@ class AbstractMethodInterceptorBuilderTest extends UnitTestCase
             ],
         ];
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->expects($this->any())->method('getMethodParameters')->with($className, 'foo')->willReturn(($methodParameters));
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('getMethodParameters')->with($className, 'foo')->willReturn(($methodParameters));
 
         $expectedCode = "
                 \$methodArguments = [];
@@ -159,8 +162,8 @@ class AbstractMethodInterceptorBuilderTest extends UnitTestCase
             ],
         ];
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->expects($this->any())->method('getMethodParameters')->with($className, '__construct')->willReturn(($methodParameters));
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('getMethodParameters')->with($className, '__construct')->willReturn(($methodParameters));
 
         $builder = $this->getAccessibleMock(AdvisedConstructorInterceptorBuilder::class, [], [], '', false);
         $builder->injectReflectionService($mockReflectionService);

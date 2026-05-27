@@ -12,7 +12,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Tests for the ResponseInformationHelper
  */
-class ResponseInformationHelperTest extends UnitTestCase
+final class ResponseInformationHelperTest extends UnitTestCase
 {
     /**
      * RFC 2616 / 14.9.4
@@ -83,28 +83,26 @@ class ResponseInformationHelperTest extends UnitTestCase
         self::assertSame($response->getHeaders(), $compliantResponse->getHeaders());
     }
 
-    public static function makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider(): array
+    public static function makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider(): \Iterator
     {
-        return [
-            ['GET', [], 200, [], 200],
-            ['HEAD', [], 200, [], 200],
-            // last modification was same as client value
-            ['GET', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304],
-            ['HEAD', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304],
-            // last modification was before client value
-            ['GET', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304],
-            ['HEAD', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304],
-            // last modification was after client value
-            ['GET', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 20 Nov 1994 12:45:26 GMT'], 200],
-            ['HEAD', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 20 Nov 1994 12:45:26 GMT'], 200],
-            // methods other than get and head are ignored
-            ['PUT', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200],
-            ['POST', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200],
-            ['DELETE', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200],
-            // status codes other tan 200 are ignored
-            ['GET', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 203, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 203],
-            ['HEAD', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 203, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 203]
-        ];
+        yield ['GET', [], 200, [], 200];
+        yield ['HEAD', [], 200, [], 200];
+        // last modification was same as client value
+        yield ['GET', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304];
+        yield ['HEAD', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304];
+        // last modification was before client value
+        yield ['GET', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304];
+        yield ['HEAD', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 304];
+        // last modification was after client value
+        yield ['GET', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 20 Nov 1994 12:45:26 GMT'], 200];
+        yield ['HEAD', ['If-Modified-Since' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 20 Nov 1994 12:45:26 GMT'], 200];
+        // methods other than get and head are ignored
+        yield ['PUT', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200];
+        yield ['POST', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200];
+        yield ['DELETE', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 200, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 200];
+        // status codes other tan 200 are ignored
+        yield ['GET', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 203, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 203];
+        yield ['HEAD', ['If-Modified-Since' => 'Tue, 10 Nov 1994 12:45:26 GMT'], 203, ['Last-Modified' => 'Tue, 15 Nov 1994 12:45:26 GMT'], 203];
     }
 
     /**
@@ -126,32 +124,30 @@ class ResponseInformationHelperTest extends UnitTestCase
         self::assertSame($expoectedStatus, $compliantResponse->getStatusCode());
     }
 
-    public static function makeStandardsCompliantEnsures304BasedOnEtagDataProvider(): array
+    public static function makeStandardsCompliantEnsures304BasedOnEtagDataProvider(): \Iterator
     {
-        return [
-            ['GET', [], 200, [], 200],
-            ['HEAD', [], 200, [], 200],
-            // when etag matches a 304 result is created
-            ['GET', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 304],
-            ['HEAD', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 304],
-            // multiple if-none-match headers
-            ['HEAD', ['If-None-Match' => ['"abcd"', '"12345"', '"5678"']], 200, ['ETag' => '"12345"'], 304],
-            ['HEAD', ['If-None-Match' => ['"abcd"', '"56789"', '"defg"']], 200, ['ETag' => '"12345"'], 200],
-            // etags comparison ignores weakness indicator
-            ['GET', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => '"12345"'], 304],
-            ['GET', ['If-None-Match' => '"12345"'], 200, ['ETag' => 'W/"12345"'], 304],
-            ['GET', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => 'W/"12345"'], 304],
-            ['HEAD', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => '"12345"'], 304],
-            ['HEAD', ['If-None-Match' => '"12345"'], 200, ['ETag' => 'W/"12345"'], 304],
-            ['HEAD', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => 'W/"12345"'], 304],
-            // other http methods are ignored
-            ['PUT', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200],
-            ['POST', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200],
-            ['DELETE', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200],
-            // non 200 status responses are ignored
-            ['GET', ['If-None-Match' => '"12345"'], 203, ['ETag' => '"12345"'], 203],
-            ['HEAD', ['If-None-Match' => '"12345"'], 203, ['ETag' => '"12345"'], 203]
-        ];
+        yield ['GET', [], 200, [], 200];
+        yield ['HEAD', [], 200, [], 200];
+        // when etag matches a 304 result is created
+        yield ['GET', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 304];
+        yield ['HEAD', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 304];
+        // multiple if-none-match headers
+        yield ['HEAD', ['If-None-Match' => ['"abcd"', '"12345"', '"5678"']], 200, ['ETag' => '"12345"'], 304];
+        yield ['HEAD', ['If-None-Match' => ['"abcd"', '"56789"', '"defg"']], 200, ['ETag' => '"12345"'], 200];
+        // etags comparison ignores weakness indicator
+        yield ['GET', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => '"12345"'], 304];
+        yield ['GET', ['If-None-Match' => '"12345"'], 200, ['ETag' => 'W/"12345"'], 304];
+        yield ['GET', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => 'W/"12345"'], 304];
+        yield ['HEAD', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => '"12345"'], 304];
+        yield ['HEAD', ['If-None-Match' => '"12345"'], 200, ['ETag' => 'W/"12345"'], 304];
+        yield ['HEAD', ['If-None-Match' => 'W/"12345"'], 200, ['ETag' => 'W/"12345"'], 304];
+        // other http methods are ignored
+        yield ['PUT', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200];
+        yield ['POST', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200];
+        yield ['DELETE', ['If-None-Match' => '"12345"'], 200, ['ETag' => '"12345"'], 200];
+        // non 200 status responses are ignored
+        yield ['GET', ['If-None-Match' => '"12345"'], 203, ['ETag' => '"12345"'], 203];
+        yield ['HEAD', ['If-None-Match' => '"12345"'], 203, ['ETag' => '"12345"'], 203];
     }
 
     /**
@@ -225,7 +221,7 @@ class ResponseInformationHelperTest extends UnitTestCase
         $response = new Response(200, ['Expires' => $expires, 'Cache-Control' => 'public, max-age=12345']);
 
         $compliantResponse = ResponseInformationHelper::makeStandardsCompliant($response, $request);
-        $this->assertSame($compliantResponse->getHeaderLine('Cache-Control'), 'public');
+        $this->assertSame('public', $compliantResponse->getHeaderLine('Cache-Control'));
         $this->assertSame($expires, $response->getHeaderLine('Expires'));
     }
 

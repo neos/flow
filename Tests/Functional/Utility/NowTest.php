@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Utility;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Utility;
 /**
  * Functional test for the Now class
  */
-class NowTest extends FunctionalTestCase
+final class NowTest extends FunctionalTestCase
 {
     /**
      * @test

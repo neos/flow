@@ -22,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Signal Dispatcher Class
  */
-class DispatcherTest extends UnitTestCase
+final class DispatcherTest extends UnitTestCase
 {
     /**
      * @test
@@ -139,7 +139,7 @@ class DispatcherTest extends UnitTestCase
             $arguments = func_get_args();
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect('Foo', 'bar', $mockSlot, '', false);
@@ -159,7 +159,7 @@ class DispatcherTest extends UnitTestCase
             $arguments = func_get_args();
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect('Foo', 'bar', $mockSlot, '', false);
@@ -281,7 +281,7 @@ class DispatcherTest extends UnitTestCase
             $arguments = func_get_args();
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect('SignalClassName', 'methodName', $mockSlot, '', true);
@@ -313,7 +313,7 @@ class DispatcherTest extends UnitTestCase
             $s->getSignalArguments()[0]['foo'] = 'bar';
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->wire('SignalClassName', 'methodName', $mockSlot);
@@ -334,7 +334,7 @@ class DispatcherTest extends UnitTestCase
             $array['foo'] = 'bar';
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect('SignalClassName', 'methodName', $mockSlot);
@@ -356,7 +356,7 @@ class DispatcherTest extends UnitTestCase
             $receivedArguments = func_get_args();
         };
 
-        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
 
         $dispatcher = new Dispatcher();
         $dispatcher->wire('SignalClassName', 'methodName', $mockSlot);

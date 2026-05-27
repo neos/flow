@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http\Middleware;
 
 /*
@@ -26,7 +29,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Test case for the TrustedProxiesMiddleware
  */
-class TrustedProxiesMiddlewareTest extends UnitTestCase
+final class TrustedProxiesMiddlewareTest extends UnitTestCase
 {
     /**
      * @var TrustedProxiesMiddleware
@@ -39,30 +42,15 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     protected $trustedProxiesSettings;
 
     /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockHttpRequest;
-
-    /**
-     * @var ResponseInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockHttpResponse;
-
-    /**
-     * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockHttpRequestHandler;
-
-    /**
      * @var ServerRequestFactoryInterface
      */
     protected $serverRequestFactory;
 
     protected function setUp(): void
     {
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockHttpResponse = $this->getMockBuilder(ResponseInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockHttpRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $mockHttpResponse = $this->createMock(ResponseInterface::class);
+        $mockHttpRequestHandler = $this->createMock(RequestHandlerInterface::class);
 
         $this->serverRequestFactory = new ServerRequestFactory(new UriFactory());
         $this->trustedProxiesMiddleware = new TrustedProxiesMiddleware();
@@ -148,23 +136,21 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public static function serverEnvironmentsForClientIpAddresses()
+    public static function serverEnvironmentsForClientIpAddresses(): \Iterator
     {
-        return [
-            [[], '17.172.224.47'],
-            [['HTTP_CLIENT_IP' => 'murks'], '17.172.224.47'],
-            [['HTTP_CLIENT_IP' => '17.149.160.49'], '17.149.160.49'],
-            [['HTTP_CLIENT_IP' => '17.149.160.49', 'HTTP_X_FORWARDED_FOR' => '123.123.123.123'], '17.149.160.49'],
-            [['HTTP_X_FORWARDED_FOR' => '123.123.123.123'], '123.123.123.123'],
-            [['HTTP_X_FORWARDED_FOR' => '123.123.123.123', 'HTTP_X_FORWARDED' => '209.85.148.101'], '123.123.123.123'],
-            [['HTTP_X_FORWARDED_FOR' => '123.123.123', 'HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'],
-            [['HTTP_X_FORWARDED_FOR' => '192.168.178.1', 'HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'],
-            [['HTTP_X_FORWARDED_FOR' => '123.123.123.123, 209.85.148.101, 209.85.148.102'], '123.123.123.123'],
-            [['HTTP_X_CLUSTER_CLIENT_IP' => '209.85.148.101, 209.85.148.102'], '209.85.148.101'],
-            [['HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'],
-            [['REMOTE_ADDR' => '127.0.0.1'], '127.0.0.1'],
-            [['HTTP_X_FORWARDED_FOR' => '2607:ff10:c5:509a::1'], '2607:ff10:c5:509a::1'],
-        ];
+        yield [[], '17.172.224.47'];
+        yield [['HTTP_CLIENT_IP' => 'murks'], '17.172.224.47'];
+        yield [['HTTP_CLIENT_IP' => '17.149.160.49'], '17.149.160.49'];
+        yield [['HTTP_CLIENT_IP' => '17.149.160.49', 'HTTP_X_FORWARDED_FOR' => '123.123.123.123'], '17.149.160.49'];
+        yield [['HTTP_X_FORWARDED_FOR' => '123.123.123.123'], '123.123.123.123'];
+        yield [['HTTP_X_FORWARDED_FOR' => '123.123.123.123', 'HTTP_X_FORWARDED' => '209.85.148.101'], '123.123.123.123'];
+        yield [['HTTP_X_FORWARDED_FOR' => '123.123.123', 'HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'];
+        yield [['HTTP_X_FORWARDED_FOR' => '192.168.178.1', 'HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'];
+        yield [['HTTP_X_FORWARDED_FOR' => '123.123.123.123, 209.85.148.101, 209.85.148.102'], '123.123.123.123'];
+        yield [['HTTP_X_CLUSTER_CLIENT_IP' => '209.85.148.101, 209.85.148.102'], '209.85.148.101'];
+        yield [['HTTP_FORWARDED_FOR' => '209.85.148.101'], '209.85.148.101'];
+        yield [['REMOTE_ADDR' => '127.0.0.1'], '127.0.0.1'];
+        yield [['HTTP_X_FORWARDED_FOR' => '2607:ff10:c5:509a::1'], '2607:ff10:c5:509a::1'];
     }
 
     /**
@@ -195,14 +181,12 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     /**
      * Data Provider
      */
-    public static function serverEnvironmentsForForwardedHeader()
+    public static function serverEnvironmentsForForwardedHeader(): \Iterator
     {
-        return [
-            [['HTTP_FORWARDED' => 'for=209.85.148.101; proto=https; host=www.acme.org'], '209.85.148.101', 'https', 'www.acme.org', null],
-            [['HTTP_FORWARDED' => 'For=123.123.123.123, for=209.85.148.101'], '123.123.123.123', 'http', 'flow.neos.io', null],
-            [['HTTP_FORWARDED' => 'FOR=192.0.2.60, for=209.85.148.101; proto=https; HOST="123.123.123.123:4711", host=www.acme.org:8080; by=203.0.113.43'], '192.0.2.60', 'https', '123.123.123.123', 4711],
-            [['HTTP_FORWARDED' => 'for=192.0.2.60; proto=https; host=www.acme.org:8080; by=203.0.113.43'], '192.0.2.60', 'https', 'www.acme.org', 8080],
-        ];
+        yield [['HTTP_FORWARDED' => 'for=209.85.148.101; proto=https; host=www.acme.org'], '209.85.148.101', 'https', 'www.acme.org', null];
+        yield [['HTTP_FORWARDED' => 'For=123.123.123.123, for=209.85.148.101'], '123.123.123.123', 'http', 'flow.neos.io', null];
+        yield [['HTTP_FORWARDED' => 'FOR=192.0.2.60, for=209.85.148.101; proto=https; HOST="123.123.123.123:4711", host=www.acme.org:8080; by=203.0.113.43'], '192.0.2.60', 'https', '123.123.123.123', 4711];
+        yield [['HTTP_FORWARDED' => 'for=192.0.2.60; proto=https; host=www.acme.org:8080; by=203.0.113.43'], '192.0.2.60', 'https', 'www.acme.org', 8080];
     }
 
     /**
@@ -247,7 +231,7 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
 
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), $server);
         $trustedRequest = $this->callWithRequest($request);
-        self::assertEquals('https://acme.com', (string)$trustedRequest->getUri());
+        self::assertSame('https://acme.com', (string)$trustedRequest->getUri());
         self::assertEquals('https', $trustedRequest->getUri()->getScheme());
     }
 
@@ -264,7 +248,7 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
 
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('https://acme.com'), $server);
         $trustedRequest = $this->callWithRequest($request);
-        self::assertEquals('http://acme.com', (string)$trustedRequest->getUri());
+        self::assertSame('http://acme.com', (string)$trustedRequest->getUri());
         self::assertEquals('http', $trustedRequest->getUri()->getScheme());
     }
 
@@ -475,119 +459,114 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function forwardHeaderTestsDataProvider()
+    public static function forwardHeaderTestsDataProvider(): \Iterator
     {
-        return [
-            [
-                'forwardedProtocol' => null,
-                'forwardedPort' => null,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com',
-            ],
-
-            // forwarded protocol overrules requested protocol
-            [
-                'forwardedProtocol' => 'https',
-                'forwardedPort' => null,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'https',
-                'forwardedPort' => null,
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => null,
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'http://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => null,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com',
-            ],
-
-            // forwarded port overrules requested port
-            [
-                'forwardedProtocol' => null,
-                'forwardedPort' => 80,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com',
-            ],
-            [
-                'forwardedProtocol' => null,
-                'forwardedPort' => '8080',
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com:8080',
-            ],
-            [
-                'forwardedProtocol' => null,
-                'forwardedPort' => 8080,
-                'requestUri' => 'http://acme.com:8000',
-                'expectedUri' => 'http://acme.com:8080',
-            ],
-            [
-                'forwardedProtocol' => null,
-                'forwardedPort' => '443',
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-
-            // forwarded protocol & port
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => 80,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => 8080,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'http://acme.com:8080',
-            ],
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => 443,
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'http://acme.com:443',
-            ],
-            [
-                'forwardedProtocol' => 'https',
-                'forwardedPort' => 443,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'https',
-                'forwardedPort' => 443,
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'https',
-                'forwardedPort' => 80,
-                'requestUri' => 'https://acme.com',
-                'expectedUri' => 'https://acme.com:80',
-            ],
-            [
-                'forwardedProtocol' => 'HTTPS',
-                'forwardedPort' => null,
-                'requestUri' => 'http://acme.com',
-                'expectedUri' => 'https://acme.com',
-            ],
-            [
-                'forwardedProtocol' => 'http',
-                'forwardedPort' => 80,
-                'requestUri' => 'http://[2a00:f48:1008::212:183:10]',
-                'expectedUri' => 'http://[2a00:f48:1008::212:183:10]',
-            ],
+        yield [
+            'forwardedProtocol' => null,
+            'forwardedPort' => null,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com',
+        ];
+        // forwarded protocol overrules requested protocol
+        yield [
+            'forwardedProtocol' => 'https',
+            'forwardedPort' => null,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'https',
+            'forwardedPort' => null,
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => null,
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'http://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => null,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com',
+        ];
+        // forwarded port overrules requested port
+        yield [
+            'forwardedProtocol' => null,
+            'forwardedPort' => 80,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => null,
+            'forwardedPort' => '8080',
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com:8080',
+        ];
+        yield [
+            'forwardedProtocol' => null,
+            'forwardedPort' => 8080,
+            'requestUri' => 'http://acme.com:8000',
+            'expectedUri' => 'http://acme.com:8080',
+        ];
+        yield [
+            'forwardedProtocol' => null,
+            'forwardedPort' => '443',
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        // forwarded protocol & port
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => 80,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => 8080,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'http://acme.com:8080',
+        ];
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => 443,
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'http://acme.com:443',
+        ];
+        yield [
+            'forwardedProtocol' => 'https',
+            'forwardedPort' => 443,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'https',
+            'forwardedPort' => 443,
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'https',
+            'forwardedPort' => 80,
+            'requestUri' => 'https://acme.com',
+            'expectedUri' => 'https://acme.com:80',
+        ];
+        yield [
+            'forwardedProtocol' => 'HTTPS',
+            'forwardedPort' => null,
+            'requestUri' => 'http://acme.com',
+            'expectedUri' => 'https://acme.com',
+        ];
+        yield [
+            'forwardedProtocol' => 'http',
+            'forwardedPort' => 80,
+            'requestUri' => 'http://[2a00:f48:1008::212:183:10]',
+            'expectedUri' => 'http://[2a00:f48:1008::212:183:10]',
         ];
     }
 
@@ -606,6 +585,6 @@ class TrustedProxiesMiddlewareTest extends UnitTestCase
         }
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri($requestUri), $server);
         $trustedRequest = $this->callWithRequest($request);
-        self::assertEquals($expectedUri, (string)$trustedRequest->getUri());
+        self::assertSame($expectedUri, (string)$trustedRequest->getUri());
     }
 }

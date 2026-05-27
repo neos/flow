@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Functional tests for the HTTP client internal request engine
  */
 #[\PHPUnit\Framework\Attributes\RequiresPhpExtension('curl')]
-class CurlEngineTest extends FunctionalTestCase
+final class CurlEngineTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -58,7 +61,7 @@ class CurlEngineTest extends FunctionalTestCase
     public function getRequestReturnsResponse()
     {
         $response = $this->browser->request('http://www.neos.io');
-        self::assertStringContainsString('This website is powered by Neos', $response->getBody()->getContents());
+        self::assertStringContainsString('This website is powered by Neos', (string) $response->getBody()->getContents());
     }
 
     /**

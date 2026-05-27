@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Error;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Debugger
  */
-class DebuggerTest extends UnitTestCase
+final class DebuggerTest extends UnitTestCase
 {
     protected function setUp(): void
     {
@@ -60,7 +63,7 @@ class DebuggerTest extends UnitTestCase
     public function ignoredClassesAreNotRendered()
     {
         $object = new ApplicationContext('Development');
-        self::assertEquals('Neos\Flow\Core\ApplicationContext object', Debugger::renderDump($object, 0, true));
+        self::assertSame('Neos\Flow\Core\ApplicationContext object', Debugger::renderDump($object, 0, true));
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Policy;
 
 /*
@@ -17,20 +20,18 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for for Neos\Flow\Security\Policy\Role
  */
-class RoleTest extends UnitTestCase
+final class RoleTest extends UnitTestCase
 {
     /**
      * data provider
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function roleIdentifiersAndPackageKeysAndNames(): array
+    public static function roleIdentifiersAndPackageKeysAndNames(): \Iterator
     {
-        return [
-            ['Neos.Flow:Everybody', 'Everybody', 'Neos.Flow', 'A role for everybody', 'The role is automatically assigned to every session'],
-            ['Acme.Demo:Test', 'Test', 'Acme.Demo', 'just a label', ''],
-            ['Acme.Demo.Sub:Test', 'Test', 'Acme.Demo.Sub', '', 'A descriptive description']
-        ];
+        yield ['Neos.Flow:Everybody', 'Everybody', 'Neos.Flow', 'A role for everybody', 'The role is automatically assigned to every session'];
+        yield ['Acme.Demo:Test', 'Test', 'Acme.Demo', 'just a label', ''];
+        yield ['Acme.Demo.Sub:Test', 'Test', 'Acme.Demo.Sub', '', 'A descriptive description'];
     }
 
     /**
@@ -46,14 +47,14 @@ class RoleTest extends UnitTestCase
     {
         $role = new Role($roleIdentifier, [], $label, $description);
 
-        self::assertEquals($name, $role->getName());
-        self::assertEquals($packageKey, $role->getPackageKey());
-        self::assertEquals($description, $role->getDescription());
+        self::assertSame($name, $role->getName());
+        self::assertSame($packageKey, $role->getPackageKey());
+        self::assertSame($description, $role->getDescription());
 
         if ($label === '') {
-            self::assertEquals($role->getName(), $role->getLabel());
+            self::assertSame($role->getName(), $role->getLabel());
         } else {
-            self::assertEquals($label, $role->getLabel());
+            self::assertSame($label, $role->getLabel());
         }
     }
 
@@ -78,7 +79,7 @@ class RoleTest extends UnitTestCase
             'Acme.Demo:Parent2' => $parentRole2
         ];
 
-        self::assertEquals(2, count($role->getParentRoles()));
+        self::assertCount(2, $role->getParentRoles());
         self::assertEquals($expectedParentRoles, $role->getParentRoles());
     }
 }

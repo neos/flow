@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the Pointcut Class-Annotated-With Filter
  */
-class PointcutClassAnnotatedWithFilterTest extends UnitTestCase
+final class PointcutClassAnnotatedWithFilterTest extends UnitTestCase
 {
     /**
      * @test
@@ -26,7 +29,7 @@ class PointcutClassAnnotatedWithFilterTest extends UnitTestCase
     public function matchesTellsIfTheSpecifiedRegularExpressionMatchesTheGivenAnnotation()
     {
         $mockReflectionService = $this->createMock(ReflectionService::class, ['getClassAnnotations'], [], '', false, true);
-        $mockReflectionService->expects($this->any())->method('getClassAnnotations')->with('Acme\Some\Class', 'Acme\Some\Annotation')->will($this->onConsecutiveCalls(['SomeAnnotation'], []));
+        $mockReflectionService->method('getClassAnnotations')->with('Acme\Some\Class', 'Acme\Some\Annotation')->willReturnOnConsecutiveCalls(['SomeAnnotation'], []);
 
         $filter = new Aop\Pointcut\PointcutClassAnnotatedWithFilter('Acme\Some\Annotation');
         $filter->injectReflectionService($mockReflectionService);
@@ -50,8 +53,8 @@ class PointcutClassAnnotatedWithFilterTest extends UnitTestCase
         $availableClassNamesIndex = new Aop\Builder\ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->expects($this->any())->method('getClassNamesByAnnotation')->with('SomeAnnotationClass')->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('getClassNamesByAnnotation')->with('SomeAnnotationClass')->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
 
         $classAnnotatedWithFilter = new Aop\Pointcut\PointcutClassAnnotatedWithFilter('SomeAnnotationClass');
         $classAnnotatedWithFilter->injectReflectionService($mockReflectionService);

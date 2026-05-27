@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the PersistentResource class
  */
-class PersistentResourceTest extends UnitTestCase
+final class PersistentResourceTest extends UnitTestCase
 {
     /**
      * @test
@@ -77,17 +80,15 @@ class PersistentResourceTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidSha1Values()
+    public static function invalidSha1Values(): \Iterator
     {
-        return [
-          [''],
-          [null],
-          ['XYZE2DC421BE4fCD0172E5AFCEEA3970E2f3d940'],
-          [new \stdClass()],
-          [false],
-        ];
+        yield [''];
+        yield [null];
+        yield ['XYZE2DC421BE4fCD0172E5AFCEEA3970E2f3d940'];
+        yield [new \stdClass()];
+        yield [false];
     }
 
     /**

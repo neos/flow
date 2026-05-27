@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -31,7 +34,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * HINT: The routes used in these tests are defined in the Routes.yaml file in the
  *       Testing context of the Flow package configuration.
  */
-class RoutingTest extends FunctionalTestCase
+final class RoutingTest extends FunctionalTestCase
 {
     protected ServerRequestFactoryInterface $serverRequestFactory;
 
@@ -77,8 +80,8 @@ class RoutingTest extends FunctionalTestCase
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri($requestUri));
         $matchResults = $this->router->route(new RouteContext($request, RouteParameters::createEmpty()));
         $actionRequest = $this->createActionRequest($request, $matchResults);
-        self::assertEquals(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
-        self::assertEquals('first', $actionRequest->getControllerActionName());
+        self::assertSame(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
+        self::assertSame('first', $actionRequest->getControllerActionName());
     }
 
     /**
@@ -90,94 +93,87 @@ class RoutingTest extends FunctionalTestCase
         $request = $this->serverRequestFactory->createServerRequest('POST', new Uri($requestUri));
         $matchResults = $this->router->route(new RouteContext($request, RouteParameters::createEmpty()));
         $actionRequest = $this->createActionRequest($request, $matchResults);
-        self::assertEquals(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
-        self::assertEquals('second', $actionRequest->getControllerActionName());
+        self::assertSame(ActionControllerTestAController::class, $actionRequest->getControllerObjectName());
+        self::assertSame('second', $actionRequest->getControllerActionName());
     }
 
-    public static function routeTestsDataProvider(): array
+    public static function routeTestsDataProvider(): \Iterator
     {
-        return [
-            // non existing route is not matched:
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/some/non/existing/route',
-                'expectedMatchingRouteName' => null
-            ],
-
-            // static route parts are case sensitive:
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/Upper/Camel/Case',
-                'expectedMatchingRouteName' => 'static route parts are case sensitive'
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/upper/camel/case',
-                'expectedMatchingRouteName' => null
-            ],
-
-            // dynamic route parts are case insensitive
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/Neos.Flow/ActionControllerTestA/index.html',
-                'expectedMatchingRouteName' => 'controller route parts are case insensitive',
-                'expectedControllerObjectName' => ActionControllerTestAController::class
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/neos.flow/actioncontrollertesta/index.HTML',
-                'expectedMatchingRouteName' => 'controller route parts are case insensitive',
-                'expectedControllerObjectName' => ActionControllerTestAController::class
-            ],
-
-            // dynamic route part defaults are overwritten by request path
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/without/default/DynamicOverwritten',
-                'expectedMatchingRouteName' => 'dynamic part without default',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/with/default/DynamicOverwritten',
-                'expectedMatchingRouteName' => 'dynamic part with default',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default/DynamicOverwritten',
-                'expectedMatchingRouteName' => 'optional dynamic part with default',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['optionalDynamic' => 'DynamicOverwritten']
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
-                'expectedMatchingRouteName' => 'optional dynamic part with default',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
-                'expectedMatchingRouteName' => 'optional dynamic part with default',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
-            ],
-
-            // toLowerCase has no effect when matching routes
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/case/Dynamic1Overwritten/Dynamic2Overwritten',
-                'expectedMatchingRouteName' => 'dynamic part case',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['dynamic1' => 'Dynamic1Overwritten', 'dynamic2' => 'Dynamic2Overwritten']
-            ],
-
-            // query arguments are ignored when matching routes
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments2/FromPath?dynamic=FromQuery',
-                'expectedMatchingRouteName' => 'exceeding arguments 02',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['dynamic' => 'FromPath']
-            ],
-            [
-                'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments1?dynamic=FromQuery',
-                'expectedMatchingRouteName' => 'exceeding arguments 01',
-                'expectedControllerObjectName' => RoutingTestAController::class,
-                'expectedArguments' => ['dynamic' => 'DynamicDefault']
-            ],
+        // non existing route is not matched:
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/some/non/existing/route',
+            'expectedMatchingRouteName' => null
+        ];
+        // static route parts are case sensitive:
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/Upper/Camel/Case',
+            'expectedMatchingRouteName' => 'static route parts are case sensitive'
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/upper/camel/case',
+            'expectedMatchingRouteName' => null
+        ];
+        // dynamic route parts are case insensitive
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/Neos.Flow/ActionControllerTestA/index.html',
+            'expectedMatchingRouteName' => 'controller route parts are case insensitive',
+            'expectedControllerObjectName' => ActionControllerTestAController::class
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/neos.flow/actioncontrollertesta/index.HTML',
+            'expectedMatchingRouteName' => 'controller route parts are case insensitive',
+            'expectedControllerObjectName' => ActionControllerTestAController::class
+        ];
+        // dynamic route part defaults are overwritten by request path
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/without/default/DynamicOverwritten',
+            'expectedMatchingRouteName' => 'dynamic part without default',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/with/default/DynamicOverwritten',
+            'expectedMatchingRouteName' => 'dynamic part with default',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['dynamic' => 'DynamicOverwritten']
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default/DynamicOverwritten',
+            'expectedMatchingRouteName' => 'optional dynamic part with default',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['optionalDynamic' => 'DynamicOverwritten']
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
+            'expectedMatchingRouteName' => 'optional dynamic part with default',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/optional/dynamic/part/with/default',
+            'expectedMatchingRouteName' => 'optional dynamic part with default',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['optionalDynamic' => 'OptionalDynamicDefault']
+        ];
+        // toLowerCase has no effect when matching routes
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/dynamic/part/case/Dynamic1Overwritten/Dynamic2Overwritten',
+            'expectedMatchingRouteName' => 'dynamic part case',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['dynamic1' => 'Dynamic1Overwritten', 'dynamic2' => 'Dynamic2Overwritten']
+        ];
+        // query arguments are ignored when matching routes
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments2/FromPath?dynamic=FromQuery',
+            'expectedMatchingRouteName' => 'exceeding arguments 02',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['dynamic' => 'FromPath']
+        ];
+        yield [
+            'requestUri' => 'http://localhost/neos/flow/test/exceeding/arguments1?dynamic=FromQuery',
+            'expectedMatchingRouteName' => 'exceeding arguments 01',
+            'expectedControllerObjectName' => RoutingTestAController::class,
+            'expectedArguments' => ['dynamic' => 'DynamicDefault']
         ];
     }
 
@@ -212,52 +208,47 @@ class RoutingTest extends FunctionalTestCase
         }
     }
 
-    public static function resolveTestsDataProvider(): array
+    public static function resolveTestsDataProvider(): \Iterator
     {
         $defaults = ['@package' => 'Neos.Flow', '@subpackage' => 'Tests\Functional\Mvc\Fixtures', '@controller' => 'RoutingTestA'];
-        return [
-            // route resolves no matter if defaults are equal to route values
-            [
-                'routeValues' => array_merge($defaults, ['dynamic' => 'DynamicDefault']),
-                'expectedResolvedRouteName' => 'dynamic part without default',
-                'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/without/default/dynamicdefault'
-            ],
-            [
-                'routeValues' => array_merge($defaults, ['dynamic' => 'OverwrittenDynamicValue']),
-                'expectedResolvedRouteName' => 'dynamic part without default',
-                'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/without/default/overwrittendynamicvalue'
-            ],
-
-            // if route value is omitted, only routes with a default value resolve
-            [
-                'routeValues' => $defaults,
-                'expectedResolvedRouteName' => 'dynamic part with default',
-                'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/with/default/DynamicDefault'
-            ],
-            [
-                'routeValues' => array_merge($defaults, ['optionalDynamic' => 'OptionalDynamicDefault']),
-                'expectedResolvedRouteName' => 'optional dynamic part with default',
-                'expectedResolvedUriPath' => '/neos/flow/test/optional/dynamic/part/with/default'
-            ],
-
-            // toLowerCase has an effect on generated URIs
-            [
-                'routeValues' => array_merge($defaults, ['dynamic1' => 'DynamicRouteValue1', 'dynamic2' => 'DynamicRouteValue2']),
-                'expectedResolvedRouteName' => 'dynamic part case',
-                'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/case/DynamicRouteValue1/dynamicroutevalue2'
-            ],
-
-            // exceeding arguments are appended to resolved URI if appendExceedingArguments is set
-            [
-                'routeValues' => array_merge($defaults, ['@action' => 'test1', 'dynamic' => 'DynamicDefault', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar']),
-                'expectedResolvedRouteName' => 'exceeding arguments 01',
-                'expectedResolvedUriPath' => '/neos/flow/test/exceeding/arguments1?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
-            ],
-            [
-                'routeValues' => array_merge($defaults, ['@action' => 'test1', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar', 'dynamic' => 'DynamicOther']),
-                'expectedResolvedRouteName' => 'exceeding arguments 02',
-                'expectedResolvedUriPath' => '/neos/flow/test/exceeding/arguments2/dynamicother?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
-            ],
+        // route resolves no matter if defaults are equal to route values
+        yield [
+            'routeValues' => array_merge($defaults, ['dynamic' => 'DynamicDefault']),
+            'expectedResolvedRouteName' => 'dynamic part without default',
+            'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/without/default/dynamicdefault'
+        ];
+        yield [
+            'routeValues' => array_merge($defaults, ['dynamic' => 'OverwrittenDynamicValue']),
+            'expectedResolvedRouteName' => 'dynamic part without default',
+            'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/without/default/overwrittendynamicvalue'
+        ];
+        // if route value is omitted, only routes with a default value resolve
+        yield [
+            'routeValues' => $defaults,
+            'expectedResolvedRouteName' => 'dynamic part with default',
+            'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/with/default/DynamicDefault'
+        ];
+        yield [
+            'routeValues' => array_merge($defaults, ['optionalDynamic' => 'OptionalDynamicDefault']),
+            'expectedResolvedRouteName' => 'optional dynamic part with default',
+            'expectedResolvedUriPath' => '/neos/flow/test/optional/dynamic/part/with/default'
+        ];
+        // toLowerCase has an effect on generated URIs
+        yield [
+            'routeValues' => array_merge($defaults, ['dynamic1' => 'DynamicRouteValue1', 'dynamic2' => 'DynamicRouteValue2']),
+            'expectedResolvedRouteName' => 'dynamic part case',
+            'expectedResolvedUriPath' => '/neos/flow/test/dynamic/part/case/DynamicRouteValue1/dynamicroutevalue2'
+        ];
+        // exceeding arguments are appended to resolved URI if appendExceedingArguments is set
+        yield [
+            'routeValues' => array_merge($defaults, ['@action' => 'test1', 'dynamic' => 'DynamicDefault', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar']),
+            'expectedResolvedRouteName' => 'exceeding arguments 01',
+            'expectedResolvedUriPath' => '/neos/flow/test/exceeding/arguments1?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
+        ];
+        yield [
+            'routeValues' => array_merge($defaults, ['@action' => 'test1', 'exceedingArgument2' => 'foo', 'exceedingArgument1' => 'bar', 'dynamic' => 'DynamicOther']),
+            'expectedResolvedRouteName' => 'exceeding arguments 02',
+            'expectedResolvedUriPath' => '/neos/flow/test/exceeding/arguments2/dynamicother?%40action=test1&exceedingArgument2=foo&exceedingArgument1=bar'
         ];
     }
 
@@ -278,14 +269,12 @@ class RoutingTest extends FunctionalTestCase
         self::assertEquals($expectedResolvedUriPath, $resolvedUriPath);
     }
 
-    public static function requestMethodAcceptArray(): array
+    public static function requestMethodAcceptArray(): \Iterator
     {
-        return [
-            ['GET', 404],
-            ['PUT', 404],
-            ['POST', 200],
-            ['DELETE', 200]
-        ];
+        yield ['GET', 404];
+        yield ['PUT', 404];
+        yield ['POST', 200];
+        yield ['DELETE', 200];
     }
 
     /**

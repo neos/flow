@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Validation;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Flow\Tests\Functional\Persistence\Fixtures;
  * Testcase for the Flow Validation Framework
  *
  */
-class ValidationTest extends FunctionalTestCase
+final class ValidationTest extends FunctionalTestCase
 {
     /**
      * @var boolean

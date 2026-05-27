@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Testcase for the I18N translations
  *
  */
-class TranslatorTest extends FunctionalTestCase
+final class TranslatorTest extends FunctionalTestCase
 {
     protected I18n\Translator $translator;
 
@@ -28,14 +31,12 @@ class TranslatorTest extends FunctionalTestCase
         $this->translator = $this->objectManager->get(I18n\Translator::class);
     }
 
-    public static function idAndLocaleForTranslation(): array
+    public static function idAndLocaleForTranslation(): \Iterator
     {
-        return [
-            ['authentication.username', new I18n\Locale('en'), 'Username'],
-            ['authentication.username', new I18n\Locale('de_CH'), 'Benutzername'],
-            ['update', new I18n\Locale('en'), 'Update'],
-            ['update', new I18n\Locale('de'), 'Aktualisieren']
-        ];
+        yield ['authentication.username', new I18n\Locale('en'), 'Username'];
+        yield ['authentication.username', new I18n\Locale('de_CH'), 'Benutzername'];
+        yield ['update', new I18n\Locale('en'), 'Update'];
+        yield ['update', new I18n\Locale('de'), 'Aktualisieren'];
     }
 
     /**
@@ -48,12 +49,10 @@ class TranslatorTest extends FunctionalTestCase
         self::assertEquals($translation, $result);
     }
 
-    public static function labelAndLocaleForTranslation(): array
+    public static function labelAndLocaleForTranslation(): \Iterator
     {
-        return [
-            ['Update', new I18n\Locale('en'), 'Update'],
-            ['Update', new I18n\Locale('de'), 'Aktualisieren']
-        ];
+        yield ['Update', new I18n\Locale('en'), 'Update'];
+        yield ['Update', new I18n\Locale('de'), 'Aktualisieren'];
     }
 
     /**
@@ -66,12 +65,10 @@ class TranslatorTest extends FunctionalTestCase
         self::assertEquals($translation, $result);
     }
 
-    public static function labelAndArgumentsForTranslation(): array
+    public static function labelAndArgumentsForTranslation(): \Iterator
     {
-        return [
-            ['The given value is expected to be {0}.', ['foo'], 'The given value is expected to be foo.'],
-            ['Untranslated label value is expected to be {0}.', ['foo'], 'Untranslated label value is expected to be foo.']
-        ];
+        yield ['The given value is expected to be {0}.', ['foo'], 'The given value is expected to be foo.'];
+        yield ['Untranslated label value is expected to be {0}.', ['foo'], 'Untranslated label value is expected to be foo.'];
     }
 
     /**

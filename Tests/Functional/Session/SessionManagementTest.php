@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Session;
 
 /*
@@ -15,7 +18,7 @@ use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Session;
 
-class SessionManagementTest extends FunctionalTestCase
+final class SessionManagementTest extends FunctionalTestCase
 {
     /**
      * @return void

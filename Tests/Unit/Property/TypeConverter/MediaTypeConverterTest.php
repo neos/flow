@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MediaTypeConverter
  */
-class MediaTypeConverterTest extends UnitTestCase
+final class MediaTypeConverterTest extends UnitTestCase
 {
     /**
      * @var MediaTypeConverter
@@ -38,7 +41,7 @@ class MediaTypeConverterTest extends UnitTestCase
     {
         $this->mediaTypeConverter = new MediaTypeConverter();
 
-        $this->mockPropertyMappingConfiguration = $this->getMockBuilder(PropertyMappingConfigurationInterface::class)->getMock();
+        $this->mockPropertyMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
     }
 
     /**
@@ -76,24 +79,20 @@ class MediaTypeConverterTest extends UnitTestCase
     /**
      * Data provider
      */
-    public static function contentTypesBodiesAndExpectedUnifiedArguments()
+    public static function contentTypesBodiesAndExpectedUnifiedArguments(): \Iterator
     {
-        return [
-            ['application/json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-            ['application/json', 'invalid json source code', []],
-            ['application/json; charset=UTF-8', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-            ['application/xml', '<root><xmlArgument>xmlValue</xmlArgument></root>', ['xmlArgument' => 'xmlValue']],
-            ['text/xml', '<root><xmlArgument>xmlValue</xmlArgument><![CDATA[<!-- text/xml is, by the way, meant to be readable by "the casual user" -->]]></root>', ['xmlArgument' => 'xmlValue']],
-            ['text/xml', '<invalid xml source code>', []],
-            ['application/xml;charset=UTF8', '<root><xmlArgument>xmlValue</xmlArgument></root>', ['xmlArgument' => 'xmlValue']],
-
-            // the following media types are wrong (not registered at IANA), but still used by some out there:
-
-            ['application/x-javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-            ['text/javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-            ['text/x-javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-            ['text/x-json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']],
-        ];
+        yield ['application/json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
+        yield ['application/json', 'invalid json source code', []];
+        yield ['application/json; charset=UTF-8', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
+        yield ['application/xml', '<root><xmlArgument>xmlValue</xmlArgument></root>', ['xmlArgument' => 'xmlValue']];
+        yield ['text/xml', '<root><xmlArgument>xmlValue</xmlArgument><![CDATA[<!-- text/xml is, by the way, meant to be readable by "the casual user" -->]]></root>', ['xmlArgument' => 'xmlValue']];
+        yield ['text/xml', '<invalid xml source code>', []];
+        yield ['application/xml;charset=UTF8', '<root><xmlArgument>xmlValue</xmlArgument></root>', ['xmlArgument' => 'xmlValue']];
+        // the following media types are wrong (not registered at IANA), but still used by some out there:
+        yield ['application/x-javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
+        yield ['text/javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
+        yield ['text/x-javascript', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
+        yield ['text/x-json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
     }
 
     /**

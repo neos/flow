@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Advice;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the Abstract Method Interceptor Builder
  */
-class AbstractAdviceTest extends UnitTestCase
+final class AbstractAdviceTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,15 +30,15 @@ class AbstractAdviceTest extends UnitTestCase
      */
     public function invokeInvokesTheAdviceIfTheRuntimeEvaluatorReturnsTrue()
     {
-        $mockJoinPoint = $this->getMockBuilder(Aop\JoinPointInterface::class)->disableOriginalConstructor()->getMock();
+        $mockJoinPoint = $this->createStub(Aop\JoinPointInterface::class);
 
-        $mockAspect = $this->getMockBuilder(Fixtures\SomeClass::class)->getMock();
+        $mockAspect = $this->createMock(Fixtures\SomeClass::class);
         $mockAspect->expects($this->once())->method('someMethod')->with($mockJoinPoint);
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with('aspectObjectName')->willReturn(($mockAspect));
 
-        $mockDispatcher = $this->createMock(SignalSlot\Dispatcher::class);
+        $mockDispatcher = $this->createStub(SignalSlot\Dispatcher::class);
 
         $advice = new Aop\Advice\AbstractAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (Aop\JoinPointInterface $joinPoint) {
             if ($joinPoint !== null) {
@@ -53,15 +56,15 @@ class AbstractAdviceTest extends UnitTestCase
      */
     public function invokeDoesNotInvokeTheAdviceIfTheRuntimeEvaluatorReturnsFalse()
     {
-        $mockJoinPoint = $this->getMockBuilder(Aop\JoinPointInterface::class)->disableOriginalConstructor()->getMock();
+        $mockJoinPoint = $this->createStub(Aop\JoinPointInterface::class);
 
         $mockAspect = $this->createMock(Fixtures\SomeClass::class);
         $mockAspect->expects($this->never())->method('someMethod');
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('get')->willReturn(($mockAspect));
+        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager->method('get')->willReturn(($mockAspect));
 
-        $mockDispatcher = $this->createMock(SignalSlot\Dispatcher::class);
+        $mockDispatcher = $this->createStub(SignalSlot\Dispatcher::class);
 
         $advice = new Aop\Advice\AbstractAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (Aop\JoinPointInterface $joinPoint) {
             if ($joinPoint !== null) {
@@ -79,12 +82,12 @@ class AbstractAdviceTest extends UnitTestCase
      */
     public function invokeEmitsSignalWithAdviceAndJoinPoint()
     {
-        $mockJoinPoint = $this->getMockBuilder(Aop\JoinPointInterface::class)->disableOriginalConstructor()->getMock();
+        $mockJoinPoint = $this->createStub(Aop\JoinPointInterface::class);
 
-        $mockAspect = $this->getMockBuilder(Fixtures\SomeClass::class)->getMock();
+        $mockAspect = $this->createMock(Fixtures\SomeClass::class);
         $mockAspect->expects($this->once())->method('someMethod')->with($mockJoinPoint);
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with('aspectObjectName')->willReturn(($mockAspect));
 
 

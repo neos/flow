@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session;
 
 /*
@@ -39,27 +42,12 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Unit tests for the Flow Session implementation
  */
-class SessionTest extends UnitTestCase
+final class SessionTest extends UnitTestCase
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $httpRequest;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $httpResponse;
-
     /**
      * @var Context|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockSecurityContext;
-
-    /**
-     * @var Bootstrap
-     */
-    protected $mockBootstrap;
 
     /**
      * @var ObjectManagerInterface
@@ -98,20 +86,17 @@ class SessionTest extends UnitTestCase
         vfsStream::setup('Foo');
 
         $serverRequestFactory = new ServerRequestFactory(new UriFactory());
-        $this->httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
-        $this->httpResponse = new Response();
+        $httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
+        $httpResponse = new Response();
 
         $mockRequestHandler = $this->createMock(RequestHandler::class);
-        $mockRequestHandler->expects($this->any())->method('getHttpRequest')->willReturn(($this->httpRequest));
-        $mockRequestHandler->expects($this->any())->method('getHttpResponse')->willReturn(($this->httpResponse));
-
-        $this->mockBootstrap = $this->createMock(Bootstrap::class);
-        $this->mockBootstrap->expects($this->any())->method('getActiveRequestHandler')->willReturn(($mockRequestHandler));
+        $mockRequestHandler->method('getHttpRequest')->willReturn(($httpRequest));
+        $mockRequestHandler->method('getHttpResponse')->willReturn(($httpResponse));
 
         $this->mockSecurityContext = $this->createMock(Context::class);
 
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->with(Context::class)->willReturn(($this->mockSecurityContext));
+        $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($this->mockSecurityContext));
     }
 
     /**
@@ -311,7 +296,7 @@ class SessionTest extends UnitTestCase
             $this->fail('No exception thrown although the session was not started yet.');
         } catch (SessionNotStartedException $e) {
             $session->start();
-            self::assertEquals(32, strlen($session->getId()));
+            self::assertSame(32, strlen($session->getId()));
         }
     }
 
@@ -711,7 +696,7 @@ class SessionTest extends UnitTestCase
 
         $taggedSession->removeTag('DoesntExistButDoesNotAnyHarm');
 
-        self::assertEquals(['AnotherTag', 'YetAnotherTag'], array_values($taggedSession->getTags()));
+        self::assertSame(['AnotherTag', 'YetAnotherTag'], array_values($taggedSession->getTags()));
     }
 
     /**
@@ -809,8 +794,8 @@ class SessionTest extends UnitTestCase
         $token->setAuthenticationStatus(TokenInterface::AUTHENTICATION_SUCCESSFUL);
         $token->setAccount($account);
 
-        $this->mockSecurityContext->expects($this->any())->method('isInitialized')->willReturn((true));
-        $this->mockSecurityContext->expects($this->any())->method('getAuthenticationTokens')->willReturn(([$token]));
+        $this->mockSecurityContext->method('isInitialized')->willReturn((true));
+        $this->mockSecurityContext->method('getAuthenticationTokens')->willReturn(([$token]));
 
         $sessionCookie = $session->getSessionCookie();
         $session->close();

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -20,7 +23,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the text validator
  *
  */
-class TextValidatorTest extends AbstractValidatorTestcase
+final class TextValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = TextValidator::class;
 
@@ -50,15 +53,13 @@ class TextValidatorTest extends AbstractValidatorTestcase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validInput()
+    public static function validInput(): \Iterator
     {
-        return [
-            ['this is a very simple string'],
-            ['Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. ' . chr(10) . 'Vu dan durch jéngt gréng, ze rou Monn voll stolz. \nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.'],
-            ['3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.'],
-        ];
+        yield ['this is a very simple string'];
+        yield ['Ierd Frot uechter mä get, Kirmesdag Milliounen all en, sinn main Stréi mä och. ' . chr(10) . 'Vu dan durch jéngt gréng, ze rou Monn voll stolz. \nKe kille Minutt d\'Kirmes net. Hir Wand Lann Gaas da, wär hu Heck Gart zënter, Welt Ronn grousse der ke. Wou fond eraus Wisen am. Hu dénen d\'Gaassen eng, eng am virun geplot d\'Lëtzebuerger, get botze rëscht Blieder si. Dat Dauschen schéinste Milliounen fu. Ze riede méngem Keppchen déi, si gét fergiess erwaacht, räich jéngt duerch en nun. Gëtt Gaas d\'Vullen hie hu, laacht Grénge der dé. Gemaacht gehéiert da aus, gutt gudden d\'wäiss mat wa.'];
+        yield ['3% of most people tend to use semikolae; we need to check & allow that. And hashes (#) are not evil either, nor is the sign called \'quote\'.'];
     }
 
     /**
@@ -74,13 +75,11 @@ class TextValidatorTest extends AbstractValidatorTestcase
 
     /**
      * Data provider with invalid input for TextValidator.
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidInput()
+    public static function invalidInput(): \Iterator
     {
-        return [
-            ['<span style="color: #BBBBBB;">a nice text</span>']
-        ];
+        yield ['<span style="color: #BBBBBB;">a nice text</span>'];
     }
 
     /**

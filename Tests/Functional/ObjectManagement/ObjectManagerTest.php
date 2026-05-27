@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Object Manager features
  */
-class ObjectManagerTest extends FunctionalTestCase
+final class ObjectManagerTest extends FunctionalTestCase
 {
     /**
      * @test

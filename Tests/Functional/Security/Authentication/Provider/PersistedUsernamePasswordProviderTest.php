@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security\Authentication\Provider;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Security;
 /**
  * Testcase for the persisted username and password provider
  */
-class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
+final class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
 {
     protected $testableSecurityEnabled = true;
 
@@ -26,11 +29,6 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
      * @var PersistedUsernamePasswordProvider
      */
     protected $persistedUsernamePasswordProvider;
-
-    /**
-     * @var Security\AccountFactory
-     */
-    protected $accountFactory;
 
     /**
      * @var Security\AccountRepository
@@ -47,7 +45,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         parent::setUp();
 
         $this->persistedUsernamePasswordProvider = PersistedUsernamePasswordProvider::create('myTestProvider', []);
-        $this->accountFactory = new Security\AccountFactory();
+        $accountFactory = new Security\AccountFactory();
         $this->accountRepository = new Security\AccountRepository();
 
         $this->authenticationToken = new class extends Security\Authentication\Token\UsernamePassword {
@@ -57,7 +55,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
             }
         };
 
-        $account = $this->accountFactory->createAccountWithPassword('username', 'password', [], 'myTestProvider');
+        $account = $accountFactory->createAccountWithPassword('username', 'password', [], 'myTestProvider');
         $this->accountRepository->add($account);
         $this->persistenceManager->persistAll();
     }
@@ -75,6 +73,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         self::assertTrue($this->authenticationToken->isAuthenticated());
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
+        $this->assertInstanceOf(\Neos\Flow\Security\Account::class, $account);
         self::assertNotNull($account->getLastSuccessfulAuthenticationDate());
         self::assertSame(0, $account->getFailedAuthenticationCount());
     }
@@ -92,6 +91,7 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         self::assertFalse($this->authenticationToken->isAuthenticated());
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
+        $this->assertInstanceOf(\Neos\Flow\Security\Account::class, $account);
         self::assertSame(1, $account->getFailedAuthenticationCount());
     }
 
@@ -120,12 +120,14 @@ class PersistedUsernamePasswordProviderTest extends FunctionalTestCase
         $this->persistedUsernamePasswordProvider->authenticate($this->authenticationToken);
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
+        $this->assertInstanceOf(\Neos\Flow\Security\Account::class, $account);
         self::assertSame(1, $account->getFailedAuthenticationCount());
 
         $this->authenticationToken->_setCredentials(['username' => 'username', 'password' => 'password']);
         $this->persistedUsernamePasswordProvider->authenticate($this->authenticationToken);
 
         $account = $this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName('username', 'myTestProvider');
+        $this->assertInstanceOf(\Neos\Flow\Security\Account::class, $account);
         self::assertNotNull($account->getLastSuccessfulAuthenticationDate());
         self::assertSame(0, $account->getFailedAuthenticationCount());
     }

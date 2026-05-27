@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Error\Messages as Error;
 /**
  * Testcase for the Disjunction Validator
  */
-class DisjunctionValidatorTest extends UnitTestCase
+final class DisjunctionValidatorTest extends UnitTestCase
 {
     /**
      * @test
@@ -28,13 +31,13 @@ class DisjunctionValidatorTest extends UnitTestCase
     {
         $validatorDisjunction = new DisjunctionValidator([]);
         $validatorObject = $this->createMock(ValidatorInterface::class);
-        $validatorObject->expects($this->any())->method('validate')->willReturn((new Error\Result()));
+        $validatorObject->method('validate')->willReturn((new Error\Result()));
 
         $errors = new Error\Result();
         $errors->addError(new Error\Error('Error', 123));
 
         $secondValidatorObject = $this->createMock(ValidatorInterface::class);
-        $secondValidatorObject->expects($this->any())->method('validate')->willReturn(($errors));
+        $secondValidatorObject->method('validate')->willReturn(($errors));
 
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);
@@ -55,12 +58,12 @@ class DisjunctionValidatorTest extends UnitTestCase
         $errors1 = new Error\Result();
         $errors1->addError($error1);
         $validatorObject = $this->createMock(ValidatorInterface::class);
-        $validatorObject->expects($this->any())->method('validate')->willReturn(($errors1));
+        $validatorObject->method('validate')->willReturn(($errors1));
 
         $errors2 = new Error\Result();
         $errors2->addError($error2);
         $secondValidatorObject = $this->createMock(ValidatorInterface::class);
-        $secondValidatorObject->expects($this->any())->method('validate')->willReturn(($errors2));
+        $secondValidatorObject->method('validate')->willReturn(($errors2));
 
         $validatorDisjunction->addValidator($validatorObject);
         $validatorDisjunction->addValidator($secondValidatorObject);

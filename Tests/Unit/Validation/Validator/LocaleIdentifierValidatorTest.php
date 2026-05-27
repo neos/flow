@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the locale identifier validator
  *
  */
-class LocaleIdentifierValidatorTest extends AbstractValidatorTestcase
+final class LocaleIdentifierValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = LocaleIdentifierValidator::class;
 

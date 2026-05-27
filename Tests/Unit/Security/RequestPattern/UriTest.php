@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
@@ -20,16 +23,14 @@ use Psr\Http\Message\UriInterface;
 /**
  * Testcase for the URI request pattern
  */
-class UriTest extends UnitTestCase
+final class UriTest extends UnitTestCase
 {
-    public static function matchRequestDataProvider()
+    public static function matchRequestDataProvider(): \Iterator
     {
-        return [
-            ['uriPath' => '', 'pattern' => '.*', 'shouldMatch' => true],
-            ['uriPath' => '', 'pattern' => '/some/nice/.*', 'shouldMatch' => false],
-            ['uriPath' => '/some/nice/path/to/index.php', 'pattern' => '/some/nice/.*', 'shouldMatch' => true],
-            ['uriPath' => '/some/other/path', 'pattern' => '.*/other/.*', 'shouldMatch' => true],
-        ];
+        yield ['uriPath' => '', 'pattern' => '.*', 'shouldMatch' => true];
+        yield ['uriPath' => '', 'pattern' => '/some/nice/.*', 'shouldMatch' => false];
+        yield ['uriPath' => '/some/nice/path/to/index.php', 'pattern' => '/some/nice/.*', 'shouldMatch' => true];
+        yield ['uriPath' => '/some/other/path', 'pattern' => '.*/other/.*', 'shouldMatch' => true];
     }
 
     /**
@@ -38,12 +39,12 @@ class UriTest extends UnitTestCase
      */
     public function matchRequestTests($uriPath, $pattern, $shouldMatch)
     {
-        $mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockActionRequest = $this->createMock(ActionRequest::class);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $mockActionRequest->expects($this->atLeastOnce())->method('getHttpRequest')->willReturn(($mockHttpRequest));
 
-        $mockUri = $this->getMockBuilder(UriInterface::class)->disableOriginalConstructor()->getMock();
+        $mockUri = $this->createMock(UriInterface::class);
         $mockHttpRequest->expects($this->atLeastOnce())->method('getUri')->willReturn(($mockUri));
 
         $mockUri->expects($this->atLeastOnce())->method('getPath')->willReturn(($uriPath));

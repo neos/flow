@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\EelHelper;
 
 /*
@@ -18,16 +21,14 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Tests for TranslateHelper
  */
-class TranslationHelperTest extends UnitTestCase
+final class TranslationHelperTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function translateReturnsCorrectlyConfiguredTranslationParameterTokenWhenCalledWithLongArgumentList()
     {
-        $mockTranslationParameterToken = $this->getMockBuilder(TranslationParameterToken::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockTranslationParameterToken = $this->createMock(TranslationParameterToken::class);
 
         $mockTranslationParameterToken->expects($this->once())
             ->method('value', 'SomeValue')
@@ -72,9 +73,7 @@ class TranslationHelperTest extends UnitTestCase
      */
     public function translateReturnsCorrectlyConfiguredTranslationParameterTokenWhenCalledWithShortHandString()
     {
-        $mockTranslationParameterToken = $this->getMockBuilder(TranslationParameterToken::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockTranslationParameterToken = $this->createMock(TranslationParameterToken::class);
 
         $mockTranslationParameterToken->expects($this->once())
             ->method('source', 'SomeSource')

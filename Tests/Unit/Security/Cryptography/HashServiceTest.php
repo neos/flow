@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -26,17 +29,12 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the Hash Service
  */
-class HashServiceTest extends UnitTestCase
+final class HashServiceTest extends UnitTestCase
 {
     /**
      * @var HashService
      */
     protected $hashService;
-
-    /**
-     * @var StringFrontend
-     */
-    protected $cache;
 
     /**
      * @var ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -64,13 +62,13 @@ class HashServiceTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->cache = new StringFrontend('TestCache', new TransientMemoryBackend(new EnvironmentConfiguration('Hash Testing', '/some/path', PHP_MAXPATHLEN)));
-        $this->cache->initializeObject();
+        $cache = new StringFrontend('TestCache', new TransientMemoryBackend(new EnvironmentConfiguration('Hash Testing', '/some/path', PHP_MAXPATHLEN)));
+        $cache->initializeObject();
 
-        $this->mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
+        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
 
         $this->hashService = new HashService();
-        $this->inject($this->hashService, 'cache', $this->cache);
+        $this->inject($this->hashService, 'cache', $cache);
         $this->inject($this->hashService, 'objectManager', $this->mockObjectManager);
         $this->hashService->injectSettings($this->mockSettings);
     }
@@ -164,8 +162,8 @@ class HashServiceTest extends UnitTestCase
     public function hashPasswordWillIncludeStrategyIdentifierInHashedPassword()
     {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
-        $mockStrategy->expects($this->any())->method('hashPassword')->willReturn(('---hashed-password---'));
-        $this->mockObjectManager->expects($this->any())->method('get')->willReturn(($mockStrategy));
+        $mockStrategy->method('hashPassword')->willReturn(('---hashed-password---'));
+        $this->mockObjectManager->method('get')->willReturn(($mockStrategy));
 
         $result = $this->hashService->hashPassword('myTestPassword', 'TestStrategy');
         self::assertEquals('TestStrategy=>---hashed-password---', $result);
@@ -206,7 +204,7 @@ class HashServiceTest extends UnitTestCase
     public function validatePasswordWillUseStrategyIdentifierFromHashedPassword()
     {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->willReturn(($mockStrategy));
+        $this->mockObjectManager->method('get')->willReturn(($mockStrategy));
 
         $mockStrategy->expects($this->atLeastOnce())->method('validatePassword')->with('myTestPassword', '---hashed-password---')->willReturn((true));
 

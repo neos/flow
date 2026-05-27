@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Validation\Validator;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
  * Testcase for the UniqueEntity Validator
  *
  */
-class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCase
+final class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCase
 {
     /**
      * @var boolean

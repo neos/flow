@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Log\Utility;
 
 /*
@@ -14,29 +17,27 @@ namespace Neos\Flow\Tests\Functional\Log\Utility;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Tests\FunctionalTestCase;
 
-class LogEnvironmentTest extends FunctionalTestCase
+final class LogEnvironmentTest extends FunctionalTestCase
 {
-    public static function fromMethodNameDataProvider(): array
+    public static function fromMethodNameDataProvider(): \Iterator
     {
-        return [
-            'packageKeyCanBeDetermined' => [
-                'method' => __METHOD__,
-                'expected' => [
-                    'FLOW_LOG_ENVIRONMENT' => [
-                        'packageKey' => 'Neos.Flow',
-                        'className' => 'Neos\Flow\Tests\Functional\Log\Utility\LogEnvironmentTest',
-                        'methodName' => 'fromMethodNameDataProvider'
-                    ]
+        yield 'packageKeyCanBeDetermined' => [
+            'method' => __METHOD__,
+            'expected' => [
+                'FLOW_LOG_ENVIRONMENT' => [
+                    'packageKey' => 'Neos.Flow',
+                    'className' => 'Neos\Flow\Tests\Functional\Log\Utility\LogEnvironmentTest',
+                    'methodName' => 'fromMethodNameDataProvider'
                 ]
-            ],
-            'unknownPackageKeyReturnsFirstPart' => [
-                'method' => 'Some\Unknown\CLass\Path::methodName',
-                'expected' => [
-                    'FLOW_LOG_ENVIRONMENT' => [
-                        'packageKey' => 'Some',
-                        'className' => 'Some\Unknown\CLass\Path',
-                        'methodName' => 'methodName'
-                    ]
+            ]
+        ];
+        yield 'unknownPackageKeyReturnsFirstPart' => [
+            'method' => 'Some\Unknown\CLass\Path::methodName',
+            'expected' => [
+                'FLOW_LOG_ENVIRONMENT' => [
+                    'packageKey' => 'Some',
+                    'className' => 'Some\Unknown\CLass\Path',
+                    'methodName' => 'methodName'
                 ]
             ]
         ];

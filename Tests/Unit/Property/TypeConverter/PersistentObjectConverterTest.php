@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -34,7 +37,7 @@ require_once(__DIR__ . '/../../Fixtures/ClassWithSettersAndConstructor.php');
 /**
  * Testcase for the PersistentObjectConverter
  */
-class PersistentObjectConverterTest extends UnitTestCase
+final class PersistentObjectConverterTest extends UnitTestCase
 {
     /**
      * @var TypeConverterInterface
@@ -80,15 +83,15 @@ class PersistentObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function dataProviderForCanConvert()
+    public static function dataProviderForCanConvert(): \Iterator
     {
-        return [
-            [true, false, true], // is entity => can convert
-            [false, true, true], // is valueobject => can convert
-            [false, false, false] // is no entity and no value object => can not convert
-        ];
+        yield [true, false, true];
+        // is entity => can convert
+        yield [false, true, true];
+        // is valueobject => can convert
+        yield [false, false, false];
     }
 
     /**
@@ -134,11 +137,11 @@ class PersistentObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
     {
-        $mockSchema = $this->getMockBuilder(ClassSchema::class)->disableOriginalConstructor()->getMock();
-        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
+        $mockSchema = $this->createMock(ClassSchema::class);
+        $this->mockReflectionService->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
 
-        $mockSchema->expects($this->any())->method('hasProperty')->with('thePropertyName')->willReturn((true));
-        $mockSchema->expects($this->any())->method('getProperty')->with('thePropertyName')->willReturn(([
+        $mockSchema->method('hasProperty')->with('thePropertyName')->willReturn((true));
+        $mockSchema->method('getProperty')->with('thePropertyName')->willReturn(([
             'type' => 'TheTypeOfSubObject',
             'elementType' => null
         ]));
@@ -163,18 +166,18 @@ class PersistentObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldConsiderSetters()
     {
-        $mockSchema = $this->getMockBuilder(ClassSchema::class)->disableOriginalConstructor()->getMock();
-        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
+        $mockSchema = $this->createMock(ClassSchema::class);
+        $this->mockReflectionService->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
 
-        $mockSchema->expects($this->any())->method('hasProperty')->with('virtualPropertyName')->willReturn((false));
+        $mockSchema->method('hasProperty')->with('virtualPropertyName')->willReturn((false));
 
-        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setVirtualPropertyName')->willReturn((true));
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->will($this->returnValueMap([
+        $this->mockReflectionService->method('hasMethod')->with('TheTargetType', 'setVirtualPropertyName')->willReturn((true));
+        $this->mockReflectionService->method('getMethodParameters')->willReturnMap([
             ['TheTargetType', '__construct', []],
             ['TheTargetType', 'setVirtualPropertyName', [['type' => 'TheTypeOfSubObject']]]
-        ]));
+        ]);
 
-        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setVirtualPropertyName')->willReturn((true));
+        $this->mockReflectionService->method('hasMethod')->with('TheTargetType', 'setVirtualPropertyName')->willReturn((true));
         $matcher = $this->exactly(2);
         $this->mockReflectionService
             ->expects($matcher)
@@ -200,8 +203,8 @@ class PersistentObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldConsiderConstructors()
     {
-        $mockSchema = $this->getMockBuilder(ClassSchema::class)->disableOriginalConstructor()->getMock();
-        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
+        $mockSchema = $this->createStub(ClassSchema::class);
+        $this->mockReflectionService->method('getClassSchema')->with('TheTargetType')->willReturn(($mockSchema));
         $this->mockReflectionService
             ->expects($this->exactly(1))
             ->method('getMethodParameters')
@@ -313,7 +316,7 @@ class PersistentObjectConverterTest extends UnitTestCase
         $mockClassSchema->expects($this->once())->method('getIdentityProperties')->willReturn((['key1' => 'someType']));
         $this->mockReflectionService->expects($this->once())->method('getClassSchema')->with('SomeType')->willReturn(($mockClassSchema));
 
-        $mockConstraint = $this->getMockBuilder(Persistence\Generic\Qom\Comparison::class)->disableOriginalConstructor()->getMock();
+        $mockConstraint = $this->createMock(Persistence\Generic\Qom\Comparison::class);
 
         $mockObject = new \stdClass();
         $mockQuery = $this->createMock(Persistence\QueryInterface::class);

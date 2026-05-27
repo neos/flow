@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -20,7 +23,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * Testcase for the URI type converter
  */
-class UriTypeConverterTest extends UnitTestCase
+final class UriTypeConverterTest extends UnitTestCase
 {
     /**
      * @var UriTypeConverter

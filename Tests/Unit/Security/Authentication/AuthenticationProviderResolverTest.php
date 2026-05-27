@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the security interceptor resolver
  */
-class AuthenticationProviderResolverTest extends UnitTestCase
+final class AuthenticationProviderResolverTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,8 +30,8 @@ class AuthenticationProviderResolverTest extends UnitTestCase
     public function resolveProviderObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
         $this->expectException(NoAuthenticationProviderFoundException::class);
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->willReturn((false));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturn((false));
 
         $providerResolver = new AuthenticationProviderResolver($mockObjectManager);
 
@@ -52,8 +55,8 @@ class AuthenticationProviderResolverTest extends UnitTestCase
             return false;
         };
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will(self::returnCallBack($getCaseSensitiveObjectNameCallback));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturnCallback($getCaseSensitiveObjectNameCallback);
 
         $providerResolver = new AuthenticationProviderResolver($mockObjectManager);
         $providerClass = $providerResolver->resolveProviderClass('ValidShortName');
@@ -66,8 +69,8 @@ class AuthenticationProviderResolverTest extends UnitTestCase
      */
     public function resolveProviderReturnsTheCorrectProviderForACompleteClassName()
     {
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->with('existingProviderClass')->willReturn(('existingProviderClass'));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->with('existingProviderClass')->willReturn(('existingProviderClass'));
 
         $providerResolver = new AuthenticationProviderResolver($mockObjectManager);
         $providerClass = $providerResolver->resolveProviderClass('existingProviderClass');

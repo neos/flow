@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Http;
 
 /*
@@ -19,7 +22,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * Functional tests for the HTTP Request Handler
  */
-class RequestHandlerTest extends FunctionalTestCase
+final class RequestHandlerTest extends FunctionalTestCase
 {
     /**
      * @var boolean

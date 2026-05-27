@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -24,7 +27,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC Web Routing IdentityRoutePart Class
  */
-class IdentityRoutePartTest extends UnitTestCase
+final class IdentityRoutePartTest extends UnitTestCase
 {
     /**
      * @var IdentityRoutePart
@@ -35,11 +38,6 @@ class IdentityRoutePartTest extends UnitTestCase
      * @var PersistenceManagerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockPersistenceManager;
-
-    /**
-     * @var ReflectionService|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockReflectionService;
 
     /**
      * @var ClassSchema|\PHPUnit\Framework\MockObject\MockObject
@@ -61,10 +59,10 @@ class IdentityRoutePartTest extends UnitTestCase
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->identityRoutePart->_set('persistenceManager', $this->mockPersistenceManager);
 
-        $this->mockReflectionService = $this->createMock(ReflectionService::class);
-        $this->mockClassSchema = $this->getMockBuilder(ClassSchema::class)->disableOriginalConstructor()->getMock();
-        $this->mockReflectionService->expects($this->any())->method('getClassSchema')->willReturn(($this->mockClassSchema));
-        $this->identityRoutePart->_set('reflectionService', $this->mockReflectionService);
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $this->mockClassSchema = $this->createMock(ClassSchema::class);
+        $mockReflectionService->method('getClassSchema')->willReturn(($this->mockClassSchema));
+        $this->identityRoutePart->_set('reflectionService', $mockReflectionService);
 
         $this->mockObjectPathMappingRepository = $this->createMock(ObjectPathMappingRepository::class);
         $this->identityRoutePart->_set('objectPathMappingRepository', $this->mockObjectPathMappingRepository);
@@ -142,7 +140,7 @@ class IdentityRoutePartTest extends UnitTestCase
      */
     public function matchValueSetsTheRouteValueToTheUrlDecodedPathSegmentIfNoUriPatternIsSpecified()
     {
-        $this->mockClassSchema->expects($this->any())->method('getIdentityProperties')->willReturn(([]));
+        $this->mockClassSchema->method('getIdentityProperties')->willReturn(([]));
 
         $this->mockPersistenceManager->expects($this->once())->method('getObjectByIdentifier')->with('The Identifier', 'stdClass')->willReturn((new \stdClass()));
 
@@ -201,22 +199,20 @@ class IdentityRoutePartTest extends UnitTestCase
 
     /**
      * data provider for findValueToMatchTests()
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function findValueToMatchProvider()
+    public static function findValueToMatchProvider(): \Iterator
     {
-        return [
-            ['staticPattern/Foo', 'staticPattern', '/Foo', 'staticPattern'],
-            ['staticPattern/Foo', 'staticPattern', 'NonExistingSplitString', ''],
-            ['The/Route/Path', '{property1}/{property2}', '/Path', 'The/Route'],
-            ['static/dynamic/splitString', 'static/{property1}', '/splitString', 'static/dynamic'],
-            ['dynamic/exceeding/splitString', '{property1}', '/splitString', ''],
-            ['dynamic1static1dynamic2/static2splitString', '{property1}static1{property2}/static2', 'splitString', 'dynamic1static1dynamic2/static2'],
-            ['static1dynamic1dynamic2/static2splitString', 'static1{property1}{property2}/static2', 'splitString', 'static1dynamic1dynamic2/static2'],
-            ['foo/bar/baz', '{foo}/{bar}', '/', 'foo/bar'],
-            ['foo/bar/baz', '{foo}/{bar}', '/baz', 'foo/bar'],
-            ['foo/bar/notTheSplitString', '{foo}/{bar}', '/splitString', ''],
-        ];
+        yield ['staticPattern/Foo', 'staticPattern', '/Foo', 'staticPattern'];
+        yield ['staticPattern/Foo', 'staticPattern', 'NonExistingSplitString', ''];
+        yield ['The/Route/Path', '{property1}/{property2}', '/Path', 'The/Route'];
+        yield ['static/dynamic/splitString', 'static/{property1}', '/splitString', 'static/dynamic'];
+        yield ['dynamic/exceeding/splitString', '{property1}', '/splitString', ''];
+        yield ['dynamic1static1dynamic2/static2splitString', '{property1}static1{property2}/static2', 'splitString', 'dynamic1static1dynamic2/static2'];
+        yield ['static1dynamic1dynamic2/static2splitString', 'static1{property1}{property2}/static2', 'splitString', 'static1dynamic1dynamic2/static2'];
+        yield ['foo/bar/baz', '{foo}/{bar}', '/', 'foo/bar'];
+        yield ['foo/bar/baz', '{foo}/{bar}', '/baz', 'foo/bar'];
+        yield ['foo/bar/notTheSplitString', '{foo}/{bar}', '/splitString', ''];
     }
 
     /**
@@ -273,7 +269,7 @@ class IdentityRoutePartTest extends UnitTestCase
      */
     public function resolveValueSetsTheRouteValueToTheUrlEncodedIdentifierIfNoUriPatternIsSpecified()
     {
-        $this->mockClassSchema->expects($this->any())->method('getIdentityProperties')->willReturn(([]));
+        $this->mockClassSchema->method('getIdentityProperties')->willReturn(([]));
 
         $value = ['__identity' => 'Some Identifier'];
         $this->mockObjectPathMappingRepository->expects($this->never())->method('findOneByObjectTypeUriPatternAndIdentifier');
@@ -397,21 +393,21 @@ class IdentityRoutePartTest extends UnitTestCase
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment', $parameters[2]);
-                $this->assertSame(false, $parameters[3]);
+                $this->assertFalse($parameters[3]);
                 return $existingObjectPathMapping;
             }
             if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-1', $parameters[2]);
-                $this->assertSame(false, $parameters[3]);
+                $this->assertFalse($parameters[3]);
                 return $existingObjectPathMapping;
             }
             if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-2', $parameters[2]);
-                $this->assertSame(false, $parameters[3]);
+                $this->assertFalse($parameters[3]);
                 return null;
             }
         });
@@ -453,14 +449,14 @@ class IdentityRoutePartTest extends UnitTestCase
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment', $parameters[2]);
-                $this->assertSame(true, $parameters[3]);
+                $this->assertTrue($parameters[3]);
                 return $existingObjectPathMapping;
             }
             if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame('stdClass', $parameters[0]);
                 $this->assertSame('SomeUriPattern', $parameters[1]);
                 $this->assertSame('The/Path/Segment-1', $parameters[2]);
-                $this->assertSame(true, $parameters[3]);
+                $this->assertTrue($parameters[3]);
                 return null;
             }
         });
@@ -534,9 +530,9 @@ class IdentityRoutePartTest extends UnitTestCase
 
     /**
      * data provider for createPathSegmentForObjectTests()
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function createPathSegmentForObjectProvider()
+    public static function createPathSegmentForObjectProvider(): \Iterator
     {
         $object = new \stdClass();
         $object->property1 = 'Property1Value';
@@ -545,18 +541,16 @@ class IdentityRoutePartTest extends UnitTestCase
         $subObject = new \stdClass();
         $subObject->subObjectProperty = 'SubObjectPropertyValue';
         $object->subObject = $subObject;
-        return [
-            [$object, '{property1}', 'Property1Value'],
-            [$object, '{property2}', 'Property2Vaeluee'],
-            [$object, '{property1}{property2}', 'Property1ValueProperty2Vaeluee'],
-            [$object, '{property1}/static{property2}', 'Property1Value/staticProperty2Vaeluee'],
-            [$object, 'stäticValüe1/staticValue2{property2}staticValue3{property1}staticValue4', 'stäticValüe1/staticValue2Property2VaelueestaticValue3Property1ValuestaticValue4'],
-            [$object, '{nonExistingProperty}', ''],
-            [$object, '{dateProperty}', '1980-12-13'],
-            [$object, '{dateProperty:y}', '80'],
-            [$object, '{dateProperty:Y}/{dateProperty:m}/{dateProperty:d}', '1980/12/13'],
-            [$object, '{subObject.subObjectProperty}', 'SubObjectPropertyValue'],
-        ];
+        yield [$object, '{property1}', 'Property1Value'];
+        yield [$object, '{property2}', 'Property2Vaeluee'];
+        yield [$object, '{property1}{property2}', 'Property1ValueProperty2Vaeluee'];
+        yield [$object, '{property1}/static{property2}', 'Property1Value/staticProperty2Vaeluee'];
+        yield [$object, 'stäticValüe1/staticValue2{property2}staticValue3{property1}staticValue4', 'stäticValüe1/staticValue2Property2VaelueestaticValue3Property1ValuestaticValue4'];
+        yield [$object, '{nonExistingProperty}', ''];
+        yield [$object, '{dateProperty}', '1980-12-13'];
+        yield [$object, '{dateProperty:y}', '80'];
+        yield [$object, '{dateProperty:Y}/{dateProperty:m}/{dateProperty:d}', '1980/12/13'];
+        yield [$object, '{subObject.subObjectProperty}', 'SubObjectPropertyValue'];
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -20,7 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Testcase for the FormatResolver
  */
-class FormatResolverTest extends UnitTestCase
+final class FormatResolverTest extends UnitTestCase
 {
     /**
      * @var I18n\Locale

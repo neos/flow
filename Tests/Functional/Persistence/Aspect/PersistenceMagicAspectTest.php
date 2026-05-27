@@ -20,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for PersistenceMagicAspect
  */
-class PersistenceMagicAspectTest extends FunctionalTestCase
+final class PersistenceMagicAspectTest extends FunctionalTestCase
 {
     /**
      * @var bool
@@ -87,14 +87,12 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
         self::assertEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
     }
 
-    public static function sameValueObjectDataProvider(): array
+    public static function sameValueObjectDataProvider(): \Iterator
     {
         // These need to be provided as closures so that the construction happens inside the test and not outside of the test environment.
-        return [
-            [static fn () => [new Fixtures\TestValueObject('value'), new Fixtures\TestValueObject('value')]],
-            [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('val', 'val'), new Fixtures\TestValueObjectWithConstructorLogic(' val', 'val ')]],
-            [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('moreThan5Chars', 'alsoMoreButDoesntMatter'), new Fixtures\TestValueObjectWithConstructorLogic('  moreThan5Chars  ', '        alsoMoreButDoesntMatter ')]]
-        ];
+        yield [static fn () => [new Fixtures\TestValueObject('value'), new Fixtures\TestValueObject('value')]];
+        yield [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('val', 'val'), new Fixtures\TestValueObjectWithConstructorLogic(' val', 'val ')]];
+        yield [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('moreThan5Chars', 'alsoMoreButDoesntMatter'), new Fixtures\TestValueObjectWithConstructorLogic('  moreThan5Chars  ', '        alsoMoreButDoesntMatter ')]];
     }
 
     /**
@@ -107,14 +105,12 @@ class PersistenceMagicAspectTest extends FunctionalTestCase
         self::assertNotEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
     }
 
-    public static function differentValueObjectDataProvider(): array
+    public static function differentValueObjectDataProvider(): \Iterator
     {
         // These need to be provided as closures so that the construction happens inside the test and not outside of the test environment.
-        return [
-            [static fn () => [new Fixtures\TestValueObject('value1'), new Fixtures\TestValueObject('value2')]],
-            [static fn () => [new Fixtures\TestValueObject(''), new Fixtures\TestValueObject(null)]],
-            [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('chars', ' value2IsJustTrimmed        '), new Fixtures\TestValueObjectWithConstructorLogic('chars ', '        value2IsJustTrimmed ')]]
-        ];
+        yield [static fn () => [new Fixtures\TestValueObject('value1'), new Fixtures\TestValueObject('value2')]];
+        yield [static fn () => [new Fixtures\TestValueObject(''), new Fixtures\TestValueObject(null)]];
+        yield [static fn () => [new Fixtures\TestValueObjectWithConstructorLogic('chars', ' value2IsJustTrimmed        '), new Fixtures\TestValueObjectWithConstructorLogic('chars ', '        value2IsJustTrimmed ')]];
     }
 
     /**

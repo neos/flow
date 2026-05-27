@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Persistence;
 
 /*
@@ -27,7 +30,7 @@ use Neos\Utility\ObjectAccess;
  * Testcase for persistence
  *
  */
-class PersistenceTestPHP8 extends FunctionalTestCase
+final class PersistenceTestPHP8 extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -102,7 +105,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         self::assertNull(ObjectAccess::getProperty($allResults, 'rows', true), 'Query Result did not load the result collection lazily.');
 
         $allResultsArray = $allResults->toArray();
-        self::assertStringContainsString('Flow', $allResultsArray[0]->getName());
+        self::assertStringContainsString('Flow', (string) $allResultsArray[0]->getName());
         self::assertIsArray(ObjectAccess::getProperty($allResults, 'rows', true));
     }
 
@@ -129,10 +132,10 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         $this->insertExampleEntity();
 
         $allResults = $this->testEntityRepository->findAll();
-        self::assertEquals(1, count($allResults->toArray()), 'Not correct number of entities found before running test.');
+        self::assertCount(1, $allResults->toArray(), 'Not correct number of entities found before running test.');
 
         $unserializedResults = unserialize(serialize($allResults));
-        self::assertEquals(1, count($unserializedResults->toArray()));
+        self::assertCount(1, $unserializedResults->toArray());
         self::assertEquals('Flow', $unserializedResults[0]->getName());
     }
 
@@ -149,7 +152,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         self::assertEquals('Flow', $allResults->getFirst()->getName());
 
         $numberOfTotalResults = count($allResults->toArray());
-        self::assertEquals(2, $numberOfTotalResults);
+        self::assertSame(2, $numberOfTotalResults);
     }
 
     /**
@@ -557,7 +560,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         self::assertInstanceOf(FixturesPHP8\ExtendedTypesEntity::class, $persistedExtendedTypesEntity);
         self::assertInstanceOf('DateTime', $persistedExtendedTypesEntity->getDateTime());
         self::assertNotEquals($dateTimeTz->getTimestamp(), $persistedExtendedTypesEntity->getDateTime()->getTimestamp());
-        self::assertEquals('Arctic/Longyearbyen', $persistedExtendedTypesEntity->getDateTime()->getTimezone()->getName());
+        self::assertSame('Arctic/Longyearbyen', $persistedExtendedTypesEntity->getDateTime()->getTimezone()->getName());
     }
 
     /**
@@ -577,7 +580,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         self::assertInstanceOf(FixturesPHP8\ExtendedTypesEntity::class, $persistedExtendedTypesEntity);
         self::assertInstanceOf('DateTime', $persistedExtendedTypesEntity->getDateTime());
         self::assertEquals($dateTimeTz->getTimestamp(), $persistedExtendedTypesEntity->getDateTime()->getTimestamp());
-        self::assertEquals(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTime()->getTimezone()->getName());
+        self::assertSame(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTime()->getTimezone()->getName());
     }
 
     /**
@@ -597,7 +600,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         self::assertInstanceOf(FixturesPHP8\ExtendedTypesEntity::class, $persistedExtendedTypesEntity);
         self::assertInstanceOf('DateTimeImmutable', $persistedExtendedTypesEntity->getDateTimeImmutable());
         self::assertEquals($dateTimeTz->getTimestamp(), $persistedExtendedTypesEntity->getDateTimeImmutable()->getTimestamp());
-        self::assertEquals(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTimeImmutable()->getTimezone()->getName());
+        self::assertSame(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTimeImmutable()->getTimezone()->getName());
     }
 
     /**
@@ -620,7 +623,7 @@ class PersistenceTestPHP8 extends FunctionalTestCase
         // We don't get the same instance out that we put in.
         self::assertInstanceOf('DateTime', $persistedExtendedTypesEntity->getDateTimeInterface());
         self::assertEquals($dateTimeTz->getTimestamp(), $persistedExtendedTypesEntity->getDateTimeInterface()->getTimestamp());
-        self::assertEquals(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTimeInterface()->getTimezone()->getName());
+        self::assertSame(ini_get('date.timezone'), $persistedExtendedTypesEntity->getDateTimeInterface()->getTimezone()->getName());
     }
 
     /**

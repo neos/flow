@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the cryptographic algorithms
  */
-class AlgorithmsTest extends UnitTestCase
+final class AlgorithmsTest extends UnitTestCase
 {
     /**
      * Data provider for pbkdf2TestVectorsAreCorrect()

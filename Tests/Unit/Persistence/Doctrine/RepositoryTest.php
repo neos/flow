@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the doctrine Repository
  */
-class RepositoryTest extends UnitTestCase
+final class RepositoryTest extends UnitTestCase
 {
     /**
      * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -27,32 +30,25 @@ class RepositoryTest extends UnitTestCase
     protected $mockEntityManager;
 
     /**
-     * @var ClassMetadata|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockClassMetadata;
-
-    /**
      * @return void
      */
     protected function setUp(): void
     {
-        $this->mockEntityManager = $this->getMockBuilder(EntityManagerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockEntityManager = $this->createMock(EntityManagerInterface::class);
 
-        $this->mockClassMetadata = $this->getMockBuilder(ClassMetadata::class)->disableOriginalConstructor()->getMock();
-        $this->mockEntityManager->expects($this->any())->method('getClassMetadata')->willReturn(($this->mockClassMetadata));
+        $mockClassMetadata = $this->createMock(ClassMetadata::class);
+        $this->mockEntityManager->method('getClassMetadata')->willReturn(($mockClassMetadata));
     }
 
     /**
      * dataProvider for constructSetsObjectTypeFromClassName
      */
-    public static function modelAndRepositoryClassNames()
+    public static function modelAndRepositoryClassNames(): \Iterator
     {
         $idSuffix = uniqid();
-        return [
-            ['TYPO3\Blog\Domain\Repository', 'C' . $idSuffix . 'BlogRepository', 'TYPO3\Blog\Domain\Model\\' . 'C' . $idSuffix . 'Blog'],
-            ['Domain\Repository\Content', 'C' . $idSuffix . 'PageRepository', 'Domain\Model\\Content\\' . 'C' . $idSuffix . 'Page'],
-            ['Domain\Repository', 'C' . $idSuffix . 'RepositoryRepository', 'Domain\Model\\' . 'C' . $idSuffix . 'Repository']
-        ];
+        yield ['TYPO3\Blog\Domain\Repository', 'C' . $idSuffix . 'BlogRepository', 'TYPO3\Blog\Domain\Model\\' . 'C' . $idSuffix . 'Blog'];
+        yield ['Domain\Repository\Content', 'C' . $idSuffix . 'PageRepository', 'Domain\Model\\Content\\' . 'C' . $idSuffix . 'Page'];
+        yield ['Domain\Repository', 'C' . $idSuffix . 'RepositoryRepository', 'Domain\Model\\' . 'C' . $idSuffix . 'Repository'];
     }
 
     /**

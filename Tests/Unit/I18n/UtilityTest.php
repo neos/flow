@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -17,21 +20,19 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the Locale Utility
  */
-class UtilityTest extends UnitTestCase
+final class UtilityTest extends UnitTestCase
 {
     /**
      * Data provider with valid Accept-Language headers and expected results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleHttpAcceptLanguageHeaders()
+    public static function sampleHttpAcceptLanguageHeaders(): \Iterator
     {
-        return [
-            ['pl, en-gb;q=0.8, en;q=0.7', ['pl', 'en-gb', 'en']],
-            ['de, *;q=0.8', ['de', '*']],
-            ['sv, wont-accept;q=0.8, en;q=0.5', ['sv', 'en']],
-            ['de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4', ['de-DE', 'de', 'en-US', 'en']],
-        ];
+        yield ['pl, en-gb;q=0.8, en;q=0.7', ['pl', 'en-gb', 'en']];
+        yield ['de, *;q=0.8', ['de', '*']];
+        yield ['sv, wont-accept;q=0.8, en;q=0.5', ['sv', 'en']];
+        yield ['de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4', ['de-DE', 'de', 'en-US', 'en']];
     }
 
     /**
@@ -47,19 +48,17 @@ class UtilityTest extends UnitTestCase
     /**
      * Data provider with filenames with locale tags and expected results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function filenamesWithLocale()
+    public static function filenamesWithLocale(): \Iterator
     {
-        return [
-            ['foobar.en_GB.ext', 'en_GB'],
-            ['en_GB.xlf', 'en_GB'],
-            ['foobar.ext', false],
-            ['foobar', false],
-            ['foobar.php.tmpl', false],
-            ['foobar.rss.php', false],
-            ['foobar.xml.php', false],
-        ];
+        yield ['foobar.en_GB.ext', 'en_GB'];
+        yield ['en_GB.xlf', 'en_GB'];
+        yield ['foobar.ext', false];
+        yield ['foobar', false];
+        yield ['foobar.php.tmpl', false];
+        yield ['foobar.rss.php', false];
+        yield ['foobar.xml.php', false];
     }
 
     /**
@@ -77,17 +76,15 @@ class UtilityTest extends UnitTestCase
      * comparison methods. The third argument denotes whether needle is same
      * as beginning of the haystack, or it's ending, or both or none.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleHaystackStringsAndNeedleStrings()
+    public static function sampleHaystackStringsAndNeedleStrings(): \Iterator
     {
-        return [
-            ['teststring', 'test', 'beginning'],
-            ['foo', 'bar', 'none'],
-            ['baz', '', 'none'],
-            ['foo', 'foo', 'both'],
-            ['foobaz', 'baz', 'ending'],
-        ];
+        yield ['teststring', 'test', 'beginning'];
+        yield ['foo', 'bar', 'none'];
+        yield ['baz', '', 'none'];
+        yield ['foo', 'foo', 'both'];
+        yield ['foobaz', 'baz', 'ending'];
     }
 
     /**

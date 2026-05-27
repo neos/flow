@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the count validator
  *
  */
-class CountValidatorTest extends AbstractValidatorTestcase
+final class CountValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = CountValidator::class;
 

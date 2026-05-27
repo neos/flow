@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -32,7 +35,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Proxy Compiler and related features
  */
-class ProxyCompilerTest extends FunctionalTestCase
+final class ProxyCompilerTest extends FunctionalTestCase
 {
     /**
      * Make sure that we are actually testing proxy classes and not the
@@ -163,13 +166,13 @@ class ProxyCompilerTest extends FunctionalTestCase
     public function setInstanceOfSubClassDoesNotOverrideParentClass(): void
     {
         $singletonE = $this->objectManager->get(Fixtures\SingletonClassE::class);
-        self::assertEquals(Fixtures\SingletonClassE::class, get_class($singletonE));
+        self::assertInstanceOf(Fixtures\SingletonClassE::class, $singletonE);
 
         $singletonEsub = $this->objectManager->get(Fixtures\SingletonClassEsub::class);
-        self::assertEquals(Fixtures\SingletonClassEsub::class, get_class($singletonEsub));
+        self::assertInstanceOf(Fixtures\SingletonClassEsub::class, $singletonEsub);
 
         $singletonE2 = $this->objectManager->get(Fixtures\SingletonClassE::class);
-        self::assertEquals(Fixtures\SingletonClassE::class, get_class($singletonE2));
+        self::assertInstanceOf(Fixtures\SingletonClassE::class, $singletonE2);
         self::assertSame($singletonE, $singletonE2);
     }
 
@@ -187,7 +190,7 @@ class ProxyCompilerTest extends FunctionalTestCase
         $prototypeF = null;
 
         $prototypeF = unserialize($serializedObject);
-        self::assertSame($prototypeF->getNonTransientProperty(), 'bar');
+        self::assertSame('bar', $prototypeF->getNonTransientProperty());
         self::assertNull($prototypeF->getTransientProperty());
     }
 
@@ -216,7 +219,7 @@ class ProxyCompilerTest extends FunctionalTestCase
     public function classKeywordIsIgnoredInsideClassBody(): void
     {
         $reflectionClass = new ClassReflection(Fixtures\ClassWithKeywordsInClassBody::class);
-        self::assertEquals(Fixtures\ClassWithKeywordsInClassBody::class, $reflectionClass->getNamespaceName() . '\ClassWithKeywordsInClassBody');
+        self::assertSame(Fixtures\ClassWithKeywordsInClassBody::class, $reflectionClass->getNamespaceName() . '\ClassWithKeywordsInClassBody');
     }
 
     /**
@@ -227,7 +230,7 @@ class ProxyCompilerTest extends FunctionalTestCase
         $reflectionClass = new ClassReflection(Fixtures\ClassWithPhpAttributes::class);
         $attributes = $reflectionClass->getAttributes();
         self::assertCount(2, $attributes);
-        self::assertEquals(Fixtures\SampleAttribute::class, $attributes[0]->getName());
+        self::assertSame(Fixtures\SampleAttribute::class, $attributes[0]->getName());
         self::assertEquals(Fixtures\ClassWithPhpAttributes::class, $attributes[0]->getArguments()[0]);
     }
 
@@ -253,7 +256,7 @@ class ProxyCompilerTest extends FunctionalTestCase
         $reflectionClass = new ClassReflection(Fixtures\PHP8\ClassWithUnionTypes::class);
 
         foreach ($reflectionClass->getProperties() as $property) {
-            assert($property instanceof PropertyReflection);
+            $this->assertInstanceOf(PropertyReflection::class, $property);
             if (
                 $property->getName() !== 'classA' &&
                 $property->getName() !== 'propertyA' &&
@@ -319,9 +322,9 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertTrue($reflectionClass->hasProperty('propertyB'));
         self::assertTrue($reflectionClass->hasProperty('propertyC'));
 
-        self::assertEquals('?string', (string)$reflectionClass->getProperty('propertyA')->getType());
-        self::assertEquals('?int', (string)$reflectionClass->getProperty('propertyB')->getType());
-        self::assertEquals('?DateTime', (string)$reflectionClass->getProperty('propertyC')->getType());
+        self::assertSame('?string', (string)$reflectionClass->getProperty('propertyA')->getType());
+        self::assertSame('?int', (string)$reflectionClass->getProperty('propertyB')->getType());
+        self::assertSame('?DateTime', (string)$reflectionClass->getProperty('propertyC')->getType());
     }
 
     /**

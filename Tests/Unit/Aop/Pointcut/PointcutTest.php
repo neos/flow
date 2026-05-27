@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the default AOP Pointcut implementation
  */
-class PointcutTest extends UnitTestCase
+final class PointcutTest extends UnitTestCase
 {
     /**
      * @test
@@ -107,12 +110,12 @@ class PointcutTest extends UnitTestCase
         $aspectClassName = 'TheAspect';
         $className = 'TheClass';
 
-        $mockPointcutFilterComposite = $this->getMockBuilder(Pointcut\PointcutFilterComposite::class)->disableOriginalConstructor()->getMock();
+        $mockPointcutFilterComposite = $this->createMock(Pointcut\PointcutFilterComposite::class);
         $mockPointcutFilterComposite->expects($this->once())->method('getRuntimeEvaluationsDefinition')->willReturn((['runtimeEvaluationsDefinition']));
 
         $pointcut = new Pointcut\Pointcut($pointcutExpression, $mockPointcutFilterComposite, $aspectClassName, $className);
 
-        self::assertEquals(['runtimeEvaluationsDefinition'], $pointcut->getRuntimeEvaluationsDefinition(), 'The runtime evaluations definition has not been returned as expected.');
+        self::assertSame(['runtimeEvaluationsDefinition'], $pointcut->getRuntimeEvaluationsDefinition(), 'The runtime evaluations definition has not been returned as expected.');
     }
 
     /**
@@ -127,7 +130,7 @@ class PointcutTest extends UnitTestCase
 
         $targetClassNameIndex = new Aop\Builder\ClassNameIndex();
 
-        $mockPointcutFilterComposite = $this->getMockBuilder(Pointcut\PointcutFilterComposite::class)->disableOriginalConstructor()->getMock();
+        $mockPointcutFilterComposite = $this->createMock(Pointcut\PointcutFilterComposite::class);
         $mockPointcutFilterComposite->expects($this->once())->method('reduceTargetClassNames')->with($targetClassNameIndex)->willReturn($resultClassNameIndex);
 
         $pointcut = new Pointcut\Pointcut($pointcutExpression, $mockPointcutFilterComposite, $aspectClassName, $className);

@@ -30,7 +30,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for ORM annotation driver
  */
-class FlowAnnotationDriverTest extends FunctionalTestCase
+final class FlowAnnotationDriverTest extends FunctionalTestCase
 {
     protected static $testablePersistenceEnabled = true;
 
@@ -311,7 +311,7 @@ class FlowAnnotationDriverTest extends FunctionalTestCase
         $classMetadata2 = new ClassMetadata(Fixtures\OneToOneEntity2::class);
         $driver->loadMetadataForClass(Fixtures\OneToOneEntity2::class, $classMetadata2);
         $bidirectionalMapping2 = $classMetadata2->getAssociationMapping('bidirectionalRelation');
-        self::assertFalse(isset($bidirectionalMapping2['joinColumns']));
+        self::assertArrayNotHasKey('joinColumns', $bidirectionalMapping2);
         self::assertEquals('bidirectionalRelation', $bidirectionalMapping2['mappedBy']);
         self::assertFalse($bidirectionalMapping2['isOwningSide']);
 

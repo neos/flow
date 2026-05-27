@@ -22,7 +22,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Test for Doctrine indexed Collections
  * @Flow\Scope("prototype")
  */
-class IndexedCollectionTest extends FunctionalTestCase
+final class IndexedCollectionTest extends FunctionalTestCase
 {
     protected static $testablePersistenceEnabled = true;
 

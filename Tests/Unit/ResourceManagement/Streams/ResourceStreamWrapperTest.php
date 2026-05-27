@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
@@ -24,7 +27,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Tests for the ResourceStreamWrapper class
  */
-class ResourceStreamWrapperTest extends UnitTestCase
+final class ResourceStreamWrapperTest extends UnitTestCase
 {
     /**
      * @var ResourceStreamWrapper
@@ -50,7 +53,7 @@ class ResourceStreamWrapperTest extends UnitTestCase
         $this->mockPackageManager = $this->createMock(PackageManager::class);
         $this->inject($this->resourceStreamWrapper, 'packageManager', $this->mockPackageManager);
 
-        $this->mockResourceManager = $this->getMockBuilder(ResourceManager::class)->disableOriginalConstructor()->getMock();
+        $this->mockResourceManager = $this->createMock(ResourceManager::class);
         $this->inject($this->resourceStreamWrapper, 'resourceManager', $this->mockResourceManager);
     }
 
@@ -73,7 +76,7 @@ class ResourceStreamWrapperTest extends UnitTestCase
 
         $tempFile = tmpfile();
 
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
+        $mockResource = $this->createStub(PersistentResource::class);
         $this->mockResourceManager->expects($this->once())->method('getResourceBySha1')->with($sha1Hash)->willReturn(($mockResource));
         $this->mockResourceManager->expects($this->once())->method('getStreamByResource')->with($mockResource)->willReturn(($tempFile));
 
@@ -91,7 +94,7 @@ class ResourceStreamWrapperTest extends UnitTestCase
 
         $tempFile = tmpfile();
 
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
+        $mockResource = $this->createStub(PersistentResource::class);
         $this->mockResourceManager->expects($this->once())->method('getResourceBySha1')->with($sha1Hash)->willReturn(($mockResource));
         $this->mockResourceManager->expects($this->once())->method('getStreamByResource')->with($mockResource)->willReturn(($tempFile));
 
@@ -109,7 +112,7 @@ class ResourceStreamWrapperTest extends UnitTestCase
 
         $tempFile = tmpfile();
 
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
+        $mockResource = $this->createStub(PersistentResource::class);
         $this->mockResourceManager->expects($this->once())->method('getResourceBySha1')->with($sha1Hash)->willReturn(($mockResource));
         $this->mockResourceManager->expects($this->once())->method('getStreamByResource')->with($mockResource)->willReturn(($tempFile));
 
@@ -139,12 +142,12 @@ class ResourceStreamWrapperTest extends UnitTestCase
         file_put_contents('vfs://Foo/Some/Path', 'fixture');
 
         $mockPackage = $this->createMock(FlowPackageInterface::class);
-        $mockPackage->expects($this->any())->method('getResourcesPath')->willReturn(('vfs://Foo'));
+        $mockPackage->method('getResourcesPath')->willReturn(('vfs://Foo'));
         $this->mockPackageManager->expects($this->once())->method('getPackage')->with($packageKey)->willReturn(($mockPackage));
 
         $openedPathAndFilename = '';
         self::assertTrue($this->resourceStreamWrapper->open('resource://' . $packageKey . '/Some/Path', 'r', 0, $openedPathAndFilename));
-        self::assertSame($openedPathAndFilename, 'vfs://Foo/Some/Path');
+        self::assertSame('vfs://Foo/Some/Path', $openedPathAndFilename);
     }
 
     /**
@@ -157,11 +160,11 @@ class ResourceStreamWrapperTest extends UnitTestCase
         file_put_contents('vfs://Foo/Some/Path', 'fixture');
 
         $mockPackage = $this->createMock(FlowPackageInterface::class);
-        $mockPackage->expects($this->any())->method('getResourcesPath')->willReturn(('vfs://Foo'));
+        $mockPackage->method('getResourcesPath')->willReturn(('vfs://Foo'));
         $this->mockPackageManager->expects($this->once())->method('getPackage')->with($packageKey)->willReturn(($mockPackage));
 
         $openedPathAndFilename = '';
         self::assertTrue($this->resourceStreamWrapper->open('resource://' . $packageKey . '/Some/Path', 'r', 0, $openedPathAndFilename));
-        self::assertSame($openedPathAndFilename, 'vfs://Foo/Some/Path');
+        self::assertSame('vfs://Foo/Some/Path', $openedPathAndFilename);
     }
 }

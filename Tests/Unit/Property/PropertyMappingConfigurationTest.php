@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property;
 
 /*
@@ -22,7 +25,7 @@ require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
  *
  * @covers \Neos\Flow\Property\PropertyMappingConfiguration
  */
-class PropertyMappingConfigurationTest extends UnitTestCase
+final class PropertyMappingConfigurationTest extends UnitTestCase
 {
     /**
      * @var PropertyMappingConfiguration
@@ -172,7 +175,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
      */
     public function getTypeConverterReturnsTypeConverterIfItHasBeenSet()
     {
-        $mockTypeConverter = $this->createMock(TypeConverterInterface::class);
+        $mockTypeConverter = $this->createStub(TypeConverterInterface::class);
         $this->propertyMappingConfiguration->setTypeConverter($mockTypeConverter);
         self::assertSame($mockTypeConverter, $this->propertyMappingConfiguration->getTypeConverter());
     }
@@ -212,7 +215,7 @@ class PropertyMappingConfigurationTest extends UnitTestCase
             ['setMapping', ['k1', 'k1a']],
             ['setTypeConverterOptions', [$mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']]],
             ['setTypeConverterOption', [$mockTypeConverterClass, 'k1', 'v3']],
-            ['setTypeConverter', [$this->createMock(TypeConverterInterface::class)]],
+            ['setTypeConverter', [$this->createStub(TypeConverterInterface::class)]],
         ];
     }
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -20,7 +23,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the string length validator
  *
  */
-class StringLengthValidatorTest extends AbstractValidatorTestcase
+final class StringLengthValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = StringLengthValidator::class;
 
@@ -153,7 +156,7 @@ class StringLengthValidatorTest extends AbstractValidatorTestcase
     {
         $this->validatorOptions(['minimum' => 50, 'maximum' => 100]);
 
-        self::assertEquals(1, count($this->validator->validate('this is a very short string')->getErrors()));
+        self::assertCount(1, $this->validator->validate('this is a very short string')->getErrors());
     }
 
     /**

@@ -17,7 +17,7 @@ use Neos\Flow\I18n\Cldr\Reader\DatesReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Tests\FunctionalTestCase;
 
-class DatesReaderTest extends FunctionalTestCase
+final class DatesReaderTest extends FunctionalTestCase
 {
     /**
      * @var DatesReader
@@ -49,9 +49,9 @@ class DatesReaderTest extends FunctionalTestCase
 
         // Reads two different cache entries
         $enUSFormat = $this->datesReader->parseFormatFromCldr(new Locale('en_US'), DatesReader::FORMAT_TYPE_DATETIME, DatesReader::FORMAT_LENGTH_SHORT);
-        self::assertEquals('M/d/yy, h:mm a', $convertFormatToString($enUSFormat));
+        self::assertSame('M/d/yy, h:mm a', $convertFormatToString($enUSFormat));
 
         $deFormat = $this->datesReader->parseFormatFromCldr(new Locale('de'), DatesReader::FORMAT_TYPE_DATETIME, DatesReader::FORMAT_LENGTH_SHORT);
-        self::assertEquals('dd.MM.yy, HH:mm', $convertFormatToString($deFormat));
+        self::assertSame('dd.MM.yy, HH:mm', $convertFormatToString($deFormat));
     }
 }

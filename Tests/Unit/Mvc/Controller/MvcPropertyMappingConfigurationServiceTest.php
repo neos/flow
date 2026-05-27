@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -21,63 +24,61 @@ use Neos\Flow\Mvc;
 /**
  * Testcase for the MVC Property Mapping Configuration Service
  */
-class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
+final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
 {
     /**
      * Data provider for generating the list of trusted properties
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function dataProviderForgenerateTrustedPropertiesToken()
+    public static function dataProviderForgenerateTrustedPropertiesToken(): \Iterator
     {
-        return [
-            'Simple Case - Empty' => [
-                [],
-                [],
+        yield 'Simple Case - Empty' => [
+            [],
+            [],
+        ];
+        yield 'Simple Case - Single Value' => [
+            ['field1'],
+            ['field1' => 1],
+        ];
+        yield 'Simple Case - Two Values' => [
+            ['field1', 'field2'],
+            [
+                'field1' => 1,
+                'field2' => 1
             ],
-            'Simple Case - Single Value' => [
-                ['field1'],
-                ['field1' => 1],
+        ];
+        yield 'Recursion' => [
+            ['field1', 'field[subfield1]', 'field[subfield2]'],
+            [
+                'field1' => 1,
+                'field' => [
+                    'subfield1' => 1,
+                    'subfield2' => 1
+                ]
             ],
-            'Simple Case - Two Values' => [
-                ['field1', 'field2'],
-                [
-                    'field1' => 1,
-                    'field2' => 1
-                ],
+        ];
+        yield 'recursion with duplicated field name' => [
+            ['field1', 'field[subfield1]', 'field[subfield2]', 'field1'],
+            [
+                'field1' => 1,
+                'field' => [
+                    'subfield1' => 1,
+                    'subfield2' => 1
+                ]
             ],
-            'Recursion' => [
-                ['field1', 'field[subfield1]', 'field[subfield2]'],
-                [
-                    'field1' => 1,
-                    'field' => [
-                        'subfield1' => 1,
-                        'subfield2' => 1
-                    ]
-                ],
-            ],
-            'recursion with duplicated field name' => [
-                ['field1', 'field[subfield1]', 'field[subfield2]', 'field1'],
-                [
-                    'field1' => 1,
-                    'field' => [
-                        'subfield1' => 1,
-                        'subfield2' => 1
-                    ]
-                ],
-            ],
-            'Recursion with un-named fields at the end (...[]). There, they should be made explicit by increasing the counter' => [
-                ['field1', 'field[subfield1][]', 'field[subfield1][]', 'field[subfield2]'],
-                [
-                    'field1' => 1,
-                    'field' => [
-                        'subfield1' => [
-                            0 => 1,
-                            1 => 1
-                        ],
-                        'subfield2' => 1
-                    ]
-                ],
+        ];
+        yield 'Recursion with un-named fields at the end (...[]). There, they should be made explicit by increasing the counter' => [
+            ['field1', 'field[subfield1][]', 'field[subfield1][]', 'field[subfield2]'],
+            [
+                'field1' => 1,
+                'field' => [
+                    'subfield1' => [
+                        0 => 1,
+                        1 => 1
+                    ],
+                    'subfield2' => 1
+                ]
             ],
         ];
     }
@@ -86,27 +87,24 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
      * Data Provider for invalid values in generating the list of trusted properties,
      * which should result in an exception
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues()
+    public static function dataProviderForgenerateTrustedPropertiesTokenWithUnallowedValues(): \Iterator
     {
-        return [
-            'Overriding form fields (string overridden by array) - 1' => [
-                ['field1', 'field2', 'field2[bla]', 'field2[blubb]'],
-            ],
-            'Overriding form fields (string overridden by array) - 2' => [
-                ['field1', 'field2[bla]', 'field2[bla][blubb][blubb]'],
-            ],
-            'Overriding form fields (array overridden by string) - 1' => [
-                ['field1', 'field2[bla]', 'field2[blubb]', 'field2'],
-            ],
-            'Overriding form fields (array overridden by string) - 2' => [
-                ['field1', 'field2[bla][blubb][blubb]', 'field2[bla]'],
-            ],
-            'Empty [] not as last argument' => [
-                ['field1', 'field2[][bla]'],
-            ]
-
+        yield 'Overriding form fields (string overridden by array) - 1' => [
+            ['field1', 'field2', 'field2[bla]', 'field2[blubb]'],
+        ];
+        yield 'Overriding form fields (string overridden by array) - 2' => [
+            ['field1', 'field2[bla]', 'field2[bla][blubb][blubb]'],
+        ];
+        yield 'Overriding form fields (array overridden by string) - 1' => [
+            ['field1', 'field2[bla]', 'field2[blubb]', 'field2'],
+        ];
+        yield 'Overriding form fields (array overridden by string) - 2' => [
+            ['field1', 'field2[bla][blubb][blubb]', 'field2[bla]'],
+        ];
+        yield 'Empty [] not as last argument' => [
+            ['field1', 'field2[][bla]'],
         ];
     }
 
@@ -162,7 +160,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet()
     {
         $request = $this->getMockBuilder(Mvc\ActionRequest::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects($this->any())->method('getInternalArgument')->with('__trustedProperties')->willReturn((null));
+        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn((null));
         $arguments = new Mvc\Controller\Arguments();
 
         $requestHashService = new Mvc\Controller\MvcPropertyMappingConfigurationService();
@@ -282,7 +280,7 @@ class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     protected function initializePropertyMappingConfiguration(array $trustedProperties)
     {
         $request = $this->getMockBuilder(Mvc\ActionRequest::class)->onlyMethods(['getInternalArgument'])->disableOriginalConstructor()->getMock();
-        $request->expects($this->any())->method('getInternalArgument')->with('__trustedProperties')->willReturn(('fooTrustedProperties'));
+        $request->method('getInternalArgument')->with('__trustedProperties')->willReturn(('fooTrustedProperties'));
         $arguments = new Mvc\Controller\Arguments();
         $mockHashService = $this->getMockBuilder(HashService::class)->onlyMethods(['validateAndStripHmac'])->getMock();
         $mockHashService->expects($this->once())->method('validateAndStripHmac')->with('fooTrustedProperties')->willReturn((serialize($trustedProperties)));

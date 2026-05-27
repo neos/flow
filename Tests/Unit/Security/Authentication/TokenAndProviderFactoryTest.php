@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
@@ -21,21 +24,21 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test for the default token and provider factory
  */
-class TokenAndProviderFactoryTest extends UnitTestCase
+final class TokenAndProviderFactoryTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function noTokensAndProvidersAreBuiltIfTheConfigurationArrayIsEmpty()
     {
-        $mockProviderResolver = $this->getMockBuilder(AuthenticationProviderResolver::class)->disableOriginalConstructor()->getMock();
-        $mockRequestPatternResolver = $this->getMockBuilder(RequestPatternResolver::class)->disableOriginalConstructor()->getMock();
-        $mockTokenResolver = $this->getMockBuilder(AuthenticationTokenResolver::class)->disableOriginalConstructor()->getMock();
+        $mockProviderResolver = $this->createStub(AuthenticationProviderResolver::class);
+        $mockRequestPatternResolver = $this->createStub(RequestPatternResolver::class);
+        $mockTokenResolver = $this->createStub(AuthenticationTokenResolver::class);
 
         $tokenAndProviderFactory = new TokenAndProviderFactory($mockProviderResolver, $mockRequestPatternResolver, $mockTokenResolver);
 
-        self::assertEquals([], $tokenAndProviderFactory->getProviders(), 'The array of providers should be empty.');
-        self::assertEquals([], $tokenAndProviderFactory->getTokens(), 'The array of tokens should be empty.');
+        self::assertSame([], $tokenAndProviderFactory->getProviders(), 'The array of providers should be empty.');
+        self::assertSame([], $tokenAndProviderFactory->getTokens(), 'The array of tokens should be empty.');
     }
 
     /**
@@ -50,9 +53,9 @@ class TokenAndProviderFactoryTest extends UnitTestCase
             ],
         ];
 
-        $mockProviderResolver = $this->getMockBuilder(AuthenticationProviderResolver::class)->disableOriginalConstructor()->getMock();
-        $mockRequestPatternResolver = $this->getMockBuilder(RequestPatternResolver::class)->disableOriginalConstructor()->getMock();
-        $mockTokenResolver = $this->getMockBuilder(AuthenticationTokenResolver::class)->disableOriginalConstructor()->getMock();
+        $mockProviderResolver = $this->createStub(AuthenticationProviderResolver::class);
+        $mockRequestPatternResolver = $this->createStub(RequestPatternResolver::class);
+        $mockTokenResolver = $this->createStub(AuthenticationTokenResolver::class);
 
         $tokenAndProviderFactory = new TokenAndProviderFactory($mockProviderResolver, $mockRequestPatternResolver, $mockTokenResolver);
         $tokenAndProviderFactory->injectSettings(['security' => ['authentication' => ['providers' => $providerConfiguration]]]);

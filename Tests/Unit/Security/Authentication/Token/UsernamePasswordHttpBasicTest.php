@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
@@ -24,7 +27,7 @@ use Neos\Http\Factories\UriFactory;
  * Testcase for username/password HTTP Basic Auth authentication token
  *
  */
-class UsernamePasswordHttpBasicTest extends UnitTestCase
+final class UsernamePasswordHttpBasicTest extends UnitTestCase
 {
     /**
      * @var UsernamePasswordHttpBasic
@@ -50,7 +53,7 @@ class UsernamePasswordHttpBasicTest extends UnitTestCase
         ];
 
         $httpRequest = (new ServerRequestFactory(new UriFactory()))->createServerRequest('GET', new Uri('http://foo.com'), $serverEnvironment);
-        $mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockActionRequest = $this->createMock(ActionRequest::class);
         $mockActionRequest->expects($this->atLeastOnce())->method('getHttpRequest')->willReturn(($httpRequest));
 
         $this->token->updateCredentials($mockActionRequest);
@@ -72,7 +75,7 @@ class UsernamePasswordHttpBasicTest extends UnitTestCase
         ];
 
         $httpRequest = (new ServerRequestFactory(new UriFactory()))->createServerRequest('GET', new Uri('http://foo.com'), $serverEnvironment);
-        $mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockActionRequest = $this->createMock(ActionRequest::class);
         $mockActionRequest->expects($this->atLeastOnce())->method('getHttpRequest')->willReturn(($httpRequest));
         $this->token->updateCredentials($mockActionRequest);
 
@@ -86,7 +89,7 @@ class UsernamePasswordHttpBasicTest extends UnitTestCase
     public function updateCredentialsSetsTheCorrectAuthenticationStatusIfNoCredentialsArrived()
     {
         $httpRequest = new ServerRequest('GET', new Uri('http://foo.com'));
-        $mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockActionRequest = $this->createMock(ActionRequest::class);
         $mockActionRequest->expects($this->atLeastOnce())->method('getHttpRequest')->willReturn(($httpRequest));
         $this->token->updateCredentials($mockActionRequest);
 

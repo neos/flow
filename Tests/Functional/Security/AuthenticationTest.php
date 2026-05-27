@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -21,7 +24,7 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
 /**
  * Testcase for Authentication
  */
-class AuthenticationTest extends FunctionalTestCase
+final class AuthenticationTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -171,7 +174,7 @@ class AuthenticationTest extends FunctionalTestCase
     public function failedAuthenticationCallsOnAuthenticationFailureMethod()
     {
         $response = $this->browser->request('http://localhost/test/security/authentication');
-        self::assertStringContainsString('Uncaught Exception in Flow #42: Failure Method Exception', $response->getBody()->getContents());
+        self::assertStringContainsString('Uncaught Exception in Flow #42: Failure Method Exception', (string) $response->getBody()->getContents());
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Monitor\ChangeDetectionStrategy;
 
 /*
@@ -18,7 +21,7 @@ use org\bovigo\vfs\vfsStreamWrapper;
  * Testcase for the Modification Time Change Detection Strategy
  *
  */
-class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
+final class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
      * @var \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy
@@ -26,20 +29,15 @@ class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
     protected $strategy;
 
     /**
-     * @var \Neos\Cache\Frontend\StringFrontend
-     */
-    protected $cache;
-
-    /**
      */
     protected function setUp(): void
     {
         vfsStream::setup('testDirectory');
 
-        $this->cache = $this->getMockBuilder(\Neos\Cache\Frontend\StringFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache = $this->createMock(\Neos\Cache\Frontend\StringFrontend::class);
 
         $this->strategy = new \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy();
-        $this->strategy->injectCache($this->cache);
+        $this->strategy->injectCache($cache);
     }
 
     /**

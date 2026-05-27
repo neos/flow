@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 
 /*
@@ -19,7 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Testcase for the DatesReader
  */
-class DatesReaderTest extends UnitTestCase
+final class DatesReaderTest extends UnitTestCase
 {
     /**
      * Dummy locale used in methods where locale is needed.
@@ -93,7 +96,7 @@ class DatesReaderTest extends UnitTestCase
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
         /** @var MockObject|I18n\Cldr\Reader\DatesReader $reader */
@@ -136,7 +139,7 @@ class DatesReaderTest extends UnitTestCase
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->exactly(3))->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
         $reader = new I18n\Cldr\Reader\DatesReader();
@@ -145,7 +148,7 @@ class DatesReaderTest extends UnitTestCase
         $reader->initializeObject();
 
         $result = $reader->parseFormatFromCldr($this->sampleLocale, I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATETIME, I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_FULL);
-        self::assertEquals([['foo '], 'h', 'm', 's', [' '], 'd', 'M', 'y', [' bar']], $result);
+        self::assertSame([['foo '], 'h', 'm', 's', [' '], 'd', 'M', 'y', [' bar']], $result);
         $reader->shutdownObject();
     }
 
@@ -168,12 +171,12 @@ class DatesReaderTest extends UnitTestCase
         };
 
         $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray'], [[]]);
-        $mockModel->expects($this->exactly(5))->method('getRawArray')->will(self::returnCallBack($getRawArrayCallback));
+        $mockModel->expects($this->exactly(5))->method('getRawArray')->willReturnCallback($getRawArrayCallback);
 
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
         $reader = new I18n\Cldr\Reader\DatesReader();
@@ -194,20 +197,18 @@ class DatesReaderTest extends UnitTestCase
     /**
      * Data provider with valid format strings and expected results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function formatStringsAndParsedFormats(): array
+    public static function formatStringsAndParsedFormats(): \Iterator
     {
-        return [
-            ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G']],
-            ['HH:mm:ss zzz', ['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzz']],
-            ['EEE, MMM d, \'\'yy', ['EEE', [','], [' '], 'MMM', [' '], 'd', [','], [' '], ['\''], 'yy']],
-            ['hh \'o\'\'clock\' a, zzzz', ['hh', [' '], ['o'], ['\''], ['clock'], [' '], 'a', [','], [' '], 'zzzz']],
-            ['QQyyLLLLDFEEEE', ['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE']],
-            ['QQQMMMMMEEEEEwk', ['QQQ', 'MMMMM', 'EEEEE', 'w', 'k']],
-            ['GGGGGKSWqqqqGGGGV', ['GGGGG', 'K', 'S', 'W', 'qqqq', 'GGGG', 'V']],
-            ['QQyyLLLLDFEEEEccc', ['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE', 'ccc']],
-        ];
+        yield ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G']];
+        yield ['HH:mm:ss zzz', ['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzz']];
+        yield ['EEE, MMM d, \'\'yy', ['EEE', [','], [' '], 'MMM', [' '], 'd', [','], [' '], ['\''], 'yy']];
+        yield ['hh \'o\'\'clock\' a, zzzz', ['hh', [' '], ['o'], ['\''], ['clock'], [' '], 'a', [','], [' '], 'zzzz']];
+        yield ['QQyyLLLLDFEEEE', ['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE']];
+        yield ['QQQMMMMMEEEEEwk', ['QQQ', 'MMMMM', 'EEEEE', 'w', 'k']];
+        yield ['GGGGGKSWqqqqGGGGV', ['GGGGG', 'K', 'S', 'W', 'qqqq', 'GGGG', 'V']];
+        yield ['QQyyLLLLDFEEEEccc', ['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE', 'ccc']];
     }
 
     /**

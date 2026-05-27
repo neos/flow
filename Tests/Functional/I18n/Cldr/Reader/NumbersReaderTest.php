@@ -17,7 +17,7 @@ use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\I18n;
 
-class NumbersReaderTest extends FunctionalTestCase
+final class NumbersReaderTest extends FunctionalTestCase
 {
     protected NumbersReader $numbersReader;
 
@@ -29,12 +29,10 @@ class NumbersReaderTest extends FunctionalTestCase
     }
 
 
-    public static function currencyFormatExampleDataProvider(): array
+    public static function currencyFormatExampleDataProvider(): \Iterator
     {
-        return [
-            ['de', ['positivePrefix' => '', 'positiveSuffix' => " ¤", 'negativePrefix' => '-', 'negativeSuffix' => " ¤", 'multiplier' => 1, 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'minIntegerDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.0,]],
-            ['en', ['positivePrefix' => '¤', 'positiveSuffix' => '', 'negativePrefix' => '-¤', 'negativeSuffix' => '', 'multiplier' => 1, 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'minIntegerDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.0,]],
-        ];
+        yield ['de', ['positivePrefix' => '', 'positiveSuffix' => " ¤", 'negativePrefix' => '-', 'negativeSuffix' => " ¤", 'multiplier' => 1, 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'minIntegerDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.0,]];
+        yield ['en', ['positivePrefix' => '¤', 'positiveSuffix' => '', 'negativePrefix' => '-¤', 'negativeSuffix' => '', 'multiplier' => 1, 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'minIntegerDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.0,]];
     }
 
 
@@ -49,12 +47,10 @@ class NumbersReaderTest extends FunctionalTestCase
         self::assertEquals($expected, $actual);
     }
 
-    public static function numberSystemDataProvider(): array
+    public static function numberSystemDataProvider(): \Iterator
     {
-        return [
-            ['de', 'latn'],
-            ['ar', 'arab'],
-        ];
+        yield ['de', 'latn'];
+        yield ['ar', 'arab'];
     }
 
     /**
@@ -63,6 +59,6 @@ class NumbersReaderTest extends FunctionalTestCase
      */
     public function getDefaultNumberingSystem(string $localeString, string $expected): void
     {
-        self::assertEquals($expected, $this->numbersReader->getDefaultNumberingSystem(new I18n\Locale($localeString)));
+        self::assertSame($expected, $this->numbersReader->getDefaultNumberingSystem(new I18n\Locale($localeString)));
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -19,7 +22,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the Pointcut Method Name Filter
  */
-class PointcutMethodNameFilterTest extends UnitTestCase
+final class PointcutMethodNameFilterTest extends UnitTestCase
 {
     /**
      * @test
@@ -34,7 +37,7 @@ class PointcutMethodNameFilterTest extends UnitTestCase
         );
         /** @var ReflectionService|\PHPUnit\Framework\MockObject\MockObject $mockReflectionService */
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->any())->method('isMethodFinal')->with($className, 'someFinalMethod')->willReturn((true));
+        $mockReflectionService->method('isMethodFinal')->with($className, 'someFinalMethod')->willReturn((true));
         $methodNameFilter = new Aop\Pointcut\PointcutMethodNameFilter('someFinalMethod');
         $methodNameFilter->injectReflectionService($mockReflectionService);
         self::assertTrue($methodNameFilter->matches($className, 'someFinalMethod', $className, 1));
@@ -55,8 +58,8 @@ class PointcutMethodNameFilterTest extends UnitTestCase
         );
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodPublic')->will($this->onConsecutiveCalls(true, false, false, true));
-        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodProtected')->will($this->onConsecutiveCalls(false, true, false, false));
+        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodPublic')->willReturnOnConsecutiveCalls(true, false, false, true);
+        $mockReflectionService->expects($this->atLeastOnce())->method('isMethodProtected')->willReturnOnConsecutiveCalls(false, true, false, false);
         $mockReflectionService->expects($this->atLeastOnce())->method('getMethodParameters')->willReturn(([]));
 
         $methodNameFilter = new Aop\Pointcut\PointcutMethodNameFilter('some.*', 'public');
@@ -89,11 +92,7 @@ class PointcutMethodNameFilterTest extends UnitTestCase
         );
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->exactly(3))->method('getMethodParameters')->will($this->onConsecutiveCalls(
-            ['arg1' => []],
-            ['arg1' => [], 'arg2' => []],
-            ['arg1' => [], 'arg2' => [], 'arg3' => []]
-        ));
+        $mockReflectionService->expects($this->exactly(3))->method('getMethodParameters')->willReturnOnConsecutiveCalls(['arg1' => []], ['arg1' => [], 'arg2' => []], ['arg1' => [], 'arg2' => [], 'arg3' => []]);
 
         $mockSystemLogger = $this->getMockBuilder(LoggerInterface::class)->onlyMethods([])->getMock();
         $mockSystemLogger->expects($this->once())->method('notice')->with(self::equalTo(
@@ -139,6 +138,6 @@ class PointcutMethodNameFilterTest extends UnitTestCase
 
         $methodNameFilter = new Aop\Pointcut\PointcutMethodNameFilter('some.*', null, $argumentConstraints);
 
-        self::assertEquals($expectedRuntimeEvaluations, $methodNameFilter->getRuntimeEvaluationsDefinition(), 'The argument constraint definitions have not been returned as expected.');
+        self::assertSame($expectedRuntimeEvaluations, $methodNameFilter->getRuntimeEvaluationsDefinition(), 'The argument constraint definitions have not been returned as expected.');
     }
 }

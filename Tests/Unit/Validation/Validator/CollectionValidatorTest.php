@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -23,7 +26,7 @@ require_once('AbstractValidatorTestcase.php');
 /**
  * Testcase for the collection validator
  */
-class CollectionValidatorTest extends AbstractValidatorTestcase
+final class CollectionValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = CollectionValidator::class;
 
@@ -70,7 +73,7 @@ class CollectionValidatorTest extends AbstractValidatorTestcase
         $result = $this->validator->validate($arrayOfIntegers);
 
         self::assertTrue($result->hasErrors());
-        self::assertEquals(2, count($result->getFlattenedErrors()));
+        self::assertCount(2, $result->getFlattenedErrors());
     }
 
     /**
@@ -88,8 +91,8 @@ class CollectionValidatorTest extends AbstractValidatorTestcase
         $B->a = $A;
         $B->c = [$A];
 
-        $this->mockValidatorResolver->expects($this->any())->method('createValidator')->with('Integer')->willReturn((new IntegerValidator()));
-        $this->mockValidatorResolver->expects($this->any())->method('buildBaseValidatorConjunction')->willReturn((new GenericObjectValidator()));
+        $this->mockValidatorResolver->method('createValidator')->with('Integer')->willReturn((new IntegerValidator()));
+        $this->mockValidatorResolver->method('buildBaseValidatorConjunction')->willReturn((new GenericObjectValidator()));
 
         // Create validators
         $aValidator = new GenericObjectValidator([]);
@@ -109,7 +112,7 @@ class CollectionValidatorTest extends AbstractValidatorTestcase
      */
     public function collectionValidatorIsValidEarlyReturnsOnUnitializedDoctrinePersistenceCollections()
     {
-        $entityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
+        $entityManager = $this->createStub(\Doctrine\ORM\EntityManager::class);
         $persistentCollection = new \Doctrine\ORM\PersistentCollection($entityManager, new \Doctrine\ORM\Mapping\ClassMetadata(''), new \Doctrine\Common\Collections\ArrayCollection());
         ObjectAccess::setProperty($persistentCollection, 'initialized', false, true);
 
@@ -123,7 +126,7 @@ class CollectionValidatorTest extends AbstractValidatorTestcase
      */
     public function collectionValidatorIsValidEarlyReturnsOnUnitializedDoctrineAbstractLazyCollections()
     {
-        $doctrineArrayCollection = $this->getMockBuilder(\Doctrine\Common\Collections\AbstractLazyCollection::class)->disableOriginalConstructor()->getMock();
+        $doctrineArrayCollection = $this->createMock(\Doctrine\Common\Collections\AbstractLazyCollection::class);
         $doctrineArrayCollection->method('isInitialized')->willReturn(false);
 
         $this->mockValidatorResolver->expects($this->never())->method('createValidator');
@@ -138,7 +141,7 @@ class CollectionValidatorTest extends AbstractValidatorTestcase
     {
         $elementValidatorOptions = ['minimum' => 5];
         $this->validator->_set('options', ['elementValidator' => 'NumberRange', 'elementValidatorOptions' => $elementValidatorOptions]);
-        $this->mockValidatorResolver->expects($this->any())->method('createValidator')->with('NumberRange', $elementValidatorOptions)->willReturn((new NumberRangeValidator($elementValidatorOptions)));
+        $this->mockValidatorResolver->method('createValidator')->with('NumberRange', $elementValidatorOptions)->willReturn((new NumberRangeValidator($elementValidatorOptions)));
 
         $result = $this->validator->validate([5, 6, 1]);
 

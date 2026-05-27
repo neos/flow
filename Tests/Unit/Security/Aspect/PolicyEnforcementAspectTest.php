@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Aspect;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the security policy enforcement aspect
  */
-class PolicyEnforcementAspectTest extends UnitTestCase
+final class PolicyEnforcementAspectTest extends UnitTestCase
 {
     /**
      * @var JoinPointInterface
@@ -49,9 +52,9 @@ class PolicyEnforcementAspectTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->mockJoinPoint = $this->getMockBuilder(JoinPointInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockAdviceChain = $this->getMockBuilder(AdviceChain::class)->disableOriginalConstructor()->getMock();
-        $this->mockPolicyEnforcementInterceptor = $this->getMockBuilder(Security\Authorization\Interceptor\PolicyEnforcement::class)->disableOriginalConstructor()->getMock();
+        $this->mockJoinPoint = $this->createMock(JoinPointInterface::class);
+        $this->mockAdviceChain = $this->createMock(AdviceChain::class);
+        $this->mockPolicyEnforcementInterceptor = $this->createMock(Security\Authorization\Interceptor\PolicyEnforcement::class);
         $this->mockSecurityContext = $this->createMock(Security\Context::class);
         $this->policyEnforcementAspect = new PolicyEnforcementAspect($this->mockPolicyEnforcementInterceptor, $this->mockSecurityContext);
     }

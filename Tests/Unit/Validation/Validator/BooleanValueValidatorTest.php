@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -18,7 +21,7 @@ require_once('AbstractValidatorTestcase.php');
 /**
  * Testcase for the true validator
  */
-class BooleanValueValidatorTest extends AbstractValidatorTestcase
+final class BooleanValueValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = BooleanValueValidator::class;
 

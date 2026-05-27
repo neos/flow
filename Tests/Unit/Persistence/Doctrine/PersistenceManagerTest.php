@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -28,7 +31,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the doctrine persistence manager
  */
-class PersistenceManagerTest extends UnitTestCase
+final class PersistenceManagerTest extends UnitTestCase
 {
     /**
      * @var PersistenceManager
@@ -51,11 +54,6 @@ class PersistenceManagerTest extends UnitTestCase
     protected $mockConnection;
 
     /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockSystemLogger;
-
-    /**
      * @var \PHPUnit_Framework_MockObject_InvocationMocker
      */
     protected $mockPing;
@@ -64,20 +62,20 @@ class PersistenceManagerTest extends UnitTestCase
     {
         $this->persistenceManager = $this->getMockBuilder(\Neos\Flow\Persistence\Doctrine\PersistenceManager::class)->onlyMethods(['emitAllObjectsPersisted'])->getMock();
 
-        $this->mockEntityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
+        $this->mockEntityManager = $this->createMock(\Doctrine\ORM\EntityManager::class);
         $this->mockEntityManager->method('isOpen')->willReturn(true);
         $this->inject($this->persistenceManager, 'entityManager', $this->mockEntityManager);
 
-        $this->mockUnitOfWork = $this->getMockBuilder(\Doctrine\ORM\UnitOfWork::class)->disableOriginalConstructor()->getMock();
+        $this->mockUnitOfWork = $this->createMock(\Doctrine\ORM\UnitOfWork::class);
         $this->mockEntityManager->method('getUnitOfWork')->willReturn($this->mockUnitOfWork);
 
-        $this->mockConnection = $this->getMockBuilder(\Doctrine\DBAL\Connection::class)->disableOriginalConstructor()->getMock();
+        $this->mockConnection = $this->createMock(\Doctrine\DBAL\Connection::class);
         $this->mockEntityManager->method('getConnection')->willReturn($this->mockConnection);
 
-        $this->mockSystemLogger = $this->createMock(LoggerInterface::class);
-        $this->inject($this->persistenceManager, 'logger', $this->mockSystemLogger);
+        $mockSystemLogger = $this->createMock(LoggerInterface::class);
+        $this->inject($this->persistenceManager, 'logger', $mockSystemLogger);
 
-        $mockThrowableStorage = $this->getMockBuilder(ThrowableStorageInterface::class)->getMock();
+        $mockThrowableStorage = $this->createMock(ThrowableStorageInterface::class);
         $mockThrowableStorage->method('logThrowable')->willReturn('Exception got logged!');
         $this->inject($this->persistenceManager, 'throwableStorage', $mockThrowableStorage);
 
@@ -85,7 +83,7 @@ class PersistenceManagerTest extends UnitTestCase
         $this->inject($this->persistenceManager, 'allowedObjects', $allowedObjectsContainer);
         $allowedObjectsListener = $this->getMockBuilder(AllowedObjectsListener::class)->onlyMethods(['ping'])->getMock();
         $this->inject($allowedObjectsListener, 'allowedObjects', $allowedObjectsContainer);
-        $this->inject($allowedObjectsListener, 'logger', $this->mockSystemLogger);
+        $this->inject($allowedObjectsListener, 'logger', $mockSystemLogger);
         $this->inject($allowedObjectsListener, 'throwableStorage', $mockThrowableStorage);
         $this->inject($allowedObjectsListener, 'persistenceManager', $this->persistenceManager);
         $this->mockEntityManager->method('flush')->willReturnCallback(function () use ($allowedObjectsListener) {
@@ -152,7 +150,7 @@ class PersistenceManagerTest extends UnitTestCase
      */
     public function persistAllAbortsIfConnectionIsClosed()
     {
-        $mockEntityManager = $this->getMockBuilder(\Doctrine\ORM\EntityManager::class)->disableOriginalConstructor()->getMock();
+        $mockEntityManager = $this->createMock(\Doctrine\ORM\EntityManager::class);
         $mockEntityManager->expects($this->atLeastOnce())->method('isOpen')->willReturn(false);
         $this->inject($this->persistenceManager, 'entityManager', $mockEntityManager);
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Reflection;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Reflection Service features
  */
-class ReflectionServiceTest extends FunctionalTestCase
+final class ReflectionServiceTest extends FunctionalTestCase
 {
     protected ReflectionService $reflectionService;
 
@@ -40,6 +43,7 @@ class ReflectionServiceTest extends FunctionalTestCase
         $classSchema = $this->reflectionService->getClassSchema(Reflection\Fixtures\ClassSchemaFixture::class);
 
         self::assertNotNull($classSchema);
+        $this->assertInstanceOf(\Neos\Flow\Reflection\ClassSchema::class, $classSchema);
         self::assertSame(Reflection\Fixtures\ClassSchemaFixture::class, $classSchema->getClassName());
     }
 
@@ -146,6 +150,7 @@ class ReflectionServiceTest extends FunctionalTestCase
     public function domainModelPropertyTypesAreExpandedWithUseStatementsInClassSchema(): void
     {
         $classSchema = $this->reflectionService->getClassSchema(Reflection\Fixtures\Model\EntityWithUseStatements::class);
+        $this->assertInstanceOf(\Neos\Flow\Reflection\ClassSchema::class, $classSchema);
         self::assertEquals(Reflection\Fixtures\Model\SubSubEntity::class, $classSchema->getProperty('subSubEntity')['type']);
 
         self::assertEquals(Persistence\Fixtures\SubEntity::class, $classSchema->getProperty('propertyFromOtherNamespace')['type']);
@@ -359,9 +364,9 @@ class ReflectionServiceTest extends FunctionalTestCase
         $returnTypeB = $this->reflectionService->getMethodDeclaredReturnType(Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints::class, 'methodWithUnionReturnTypesB');
         $returnTypeC = $this->reflectionService->getMethodDeclaredReturnType(Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints::class, 'methodWithUnionReturnTypesC');
 
-        self::assertEquals('string|false', $returnTypeA);
-        self::assertEquals('\Neos\Flow\Tests\Functional\Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints|false', $returnTypeB);
-        self::assertEquals('?\Neos\Flow\Tests\Functional\Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints', $returnTypeC);
+        self::assertSame('string|false', $returnTypeA);
+        self::assertSame('\Neos\Flow\Tests\Functional\Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints|false', $returnTypeB);
+        self::assertSame('?\Neos\Flow\Tests\Functional\Reflection\Fixtures\PHP8\DummyClassWithUnionTypeHints', $returnTypeC);
     }
 
     /**

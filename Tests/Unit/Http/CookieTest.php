@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -18,44 +21,40 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the Http Cookie class
  */
-class CookieTest extends UnitTestCase
+final class CookieTest extends UnitTestCase
 {
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidCookieNames()
+    public static function invalidCookieNames(): \Iterator
     {
-        return [
-            ['foo bar'],
-            ['foo(bar)'],
-            ['<foo>'],
-            ['@foo'],
-            ['foo[bar]'],
-            ['foo:bar'],
-            ['foo;'],
-            ['foo?'],
-            ['foo{bar}'],
-            ['"foo"'],
-            ['foo/bar'],
-            ['föö'],
-            ['„foo“'],
-        ];
+        yield ['foo bar'];
+        yield ['foo(bar)'];
+        yield ['<foo>'];
+        yield ['@foo'];
+        yield ['foo[bar]'];
+        yield ['foo:bar'];
+        yield ['foo;'];
+        yield ['foo?'];
+        yield ['foo{bar}'];
+        yield ['"foo"'];
+        yield ['foo/bar'];
+        yield ['föö'];
+        yield ['„foo“'];
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validCookieNames()
+    public static function validCookieNames(): \Iterator
     {
-        return [
-            ['foo'],
-            ['foo_bar'],
-            ['foo\'bar'],
-            ['foo*bar'],
-            ['MyNameIsFooAndYoursIsBar1234567890'],
-            ['foo|bar'],
-            ['$foo%bar~baz'],
-        ];
+        yield ['foo'];
+        yield ['foo_bar'];
+        yield ['foo\'bar'];
+        yield ['foo*bar'];
+        yield ['MyNameIsFooAndYoursIsBar1234567890'];
+        yield ['foo|bar'];
+        yield ['$foo%bar~baz'];
     }
 
     /**
@@ -93,7 +92,7 @@ class CookieTest extends UnitTestCase
         self::assertEquals('baz', $cookie->getValue());
 
         $cookie = new Cookie('foo', true);
-        self::assertSame(true, $cookie->getValue());
+        self::assertTrue($cookie->getValue());
 
         $uri = new Uri('http://localhost');
         $cookie = new Cookie('foo', $uri);
@@ -101,16 +100,14 @@ class CookieTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidExpiresParameters()
+    public static function invalidExpiresParameters(): \Iterator
     {
-        return [
-            ['foo'],
-            ['-1'],
-            [new \stdClass()],
-            [false]
-        ];
+        yield ['foo'];
+        yield ['-1'];
+        yield [new \stdClass()];
+        yield [false];
     }
 
     /**
@@ -132,7 +129,7 @@ class CookieTest extends UnitTestCase
         $cookie = new Cookie('foo', 'bar', 1345110803);
         self::assertSame(1345110803, $cookie->getExpires());
 
-        $cookie = new Cookie('foo', 'bar', \DateTime::createFromFormat('U', 1345110803));
+        $cookie = new Cookie('foo', 'bar', \DateTime::createFromFormat('U', '1345110803'));
         self::assertSame(1345110803, $cookie->getExpires());
 
         $cookie = new Cookie('foo', 'bar');
@@ -154,25 +151,23 @@ class CookieTest extends UnitTestCase
     public function getMaximumAgeReturnsTheMaximumAge()
     {
         $cookie = new Cookie('foo', 'bar');
-        self::assertSame(null, $cookie->getMaximumAge());
+        self::assertNull($cookie->getMaximumAge());
 
         $cookie = new Cookie('foo', 'bar', 0, 120);
         self::assertSame(120, $cookie->getMaximumAge());
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidDomains()
+    public static function invalidDomains(): \Iterator
     {
-        return [
-            [' me.com'],
-            ['you .com'],
-            ['-neos.io'],
-            ['neos.io.'],
-            ['.neos.io'],
-            [false]
-        ];
+        yield [' me.com'];
+        yield ['you .com'];
+        yield ['-neos.io'];
+        yield ['neos.io.'];
+        yield ['.neos.io'];
+        yield [false];
     }
 
     /**
@@ -196,16 +191,14 @@ class CookieTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidPaths()
+    public static function invalidPaths(): \Iterator
     {
-        return [
-            ['/foo;'],
-            ['/föö/bäär'],
-            ["\tfoo"],
-            [false]
-        ];
+        yield ['/foo;'];
+        yield ['/föö/bäär'];
+        yield ["\tfoo"];
+        yield [false];
     }
 
     /**
@@ -335,7 +328,7 @@ class CookieTest extends UnitTestCase
             [new Cookie('foo', 'It\'s raining cats and dogs.'), 'foo=It%27s+raining+cats+and+dogs.; Path=/; HttpOnly; SameSite=lax'],
             [new Cookie('foo', 'Some characters, like "double quotes" must be escaped.'), 'foo=Some+characters%2C+like+%22double+quotes%22+must+be+escaped.; Path=/; HttpOnly; SameSite=lax'],
             [new Cookie('foo', 'bar', 1345108546), 'foo=bar; Expires=Thu, 16-Aug-2012 09:15:46 GMT; Path=/; HttpOnly; SameSite=lax'],
-            [new Cookie('foo', 'bar', \DateTime::createFromFormat('U', 1345108546)), 'foo=bar; Expires=Thu, 16-Aug-2012 09:15:46 GMT; Path=/; HttpOnly; SameSite=lax'],
+            [new Cookie('foo', 'bar', \DateTime::createFromFormat('U', '1345108546')), 'foo=bar; Expires=Thu, 16-Aug-2012 09:15:46 GMT; Path=/; HttpOnly; SameSite=lax'],
             [new Cookie('foo', 'bar', 0, null, 'flow.neos.io'), 'foo=bar; Domain=flow.neos.io; Path=/; HttpOnly; SameSite=lax'],
             [new Cookie('foo', 'bar', 0, null, 'flow.neos.io', '/about'), 'foo=bar; Domain=flow.neos.io; Path=/about; HttpOnly; SameSite=lax'],
             [new Cookie('foo', 'bar', 0, null, 'neos.io', '/', true), 'foo=bar; Domain=neos.io; Path=/; Secure; HttpOnly; SameSite=lax'],

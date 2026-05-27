@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ResourceManagement;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for resources
  */
-class PersistentResourceTest extends FunctionalTestCase
+final class PersistentResourceTest extends FunctionalTestCase
 {
     /**
      * @var ResourceManager
@@ -48,6 +51,6 @@ class PersistentResourceTest extends FunctionalTestCase
     public function fileGetContentsReturnFixtureContentForResourceUri()
     {
         $resource = $this->resourceManager->importResourceFromContent('fixture', 'fixture.txt');
-        self::assertEquals('fixture', file_get_contents('resource://' . $resource->getSha1()));
+        self::assertSame('fixture', file_get_contents('resource://' . $resource->getSha1()));
     }
 }

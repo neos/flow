@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Validation\Validator\UniqueEntityValidator;
 /**
  * Testcase for the unique entity validator
  */
-class UniqueEntityValidatorTest extends AbstractValidatorTestcase
+final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = UniqueEntityValidator::class;
 
@@ -40,10 +43,10 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->classSchema = $this->getMockBuilder(ClassSchema::class)->disableOriginalConstructor()->getMock();
+        $this->classSchema = $this->createMock(ClassSchema::class);
 
         $this->reflectionService = $this->createMock(ReflectionService::class);
-        $this->reflectionService->expects($this->any())->method('getClassSchema')->willReturn(($this->classSchema));
+        $this->reflectionService->method('getClassSchema')->willReturn(($this->classSchema));
         $this->inject($this->validator, 'reflectionService', $this->reflectionService);
     }
 
@@ -142,7 +145,6 @@ class UniqueEntityValidatorTest extends AbstractValidatorTestcase
     {
         $this->classSchema->expects($this->once())->method('getModelType')->willReturn((ClassSchema::MODELTYPE_ENTITY));
         $this->classSchema
-            ->expects($this->any())
             ->method('getClassName')
             ->willReturn(('FooClass'));
     }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the HTTP client internal request engine
  */
-class InternalRequestEngineTest extends FunctionalTestCase
+final class InternalRequestEngineTest extends FunctionalTestCase
 {
     /**
      * @var boolean

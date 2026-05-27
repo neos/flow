@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -17,20 +20,18 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the Locale class
  */
-class LocaleTest extends UnitTestCase
+final class LocaleTest extends UnitTestCase
 {
     /**
      * Data provider for theConstructorThrowsAnExceptionOnPassingAInvalidLocaleIdentifiers
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidLocaleIdentifiers()
+    public static function invalidLocaleIdentifiers(): \Iterator
     {
-        return [
-            [''],
-            ['E'],
-            ['deDE']
-        ];
+        yield [''];
+        yield ['E'];
+        yield ['deDE'];
     }
 
     /**
@@ -79,12 +80,12 @@ class LocaleTest extends UnitTestCase
     public function producesCorrectLocaleIdentifierWhenStringCasted()
     {
         $locale = new I18n\Locale('de_DE');
-        self::assertEquals('de_DE', (string)$locale);
+        self::assertSame('de_DE', (string)$locale);
 
         $locale = new I18n\Locale('en_Latn_US');
-        self::assertEquals('en_Latn_US', (string)$locale);
+        self::assertSame('en_Latn_US', (string)$locale);
 
         $locale = new I18n\Locale('AR-arab_ae');
-        self::assertEquals('ar_Arab_AE', (string)$locale);
+        self::assertSame('ar_Arab_AE', (string)$locale);
     }
 }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Mvc\FlashMessage\FlashMessageContainer;
 /**
  * Testcase for the Flash Messages Container
  */
-class FlashMessageContainerTest extends UnitTestCase
+final class FlashMessageContainerTest extends UnitTestCase
 {
     /**
      * @var FlashMessageContainer
@@ -43,7 +46,7 @@ class FlashMessageContainerTest extends UnitTestCase
         $this->flashMessageContainer->addMessage($messages[1]);
         $returnedFlashMessages = $this->flashMessageContainer->getMessages();
 
-        self::assertEquals(count($returnedFlashMessages), 2);
+        self::assertCount(2, $returnedFlashMessages);
 
         $i = 0;
         foreach ($returnedFlashMessages as $flashMessage) {
@@ -75,7 +78,7 @@ class FlashMessageContainerTest extends UnitTestCase
         $this->flashMessageContainer->addMessage($messages[1]);
         $returnedFlashMessages = $this->flashMessageContainer->getMessagesAndFlush();
 
-        self::assertEquals(count($returnedFlashMessages), 2);
+        self::assertCount(2, $returnedFlashMessages);
 
         $i = 0;
         foreach ($returnedFlashMessages as $flashMessage) {
@@ -99,7 +102,7 @@ class FlashMessageContainerTest extends UnitTestCase
 
         $filteredFlashMessages = $this->flashMessageContainer->getMessages(FlowError\Message::SEVERITY_NOTICE);
 
-        self::assertEquals(count($filteredFlashMessages), 1);
+        self::assertCount(1, $filteredFlashMessages);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);
@@ -120,7 +123,7 @@ class FlashMessageContainerTest extends UnitTestCase
 
         $filteredFlashMessages = $this->flashMessageContainer->getMessagesAndFlush(FlowError\Message::SEVERITY_NOTICE);
 
-        self::assertEquals(count($filteredFlashMessages), 1);
+        self::assertCount(1, $filteredFlashMessages);
 
         reset($filteredFlashMessages);
         $flashMessage = current($filteredFlashMessages);

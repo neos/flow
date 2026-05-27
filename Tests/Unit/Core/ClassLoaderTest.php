@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Core;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the object class loader
  *
  */
-class ClassLoaderTest extends UnitTestCase
+final class ClassLoaderTest extends UnitTestCase
 {
     /**
      * @var ClassLoader
@@ -66,10 +69,10 @@ class ClassLoaderTest extends UnitTestCase
 
         $this->classLoader = new ClassLoader();
 
-        $this->mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage1->expects($this->any())->method('getNamespaces')->willReturn((['Acme\\MyApp']));
-        $this->mockPackage1->expects($this->any())->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyApp/'));
-        $this->mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $this->mockPackage1 = $this->createMock(Package::class);
+        $this->mockPackage1->method('getNamespaces')->willReturn((['Acme\\MyApp']));
+        $this->mockPackage1->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyApp/'));
+        $this->mockPackage1->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'Acme\\MyApp',
                 'classPath' => 'vfs://Test/Packages/Application/Acme.MyApp/Classes/',
@@ -77,10 +80,10 @@ class ClassLoaderTest extends UnitTestCase
             ]
         ]));
 
-        $this->mockPackage2 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage2->expects($this->any())->method('getNamespaces')->willReturn((['Acme\\MyAppAddon']));
-        $this->mockPackage2->expects($this->any())->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyAppAddon/'));
-        $this->mockPackage2->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $this->mockPackage2 = $this->createMock(Package::class);
+        $this->mockPackage2->method('getNamespaces')->willReturn((['Acme\\MyAppAddon']));
+        $this->mockPackage2->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyAppAddon/'));
+        $this->mockPackage2->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'Acme\MyAppAddon',
                 'classPath' => 'vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/',
@@ -226,10 +229,10 @@ class ClassLoaderTest extends UnitTestCase
      */
     public function classesFromPsr4PackagesAreLoaded()
     {
-        $this->mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $this->mockPackage1->expects($this->any())->method('getNamespaces')->willReturn((['Acme\\MyApp']));
-        $this->mockPackage1->expects($this->any())->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyApp/'));
-        $this->mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $this->mockPackage1 = $this->createMock(Package::class);
+        $this->mockPackage1->method('getNamespaces')->willReturn((['Acme\\MyApp']));
+        $this->mockPackage1->method('getPackagePath')->willReturn(('vfs://Test/Packages/Application/Acme.MyApp/'));
+        $this->mockPackage1->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'Acme\\MyApp',
                 'classPath' => 'vfs://Test/Packages/Application/Acme.MyApp/Classes/',
@@ -253,9 +256,9 @@ class ClassLoaderTest extends UnitTestCase
     {
         $this->classLoader = new ClassLoader();
 
-        $mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage1->expects($this->any())->method('getNamespaces')->willReturn((['TestPackage\\Subscriber\\Log']));
-        $mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $mockPackage1 = $this->createMock(Package::class);
+        $mockPackage1->method('getNamespaces')->willReturn((['TestPackage\\Subscriber\\Log']));
+        $mockPackage1->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'TestPackage\Subscriber\Log',
                 'classPath' => 'vfs://Test/Packages/Libraries/test/subPackage/src/',
@@ -263,8 +266,8 @@ class ClassLoaderTest extends UnitTestCase
             ]
         ]));
 
-        $mockPackage2 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage2->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $mockPackage2 = $this->createMock(Package::class);
+        $mockPackage2->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'TestPackage',
                 'classPath' => 'vfs://Test/Packages/Libraries/test/mainPackage/src/',
@@ -296,9 +299,9 @@ class ClassLoaderTest extends UnitTestCase
     {
         $this->classLoader = new ClassLoader();
 
-        $mockPackage1 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage1->expects($this->any())->method('getNamespaces')->willReturn((['TestPackage\\Foo']));
-        $mockPackage1->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $mockPackage1 = $this->createMock(Package::class);
+        $mockPackage1->method('getNamespaces')->willReturn((['TestPackage\\Foo']));
+        $mockPackage1->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'TestPackage\Foo',
                 'classPath' => 'vfs://Test/Packages/Libraries/test/subPackage/src/',
@@ -306,9 +309,9 @@ class ClassLoaderTest extends UnitTestCase
             ]
         ]));
 
-        $mockPackage2 = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
-        $mockPackage2->expects($this->any())->method('getNamespaces')->willReturn((['TestPackage']));
-        $mockPackage2->expects($this->any())->method('getFlattenedAutoloadConfiguration')->willReturn(([
+        $mockPackage2 = $this->createMock(Package::class);
+        $mockPackage2->method('getNamespaces')->willReturn((['TestPackage']));
+        $mockPackage2->method('getFlattenedAutoloadConfiguration')->willReturn(([
             [
                 'namespace' => 'TestPackage',
                 'classPath' => 'vfs://Test/Packages/Libraries/test/mainPackage/src/',

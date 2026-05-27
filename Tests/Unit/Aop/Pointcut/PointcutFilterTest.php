@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the Pointcut Filter
  */
-class PointcutFilterTest extends UnitTestCase
+final class PointcutFilterTest extends UnitTestCase
 {
     /**
      * @test
@@ -64,7 +67,7 @@ class PointcutFilterTest extends UnitTestCase
      */
     public function getRuntimeEvaluationsDefinitionReturnsTheDefinitionArrayFromThePointcut()
     {
-        $mockPointcut = $this->getMockBuilder(Aop\Pointcut\Pointcut::class)->disableOriginalConstructor()->getMock();
+        $mockPointcut = $this->createMock(Aop\Pointcut\Pointcut::class);
         $mockPointcut->expects($this->once())->method('getRuntimeEvaluationsDefinition')->willReturn((['evaluations']));
 
         $mockProxyClassBuilder = $this->getMockBuilder(Aop\Builder\ProxyClassBuilder::class)->disableOriginalConstructor()->onlyMethods(['findPointcut'])->getMock();
@@ -72,7 +75,7 @@ class PointcutFilterTest extends UnitTestCase
 
         $pointcutFilter = new Aop\Pointcut\PointcutFilter('Aspect', 'pointcut');
         $pointcutFilter->injectProxyClassBuilder($mockProxyClassBuilder);
-        self::assertEquals(['evaluations'], $pointcutFilter->getRuntimeEvaluationsDefinition(), 'Something different from an array was returned.');
+        self::assertSame(['evaluations'], $pointcutFilter->getRuntimeEvaluationsDefinition(), 'Something different from an array was returned.');
     }
 
     /**
@@ -85,7 +88,7 @@ class PointcutFilterTest extends UnitTestCase
 
         $pointcutFilter = new Aop\Pointcut\PointcutFilter('Aspect', 'pointcut');
         $pointcutFilter->injectProxyClassBuilder($mockProxyClassBuilder);
-        self::assertEquals([], $pointcutFilter->getRuntimeEvaluationsDefinition(), 'The definition array has not been returned as exptected.');
+        self::assertSame([], $pointcutFilter->getRuntimeEvaluationsDefinition(), 'The definition array has not been returned as exptected.');
     }
 
     /**
@@ -94,7 +97,7 @@ class PointcutFilterTest extends UnitTestCase
     public function reduceTargetClassNamesAsksTheResolvedPointcutToReduce()
     {
         $resultClassNameIndex = new Aop\Builder\ClassNameIndex();
-        $mockPointcut = $this->getMockBuilder(Aop\Pointcut\Pointcut::class)->disableOriginalConstructor()->getMock();
+        $mockPointcut = $this->createMock(Aop\Pointcut\Pointcut::class);
         $mockPointcut->expects($this->once())->method('reduceTargetClassNames')->willReturn($resultClassNameIndex);
 
         $mockProxyClassBuilder = $this->getMockBuilder(Aop\Builder\ProxyClassBuilder::class)->disableOriginalConstructor()->onlyMethods(['findPointcut'])->getMock();

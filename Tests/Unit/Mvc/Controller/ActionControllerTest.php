@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -27,7 +30,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Testcase for the MVC Action Controller
  */
-class ActionControllerTest extends UnitTestCase
+final class ActionControllerTest extends UnitTestCase
 {
     /**
      * @var ActionController
@@ -45,11 +48,6 @@ class ActionControllerTest extends UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @var Mvc\ViewConfigurationManager
-     */
-    protected $mockViewConfigurationManager;
-
-    /**
      * @var Mvc\Controller\ControllerContext
      */
     protected $mockControllerContext;
@@ -58,7 +56,7 @@ class ActionControllerTest extends UnitTestCase
     {
         $this->actionController = $this->getAccessibleMock(ActionController::class, []);
 
-        $this->mockRequest = $this->getMockBuilder(Mvc\ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $this->mockRequest = $this->createMock(Mvc\ActionRequest::class);
         $this->mockRequest->method('getControllerPackageKey')->willReturn(('Some.Package'));
         $this->mockRequest->method('getControllerSubpackageKey')->willReturn(('Subpackage'));
         $this->mockRequest->method('getFormat')->willReturn(('theFormat'));
@@ -69,11 +67,11 @@ class ActionControllerTest extends UnitTestCase
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
-        $this->mockControllerContext = $this->getMockBuilder(Mvc\Controller\ControllerContext::class)->disableOriginalConstructor()->getMock();
+        $this->mockControllerContext = $this->createMock(Mvc\Controller\ControllerContext::class);
         $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
 
-        $this->mockViewConfigurationManager = $this->createMock(Mvc\ViewConfigurationManager::class);
-        $this->inject($this->actionController, 'viewConfigurationManager', $this->mockViewConfigurationManager);
+        $mockViewConfigurationManager = $this->createMock(Mvc\ViewConfigurationManager::class);
+        $this->inject($this->actionController, 'viewConfigurationManager', $mockViewConfigurationManager);
     }
 
     /**
@@ -156,12 +154,12 @@ class ActionControllerTest extends UnitTestCase
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
         $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
 
-        $mockRequest = $this->getMockBuilder(Mvc\ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockRequest = $this->createMock(Mvc\ActionRequest::class);
         $mockRequest->method('getControllerActionName')->willReturn(('nonExisting'));
 
         $this->inject($this->actionController, 'arguments', new Arguments([]));
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createStub(ServerRequestInterface::class);
         $mockRequest->method('getHttpRequest')->willReturn(($mockHttpRequest));
 
         $mockResponse = new Mvc\ActionResponse;
@@ -181,17 +179,17 @@ class ActionControllerTest extends UnitTestCase
         $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
         $this->inject($this->actionController, 'arguments', new Arguments([]));
 
-        $mockRequest = $this->getMockBuilder(Mvc\ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockRequest = $this->createMock(Mvc\ActionRequest::class);
         $mockRequest->method('getControllerActionName')->willReturn(('initialize'));
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->method('isMethodPublic')->will($this->returnCallBack(function ($className, $methodName) {
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('isMethodPublic')->willReturnCallback(function (string $className, string $methodName): bool {
             if ($methodName === 'initializeAction') {
                 return false;
             } else {
                 return true;
             }
-        }));
+        });
 
         $this->mockObjectManager->method('get')->willReturnCallBack(function ($classname) use ($mockReflectionService) {
             if ($classname === ReflectionService::class) {
@@ -201,7 +199,7 @@ class ActionControllerTest extends UnitTestCase
             return $this->createMock($classname);
         });
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createStub(ServerRequestInterface::class);
         $mockRequest->method('getHttpRequest')->willReturn(($mockHttpRequest));
 
         $mockResponse = new Mvc\ActionResponse;
@@ -223,10 +221,10 @@ class ActionControllerTest extends UnitTestCase
 
         $this->inject($this->actionController, 'arguments', new Arguments([]));
 
-        $mockMvcPropertyMappingConfigurationService = $this->createMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $mockMvcPropertyMappingConfigurationService = $this->createStub(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $this->inject($this->actionController, 'mvcPropertyMappingConfigurationService', $mockMvcPropertyMappingConfigurationService);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createStub(ServerRequestInterface::class);
         $this->mockRequest->method('getHttpRequest')->willReturn(($mockHttpRequest));
 
         $mockResponse = new Mvc\ActionResponse;
@@ -255,10 +253,10 @@ class ActionControllerTest extends UnitTestCase
         $mockSettings = ['foo', 'bar'];
         $this->inject($this->actionController, 'settings', $mockSettings);
 
-        $mockMvcPropertyMappingConfigurationService = $this->createMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $mockMvcPropertyMappingConfigurationService = $this->createStub(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $this->inject($this->actionController, 'mvcPropertyMappingConfigurationService', $mockMvcPropertyMappingConfigurationService);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createStub(ServerRequestInterface::class);
         $this->mockRequest->method('getHttpRequest')->willReturn(($mockHttpRequest));
 
         $mockResponse = new Mvc\ActionResponse;
@@ -271,15 +269,13 @@ class ActionControllerTest extends UnitTestCase
         $this->actionController->processRequest($this->mockRequest, $mockResponse);
     }
 
-    public static function supportedAndRequestedMediaTypes(): array
+    public static function supportedAndRequestedMediaTypes(): \Iterator
     {
-        return [
-            // supported, Accept header, expected
-            [['application/json'], '*/*', 'application/json'],
-            [['text/html', 'application/json'], 'application/json', 'application/json'],
-            [['text/html'], 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8', 'text/html'],
-            [['application/json', 'application/xml'], 'text/html, application/json;q=0.7, application/xml;q=0.9', 'application/xml'],
-        ];
+        // supported, Accept header, expected
+        yield [['application/json'], '*/*', 'application/json'];
+        yield [['text/html', 'application/json'], 'application/json', 'application/json'];
+        yield [['text/html'], 'text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8', 'text/html'];
+        yield [['application/json', 'application/xml'], 'text/html, application/json;q=0.7, application/xml;q=0.9', 'application/xml'];
     }
 
     /**
@@ -293,10 +289,10 @@ class ActionControllerTest extends UnitTestCase
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
-        $mockMvcPropertyMappingConfigurationService = $this->createMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $mockMvcPropertyMappingConfigurationService = $this->createStub(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $this->inject($this->actionController, 'mvcPropertyMappingConfigurationService', $mockMvcPropertyMappingConfigurationService);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $mockHttpRequest->method('getHeaderLine')->with('Accept')->willReturn($acceptHeader);
         $this->mockRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
 
@@ -318,10 +314,10 @@ class ActionControllerTest extends UnitTestCase
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
-        $mockMvcPropertyMappingConfigurationService = $this->createMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $mockMvcPropertyMappingConfigurationService = $this->createStub(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $this->inject($this->actionController, 'mvcPropertyMappingConfigurationService', $mockMvcPropertyMappingConfigurationService);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $mockHttpRequest->method('getHeaderLine')->with('Accept')->willReturn('application/xml');
         $this->mockRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
 
@@ -344,10 +340,10 @@ class ActionControllerTest extends UnitTestCase
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
-        $mockMvcPropertyMappingConfigurationService = $this->createMock(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
+        $mockMvcPropertyMappingConfigurationService = $this->createStub(Mvc\Controller\MvcPropertyMappingConfigurationService::class);
         $this->inject($this->actionController, 'mvcPropertyMappingConfigurationService', $mockMvcPropertyMappingConfigurationService);
 
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $mockHttpRequest->method('getHeaderLine')->with('Accept')->willReturn('application/xml');
         $mockHttpRequest->method('getHeaderLine')->with('Accept')->willReturn('application/xml');
         $this->mockRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
@@ -375,12 +371,10 @@ class ActionControllerTest extends UnitTestCase
         $this->actionController->_call('resolveView');
     }
 
-    public static function ignoredValidationArgumentsProvider(): array
+    public static function ignoredValidationArgumentsProvider(): \Iterator
     {
-        return [
-            [false, false],
-            [true, true]
-        ];
+        yield [false, false];
+        yield [true, true];
     }
 
     /**
@@ -391,7 +385,7 @@ class ActionControllerTest extends UnitTestCase
     {
         $this->actionController = $this->getAccessibleMock(ActionController::class, ['getInformationNeededForInitializeActionMethodValidators']);
 
-        $mockArgument = $this->getMockBuilder(Mvc\Controller\Argument::class)->disableOriginalConstructor()->getMock();
+        $mockArgument = $this->createMock(Mvc\Controller\Argument::class);
         $mockArgument->method('getName')->willReturn(('node'));
         $arguments = new Arguments();
         $arguments['node'] = $mockArgument;
@@ -404,7 +398,7 @@ class ActionControllerTest extends UnitTestCase
             ]
         ];
 
-        $mockValidator = $this->createMock(ValidatorInterface::class);
+        $mockValidator = $this->createStub(ValidatorInterface::class);
 
         $parameterValidators = [
             'node' => $mockValidator
@@ -418,7 +412,7 @@ class ActionControllerTest extends UnitTestCase
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
 
         $mockValidatorResolver = $this->createMock(ValidatorResolver::class);
-        $mockValidatorResolver->method('getBaseValidatorConjunction')->willReturn(($this->getMockBuilder(ConjunctionValidator::class)->getMock()));
+        $mockValidatorResolver->method('getBaseValidatorConjunction')->willReturn(($this->createMock(ConjunctionValidator::class)));
         $mockValidatorResolver->method('buildMethodArgumentsValidatorConjunctions')->willReturn(($parameterValidators));
         $this->inject($this->actionController, 'validatorResolver', $mockValidatorResolver);
 

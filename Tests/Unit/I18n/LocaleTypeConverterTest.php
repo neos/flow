@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  *
  * @covers \Neos\Flow\I18n\LocaleTypeConverter<extended>
  */
-class LocaleTypeConverterTest extends UnitTestCase
+final class LocaleTypeConverterTest extends UnitTestCase
 {
     /**
      * @var TypeConverterInterface

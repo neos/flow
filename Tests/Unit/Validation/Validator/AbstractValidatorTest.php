@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Validation\Validator\AbstractValidator;
 /**
  * Testcase for the Abstract Validator
  */
-class AbstractValidatorTest extends UnitTestCase
+final class AbstractValidatorTest extends UnitTestCase
 {
     protected $validator;
 

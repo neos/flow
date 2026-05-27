@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Abstract Persistence Manager
  */
-class AbstractPersistenceManagerTest extends UnitTestCase
+final class AbstractPersistenceManagerTest extends UnitTestCase
 {
     /**
      * @var AbstractPersistenceManager

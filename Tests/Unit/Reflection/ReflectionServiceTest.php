@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -20,26 +23,21 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the ReflectionService
  *
  */
-class ReflectionServiceTest extends UnitTestCase
+final class ReflectionServiceTest extends UnitTestCase
 {
     /**
      * @var ReflectionService
      */
     protected $reflectionService;
 
-    /**
-     * @var Reader|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockAnnotationReader;
-
     protected function setUp(): void
     {
         $this->reflectionService = $this->getAccessibleMock(ReflectionService::class);
 
-        $this->mockAnnotationReader = $this->getMockBuilder('Doctrine\Common\Annotations\Reader')->disableOriginalConstructor()->getMock();
-        $this->mockAnnotationReader->method('getClassAnnotations')->willReturn([]);
-        $this->mockAnnotationReader->method('getMethodAnnotations')->willReturn([]);
-        $this->inject($this->reflectionService, 'annotationReader', $this->mockAnnotationReader);
+        $mockAnnotationReader = $this->createMock('Doctrine\Common\Annotations\Reader');
+        $mockAnnotationReader->method('getClassAnnotations')->willReturn([]);
+        $mockAnnotationReader->method('getMethodAnnotations')->willReturn([]);
+        $this->inject($this->reflectionService, 'annotationReader', $mockAnnotationReader);
         $this->reflectionService->_set('initialized', true);
     }
 

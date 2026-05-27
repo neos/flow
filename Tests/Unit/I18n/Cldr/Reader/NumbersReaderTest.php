@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 
 /*
@@ -19,7 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Testcase for the NumbersReader
  */
-class NumbersReaderTest extends UnitTestCase
+final class NumbersReaderTest extends UnitTestCase
 {
     /**
      * Dummy locale used in methods where locale is needed.
@@ -72,7 +75,7 @@ class NumbersReaderTest extends UnitTestCase
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn($mockModel);
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $matcher = self::atLeast(3);
         $mockCache->expects($matcher)->method('has')->willReturnCallback(function (...$parameters) use ($matcher) {
             if ($matcher->numberOfInvocations() === 1) {
@@ -128,16 +131,14 @@ class NumbersReaderTest extends UnitTestCase
     /**
      * Data provider with valid format strings and expected results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function formatStringsAndParsedFormats(): array
+    public static function formatStringsAndParsedFormats(): \Iterator
     {
-        return [
-            ['#,##0.###', array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
-            ['#,##,##0%', array_merge(self::$templateFormat, ['positiveSuffix' => '%', 'negativeSuffix' => '%', 'multiplier' => 100, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 2])],
-            ['¤ #,##0.00;¤ #,##0.00-', array_merge(self::$templateFormat, ['positivePrefix' => '¤ ', 'negativePrefix' => '¤ ', 'negativeSuffix' => '-', 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
-            ['#,##0.05', array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])],
-        ];
+        yield ['#,##0.###', array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])];
+        yield ['#,##,##0%', array_merge(self::$templateFormat, ['positiveSuffix' => '%', 'negativeSuffix' => '%', 'multiplier' => 100, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 2])];
+        yield ['¤ #,##0.00;¤ #,##0.00-', array_merge(self::$templateFormat, ['positivePrefix' => '¤ ', 'negativePrefix' => '¤ ', 'negativeSuffix' => '-', 'minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])];
+        yield ['#,##0.05', array_merge(self::$templateFormat, ['minDecimalDigits' => 2, 'maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])];
     }
 
     /**
@@ -158,16 +159,14 @@ class NumbersReaderTest extends UnitTestCase
      * Data provider with formats not supported by current implementation of
      * NumbersReader.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function unsupportedFormats(): array
+    public static function unsupportedFormats(): \Iterator
     {
-        return [
-            ['0.###E0'],
-            ['@##'],
-            ['* #0'],
-            ['\'#\'##'],
-        ];
+        yield ['0.###E0'];
+        yield ['@##'];
+        yield ['* #0'];
+        yield ['\'#\'##'];
     }
 
     /**

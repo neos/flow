@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for \Neos\Flow\Persistence\QueryResult
  */
-class QueryResultTest extends UnitTestCase
+final class QueryResultTest extends UnitTestCase
 {
     /**
      * @var QueryResult
@@ -37,8 +40,8 @@ class QueryResultTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->query = $this->getMockBuilder(Query::class)->disableOriginalConstructor()->disableOriginalClone()->getMock();
-        $this->query->expects($this->any())->method('getResult')->willReturn((['First result', 'second result', 'third result']));
+        $this->query = $this->createMock(Query::class);
+        $this->query->method('getResult')->willReturn((['First result', 'second result', 'third result']));
         $this->queryResult = new QueryResult($this->query);
     }
 
@@ -72,7 +75,7 @@ class QueryResultTest extends UnitTestCase
     public function countCallsCountOnTheQuery()
     {
         $this->query->expects($this->once())->method('count')->willReturn((123));
-        self::assertEquals(123, $this->queryResult->count());
+        self::assertCount(123, $this->queryResult);
     }
 
     /**
@@ -82,7 +85,7 @@ class QueryResultTest extends UnitTestCase
     {
         $this->query->expects($this->never())->method('count');
         $this->queryResult->toArray();
-        self::assertEquals(3, $this->queryResult->count());
+        self::assertCount(3, $this->queryResult);
     }
 
     /**
@@ -92,6 +95,6 @@ class QueryResultTest extends UnitTestCase
     {
         $this->query->expects($this->once())->method('count')->willReturn((321));
         $this->queryResult->count();
-        self::assertEquals(321, $this->queryResult->count());
+        self::assertCount(321, $this->queryResult);
     }
 }

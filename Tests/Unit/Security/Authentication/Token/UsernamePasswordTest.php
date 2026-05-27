@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
@@ -21,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * Testcase for username/password authentication token
  *
  */
-class UsernamePasswordTest extends UnitTestCase
+final class UsernamePasswordTest extends UnitTestCase
 {
     /**
      * @var UsernamePassword
@@ -45,10 +48,10 @@ class UsernamePasswordTest extends UnitTestCase
     {
         $this->token = new UsernamePassword();
 
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $this->mockActionRequest = $this->createMock(ActionRequest::class);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockActionRequest->expects($this->any())->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $this->mockActionRequest->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
     }
 
     /**
@@ -102,11 +105,11 @@ class UsernamePasswordTest extends UnitTestCase
         self::assertEquals(['username' => 'Neos.Flow', 'password' => 'verysecurepassword'], $this->token->getCredentials());
 
         $secondToken = new UsernamePassword();
-        $secondMockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $secondMockActionRequest = $this->createMock(ActionRequest::class);
 
         /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $secondMockActionRequest */
-        $secondMockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $secondMockActionRequest->expects($this->any())->method('getHttpRequest')->willReturn(($secondMockHttpRequest));
+        $secondMockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $secondMockActionRequest->method('getHttpRequest')->willReturn(($secondMockHttpRequest));
         $secondMockHttpRequest->expects($this->atLeastOnce())->method('getMethod')->willReturn(('GET'));
         $secondToken->updateCredentials($secondMockActionRequest);
         self::assertEquals(['username' => '', 'password' => ''], $secondToken->getCredentials());
@@ -126,6 +129,6 @@ class UsernamePasswordTest extends UnitTestCase
 
         $this->token->updateCredentials($this->mockActionRequest);
 
-        self::assertEquals('Username: "Neos.Flow"', (string)$this->token);
+        self::assertSame('Username: "Neos.Flow"', (string)$this->token);
     }
 }

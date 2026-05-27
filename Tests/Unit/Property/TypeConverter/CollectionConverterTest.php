@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Collection converter
  */
-class CollectionConverterTest extends UnitTestCase
+final class CollectionConverterTest extends UnitTestCase
 {
     /**
      * @var CollectionConverter
@@ -46,7 +49,7 @@ class CollectionConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyReturnsElementTypeFromTargetTypeIfGiven()
     {
-        self::assertEquals('FooBar', $this->converter->getTypeOfChildProperty('array<FooBar>', '', $this->createMock(PropertyMappingConfigurationInterface::class)));
+        self::assertEquals('FooBar', $this->converter->getTypeOfChildProperty('array<FooBar>', '', $this->createStub(PropertyMappingConfigurationInterface::class)));
     }
 
     /**
@@ -55,6 +58,6 @@ class CollectionConverterTest extends UnitTestCase
     public function getTypeOfChildPropertyThrowsExceptionForMissingElementType()
     {
         $this->expectException(InvalidDataTypeException::class);
-        $this->converter->getTypeOfChildProperty('array', 'collection', $this->createMock(PropertyMappingConfigurationInterface::class));
+        $this->converter->getTypeOfChildProperty('array', 'collection', $this->createStub(PropertyMappingConfigurationInterface::class));
     }
 }

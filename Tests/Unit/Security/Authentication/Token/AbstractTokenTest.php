@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for abstract authentication token
  *
  */
-class AbstractTokenTest extends UnitTestCase
+final class AbstractTokenTest extends UnitTestCase
 {
     /**
      * @var AbstractToken
@@ -62,16 +65,14 @@ class AbstractTokenTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function authenticationStatusAndIsAuthenticated()
+    public static function authenticationStatusAndIsAuthenticated(): \Iterator
     {
-        return [
-            [TokenInterface::NO_CREDENTIALS_GIVEN, false],
-            [TokenInterface::AUTHENTICATION_NEEDED, false],
-            [TokenInterface::WRONG_CREDENTIALS, false],
-            [TokenInterface::AUTHENTICATION_SUCCESSFUL, true],
-        ];
+        yield [TokenInterface::NO_CREDENTIALS_GIVEN, false];
+        yield [TokenInterface::AUTHENTICATION_NEEDED, false];
+        yield [TokenInterface::WRONG_CREDENTIALS, false];
+        yield [TokenInterface::AUTHENTICATION_SUCCESSFUL, true];
     }
 
     /**

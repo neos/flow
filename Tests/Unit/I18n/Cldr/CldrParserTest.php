@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\I18n;
  * Testcase for the CldrParser
  *
  */
-class CldrParserTest extends UnitTestCase
+final class CldrParserTest extends UnitTestCase
 {
     /**
      * @test

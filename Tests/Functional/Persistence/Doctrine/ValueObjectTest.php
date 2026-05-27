@@ -9,7 +9,7 @@ use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestValueObject;
 use Neos\Flow\Tests\FunctionalTestCase;
 
-class ValueObjectTest extends FunctionalTestCase
+final class ValueObjectTest extends FunctionalTestCase
 {
     /**
      * @var bool
@@ -49,6 +49,6 @@ class ValueObjectTest extends FunctionalTestCase
             $this->persistenceManager->persistAll();
         }
         $query = new Query(TestEntity::class);
-        self::assertEquals(2, $query->count(), 'It should be exactly two TestEntities');
+        self::assertSame(2, $query->count(), 'It should be exactly two TestEntities');
     }
 }

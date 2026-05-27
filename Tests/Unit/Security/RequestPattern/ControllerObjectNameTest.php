@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the controller object name request pattern
  */
-class ControllerObjectNameTest extends UnitTestCase
+final class ControllerObjectNameTest extends UnitTestCase
 {
     /**
      * @test

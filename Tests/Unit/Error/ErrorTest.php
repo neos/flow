@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Error;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Error\Messages\Error as FlowError;
 /**
  * Testcase for the Error object
  */
-class ErrorTest extends UnitTestCase
+final class ErrorTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,7 +30,7 @@ class ErrorTest extends UnitTestCase
         $errorMessage = 'The message';
         $error = new FlowError($errorMessage, 0);
 
-        self::assertEquals($errorMessage, $error->getMessage());
+        self::assertSame($errorMessage, $error->getMessage());
     }
 
     /**
@@ -38,6 +41,6 @@ class ErrorTest extends UnitTestCase
         $errorCode = 123456789;
         $error = new FlowError('', $errorCode);
 
-        self::assertEquals($errorCode, $error->getCode());
+        self::assertSame($errorCode, $error->getCode());
     }
 }

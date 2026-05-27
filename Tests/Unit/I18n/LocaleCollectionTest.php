@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the LocaleCollection class
  */
-class LocaleCollectionTest extends UnitTestCase
+final class LocaleCollectionTest extends UnitTestCase
 {
     /**
      * @var array<I18n\Locale>

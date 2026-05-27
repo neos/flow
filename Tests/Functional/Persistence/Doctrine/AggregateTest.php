@@ -20,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for aggregate-related behavior
  */
-class AggregateTest extends FunctionalTestCase
+final class AggregateTest extends FunctionalTestCase
 {
     /**
      * @var bool

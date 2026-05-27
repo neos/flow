@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Aop;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for the AOP Framework class
  */
-class FrameworkTest extends FunctionalTestCase
+final class FrameworkTest extends FunctionalTestCase
 {
     /**
      * @test

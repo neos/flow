@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the alphanumeric validator
  *
  */
-class AlphanumericValidatorTest extends AbstractValidatorTestcase
+final class AlphanumericValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = AlphanumericValidator::class;
 
@@ -68,6 +71,6 @@ class AlphanumericValidatorTest extends AbstractValidatorTestcase
      */
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        self::assertEquals(1, count($this->validator->validate('adsf%&/$jklsfdö')->getErrors()));
+        self::assertCount(1, $this->validator->validate('adsf%&/$jklsfdö')->getErrors());
     }
 }

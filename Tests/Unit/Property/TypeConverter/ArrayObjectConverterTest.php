@@ -21,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the ArrayObject converter
  */
-class ArrayObjectConverterTest extends UnitTestCase
+final class ArrayObjectConverterTest extends UnitTestCase
 {
     /**
      * @var ArrayConverter
@@ -43,12 +43,10 @@ class ArrayObjectConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    public static function arrayObjectDataProvider(): array
+    public static function arrayObjectDataProvider(): \Iterator
     {
-        return [
-            [new \ArrayObject(['Foo', 1, true, 'Bar']), ['Foo', 1, true, 'Bar']],
-            [new \ArrayObject(), []]
-        ];
+        yield [new \ArrayObject(['Foo', 1, true, 'Bar']), ['Foo', 1, true, 'Bar']];
+        yield [new \ArrayObject(), []];
     }
 
     /**
@@ -57,7 +55,7 @@ class ArrayObjectConverterTest extends UnitTestCase
      */
     public function canConvertToArray(\ArrayObject $source, array $expectedResult): void
     {
-        $propertyMappingConfiguration = $this->createMock(PropertyMappingConfiguration::class);
+        $propertyMappingConfiguration = $this->createStub(PropertyMappingConfiguration::class);
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array', [], $propertyMappingConfiguration));
     }
 }

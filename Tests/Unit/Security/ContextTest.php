@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security;
 
 /*
@@ -32,7 +35,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the security context
  */
-class ContextTest extends UnitTestCase
+final class ContextTest extends UnitTestCase
 {
     /**
      * @var Context
@@ -67,7 +70,7 @@ class ContextTest extends UnitTestCase
         $this->mockSessionDataContainer = $this->createMock(SessionDataContainer::class);
 
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->with(SessionDataContainer::class)->willReturn($this->mockSessionDataContainer);
+        $this->mockObjectManager->method('get')->with(SessionDataContainer::class)->willReturn($this->mockSessionDataContainer);
 
         $this->securityContext = $this->getAccessibleMock(Context::class, ['separateActiveAndInactiveTokens']);
         $this->inject($this->securityContext, 'objectManager', $this->mockObjectManager);
@@ -75,7 +78,7 @@ class ContextTest extends UnitTestCase
         $this->mockTokenAndProviderFactory = $this->getMockBuilder(TokenAndProviderFactoryInterface::class)->onlyMethods(['getTokens', 'getProviders'])->getMock();
         $this->securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
 
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $this->mockActionRequest = $this->createMock(ActionRequest::class);
         $this->securityContext->setRequest($this->mockActionRequest);
     }
 
@@ -137,40 +140,40 @@ class ContextTest extends UnitTestCase
         $securityContext->injectSettings($settings);
 
         $matchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeRequestPattern')->getMock();
-        $matchingRequestPattern->expects($this->any())->method('matchRequest')->willReturn((true));
+        $matchingRequestPattern->method('matchRequest')->willReturn((true));
 
         $notMatchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeOtherRequestPattern')->getMock();
-        $notMatchingRequestPattern->expects($this->any())->method('matchRequest')->willReturn((false));
+        $notMatchingRequestPattern->method('matchRequest')->willReturn((false));
 
         $token1 = $this->createMock(TokenInterface::class);
         $token1->expects($this->once())->method('hasRequestPatterns')->willReturn((true));
         $token1->expects($this->once())->method('getRequestPatterns')->willReturn(([$matchingRequestPattern]));
-        $token1->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
-        $token1->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token1->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
+        $token1->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token2 = $this->createMock(TokenInterface::class);
         $token2->expects($this->once())->method('hasRequestPatterns')->willReturn((false));
         $token2->expects($this->never())->method('getRequestPatterns');
-        $token2->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
-        $token2->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token2->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
+        $token2->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token3 = $this->createMock(TokenInterface::class);
         $token3->expects($this->once())->method('hasRequestPatterns')->willReturn((true));
         $token3->expects($this->once())->method('getRequestPatterns')->willReturn(([$notMatchingRequestPattern]));
-        $token3->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
-        $token3->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token3->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
+        $token3->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token4 = $this->createMock(TokenInterface::class);
         $token4->expects($this->once())->method('hasRequestPatterns')->willReturn((true));
         $token4->expects($this->once())->method('getRequestPatterns')->willReturn(([]));
-        $token4->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token4Provider'));
-        $token4->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token4->method('getAuthenticationProviderName')->willReturn(('token4Provider'));
+        $token4->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token5 = $this->createMock(TokenInterface::class);
         $token5->expects($this->once())->method('hasRequestPatterns')->willReturn((true));
         $token5->expects($this->once())->method('getRequestPatterns')->willReturn(([$notMatchingRequestPattern, $matchingRequestPattern]));
-        $token5->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token5Provider'));
-        $token5->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token5->method('getAuthenticationProviderName')->willReturn(('token5Provider'));
+        $token5->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $this->mockTokenAndProviderFactory = $this->createMock(TokenAndProviderFactoryInterface::class);
         $this->mockTokenAndProviderFactory->expects($this->once())->method('getTokens')->willReturn(([
@@ -183,10 +186,10 @@ class ContextTest extends UnitTestCase
 //        $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
 //        $mockAuthenticationManager->expects($this->once())->method('getTokens')->willReturn(([$token1, $token2, $token3, $token4, $token5]));
 
-        $mockSession = $this->createMock(SessionInterface::class);
+        $mockSession = $this->createStub(SessionInterface::class);
         $mockSessionManager = $this->createMock(SessionManagerInterface::class);
-        $mockSessionManager->expects($this->any())->method('getCurrentSession')->willReturn(($mockSession));
-        $mockSecurityLogger = $this->createMock(LoggerInterface::class);
+        $mockSessionManager->method('getCurrentSession')->willReturn(($mockSession));
+        $mockSecurityLogger = $this->createStub(LoggerInterface::class);
 
         $securityContext = $this->getAccessibleMock(Context::class, []);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
@@ -254,68 +257,66 @@ class ContextTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function separateActiveAndInactiveTokensDataProvider()
+    public static function separateActiveAndInactiveTokensDataProvider(): \Iterator
     {
-        return [
-            [
-                'patterns' => [
-                ],
-                'expectedActive' => true
+        yield [
+            'patterns' => [
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => true],
-                ],
-                'expectedActive' => true
+            'expectedActive' => true
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => true],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => false],
-                ],
-                'expectedActive' => false
+            'expectedActive' => true
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => false],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => true],
-                    ['type' => 'type2', 'matchesRequest' => true],
-                ],
-                'expectedActive' => true
+            'expectedActive' => false
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => true],
+                ['type' => 'type2', 'matchesRequest' => true],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => true],
-                    ['type' => 'type2', 'matchesRequest' => false],
-                ],
-                'expectedActive' => false
+            'expectedActive' => true
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => true],
+                ['type' => 'type2', 'matchesRequest' => false],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => true],
-                    ['type' => 'type2', 'matchesRequest' => false],
-                    ['type' => 'type2', 'matchesRequest' => true],
-                ],
-                'expectedActive' => true
+            'expectedActive' => false
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => true],
+                ['type' => 'type2', 'matchesRequest' => false],
+                ['type' => 'type2', 'matchesRequest' => true],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => false],
-                    ['type' => 'type2', 'matchesRequest' => false],
-                    ['type' => 'type2', 'matchesRequest' => true],
-                    ['type' => 'type1', 'matchesRequest' => true],
-                ],
-                'expectedActive' => true
+            'expectedActive' => true
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => false],
+                ['type' => 'type2', 'matchesRequest' => false],
+                ['type' => 'type2', 'matchesRequest' => true],
+                ['type' => 'type1', 'matchesRequest' => true],
             ],
-            [
-                'patterns' => [
-                    ['type' => 'type1', 'matchesRequest' => true],
-                    ['type' => 'type2', 'matchesRequest' => true],
-                    ['type' => 'type1', 'matchesRequest' => false],
-                    ['type' => 'type2', 'matchesRequest' => false],
-                ],
-                'expectedActive' => true
+            'expectedActive' => true
+        ];
+        yield [
+            'patterns' => [
+                ['type' => 'type1', 'matchesRequest' => true],
+                ['type' => 'type2', 'matchesRequest' => true],
+                ['type' => 'type1', 'matchesRequest' => false],
+                ['type' => 'type2', 'matchesRequest' => false],
             ],
+            'expectedActive' => true
         ];
     }
 
@@ -330,7 +331,7 @@ class ContextTest extends UnitTestCase
         $mockRequestPatterns = [];
         foreach ($patterns as $pattern) {
             $mockRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('RequestPattern_' . $pattern['type'] . '_' . mt_rand())->getMock();
-            $mockRequestPattern->expects($this->any())->method('matchRequest')->with($this->mockActionRequest)->willReturn(($pattern['matchesRequest']));
+            $mockRequestPattern->method('matchRequest')->with($this->mockActionRequest)->willReturn(($pattern['matchesRequest']));
             $mockRequestPatterns[] = $mockRequestPattern;
         }
 
@@ -378,27 +379,27 @@ class ContextTest extends UnitTestCase
     public function tokenFromAnAuthenticationManagerIsReplacedIfThereIsOneOfTheSameTypeInTheSession()
     {
         $token1 = $this->createMock(TokenInterface::class);
-        $token1->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
+        $token1->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
         $token1Clone = $this->createMock(TokenInterface::class);
-        $token1Clone->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
-        $token1Clone->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token1Clone->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
+        $token1Clone->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token2 = $this->createMock(TokenInterface::class);
-        $token2->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
+        $token2->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
         $token2Clone = $this->createMock(TokenInterface::class);
-        $token2Clone->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
-        $token2Clone->expects($this->any())->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
+        $token2Clone->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
+        $token2Clone->method('getAuthenticationStatus')->willReturn((TokenInterface::AUTHENTICATION_NEEDED));
 
         $token3 = $this->createMock(TokenInterface::class);
-        $token3->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
+        $token3->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
 
         $tokensFromTheFactory = [$token1, $token2, $token3];
         $tokensFromTheSession = [$token1Clone, $token2Clone];
 
-        $mockSession = $this->createMock(SessionInterface::class);
+        $mockSession = $this->createStub(SessionInterface::class);
         $mockSessionManager = $this->createMock(SessionManagerInterface::class);
-        $mockSessionManager->expects($this->any())->method('getCurrentSession')->willReturn(($mockSession));
-        $mockSecurityLogger = $this->createMock(LoggerInterface::class);
+        $mockSessionManager->method('getCurrentSession')->willReturn(($mockSession));
+        $mockSecurityLogger = $this->createStub(LoggerInterface::class);
 
         $securityContext = $this->getAccessibleMock(Context::class, []);
 
@@ -427,16 +428,16 @@ class ContextTest extends UnitTestCase
         $securityContext = $this->getAccessibleMock(Context::class, []);
 
         $notMatchingRequestPattern = $this->createMock(RequestPatternInterface::class);
-        $notMatchingRequestPattern->expects($this->any())->method('matchRequest')->willReturn((false));
+        $notMatchingRequestPattern->method('matchRequest')->willReturn((false));
 
         $mockToken1 = $this->createMock(TokenInterface::class);
-        $mockToken1->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
+        $mockToken1->method('getAuthenticationProviderName')->willReturn(('token1Provider'));
         $mockToken2 = $this->createMock(TokenInterface::class);
-        $mockToken2->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
+        $mockToken2->method('getAuthenticationProviderName')->willReturn(('token2Provider'));
         $mockToken2->expects($this->atLeastOnce())->method('hasRequestPatterns')->willReturn((true));
         $mockToken2->expects($this->atLeastOnce())->method('getRequestPatterns')->willReturn(([$notMatchingRequestPattern]));
         $mockToken3 = $this->createMock(TokenInterface::class);
-        $mockToken3->expects($this->any())->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
+        $mockToken3->method('getAuthenticationProviderName')->willReturn(('token3Provider'));
 
         $mockToken1->expects($this->once())->method('updateCredentials');
         $mockToken2->expects($this->never())->method('updateCredentials');
@@ -554,16 +555,14 @@ class ContextTest extends UnitTestCase
         $testRole = new Policy\Role('Acme.Demo:TestRole');
 
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole', 'initializeRolesFromPolicy']);
-        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will(self::returnCallBack(
-            function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole) {
-                switch ($roleIdentifier) {
-                    case 'Neos.Flow:Everybody':
-                        return $everybodyRole;
-                    case 'Neos.Flow:AuthenticatedUser':
-                        return $authenticatedUserRole;
-                }
+        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->willReturnCallback(function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole) {
+            switch ($roleIdentifier) {
+                case 'Neos.Flow:Everybody':
+                    return $everybodyRole;
+                case 'Neos.Flow:AuthenticatedUser':
+                    return $authenticatedUserRole;
             }
-        ));
+        });
 
         $account = $this->getAccessibleMock(Account::class, []);
         $account->_set('policyService', $mockPolicyService);
@@ -575,7 +574,7 @@ class ContextTest extends UnitTestCase
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAccount']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->expects($this->any())->method('getAccount')->willReturn(($account));
+        $securityContext->method('getAccount')->willReturn(($account));
         $securityContext->_set('activeTokens', [$mockToken]);
         $securityContext->_set('policyService', $mockPolicyService);
 
@@ -608,30 +607,28 @@ class ContextTest extends UnitTestCase
         $testRole7 = $this->getAccessibleMock(Policy\Role::class, [], ['Acme.Demo:TestRole7']);
 
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will(self::returnCallBack(
-            function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole, $testRole1, $testRole2, $testRole3, $testRole4, $testRole5, $testRole6, $testRole7) {
-                switch ($roleIdentifier) {
-                    case 'Neos.Flow:Everybody':
-                        return $everybodyRole;
-                    case 'Neos.Flow:AuthenticatedUser':
-                        return $authenticatedUserRole;
-                    case 'Acme.Demo:TestRole1':
-                        return $testRole1;
-                    case 'Acme.Demo:TestRole2':
-                        return $testRole2;
-                    case 'Acme.Demo:TestRole3':
-                        return $testRole3;
-                    case 'Acme.Demo:TestRole4':
-                        return $testRole4;
-                    case 'Acme.Demo:TestRole5':
-                        return $testRole5;
-                    case 'Acme.Demo:TestRole6':
-                        return $testRole6;
-                    case 'Acme.Demo:TestRole7':
-                        return $testRole7;
-                }
+        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->willReturnCallback(function ($roleIdentifier) use ($everybodyRole, $authenticatedUserRole, $testRole1, $testRole2, $testRole3, $testRole4, $testRole5, $testRole6, $testRole7) {
+            switch ($roleIdentifier) {
+                case 'Neos.Flow:Everybody':
+                    return $everybodyRole;
+                case 'Neos.Flow:AuthenticatedUser':
+                    return $authenticatedUserRole;
+                case 'Acme.Demo:TestRole1':
+                    return $testRole1;
+                case 'Acme.Demo:TestRole2':
+                    return $testRole2;
+                case 'Acme.Demo:TestRole3':
+                    return $testRole3;
+                case 'Acme.Demo:TestRole4':
+                    return $testRole4;
+                case 'Acme.Demo:TestRole5':
+                    return $testRole5;
+                case 'Acme.Demo:TestRole6':
+                    return $testRole6;
+                case 'Acme.Demo:TestRole7':
+                    return $testRole7;
             }
-        ));
+        });
 
         // Set parents
         $testRole1->setParentRoles([$testRole2, $testRole3]);
@@ -651,7 +648,7 @@ class ContextTest extends UnitTestCase
         /** @var Context|\PHPUnit\Framework\MockObject\MockObject $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAccount']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->expects($this->any())->method('getAccount')->willReturn(($account));
+        $securityContext->method('getAccount')->willReturn(($account));
         $this->inject($securityContext, 'activeTokens', [$mockToken]);
         $this->inject($securityContext, 'policyService', $mockPolicyService);
 
@@ -682,7 +679,7 @@ class ContextTest extends UnitTestCase
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]));
+        $mockPolicyService->expects($this->exactly(2))->method('getRole')->willReturnMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]);
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
@@ -701,7 +698,7 @@ class ContextTest extends UnitTestCase
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]));
+        $mockPolicyService->expects($this->exactly(2))->method('getRole')->willReturnMap([['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]]);
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
@@ -709,7 +706,7 @@ class ContextTest extends UnitTestCase
 
         $result = $securityContext->getRoles();
         self::assertInstanceOf(Policy\Role::class, $result['Neos.Flow:Anonymous']);
-        self::assertEquals('Neos.Flow:Anonymous', (string)($result['Neos.Flow:Anonymous']));
+        self::assertSame('Neos.Flow:Anonymous', (string)($result['Neos.Flow:Anonymous']));
     }
 
     /**
@@ -717,22 +714,22 @@ class ContextTest extends UnitTestCase
      */
     public function getRolesReturnsTheAuthenticatedUserRoleIfATokenIsAuthenticated(): void
     {
-        $mockToken = $this->getMockBuilder(TokenInterface::class)->getMock();
-        $mockToken->expects($this->any())->method('isAuthenticated')->willReturn(true);
+        $mockToken = $this->createMock(TokenInterface::class);
+        $mockToken->method('isAuthenticated')->willReturn(true);
 
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $authenticatedUserRole = new Policy\Role('Neos.Flow:AuthenticatedUser');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->willReturnMap([['Neos.Flow:AuthenticatedUser', $authenticatedUserRole], ['Neos.Flow:Everybody', $everybodyRole]]);
+        $mockPolicyService->expects($this->exactly(2))->method('getRole')->willReturnMap([['Neos.Flow:AuthenticatedUser', $authenticatedUserRole], ['Neos.Flow:Everybody', $everybodyRole]]);
 
         /** @var Context $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAuthenticationTokens']);
-        $securityContext->expects($this->any())->method('getAuthenticationTokens')->willReturn([$mockToken]);
+        $securityContext->method('getAuthenticationTokens')->willReturn([$mockToken]);
         $securityContext->_set('policyService', $mockPolicyService);
 
         $result = $securityContext->getRoles();
         self::assertInstanceOf(Policy\Role::class, $result['Neos.Flow:AuthenticatedUser']);
-        self::assertEquals('Neos.Flow:AuthenticatedUser', (string)($result['Neos.Flow:AuthenticatedUser']));
+        self::assertSame('Neos.Flow:AuthenticatedUser', (string)($result['Neos.Flow:AuthenticatedUser']));
     }
 
     /**
@@ -742,9 +739,9 @@ class ContextTest extends UnitTestCase
     {
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->will($this->returnValueMap([
+        $mockPolicyService->expects($this->exactly(1))->method('getRole')->willReturnMap([
             ['Neos.Flow:Everybody', $everybodyRole]
-        ]));
+        ]);
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
@@ -758,18 +755,18 @@ class ContextTest extends UnitTestCase
      */
     public function hasRoleReturnsTrueForAnonymousRoleIfNotAuthenticated(): void
     {
-        $mockToken = $this->getMockBuilder(TokenInterface::class)->getMock();
-        $mockToken->expects($this->any())->method('isAuthenticated')->willReturn(false);
+        $mockToken = $this->createMock(TokenInterface::class);
+        $mockToken->method('isAuthenticated')->willReturn(false);
 
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->willReturnMap([
+        $mockPolicyService->expects($this->exactly(2))->method('getRole')->willReturnMap([
             ['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole]
         ]);
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAuthenticationTokens']);
-        $securityContext->expects($this->any())->method('getAuthenticationTokens')->willReturn([$mockToken]);
+        $securityContext->method('getAuthenticationTokens')->willReturn([$mockToken]);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
         $securityContext->_set('policyService', $mockPolicyService);
 
@@ -781,20 +778,20 @@ class ContextTest extends UnitTestCase
      */
     public function hasRoleReturnsFalseForAnonymousRoleIfAuthenticated(): void
     {
-        $mockToken = $this->getMockBuilder(TokenInterface::class)->getMock();
-        $mockToken->expects($this->any())->method('isAuthenticated')->willReturn(true);
+        $mockToken = $this->createMock(TokenInterface::class);
+        $mockToken->method('isAuthenticated')->willReturn(true);
 
         $authenticatedUserRole = new Policy\Role('Neos.Flow:AuthenticatedUser');
         $everybodyRole = new Policy\Role('Neos.Flow:Everybody');
         $anonymousRole = new Policy\Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->any())->method('getRole')->willReturnMap([
+        $mockPolicyService->expects($this->exactly(3))->method('getRole')->willReturnMap([
             ['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole], ['Neos.Flow:AuthenticatedUser', $authenticatedUserRole]
         ]);
 
         /** @var Context $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAuthenticationTokens']);
-        $securityContext->expects($this->any())->method('getAuthenticationTokens')->willReturn([$mockToken]);
+        $securityContext->method('getAuthenticationTokens')->willReturn([$mockToken]);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
         $this->inject($securityContext, 'policyService', $mockPolicyService);
 
@@ -826,7 +823,7 @@ class ContextTest extends UnitTestCase
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAccount']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->expects($this->any())->method('getAccount')->willReturn(($account));
+        $securityContext->method('getAccount')->willReturn(($account));
         $securityContext->_set('activeTokens', [$mockToken]);
         $securityContext->_set('policyService', $mockPolicyService);
 
@@ -845,20 +842,18 @@ class ContextTest extends UnitTestCase
         $authenticatedUserRole = new Policy\Role('Neos.Flow:AuthenticatedUser');
 
         $mockPolicyService = $this->getAccessibleMock(Policy\PolicyService::class, ['getRole', 'initializeRolesFromPolicy']);
-        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->will(self::returnCallBack(
-            function ($roleIdentifier) use ($everybodyRole, $testRole1, $testRole2, $authenticatedUserRole) {
-                switch ($roleIdentifier) {
-                    case 'Neos.Flow:Everybody':
-                        return $everybodyRole;
-                    case 'Acme.Demo:TestRole1':
-                        return $testRole1;
-                    case 'Acme.Demo:TestRole2':
-                        return $testRole2;
-                    case 'Neos.Flow:AuthenticatedUser':
-                        return $authenticatedUserRole;
-                }
+        $mockPolicyService->expects($this->atLeastOnce())->method('getRole')->willReturnCallback(function ($roleIdentifier) use ($everybodyRole, $testRole1, $testRole2, $authenticatedUserRole) {
+            switch ($roleIdentifier) {
+                case 'Neos.Flow:Everybody':
+                    return $everybodyRole;
+                case 'Acme.Demo:TestRole1':
+                    return $testRole1;
+                case 'Acme.Demo:TestRole2':
+                    return $testRole2;
+                case 'Neos.Flow:AuthenticatedUser':
+                    return $authenticatedUserRole;
             }
-        ));
+        });
 
         $everybodyRole->_set('policyService', $mockPolicyService);
         $testRole1->_set('policyService', $mockPolicyService);
@@ -877,7 +872,7 @@ class ContextTest extends UnitTestCase
 
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'getAccount']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->expects($this->any())->method('getAccount')->willReturn(($account));
+        $securityContext->method('getAccount')->willReturn(($account));
         $securityContext->_set('activeTokens', [$mockToken]);
         $securityContext->_set('policyService', $mockPolicyService);
 
@@ -889,18 +884,18 @@ class ContextTest extends UnitTestCase
      */
     public function getAccountReturnsTheAccountAttachedToTheFirstAuthenticatedToken()
     {
-        $mockAccount = $this->createMock(Account::class);
+        $mockAccount = $this->createStub(Account::class);
 
         $token1 = $this->createMock(TokenInterface::class, [], [], 'token1' . md5(uniqid(mt_rand(), true)));
-        $token1->expects($this->any())->method('isAuthenticated')->willReturn((false));
+        $token1->method('isAuthenticated')->willReturn((false));
         $token1->expects($this->never())->method('getAccount');
 
         $token2 = $this->createMock(TokenInterface::class, [], [], 'token2' . md5(uniqid(mt_rand(), true)));
-        $token2->expects($this->any())->method('isAuthenticated')->willReturn((true));
+        $token2->method('isAuthenticated')->willReturn((true));
         $token2->expects($this->once())->method('getAccount')->willReturn(($mockAccount));
 
         $token3 = $this->createMock(TokenInterface::class, [], [], 'token3' . md5(uniqid(mt_rand(), true)));
-        $token3->expects($this->any())->method('isAuthenticated')->willReturn((true));
+        $token3->method('isAuthenticated')->willReturn((true));
         $token3->expects($this->never())->method('getAccount');
 
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
@@ -917,20 +912,20 @@ class ContextTest extends UnitTestCase
      */
     public function getAccountByAuthenticationProviderNameReturnsTheAuthenticatedAccountWithGivenProviderName()
     {
-        $mockAccount1 = $this->createMock(Account::class);
-        $mockAccount2 = $this->createMock(Account::class);
+        $mockAccount1 = $this->createStub(Account::class);
+        $mockAccount2 = $this->createStub(Account::class);
 
         $token1 = $this->createMock(TokenInterface::class, [], [], 'token1' . md5(uniqid(mt_rand(), true)));
-        $token1->expects($this->any())->method('isAuthenticated')->willReturn((false));
+        $token1->method('isAuthenticated')->willReturn((false));
         $token1->expects($this->never())->method('getAccount');
 
         $token2 = $this->createMock(TokenInterface::class, [], [], 'token2' . md5(uniqid(mt_rand(), true)));
-        $token2->expects($this->any())->method('isAuthenticated')->willReturn((true));
-        $token2->expects($this->any())->method('getAccount')->willReturn(($mockAccount1));
+        $token2->method('isAuthenticated')->willReturn((true));
+        $token2->method('getAccount')->willReturn(($mockAccount1));
 
         $token3 = $this->createMock(TokenInterface::class, [], [], 'token3' . md5(uniqid(mt_rand(), true)));
-        $token3->expects($this->any())->method('isAuthenticated')->willReturn((true));
-        $token3->expects($this->any())->method('getAccount')->willReturn(($mockAccount2));
+        $token3->method('isAuthenticated')->willReturn((true));
+        $token3->method('getAccount')->willReturn(($mockAccount2));
 
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
@@ -953,7 +948,7 @@ class ContextTest extends UnitTestCase
         $securityContext->_set('activeTokens', []);
         $securityContext->_set('initialized', true);
 
-        self::assertSame(null, $securityContext->getAccountByAuthenticationProviderName('UnknownProvider'));
+        self::assertNull($securityContext->getAccountByAuthenticationProviderName('UnknownProvider'));
     }
 
     /**
@@ -983,7 +978,7 @@ class ContextTest extends UnitTestCase
         $this->securityContext->_set('csrfTokens', $existingTokens);
         $this->securityContext->_set('csrfStrategy', Context::CSRF_ONE_PER_URI);
 
-        self::assertFalse(array_key_exists($this->securityContext->getCsrfProtectionToken(), $existingTokens));
+        self::assertArrayNotHasKey($this->securityContext->getCsrfProtectionToken(), $existingTokens);
     }
 
     /**
@@ -992,7 +987,7 @@ class ContextTest extends UnitTestCase
     public function isCsrfProtectionTokenValidChecksIfTheGivenTokenIsExistingInTheContext()
     {
         $existingTokens = ['csrfToken12345' => true];
-        $this->mockSessionDataContainer->expects($this->any())->method('getCsrfProtectionTokens')->willReturn($existingTokens);
+        $this->mockSessionDataContainer->method('getCsrfProtectionTokens')->willReturn($existingTokens);
 
         /** @var Context $securityContext */
         $this->securityContext->setRequest($this->mockActionRequest);
@@ -1014,7 +1009,7 @@ class ContextTest extends UnitTestCase
         $sessionDataContainer->setCsrfProtectionTokens($existingTokens);
 
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $mockObjectManager->expects($this->any())->method('get')->with(SessionDataContainer::class)->willReturn($sessionDataContainer);
+        $mockObjectManager->method('get')->with(SessionDataContainer::class)->willReturn($sessionDataContainer);
 
         /** @var Context $securityContext */
         $this->securityContext->setRequest($this->mockActionRequest);
@@ -1155,7 +1150,7 @@ class ContextTest extends UnitTestCase
         $securityContext = $this->getAccessibleMock(Context::class, ['initialize', 'canBeInitialized', 'getRoles']);
         $securityContext->expects($this->atLeastOnce())->method('canBeInitialized')->willReturn(true);
         $securityContext->expects($this->once())->method('initialize');
-        $securityContext->expects($this->any())->method('getRoles')->willReturn([]);
+        $securityContext->method('getRoles')->willReturn([]);
 
         $securityContext->getContextHash();
     }
@@ -1167,10 +1162,10 @@ class ContextTest extends UnitTestCase
     {
         /** @var Context|\PHPUnit\Framework\MockObject\MockObject $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['isInitialized', 'getRoles']);
-        $securityContext->expects($this->any())->method('isInitialized')->willReturn((true));
+        $securityContext->method('isInitialized')->willReturn((true));
 
-        $mockRole1 = $this->getMockBuilder(Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole2 = $this->getMockBuilder(Policy\Role::class)->disableOriginalConstructor()->getMock();
+        $mockRole1 = $this->createStub(Policy\Role::class);
+        $mockRole2 = $this->createStub(Policy\Role::class);
         $mockRoles = ['Acme.Role1' => $mockRole1, 'Acme.Role2' => $mockRole2];
         $securityContext->expects($this->atLeastOnce())->method('getRoles')->willReturn(($mockRoles));
 
@@ -1196,9 +1191,9 @@ class ContextTest extends UnitTestCase
     public function getSessionTagForAccountCreatesUniqueTagsPerAccount()
     {
         $account1 = $this->createMock(Account::class);
-        $account1->expects($this->any())->method('getAccountIdentifier')->willReturn('Account1');
+        $account1->method('getAccountIdentifier')->willReturn('Account1');
         $account2 = $this->createMock(Account::class);
-        $account2->expects($this->any())->method('getAccountIdentifier')->willReturn('Account2');
+        $account2->method('getAccountIdentifier')->willReturn('Account2');
 
         self::assertNotSame($this->securityContext->getSessionTagForAccount($account1), $this->securityContext->getSessionTagForAccount($account2));
     }
@@ -1209,7 +1204,7 @@ class ContextTest extends UnitTestCase
     public function destroySessionsForAccountWillDestroySessionsByAccountTag()
     {
         $account = $this->createMock(Account::class);
-        $account->expects($this->any())->method('getAccountIdentifier')->willReturn('Account');
+        $account->method('getAccountIdentifier')->willReturn('Account');
         $accountTag = $this->securityContext->getSessionTagForAccount($account);
 
         $mockSessionManager = $this->createMock(SessionManagerInterface::class);

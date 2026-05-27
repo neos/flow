@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the account
  */
-class AccountTest extends UnitTestCase
+final class AccountTest extends UnitTestCase
 {
     /**
      * @var Role
@@ -48,7 +51,7 @@ class AccountTest extends UnitTestCase
         $this->customerRole = $customerRole;
 
         $mockPolicyService = $this->createMock(PolicyService::class);
-        $mockPolicyService->expects($this->any())->method('getRole')->will(self::returnCallBack(function ($roleIdentifier) use ($administratorRole, $customerRole) {
+        $mockPolicyService->method('getRole')->willReturnCallback(function (string $roleIdentifier) use ($administratorRole, $customerRole) {
             switch ($roleIdentifier) {
                 case 'Neos.Flow:Administrator':
                     return $administratorRole;
@@ -57,8 +60,8 @@ class AccountTest extends UnitTestCase
                 default:
                     throw new NoSuchRoleException();
             }
-        }));
-        $mockPolicyService->expects($this->any())->method('hasRole')->will(self::returnCallBack(function ($roleIdentifier) use ($administratorRole, $customerRole) {
+        });
+        $mockPolicyService->method('hasRole')->willReturnCallback(function (string $roleIdentifier) use ($administratorRole, $customerRole): bool {
             switch ($roleIdentifier) {
                 case 'Neos.Flow:Administrator':
                 case 'Neos.Flow:Customer':
@@ -66,7 +69,7 @@ class AccountTest extends UnitTestCase
                 default:
                     return false;
             }
-        }));
+        });
 
         $this->account = $this->getAccessibleMock(Account::class, []);
         $this->account->_set('policyService', $mockPolicyService);

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the CldrModel
  */
-class CldrModelTest extends UnitTestCase
+final class CldrModelTest extends UnitTestCase
 {
     /**
      * @var I18n\Cldr\CldrModel
@@ -35,7 +38,7 @@ class CldrModelTest extends UnitTestCase
         $sampleParsedFile2 = require(__DIR__ . '/../Fixtures/MockParsedCldrFile2.php');
         $sampleParsedFile3 = require(__DIR__ . '/../Fixtures/MockParsedCldrFile3.php');
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $mockCache->expects($this->once())->method('has')->with(md5('foo;bar;baz'))->willReturn((false));
 
         $mockCldrParser = $this->createMock(I18n\Cldr\CldrParser::class);
@@ -77,7 +80,7 @@ class CldrModelTest extends UnitTestCase
     public function returnsRawArrayCorrectly()
     {
         $result = $this->model->getRawArray('dates/calendars/calendar[@type="gregorian"]/months/monthContext[@type="format"]/monthWidth[@type="abbreviated"]');
-        self::assertEquals(2, count($result));
+        self::assertCount(2, $result);
         self::assertEquals('jan', $result['month[@type="1"]']);
     }
 

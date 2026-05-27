@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  *
  * @covers \Neos\Flow\Property\TypeConverter\StringConverter<extended>
  */
-class StringConverterTest extends UnitTestCase
+final class StringConverterTest extends UnitTestCase
 {
     /**
      * @var \Neos\Flow\Property\TypeConverterInterface
@@ -90,14 +93,12 @@ class StringConverterTest extends UnitTestCase
     }
 
 
-    public static function arrayToStringDataProvider()
+    public static function arrayToStringDataProvider(): \Iterator
     {
-        return [
-            [['Foo', 'Bar', 'Baz'], 'Foo,Bar,Baz', []],
-            [['Foo', 'Bar', 'Baz'], 'Foo, Bar, Baz', [StringConverter::CONFIGURATION_CSV_DELIMITER => ', ']],
-            [[], '', []],
-            [[1,2, 'foo'], '[1,2,"foo"]', [StringConverter::CONFIGURATION_ARRAY_FORMAT => StringConverter::ARRAY_FORMAT_JSON]]
-        ];
+        yield [['Foo', 'Bar', 'Baz'], 'Foo,Bar,Baz', []];
+        yield [['Foo', 'Bar', 'Baz'], 'Foo, Bar, Baz', [StringConverter::CONFIGURATION_CSV_DELIMITER => ', ']];
+        yield [[], '', []];
+        yield [[1,2, 'foo'], '[1,2,"foo"]', [StringConverter::CONFIGURATION_ARRAY_FORMAT => StringConverter::ARRAY_FORMAT_JSON]];
     }
 
     /**
@@ -114,9 +115,8 @@ class StringConverterTest extends UnitTestCase
 
         $propertyMappingConfiguration = $this->createMock(PropertyMappingConfiguration::class);
         $propertyMappingConfiguration
-            ->expects($this->any())
             ->method('getConfigurationValue')
-            ->will($this->returnValueMap($configurationValueMap));
+            ->willReturnMap($configurationValueMap);
 
         self::assertEquals($expectedResult, $this->converter->convertFrom($source, 'array', [], $propertyMappingConfiguration));
     }

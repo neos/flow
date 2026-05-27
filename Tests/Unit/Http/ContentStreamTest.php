@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the Http ContentStream class
  */
-class ContentStreamTest extends UnitTestCase
+final class ContentStreamTest extends UnitTestCase
 {
     /**
      * @test

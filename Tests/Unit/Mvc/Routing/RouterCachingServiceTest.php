@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -32,7 +35,7 @@ use Psr\Log\LoggerInterface;
  * Testcase for the Router Caching Service
  *
  */
-class RouterCachingServiceTest extends UnitTestCase
+final class RouterCachingServiceTest extends UnitTestCase
 {
     /**
      * @var RouterCachingService
@@ -55,19 +58,9 @@ class RouterCachingServiceTest extends UnitTestCase
     protected $mockPersistenceManager;
 
     /**
-     * @var LoggerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockSystemLogger;
-
-    /**
      * @var ApplicationContext|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockApplicationContext;
-
-    /**
-     * @var ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockObjectManager;
 
     /**
      * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -86,29 +79,29 @@ class RouterCachingServiceTest extends UnitTestCase
     {
         $this->routerCachingService = $this->getAccessibleMock(RouterCachingService::class, []);
 
-        $this->mockRouteCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $this->mockRouteCache = $this->createMock(VariableFrontend::class);
         $this->inject($this->routerCachingService, 'routeCache', $this->mockRouteCache);
 
-        $this->mockResolveCache = $this->getMockBuilder(StringFrontend::class)->disableOriginalConstructor()->getMock();
+        $this->mockResolveCache = $this->createMock(StringFrontend::class);
         $this->inject($this->routerCachingService, 'resolveCache', $this->mockResolveCache);
 
-        $this->mockPersistenceManager  = $this->getMockBuilder(PersistenceManagerInterface::class)->getMock();
+        $this->mockPersistenceManager  = $this->createMock(PersistenceManagerInterface::class);
         $this->inject($this->routerCachingService, 'persistenceManager', $this->mockPersistenceManager);
 
-        $this->mockSystemLogger  = $this->getMockBuilder(LoggerInterface::class)->getMock();
-        $this->inject($this->routerCachingService, 'logger', $this->mockSystemLogger);
+        $mockSystemLogger  = $this->createMock(LoggerInterface::class);
+        $this->inject($this->routerCachingService, 'logger', $mockSystemLogger);
 
-        $this->mockObjectManager  = $this->createMock(ObjectManagerInterface::class);
-        $this->mockApplicationContext = $this->getMockBuilder(ApplicationContext::class)->disableOriginalConstructor()->getMock();
-        $this->mockObjectManager->expects($this->any())->method('getContext')->willReturn(($this->mockApplicationContext));
-        $this->inject($this->routerCachingService, 'objectManager', $this->mockObjectManager);
+        $mockObjectManager  = $this->createMock(ObjectManagerInterface::class);
+        $this->mockApplicationContext = $this->createMock(ApplicationContext::class);
+        $mockObjectManager->method('getContext')->willReturn(($this->mockApplicationContext));
+        $this->inject($this->routerCachingService, 'objectManager', $mockObjectManager);
 
-        $this->inject($this->routerCachingService, 'objectManager', $this->mockObjectManager);
+        $this->inject($this->routerCachingService, 'objectManager', $mockObjectManager);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
-        $this->mockHttpRequest->expects($this->any())->method('getMethod')->willReturn(('GET'));
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $this->mockHttpRequest->method('getMethod')->willReturn(('GET'));
         $this->mockUri = new Uri('http://subdomain.domain.com/some/route/path');
-        $this->mockHttpRequest->expects($this->any())->method('getUri')->willReturn(($this->mockUri));
+        $this->mockHttpRequest->method('getUri')->willReturn(($this->mockUri));
     }
 
     /**
@@ -182,18 +175,16 @@ class RouterCachingServiceTest extends UnitTestCase
     /**
      * Data provider for containsObjectDetectsObjectsInVariousSituations()
      */
-    public static function containsObjectDetectsObjectsInVariousSituationsDataProvider()
+    public static function containsObjectDetectsObjectsInVariousSituationsDataProvider(): \Iterator
     {
         $object = new \stdClass();
-        return [
-            [true, $object],
-            [true, ['foo' => $object]],
-            [true, ['foo' => 'bar', 'baz' => $object]],
-            [true, ['foo' => ['bar' => ['baz' => 'quux', 'here' => $object]]]],
-            [false, 'no object'],
-            [false, ['foo' => 'no object']],
-            [false, true]
-        ];
+        yield [true, $object];
+        yield [true, ['foo' => $object]];
+        yield [true, ['foo' => 'bar', 'baz' => $object]];
+        yield [true, ['foo' => ['bar' => ['baz' => 'quux', 'here' => $object]]]];
+        yield [false, 'no object'];
+        yield [false, ['foo' => 'no object']];
+        yield [false, true];
     }
 
     /**

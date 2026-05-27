@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the ArrayFromObject converter
  *
  */
-class ArrayFromObjectConverterTest extends UnitTestCase
+final class ArrayFromObjectConverterTest extends UnitTestCase
 {
     /**
      * @var ArrayFromObjectConverter
@@ -51,13 +54,11 @@ class ArrayFromObjectConverterTest extends UnitTestCase
         self::assertEquals(['second' => new \stdClass()], $this->converter->getSourceChildPropertiesToBeConverted($source));
     }
 
-    public static function objectToArrayDataProvider()
+    public static function objectToArrayDataProvider(): \Iterator
     {
-        return [
-            [['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'], ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass']],
-            [['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz']], ['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass'], '__type' => 'stdClass']],
-            [new \stdClass(), ['__type' => 'stdClass']]
-        ];
+        yield [['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'], ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass']];
+        yield [['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz']], ['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass'], '__type' => 'stdClass']];
+        yield [new \stdClass(), ['__type' => 'stdClass']];
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
@@ -27,17 +30,12 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the privilege manager
  *
  */
-class PrivilegeManagerTest extends UnitTestCase
+final class PrivilegeManagerTest extends UnitTestCase
 {
     /**
      * @var Context|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $mockSecurityContext;
-
-    /**
-     * @var ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockObjectManager;
 
     /**
      * @var JoinPointInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -69,32 +67,32 @@ class PrivilegeManagerTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->mockSecurityContext = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
-        $this->mockObjectManager = $this->getMockBuilder(ObjectManagerInterface::class)->getMock();
-        $this->mockJoinPoint = $this->getMockBuilder(JoinPoint::class)->disableOriginalConstructor()->getMock();
+        $this->mockSecurityContext = $this->createMock(Context::class);
+        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $this->mockJoinPoint = $this->createMock(JoinPoint::class);
 
-        $this->privilegeManager = new PrivilegeManager($this->mockObjectManager, $this->mockSecurityContext);
+        $this->privilegeManager = new PrivilegeManager($mockObjectManager, $this->mockSecurityContext);
 
-        $this->grantPrivilege = $this->getMockBuilder(AbstractPrivilege::class)->disableOriginalConstructor()->getMock();
-        $this->grantPrivilege->expects($this->any())->method('getPermission')->willReturn((PrivilegeInterface::GRANT));
-        $this->grantPrivilege->expects($this->any())->method('matchesSubject')->willReturn((true));
-        $this->grantPrivilege->expects($this->any())->method('getParameters')->willReturn(([]));
-        $this->grantPrivilege->expects($this->any())->method('isGranted')->willReturn((true));
-        $this->grantPrivilege->expects($this->any())->method('isDenied')->willReturn((false));
+        $this->grantPrivilege = $this->createMock(AbstractPrivilege::class);
+        $this->grantPrivilege->method('getPermission')->willReturn((PrivilegeInterface::GRANT));
+        $this->grantPrivilege->method('matchesSubject')->willReturn((true));
+        $this->grantPrivilege->method('getParameters')->willReturn(([]));
+        $this->grantPrivilege->method('isGranted')->willReturn((true));
+        $this->grantPrivilege->method('isDenied')->willReturn((false));
 
-        $this->denyPrivilege = $this->getMockBuilder(AbstractPrivilege::class)->disableOriginalConstructor()->getMock();
-        $this->denyPrivilege->expects($this->any())->method('getPermission')->willReturn((PrivilegeInterface::DENY));
-        $this->denyPrivilege->expects($this->any())->method('matchesSubject')->willReturn((true));
-        $this->denyPrivilege->expects($this->any())->method('getParameters')->willReturn(([]));
-        $this->denyPrivilege->expects($this->any())->method('isGranted')->willReturn((false));
-        $this->denyPrivilege->expects($this->any())->method('isDenied')->willReturn((true));
+        $this->denyPrivilege = $this->createMock(AbstractPrivilege::class);
+        $this->denyPrivilege->method('getPermission')->willReturn((PrivilegeInterface::DENY));
+        $this->denyPrivilege->method('matchesSubject')->willReturn((true));
+        $this->denyPrivilege->method('getParameters')->willReturn(([]));
+        $this->denyPrivilege->method('isGranted')->willReturn((false));
+        $this->denyPrivilege->method('isDenied')->willReturn((true));
 
-        $this->abstainPrivilege = $this->getMockBuilder(AbstractPrivilege::class)->disableOriginalConstructor()->getMock();
-        $this->abstainPrivilege->expects($this->any())->method('getPermission')->willReturn((PrivilegeInterface::ABSTAIN));
-        $this->abstainPrivilege->expects($this->any())->method('matchesSubject')->willReturn((true));
-        $this->abstainPrivilege->expects($this->any())->method('getParameters')->willReturn(([]));
-        $this->abstainPrivilege->expects($this->any())->method('isGranted')->willReturn((false));
-        $this->abstainPrivilege->expects($this->any())->method('isDenied')->willReturn((false));
+        $this->abstainPrivilege = $this->createMock(AbstractPrivilege::class);
+        $this->abstainPrivilege->method('getPermission')->willReturn((PrivilegeInterface::ABSTAIN));
+        $this->abstainPrivilege->method('matchesSubject')->willReturn((true));
+        $this->abstainPrivilege->method('getParameters')->willReturn(([]));
+        $this->abstainPrivilege->method('isGranted')->willReturn((false));
+        $this->abstainPrivilege->method('isDenied')->willReturn((false));
     }
 
     /**
@@ -106,10 +104,10 @@ class PrivilegeManagerTest extends UnitTestCase
         $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
-        $mockRoleAdministrator->expects($this->any())->method('getPrivilegesByType')->willReturn(([]));
+        $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([]));
 
         $mockRoleCustomer = $this->createMock(Security\Policy\Role::class, [], [], $role2ClassName, false);
-        $mockRoleCustomer->expects($this->any())->method('getPrivilegesByType')->willReturn(([]));
+        $mockRoleCustomer->method('getPrivilegesByType')->willReturn(([]));
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
@@ -148,10 +146,10 @@ class PrivilegeManagerTest extends UnitTestCase
         $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
-        $mockRoleAdministrator->expects($this->any())->method('getPrivilegesByType')->willReturn(([$this->denyPrivilege]));
+        $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([$this->denyPrivilege]));
 
         $mockRoleCustomer = $this->createMock(Security\Policy\Role::class, [], [], $role2ClassName, false);
-        $mockRoleCustomer->expects($this->any())->method('getPrivilegesByType')->willReturn(([]));
+        $mockRoleCustomer->method('getPrivilegesByType')->willReturn(([]));
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
@@ -167,10 +165,10 @@ class PrivilegeManagerTest extends UnitTestCase
         $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
-        $mockRoleAdministrator->expects($this->any())->method('getPrivilegesByType')->willReturn(([$this->grantPrivilege]));
+        $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([$this->grantPrivilege]));
 
         $mockRoleCustomer = $this->createMock(Security\Policy\Role::class, [], [], $role2ClassName, false);
-        $mockRoleCustomer->expects($this->any())->method('getPrivilegesByType')->willReturn(([]));
+        $mockRoleCustomer->method('getPrivilegesByType')->willReturn(([]));
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
@@ -182,14 +180,14 @@ class PrivilegeManagerTest extends UnitTestCase
      */
     public function isPrivilegeTargetGrantedReturnsFalseIfOneVoterReturnsADenyVote()
     {
-        $mockRole1 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole1->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->grantPrivilege));
-        $mockRole2 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole2->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole3 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole3->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->denyPrivilege));
+        $mockRole1 = $this->createMock(Security\Policy\Role::class);
+        $mockRole1->method('getPrivilegeForTarget')->willReturn(($this->grantPrivilege));
+        $mockRole2 = $this->createMock(Security\Policy\Role::class);
+        $mockRole2->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole3 = $this->createMock(Security\Policy\Role::class);
+        $mockRole3->method('getPrivilegeForTarget')->willReturn(($this->denyPrivilege));
 
-        $this->mockSecurityContext->expects($this->any())->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
+        $this->mockSecurityContext->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
 
         self::assertFalse($this->privilegeManager->isPrivilegeTargetGranted('somePrivilegeTargetIdentifier'));
     }
@@ -199,14 +197,14 @@ class PrivilegeManagerTest extends UnitTestCase
      */
     public function isPrivilegeTargetGrantedReturnsFalseIfAllVotersAbstainAndAllowAccessIfAllVotersAbstainIsFalse()
     {
-        $mockRole1 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole1->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole2 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole2->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole3 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole3->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole1 = $this->createMock(Security\Policy\Role::class);
+        $mockRole1->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole2 = $this->createMock(Security\Policy\Role::class);
+        $mockRole2->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole3 = $this->createMock(Security\Policy\Role::class);
+        $mockRole3->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
 
-        $this->mockSecurityContext->expects($this->any())->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
+        $this->mockSecurityContext->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
 
         self::assertFalse($this->privilegeManager->isPrivilegeTargetGranted('somePrivilegeTargetIdentifier'));
     }
@@ -218,14 +216,14 @@ class PrivilegeManagerTest extends UnitTestCase
     {
         $this->inject($this->privilegeManager, 'allowAccessIfAllAbstain', true);
 
-        $mockRole1 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole1->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole2 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole2->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole3 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole3->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole1 = $this->createMock(Security\Policy\Role::class);
+        $mockRole1->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole2 = $this->createMock(Security\Policy\Role::class);
+        $mockRole2->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole3 = $this->createMock(Security\Policy\Role::class);
+        $mockRole3->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
 
-        $this->mockSecurityContext->expects($this->any())->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
+        $this->mockSecurityContext->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
 
         self::assertTrue($this->privilegeManager->isPrivilegeTargetGranted('somePrivilegeTargetIdentifier'));
     }
@@ -235,14 +233,14 @@ class PrivilegeManagerTest extends UnitTestCase
      */
     public function isPrivilegeTargetGrantedReturnsTrueIfThereIsNoDenyVoteAndOneGrantVote()
     {
-        $mockRole1 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole1->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
-        $mockRole2 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole2->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->grantPrivilege));
-        $mockRole3 = $this->getMockBuilder(Security\Policy\Role::class)->disableOriginalConstructor()->getMock();
-        $mockRole3->expects($this->any())->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole1 = $this->createMock(Security\Policy\Role::class);
+        $mockRole1->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
+        $mockRole2 = $this->createMock(Security\Policy\Role::class);
+        $mockRole2->method('getPrivilegeForTarget')->willReturn(($this->grantPrivilege));
+        $mockRole3 = $this->createMock(Security\Policy\Role::class);
+        $mockRole3->method('getPrivilegeForTarget')->willReturn(($this->abstainPrivilege));
 
-        $this->mockSecurityContext->expects($this->any())->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
+        $this->mockSecurityContext->method('getRoles')->willReturn(([$mockRole1, $mockRole2, $mockRole3]));
 
         self::assertTrue($this->privilegeManager->isPrivilegeTargetGranted('somePrivilegeTargetIdentifier'));
     }

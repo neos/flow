@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\SignalSlot;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Test suite for Signal Slot
  *
  */
-class SignalSlotTest extends FunctionalTestCase
+final class SignalSlotTest extends FunctionalTestCase
 {
     /**
      * @test

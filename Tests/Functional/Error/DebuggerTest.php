@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Error;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Utility\Arrays;
 /**
  * Functional tests for the Debugger
  */
-class DebuggerTest extends FunctionalTestCase
+final class DebuggerTest extends FunctionalTestCase
 {
     /**
      * @var ConfigurationManager
@@ -43,7 +46,7 @@ class DebuggerTest extends FunctionalTestCase
     public function ignoredClassesCanBeOverwrittenBySettings()
     {
         $object = new ApplicationContext('Development');
-        self::assertEquals(sprintf('%s prototype object', ApplicationContext::class), Debugger::renderDump($object, 0, true));
+        self::assertSame(sprintf('%s prototype object', ApplicationContext::class), Debugger::renderDump($object, 0, true));
         Debugger::clearState();
 
         $currentConfiguration = ObjectAccess::getProperty($this->configurationManager, 'configurations', true);

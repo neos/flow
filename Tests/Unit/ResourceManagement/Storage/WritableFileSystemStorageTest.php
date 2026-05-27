@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Storage;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Utility\Files;
 /**
  * Test case for the WritableFileSystemStorage class
  */
-class WritableFileSystemStorageTest extends UnitTestCase
+final class WritableFileSystemStorageTest extends UnitTestCase
 {
     /**
      * @var WritableFileSystemStorage|\PHPUnit\Framework\MockObject\MockObject
@@ -33,20 +36,15 @@ class WritableFileSystemStorageTest extends UnitTestCase
      */
     protected $mockDirectory;
 
-    /**
-     * @var Environment|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockEnvironment;
-
     protected function setUp(): void
     {
         $this->mockDirectory = vfsStream::setup('WritableFileSystemStorageTest');
 
         $this->writableFileSystemStorage = $this->getAccessibleMock(WritableFileSystemStorage::class, null, ['testStorage', ['path' => 'vfs://WritableFileSystemStorageTest/']]);
 
-        $this->mockEnvironment = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
-        $this->mockEnvironment->expects($this->any())->method('getPathToTemporaryDirectory')->willReturn(('vfs://WritableFileSystemStorageTest/'));
-        $this->inject($this->writableFileSystemStorage, 'environment', $this->mockEnvironment);
+        $mockEnvironment = $this->createMock(Environment::class);
+        $mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://WritableFileSystemStorageTest/'));
+        $this->inject($this->writableFileSystemStorage, 'environment', $mockEnvironment);
     }
 
     /**

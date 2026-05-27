@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session\Aspect;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the SessionObjectMethodsPointcutFilter
  */
-class SessionObjectMethodsPointcutFilterTest extends UnitTestCase
+final class SessionObjectMethodsPointcutFilterTest extends UnitTestCase
 {
     /**
      * @test
@@ -37,8 +40,8 @@ class SessionObjectMethodsPointcutFilterTest extends UnitTestCase
         $availableClassNamesIndex = new ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
-        $mockCompileTimeObjectManager = $this->getMockBuilder(CompileTimeObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockCompileTimeObjectManager->expects($this->any())->method('getClassNamesByScope')->with(Configuration::SCOPE_SESSION)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
+        $mockCompileTimeObjectManager = $this->createMock(CompileTimeObjectManager::class);
+        $mockCompileTimeObjectManager->method('getClassNamesByScope')->with(Configuration::SCOPE_SESSION)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
 
         $sessionObjectMethodsPointcutFilter = new SessionObjectMethodsPointcutFilter();
         $sessionObjectMethodsPointcutFilter->injectObjectManager($mockCompileTimeObjectManager);

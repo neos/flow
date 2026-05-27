@@ -21,7 +21,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for proxy initialization within doctrine lazy loading
  */
-class LazyLoadingTest extends FunctionalTestCase
+final class LazyLoadingTest extends FunctionalTestCase
 {
     /**
      * @var bool

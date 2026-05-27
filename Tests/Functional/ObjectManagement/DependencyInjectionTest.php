@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -26,7 +29,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Dependency Injection features
  */
-class DependencyInjectionTest extends FunctionalTestCase
+final class DependencyInjectionTest extends FunctionalTestCase
 {
     protected ConfigurationManager $configurationManager;
     protected CacheManager $cacheManager;

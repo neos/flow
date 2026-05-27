@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http\Middleware;
 
 /*
@@ -23,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Test case for the SessionMiddleware
  */
-class SessionMiddlewareTest extends UnitTestCase
+final class SessionMiddlewareTest extends UnitTestCase
 {
     /**
      * @var SessionMiddleware
@@ -60,12 +63,12 @@ class SessionMiddlewareTest extends UnitTestCase
     {
         $this->sessionMiddleware = new SessionMiddleware();
 
-        $this->mockSessionManager = $this->getMockBuilder(SessionManager::class)->disableOriginalConstructor()->getMock();
-        $this->mockSessionManager->method('getCurrentSession')->willReturn($this->getMockBuilder(SessionInterface::class)->getMock());
+        $this->mockSessionManager = $this->createMock(SessionManager::class);
+        $this->mockSessionManager->method('getCurrentSession')->willReturn($this->createMock(SessionInterface::class));
         $this->inject($this->sessionMiddleware, 'sessionManager', $this->mockSessionManager);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
-        $this->mockHttpRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
+        $this->mockHttpRequestHandler = $this->createMock(RequestHandlerInterface::class);
 
 
         $this->inject($this->sessionMiddleware, 'sessionSettings', [
@@ -137,19 +140,17 @@ class SessionMiddlewareTest extends UnitTestCase
         $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
     }
 
-    public static function sessionCookieSettingsProvider(): array
+    public static function sessionCookieSettingsProvider(): \Iterator
     {
-        return [
-            ['sessionCookieSettings' => [], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'],
-            ['sessionCookieSettings' => ['lifetime' => 123], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Max-Age=123; Path=/; HttpOnly; SameSite=lax'],
-            ['sessionCookieSettings' => ['path' => '/some/path'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/some/path; HttpOnly; SameSite=lax'],
-            ['sessionCookieSettings' => ['secure' => true], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; Secure; HttpOnly; SameSite=lax'],
-            ['sessionCookieSettings' => ['httponly' => false], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; SameSite=lax'],
-            ['sessionCookieSettings' => ['domain' => 'neos.io'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Domain=neos.io; Path=/; HttpOnly; SameSite=lax'],
-            ['sessionCookieSettings' => ['samesite' => 'none'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; Secure; HttpOnly; SameSite=none'],
-            ['sessionCookieSettings' => ['samesite' => 'strict'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=strict'],
-            ['sessionCookieSettings' => ['samesite' => 'lax'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'],
-        ];
+        yield ['sessionCookieSettings' => [], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['lifetime' => 123], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Max-Age=123; Path=/; HttpOnly; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['path' => '/some/path'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/some/path; HttpOnly; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['secure' => true], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; Secure; HttpOnly; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['httponly' => false], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['domain' => 'neos.io'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Domain=neos.io; Path=/; HttpOnly; SameSite=lax'];
+        yield ['sessionCookieSettings' => ['samesite' => 'none'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; Secure; HttpOnly; SameSite=none'];
+        yield ['sessionCookieSettings' => ['samesite' => 'strict'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=strict'];
+        yield ['sessionCookieSettings' => ['samesite' => 'lax'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'];
     }
 
     /**
@@ -172,25 +173,22 @@ class SessionMiddlewareTest extends UnitTestCase
         $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
     }
 
-    public static function cookieValueDataProvider(): array
+    public static function cookieValueDataProvider(): \Iterator
     {
-        return [
-            ['sessionCookieValue' => 123, 'expectedNewCookieValue' => '123'],
-            ['sessionCookieValue' => '', 'expectedNewCookieValue' => ''],
-            ['sessionCookieValue' => 'some String', 'expectedNewCookieValue' => 'some String'],
-            ['sessionCookieValue' => '"leading quote', 'expectedNewCookieValue' => 'leading quote'],
-            ['sessionCookieValue' => 'trailing quote"', 'expectedNewCookieValue' => 'trailing quote'],
-            ['sessionCookieValue' => '"quotes"', 'expectedNewCookieValue' => 'quotes'],
-            ['sessionCookieValue' => '""double quotes"', 'expectedNewCookieValue' => 'double quotes'],
-            ['sessionCookieValue' => '%22encoded quotes%22', 'expectedNewCookieValue' => 'encoded quotes'],
-
-            // Note: The following test cases merely document the status quo.
-            // The cookie values are valid according to https://tools.ietf.org/html/rfc6265#section-4.1.1 but we might want to tweak the behavior in the future
-            ['sessionCookieValue' => '   whitespace   ', 'expectedNewCookieValue' => '   whitespace   '],
-            ['sessionCookieValue' => "\t" . 'tabs' . "\t", 'expectedNewCookieValue' => '	tabs	'],
-            ['sessionCookieValue' => 'semicolon;', 'expectedNewCookieValue' => 'semicolon;'],
-            ['sessionCookieValue' => '%C3%BCrl%20encoded', 'expectedNewCookieValue' => 'ürl encoded'],
-        ];
+        yield ['sessionCookieValue' => 123, 'expectedNewCookieValue' => '123'];
+        yield ['sessionCookieValue' => '', 'expectedNewCookieValue' => ''];
+        yield ['sessionCookieValue' => 'some String', 'expectedNewCookieValue' => 'some String'];
+        yield ['sessionCookieValue' => '"leading quote', 'expectedNewCookieValue' => 'leading quote'];
+        yield ['sessionCookieValue' => 'trailing quote"', 'expectedNewCookieValue' => 'trailing quote'];
+        yield ['sessionCookieValue' => '"quotes"', 'expectedNewCookieValue' => 'quotes'];
+        yield ['sessionCookieValue' => '""double quotes"', 'expectedNewCookieValue' => 'double quotes'];
+        yield ['sessionCookieValue' => '%22encoded quotes%22', 'expectedNewCookieValue' => 'encoded quotes'];
+        // Note: The following test cases merely document the status quo.
+        // The cookie values are valid according to https://tools.ietf.org/html/rfc6265#section-4.1.1 but we might want to tweak the behavior in the future
+        yield ['sessionCookieValue' => '   whitespace   ', 'expectedNewCookieValue' => '   whitespace   '];
+        yield ['sessionCookieValue' => "\t" . 'tabs' . "\t", 'expectedNewCookieValue' => '	tabs	'];
+        yield ['sessionCookieValue' => 'semicolon;', 'expectedNewCookieValue' => 'semicolon;'];
+        yield ['sessionCookieValue' => '%C3%BCrl%20encoded', 'expectedNewCookieValue' => 'ürl encoded'];
     }
 
     /**

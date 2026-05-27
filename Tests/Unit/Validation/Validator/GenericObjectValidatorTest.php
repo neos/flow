@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -22,7 +25,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the Generic Object Validator
  *
  */
-class GenericObjectValidatorTest extends AbstractValidatorTestcase
+final class GenericObjectValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = GenericObjectValidator::class;
 
@@ -143,7 +146,7 @@ class GenericObjectValidatorTest extends AbstractValidatorTestcase
         $result = new Error\Result();
         $result->addError($error);
         $mockUuidValidator = $this->createMock(ValidatorInterface::class);
-        $mockUuidValidator->expects($this->any())->method('validate')->with(0xF)->willReturn(($result));
+        $mockUuidValidator->method('validate')->with(0xF)->willReturn(($result));
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 
         self::assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
@@ -173,7 +176,7 @@ class GenericObjectValidatorTest extends AbstractValidatorTestcase
         $result1 = new Error\Result();
         $result1->addError($error1);
         $mockUuidValidator = $this->createMock(ValidatorInterface::class);
-        $mockUuidValidator->expects($this->any())->method('validate')->with(0xF)->willReturn(($result1));
+        $mockUuidValidator->method('validate')->with(0xF)->willReturn(($result1));
         $aValidator->addPropertyValidator('uuid', $mockUuidValidator);
         $bValidator->addPropertyValidator('uuid', $mockUuidValidator);
 

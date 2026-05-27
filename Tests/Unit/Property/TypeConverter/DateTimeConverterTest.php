@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Error\Messages\Error as FlowError;
  *
  * @covers \Neos\Flow\Property\TypeConverter\DateTimeConverter<extended>
  */
-class DateTimeConverterTest extends UnitTestCase
+final class DateTimeConverterTest extends UnitTestCase
 {
     /**
      * @var DateTimeConverter
@@ -138,21 +141,19 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromStringTests()
      */
-    public static function convertFromStringDataProvider()
+    public static function convertFromStringDataProvider(): \Iterator
     {
-        return [
-            ['1308174051', '', false],
-            ['13-12-1980', 'd.m.Y', false],
-            ['1308174051', 'Y-m-d', false],
-            ['12:13', 'H:i', true],
-            ['13.12.1980', 'd.m.Y', true],
-            ['2005-08-15T15:52:01+00:00', null, true],
-            ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true],
-            ['1308174051', 'U', true],
-        ];
+        yield ['1308174051', '', false];
+        yield ['13-12-1980', 'd.m.Y', false];
+        yield ['1308174051', 'Y-m-d', false];
+        yield ['12:13', 'H:i', true];
+        yield ['13.12.1980', 'd.m.Y', true];
+        yield ['2005-08-15T15:52:01+00:00', null, true];
+        yield ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true];
+        yield ['1308174051', 'U', true];
     }
 
     /**
@@ -188,16 +189,14 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public static function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider(): \Iterator
     {
-        return [
-            ['1308174051'],
-            [1308174051],
-        ];
+        yield ['1308174051'];
+        yield [1308174051];
     }
 
     /**
@@ -213,16 +212,14 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public static function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider(): \Iterator
     {
-        return [
-            ['1308174051'],
-            [1308174051],
-        ];
+        yield ['1308174051'];
+        yield [1308174051];
     }
 
     /**
@@ -296,19 +293,17 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified
      */
-    public static function invalidDatePartKeyValuesDataProvider()
+    public static function invalidDatePartKeyValuesDataProvider(): \Iterator
     {
-        return [
-            [['day' => '13.0', 'month' => '10', 'year' => '2010']],
-            [['day' => '13', 'month' => '10.0', 'year' => '2010']],
-            [['day' => '13', 'month' => '10', 'year' => '2010.0']],
-            [['day' => '-13', 'month' => '10', 'year' => '2010']],
-            [['day' => '13', 'month' => '-10', 'year' => '2010']],
-            [['day' => '13', 'month' => '10', 'year' => '-2010']],
-        ];
+        yield [['day' => '13.0', 'month' => '10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10.0', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10', 'year' => '2010.0']];
+        yield [['day' => '-13', 'month' => '10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '-10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10', 'year' => '-2010']];
     }
 
     /**
@@ -445,23 +440,21 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromArrayTests()
      */
-    public static function convertFromArrayDataProvider()
+    public static function convertFromArrayDataProvider(): \Iterator
     {
-        return [
-            [['date' => '2005-08-15T15:52:01+01:00'], true],
-            [['date' => '1308174051', 'dateFormat' => ''], true],
-            [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false],
-            [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false],
-            [['date' => '12:13', 'dateFormat' => 'H:i'], true],
-            [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true],
-            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true],
-            [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true],
-            [['date' => '1308174051', 'dateFormat' => 'U'], true],
-            [['date' => 1308174051, 'dateFormat' => 'U'], true],
-        ];
+        yield [['date' => '2005-08-15T15:52:01+01:00'], true];
+        yield [['date' => '1308174051', 'dateFormat' => ''], true];
+        yield [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false];
+        yield [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false];
+        yield [['date' => '12:13', 'dateFormat' => 'H:i'], true];
+        yield [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true];
+        yield [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true];
+        yield [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true];
+        yield [['date' => '1308174051', 'dateFormat' => 'U'], true];
+        yield [['date' => 1308174051, 'dateFormat' => 'U'], true];
     }
 
     /**

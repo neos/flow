@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the CurrencyReader
  */
-class CurrencyReaderTest extends UnitTestCase
+final class CurrencyReaderTest extends UnitTestCase
 {
     /**
      * @var CurrencyReader
@@ -45,7 +48,7 @@ class CurrencyReaderTest extends UnitTestCase
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModel')->with('supplemental/supplementalData')->willReturn(($mockModel));
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $mockCache->expects($this->atLeastOnce())->method('has')->with('fractions')->willReturn(false);
         $mockCache->expects($this->atLeastOnce())->method('set')->with('fractions');
 
@@ -58,15 +61,13 @@ class CurrencyReaderTest extends UnitTestCase
     /**
      * Data provider for returnsCorrectPluralForm
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function fractions()
+    public static function fractions(): \Iterator
     {
-        return [
-            ['ADP', 0, 0],
-            ['CHF', 2, 5],
-            ['EUR', 2, 0]
-        ];
+        yield ['ADP', 0, 0];
+        yield ['CHF', 2, 5];
+        yield ['EUR', 2, 0];
     }
 
     /**

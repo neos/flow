@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -20,17 +23,12 @@ use Symfony\Component\Console\Exception\RuntimeException;
 /**
  * Test cases for CLI console output helpers
  */
-class ConsoleOutputTest extends UnitTestCase
+final class ConsoleOutputTest extends UnitTestCase
 {
     /**
      * @var ConsoleOutput
      */
     private $consoleOutput;
-
-    /**
-     * @var StreamOutput
-     */
-    private $output;
 
     /**
      * @var ArrayInput
@@ -45,10 +43,10 @@ class ConsoleOutputTest extends UnitTestCase
         $this->input = new ArrayInput([]);
         $this->answerNothing();
 
-        $this->output = new StreamOutput(fopen('php://memory', 'r+'));
+        $output = new StreamOutput(fopen('php://memory', 'r+'));
 
         $this->consoleOutput = new ConsoleOutput();
-        $this->consoleOutput->setOutput($this->output);
+        $this->consoleOutput->setOutput($output);
         $this->consoleOutput->setInput($this->input);
     }
 
@@ -103,7 +101,7 @@ class ConsoleOutputTest extends UnitTestCase
         $this->answerNo();
         $userAnswer = $this->consoleOutput->askConfirmation('Is this a test?');
 
-        self::assertSame(false, $userAnswer);
+        self::assertFalse($userAnswer);
     }
 
     /**
@@ -114,7 +112,7 @@ class ConsoleOutputTest extends UnitTestCase
         $this->answerYes();
         $userAnswer = $this->consoleOutput->askConfirmation('Are you lying?');
 
-        self::assertSame(true, $userAnswer);
+        self::assertTrue($userAnswer);
     }
 
     /**
@@ -144,7 +142,7 @@ class ConsoleOutputTest extends UnitTestCase
      */
     public function askAndValidateWillReturnAnswerIfValidationSuccessful()
     {
-        $this->answerCustom(5);
+        $this->answerCustom('5');
         $validator = function ($answer) {
             if ($answer > 4) {
                 return $answer;
@@ -165,7 +163,7 @@ class ConsoleOutputTest extends UnitTestCase
     {
         $this->expectException('RuntimeException');
 
-        $this->answerCustom(5);
+        $this->answerCustom('5');
         $validator = function ($answer) {
             if ($answer > 6) {
                 return $answer;
@@ -240,7 +238,7 @@ class ConsoleOutputTest extends UnitTestCase
      */
     public function selectWithIntegerTypeChoiceKeys()
     {
-        $this->answerCustom(2);
+        $this->answerCustom('2');
         $choices = [
             1 => 'No',
             2 => 'Yes'

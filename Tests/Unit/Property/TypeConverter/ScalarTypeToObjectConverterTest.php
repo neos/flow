@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -29,7 +32,7 @@ use Neos\Flow\Annotations as Flow;
  *
  * @covers \Neos\Flow\Property\TypeConverter\ScalarTypeToObjectConverter<extended>
  */
-class ScalarTypeToObjectConverterTest extends UnitTestCase
+final class ScalarTypeToObjectConverterTest extends UnitTestCase
 {
     /**
      * @var ReflectionService
@@ -41,7 +44,7 @@ class ScalarTypeToObjectConverterTest extends UnitTestCase
         parent::setUp();
 
         $this->reflectionMock = $this->createMock(ReflectionService::class);
-        $this->reflectionMock->expects($this->any())
+        $this->reflectionMock
             ->method('isClassAnnotatedWith')
             ->willReturn(false);
     }
@@ -73,7 +76,7 @@ class ScalarTypeToObjectConverterTest extends UnitTestCase
     {
         $converter = new ScalarTypeToObjectConverter();
         $valueObject = $converter->convertFrom(true, ClassWithBoolConstructor::class);
-        self::assertSame(true, $valueObject->value);
+        self::assertTrue($valueObject->value);
     }
 
     /**

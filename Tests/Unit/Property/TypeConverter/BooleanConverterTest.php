@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Boolean converter
  */
-class BooleanConverterTest extends UnitTestCase
+final class BooleanConverterTest extends UnitTestCase
 {
     /**
      * @var BooleanConverter
@@ -66,28 +69,26 @@ class BooleanConverterTest extends UnitTestCase
         self::assertTrue($this->converter->convertFrom($source, 'boolean'));
     }
 
-    public static function convertFromDataProvider()
+    public static function convertFromDataProvider(): \Iterator
     {
-        return [
-            ['', false],
-            ['0', false],
-            ['1', true],
-            ['false', false],
-            ['true', true],
-            ['some string', true],
-            ['FaLsE', false],
-            ['tRuE', true],
-            ['tRuE', true],
-            ['off', false],
-            ['N', false],
-            ['no', false],
-            ['not no', true],
-            [true, true],
-            [false, false],
-            [1, true],
-            [0, false],
-            [1.0, true],
-        ];
+        yield ['', false];
+        yield ['0', false];
+        yield ['1', true];
+        yield ['false', false];
+        yield ['true', true];
+        yield ['some string', true];
+        yield ['FaLsE', false];
+        yield ['tRuE', true];
+        yield ['tRuE', true];
+        yield ['off', false];
+        yield ['N', false];
+        yield ['no', false];
+        yield ['not no', true];
+        yield [true, true];
+        yield [false, false];
+        yield [1, true];
+        yield [0, false];
+        yield [1.0, true];
     }
 
     /**

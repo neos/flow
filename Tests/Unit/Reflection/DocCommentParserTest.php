@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for DocCommentParser
  */
-class DocCommentParserTest extends UnitTestCase
+final class DocCommentParserTest extends UnitTestCase
 {
     /**
      * @test

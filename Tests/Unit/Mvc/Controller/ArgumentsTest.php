@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC Controller Arguments
  */
-class ArgumentsTest extends UnitTestCase
+final class ArgumentsTest extends UnitTestCase
 {
     /**
      * @test
@@ -92,9 +95,9 @@ class ArgumentsTest extends UnitTestCase
     public function issetReturnsCorrectResult()
     {
         $arguments = new Arguments();
-        self::assertFalse(isset($arguments['someArgument']), 'isset() did not return false.');
+        self::assertArrayNotHasKey('someArgument', $arguments, 'isset() did not return false.');
         $arguments->addNewArgument('someArgument');
-        self::assertTrue(isset($arguments['someArgument']), 'isset() did not return true.');
+        self::assertArrayHasKey('someArgument', $arguments, 'isset() did not return true.');
     }
 
     /**

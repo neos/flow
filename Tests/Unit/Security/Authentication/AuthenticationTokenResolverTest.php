@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the security token resolver
  */
-class AuthenticationTokenResolverTest extends UnitTestCase
+final class AuthenticationTokenResolverTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,8 +30,8 @@ class AuthenticationTokenResolverTest extends UnitTestCase
     public function resolveTokenObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
         $this->expectException(NoAuthenticationTokenFoundException::class);
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->willReturn((false));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturn((false));
 
         $providerResolver = new AuthenticationTokenResolver($mockObjectManager);
 
@@ -52,13 +55,13 @@ class AuthenticationTokenResolverTest extends UnitTestCase
             return false;
         };
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will(self::returnCallBack($getCaseSensitiveObjectNameCallback));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturnCallback($getCaseSensitiveObjectNameCallback);
 
         $providerResolver = new AuthenticationTokenResolver($mockObjectManager);
         $providerClass = $providerResolver->resolveTokenClass('ValidShortName');
 
-        self::assertEquals($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
+        self::assertSame($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
     }
 
     /**
@@ -66,12 +69,12 @@ class AuthenticationTokenResolverTest extends UnitTestCase
      */
     public function resolveTokenReturnsTheCorrectTokenForACompleteClassName()
     {
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->with('existingTokenClass')->willReturn(('existingTokenClass'));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->with('existingTokenClass')->willReturn(('existingTokenClass'));
 
         $providerResolver = new AuthenticationTokenResolver($mockObjectManager);
         $providerClass = $providerResolver->resolveTokenClass('existingTokenClass');
 
-        self::assertEquals('existingTokenClass', $providerClass, 'The wrong classname has been resolved');
+        self::assertSame('existingTokenClass', $providerClass, 'The wrong classname has been resolved');
     }
 }

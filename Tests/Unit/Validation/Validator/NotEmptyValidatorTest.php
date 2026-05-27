@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the not empty validator
  *
  */
-class NotEmptyValidatorTest extends AbstractValidatorTestcase
+final class NotEmptyValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = NotEmptyValidator::class;
 
@@ -68,7 +71,7 @@ class NotEmptyValidatorTest extends AbstractValidatorTestcase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject()
     {
-        self::assertEquals(1, count($this->validator->validate('')->getErrors()));
+        self::assertCount(1, $this->validator->validate('')->getErrors());
     }
 
     /**
@@ -76,6 +79,6 @@ class NotEmptyValidatorTest extends AbstractValidatorTestcase
      */
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue()
     {
-        self::assertEquals(1, count($this->validator->validate(null)->getErrors()));
+        self::assertCount(1, $this->validator->validate(null)->getErrors());
     }
 }

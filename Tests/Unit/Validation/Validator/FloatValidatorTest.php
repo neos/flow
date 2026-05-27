@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the float validator
  *
  */
-class FloatValidatorTest extends AbstractValidatorTestcase
+final class FloatValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = FloatValidator::class;
 
@@ -42,18 +45,16 @@ class FloatValidatorTest extends AbstractValidatorTestcase
     /**
      * Data provider with valid floats
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function validFloats()
+    public static function validFloats(): \Iterator
     {
-        return [
-            [1029437.234726],
-            ['123.45'],
-            ['+123.45'],
-            ['-123.45'],
-            ['123.45e3'],
-            [123.45e3]
-        ];
+        yield [1029437.234726];
+        yield ['123.45'];
+        yield ['+123.45'];
+        yield ['-123.45'];
+        yield ['123.45e3'];
+        yield [123.45e3];
     }
 
     /**
@@ -68,16 +69,14 @@ class FloatValidatorTest extends AbstractValidatorTestcase
     /**
      * Data provider with invalid floats
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function invalidFloats()
+    public static function invalidFloats(): \Iterator
     {
-        return [
-            [1029437],
-            ['1029437'],
-            ['foo.bar'],
-            ['not a number']
-        ];
+        yield [1029437];
+        yield ['1029437'];
+        yield ['foo.bar'];
+        yield ['not a number'];
     }
 
     /**
@@ -94,6 +93,6 @@ class FloatValidatorTest extends AbstractValidatorTestcase
      */
     public function floatValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
-        self::assertEquals(1, count($this->validator->validate(123456)->getErrors()));
+        self::assertCount(1, $this->validator->validate(123456)->getErrors());
     }
 }

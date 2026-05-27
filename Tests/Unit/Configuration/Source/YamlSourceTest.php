@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Configuration\Source;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the YAML configuration source
  *
  */
-class YamlSourceTest extends UnitTestCase
+final class YamlSourceTest extends UnitTestCase
 {
     /**
      * Sets up this test case
@@ -38,7 +41,7 @@ class YamlSourceTest extends UnitTestCase
     {
         $configurationSource = new YamlSource();
         $configuration = $configurationSource->load('/ThisFileDoesNotExist');
-        self::assertEquals([], $configuration, 'No empty array was returned.');
+        self::assertSame([], $configuration, 'No empty array was returned.');
     }
 
     /**
@@ -68,7 +71,7 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, $mockConfiguration);
 
         $yaml = 'configurationFileHasBeenLoaded: true' . chr(10) . 'foo:' . chr(10) . '  bar: Baz' . chr(10);
-        self::assertStringContainsString($yaml, file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
+        self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
     /**
@@ -87,7 +90,7 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, $mockConfiguration);
 
         $yaml = 'configurationFileHasBeenLoaded: true' . chr(10) . 'foo:' . chr(10) . '  \'Foo.Bar:Baz\': \'a quoted key\'' . chr(10);
-        self::assertStringContainsString($yaml, file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
+        self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
     /**
@@ -103,8 +106,8 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, ['configurationFileHasBeenLoaded' => true]);
 
         $yaml = file_get_contents($pathAndFilename . '.yaml');
-        self::assertStringContainsString('# This comment should stay' . chr(10) . chr(10), $yaml, 'Header comment was removed from file.');
-        self::assertStringNotContainsString('Test: foo', $yaml);
+        self::assertStringContainsString('# This comment should stay' . chr(10) . chr(10), (string) $yaml, 'Header comment was removed from file.');
+        self::assertStringNotContainsString('Test: foo', (string) $yaml);
     }
 
     /**

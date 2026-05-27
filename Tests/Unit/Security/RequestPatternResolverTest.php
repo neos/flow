@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the request pattern resolver
  */
-class RequestPatternResolverTest extends UnitTestCase
+final class RequestPatternResolverTest extends UnitTestCase
 {
     /**
      * @test
@@ -27,8 +30,8 @@ class RequestPatternResolverTest extends UnitTestCase
     public function resolveRequestPatternClassThrowsAnExceptionIfNoRequestPatternIsAvailable()
     {
         $this->expectException(NoRequestPatternFoundException::class);
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->willReturn((false));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturn((false));
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
 
@@ -52,8 +55,8 @@ class RequestPatternResolverTest extends UnitTestCase
             return false;
         };
 
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->will(self::returnCallBack($getCaseSensitiveObjectNameCallback));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->willReturnCallback($getCaseSensitiveObjectNameCallback);
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
         $requestPatternClass = $requestPatternResolver->resolveRequestPatternClass('ValidShortName');
@@ -66,8 +69,8 @@ class RequestPatternResolverTest extends UnitTestCase
      */
     public function resolveRequestPatternReturnsTheCorrectRequestPatternForACompleteClassName()
     {
-        $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();
-        $mockObjectManager->expects($this->any())->method('getClassNameByObjectName')->with('ExistingRequestPatternClass')->willReturn(('ExistingRequestPatternClass'));
+        $mockObjectManager = $this->createMock(ObjectManager::class);
+        $mockObjectManager->method('getClassNameByObjectName')->with('ExistingRequestPatternClass')->willReturn(('ExistingRequestPatternClass'));
 
         $requestPatternResolver = new RequestPatternResolver($mockObjectManager);
         $requestPatternClass = $requestPatternResolver->resolveRequestPatternClass('ExistingRequestPatternClass');

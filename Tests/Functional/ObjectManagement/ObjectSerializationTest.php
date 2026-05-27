@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Functional tests for Object serialization.
  *
  */
-class ObjectSerializationTest extends FunctionalTestCase
+final class ObjectSerializationTest extends FunctionalTestCase
 {
     /**
      * @test

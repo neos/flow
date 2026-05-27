@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Flow\Tests\Reflection\Fixture;
 /**
  * Testcase for ClassReflection
  */
-class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface1, Fixture\DummyInterface2
+final class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface1, Fixture\DummyInterface2
 {
     /**
      * @var mixed
@@ -108,9 +111,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
     {
         $class = new ClassReflection(__CLASS__);
         $interfaces = $class->getInterfaces();
-        foreach ($interfaces as $interface) {
-            self::assertInstanceOf(ClassReflection::class, $interface);
-        }
+        self::assertContainsOnlyInstancesOf(ClassReflection::class, $interfaces);
     }
 
     /**

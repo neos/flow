@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc\ViewsConfiguration;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the ActionController
  */
-class ViewsConfigurationTest extends FunctionalTestCase
+final class ViewsConfigurationTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -95,6 +98,6 @@ class ViewsConfigurationTest extends FunctionalTestCase
         }
 
         $response = $this->browser->request('http://localhost/test/mvc/viewsconfigurationa/widget');
-        self::assertEquals('Changed on Package Level', trim($response->getBody()->getContents()));
+        self::assertSame('Changed on Package Level', trim($response->getBody()->getContents()));
     }
 }

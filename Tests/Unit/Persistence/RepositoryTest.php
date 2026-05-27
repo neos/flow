@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence;
 
 /*
@@ -19,28 +22,26 @@ require_once('Fixture/Repository/NonstandardEntityRepository.php');
 /**
  * Testcase for the base Repository
  */
-class RepositoryTest extends UnitTestCase
+final class RepositoryTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function abstractRepositoryImplementsRepositoryInterface()
     {
-        $repository = $this->createMock(Persistence\Repository::class);
-        self::assertTrue($repository instanceof Persistence\RepositoryInterface);
+        $repository = $this->createStub(Persistence\Repository::class);
+        self::assertInstanceOf(\Neos\Flow\Persistence\RepositoryInterface::class, $repository);
     }
 
     /**
      * dataProvider for constructSetsObjectTypeFromClassName
      */
-    public static function modelAndRepositoryClassNames()
+    public static function modelAndRepositoryClassNames(): \Iterator
     {
         $idSuffix = uniqid();
-        return [
-            ['TYPO3\Blog\Domain\Repository', 'C' . $idSuffix . 'BlogRepository', 'TYPO3\Blog\Domain\Model\\' . 'C' . $idSuffix . 'Blog'],
-            ['Domain\Repository\Content', 'C' . $idSuffix . 'PageRepository', 'Domain\Model\\Content\\' . 'C' . $idSuffix . 'Page'],
-            ['Domain\Repository', 'C' . $idSuffix . 'RepositoryRepository', 'Domain\Model\\' . 'C' . $idSuffix . 'Repository']
-        ];
+        yield ['TYPO3\Blog\Domain\Repository', 'C' . $idSuffix . 'BlogRepository', 'TYPO3\Blog\Domain\Model\\' . 'C' . $idSuffix . 'Blog'];
+        yield ['Domain\Repository\Content', 'C' . $idSuffix . 'PageRepository', 'Domain\Model\\Content\\' . 'C' . $idSuffix . 'Page'];
+        yield ['Domain\Repository', 'C' . $idSuffix . 'RepositoryRepository', 'Domain\Model\\' . 'C' . $idSuffix . 'Repository'];
     }
 
     /**
@@ -67,7 +68,7 @@ class RepositoryTest extends UnitTestCase
         $fullRepositoryClassName = $repositoryNamespace . '\\' . $repositoryClassName;
 
         $repository = new $fullRepositoryClassName();
-        self::assertEquals($modelClassName, $repository->getEntityClassName());
+        self::assertSame($modelClassName, $repository->getEntityClassName());
     }
 
     /**
@@ -111,7 +112,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function findAllCreatesQueryAndReturnsResultOfExecuteCall()
     {
-        $expectedResult = $this->createMock(Persistence\QueryResultInterface::class);
+        $expectedResult = $this->createStub(Persistence\QueryResultInterface::class);
 
         $mockQuery = $this->createMock(Persistence\QueryInterface::class);
         $mockQuery->expects($this->once())->method('execute')->with()->willReturn(($expectedResult));
@@ -187,7 +188,7 @@ class RepositoryTest extends UnitTestCase
      */
     public function magicCallMethodAcceptsFindBySomethingCallsAndExecutesAQueryWithThatCriteria()
     {
-        $mockQueryResult = $this->createMock(Persistence\QueryResultInterface::class);
+        $mockQueryResult = $this->createStub(Persistence\QueryResultInterface::class);
         $mockQuery = $this->createMock(Persistence\QueryInterface::class);
         $mockQuery->expects($this->once())->method('equals')->with('foo', 'bar')->willReturn(('matchCriteria'));
         $mockQuery->expects($this->once())->method('matching')->with('matchCriteria')->willReturn(($mockQuery));

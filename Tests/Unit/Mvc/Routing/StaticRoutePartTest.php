@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Mvc;
 /**
  * Testcase for the MVC Web Routing StaticRoutePart Class
  */
-class StaticRoutePartTest extends UnitTestCase
+final class StaticRoutePartTest extends UnitTestCase
 {
     /*                                                                        *
      * URI matching                                                           *
@@ -205,7 +208,7 @@ class StaticRoutePartTest extends UnitTestCase
         $routeValues = ['@controller' => 'foo', '@action' => 'bar'];
 
         self::assertTrue($routePart->resolve($routeValues));
-        self::assertEquals(['@controller' => 'foo', '@action' => 'bar'], $routeValues, 'when resolve() is called on Static Route Part, specified routeValues-array should never be changed');
+        self::assertSame(['@controller' => 'foo', '@action' => 'bar'], $routeValues, 'when resolve() is called on Static Route Part, specified routeValues-array should never be changed');
     }
 
     /**

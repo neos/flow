@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the PluralsReader
  */
-class PluralsReaderTest extends UnitTestCase
+final class PluralsReaderTest extends UnitTestCase
 {
     /**
      * @var PluralsReader
@@ -49,7 +52,7 @@ class PluralsReaderTest extends UnitTestCase
         $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModel')->with('supplemental/plurals')->willReturn(($mockModel));
 
-        $mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(VariableFrontend::class);
         $mockCache->expects($this->once())->method('has')->with('rulesets')->willReturn(false);
         $matcher = self::exactly(2);
         $mockCache->expects($matcher)->method('set')->willReturnCallback(function (...$parameters) use ($matcher) {
@@ -70,31 +73,29 @@ class PluralsReaderTest extends UnitTestCase
     /**
      * Data provider for returnsCorrectPluralForm
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function quantities()
+    public static function quantities(): \Iterator
     {
-        return [
+        yield [
+            'mo',
             [
-                'mo',
-                [
-                    [1, PluralsReader::RULE_ONE],
-                    [2, PluralsReader::RULE_FEW],
-                    [100, PluralsReader::RULE_OTHER],
-                    [101, PluralsReader::RULE_FEW],
-                    [101.1, PluralsReader::RULE_OTHER]
-                ]
-            ],
+                [1, PluralsReader::RULE_ONE],
+                [2, PluralsReader::RULE_FEW],
+                [100, PluralsReader::RULE_OTHER],
+                [101, PluralsReader::RULE_FEW],
+                [101.1, PluralsReader::RULE_OTHER]
+            ]
+        ];
+        yield [
+            'ru',
             [
-                'ru',
-                [
-                    [1, PluralsReader::RULE_ONE],
-                    [2, PluralsReader::RULE_FEW],
-                    [11, PluralsReader::RULE_MANY],
-                    [100, PluralsReader::RULE_MANY],
-                    [101, PluralsReader::RULE_ONE],
-                    [101.1, PluralsReader::RULE_OTHER]
-                ]
+                [1, PluralsReader::RULE_ONE],
+                [2, PluralsReader::RULE_FEW],
+                [11, PluralsReader::RULE_MANY],
+                [100, PluralsReader::RULE_MANY],
+                [101, PluralsReader::RULE_ONE],
+                [101.1, PluralsReader::RULE_OTHER]
             ]
         ];
     }

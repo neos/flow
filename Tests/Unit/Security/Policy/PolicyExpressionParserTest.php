@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Policy;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the policy expression parser
  */
-class PolicyExpressionParserTest extends UnitTestCase
+final class PolicyExpressionParserTest extends UnitTestCase
 {
     /**
      * @test

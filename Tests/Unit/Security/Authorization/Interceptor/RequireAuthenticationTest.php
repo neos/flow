@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the authentication required security interceptor
  */
-class RequireAuthenticationTest extends UnitTestCase
+final class RequireAuthenticationTest extends UnitTestCase
 {
     /**
      * @test

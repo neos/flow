@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the TypedArrayConverter
  *
  */
-class TypedArrayConverterTest extends UnitTestCase
+final class TypedArrayConverterTest extends UnitTestCase
 {
     /**
      * @var TypedArrayConverter
@@ -41,18 +44,15 @@ class TypedArrayConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function canConvertFromDataProvider()
+    public static function canConvertFromDataProvider(): \Iterator
     {
-        return [
-            ['targetType' => 'SomeTargetType', 'expectedResult' => false],
-            ['targetType' => 'array', 'expectedResult' => false],
-
-            ['targetType' => 'array<string>', 'expectedResult' => true],
-            ['targetType' => 'array<Some\Element\Type>', 'expectedResult' => true],
-            ['targetType' => '\array<\int>', 'expectedResult' => true],
-        ];
+        yield ['targetType' => 'SomeTargetType', 'expectedResult' => false];
+        yield ['targetType' => 'array', 'expectedResult' => false];
+        yield ['targetType' => 'array<string>', 'expectedResult' => true];
+        yield ['targetType' => 'array<Some\Element\Type>', 'expectedResult' => true];
+        yield ['targetType' => '\array<\int>', 'expectedResult' => true];
     }
 
     /**

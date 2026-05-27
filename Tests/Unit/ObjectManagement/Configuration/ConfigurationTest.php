@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\ObjectManagement\Configuration;
 /**
  * Testcase for the object configuration class
  */
-class ConfigurationTest extends UnitTestCase
+final class ConfigurationTest extends UnitTestCase
 {
     /**
      * @var Configuration\Configuration

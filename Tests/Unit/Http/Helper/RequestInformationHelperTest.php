@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http\Helper;
 
 use GuzzleHttp\Psr7\ServerRequest;
@@ -8,7 +11,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Tests for the RequestInformationHelper
  */
-class RequestInformationHelperTest extends UnitTestCase
+final class RequestInformationHelperTest extends UnitTestCase
 {
     /**
      * @test

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
@@ -27,7 +30,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Tests for the FileSystemTarget class
  */
-class FileSystemTargetTest extends UnitTestCase
+final class FileSystemTargetTest extends UnitTestCase
 {
     /**
      * @var FileSystemTarget
@@ -50,7 +53,7 @@ class FileSystemTargetTest extends UnitTestCase
 
     protected function provideBaseUri(UriInterface $uri)
     {
-        $this->mockBaseUriProvider->expects($this->any())->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willReturn($uri);
+        $this->mockBaseUriProvider->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willReturn($uri);
     }
 
     /**
@@ -62,17 +65,15 @@ class FileSystemTargetTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function getPublicStaticResourceUriDataProvider()
+    public static function getPublicStaticResourceUriDataProvider(): \Iterator
     {
-        return [
-            ['baseUri' => 'http://localhost/', 'relativePathAndFilename' => 'SomeFilename.jpg', 'expectedResult' => 'http://localhost/SomeFilename.jpg'],
-            ['baseUri' => 'http://localhost/', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => 'http://localhost/some/path/SomeFilename.jpg'],
-            ['baseUri' => '/absolute/without/protocol/', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => '/absolute/without/protocol/some/path/SomeFilename.jpg'],
-            ['baseUri' => '', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => 'http://detected/base/uri/some/path/SomeFilename.jpg'],
-            ['baseUri' => 'relative/', 'relativePathAndFilename' => 'some/pa th/Some Filename.jpg', 'expectedResult' => 'http://detected/base/uri/relative/some/pa%20th/Some%20Filename.jpg'],
-        ];
+        yield ['baseUri' => 'http://localhost/', 'relativePathAndFilename' => 'SomeFilename.jpg', 'expectedResult' => 'http://localhost/SomeFilename.jpg'];
+        yield ['baseUri' => 'http://localhost/', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => 'http://localhost/some/path/SomeFilename.jpg'];
+        yield ['baseUri' => '/absolute/without/protocol/', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => '/absolute/without/protocol/some/path/SomeFilename.jpg'];
+        yield ['baseUri' => '', 'relativePathAndFilename' => 'some/path/SomeFilename.jpg', 'expectedResult' => 'http://detected/base/uri/some/path/SomeFilename.jpg'];
+        yield ['baseUri' => 'relative/', 'relativePathAndFilename' => 'some/pa th/Some Filename.jpg', 'expectedResult' => 'http://detected/base/uri/relative/some/pa%20th/Some%20Filename.jpg'];
     }
 
     /**
@@ -104,25 +105,23 @@ class FileSystemTargetTest extends UnitTestCase
     public function getPublicStaticResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {
         $this->expectException(\Neos\Flow\Http\Exception::class);
-        $this->mockBaseUriProvider->expects($this->any())->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willThrowException(new \Neos\Flow\Http\Exception('Test mock exception'));
+        $this->mockBaseUriProvider->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willThrowException(new \Neos\Flow\Http\Exception('Test mock exception'));
 
         $this->fileSystemTarget->getPublicStaticResourceUri('some/path/SomeFilename.jpg');
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function getPublicPersistentResourceUriDataProvider()
+    public static function getPublicPersistentResourceUriDataProvider(): \Iterator
     {
-        return [
-            ['baseUri' => 'http://localhost/', 'relativePublicationPath' => 'some/path/', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/some/path/SomeFilename.jpg'],
-            ['baseUri' => 'http://localhost/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'],
-            ['baseUri' => 'http://localhost/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'],
-            ['baseUri' => 'http://localhost/', 'relativePublicationPath' => 'so me/path/', 'filename' => 'Some Filename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/so%20me/path/Some%20Filename.jpg'],
-            ['baseUri' => '/absolute/uri/without/protocol/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => '/absolute/uri/without/protocol/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'],
-            ['baseUri' => '', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://detected/base/uri/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'],
-            ['baseUri' => 'relative/', 'relativePublicationPath' => 'so me/path/', 'filename' => 'Some Filename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://detected/base/uri/relative/so%20me/path/Some%20Filename.jpg'],
-        ];
+        yield ['baseUri' => 'http://localhost/', 'relativePublicationPath' => 'some/path/', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/some/path/SomeFilename.jpg'];
+        yield ['baseUri' => 'http://localhost/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'];
+        yield ['baseUri' => 'http://localhost/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'];
+        yield ['baseUri' => 'http://localhost/', 'relativePublicationPath' => 'so me/path/', 'filename' => 'Some Filename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://localhost/so%20me/path/Some%20Filename.jpg'];
+        yield ['baseUri' => '/absolute/uri/without/protocol/', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => '/absolute/uri/without/protocol/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'];
+        yield ['baseUri' => '', 'relativePublicationPath' => '', 'filename' => 'SomeFilename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://detected/base/uri/8/6/e/f/86eff8eb789b097ddca83f2c9c4617ed23605105/SomeFilename.jpg'];
+        yield ['baseUri' => 'relative/', 'relativePublicationPath' => 'so me/path/', 'filename' => 'Some Filename.jpg', 'sha1' => '86eff8eb789b097ddca83f2c9c4617ed23605105', 'expectedResult' => 'http://detected/base/uri/relative/so%20me/path/Some%20Filename.jpg'];
     }
 
     /**
@@ -139,10 +138,10 @@ class FileSystemTargetTest extends UnitTestCase
         $this->provideBaseUri(new Uri('http://detected/base/uri/'));
         $this->inject($this->fileSystemTarget, 'baseUri', $baseUri);
         /** @var PersistentResource|\PHPUnit\Framework\MockObject\MockObject $mockResource */
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
-        $mockResource->expects($this->any())->method('getRelativePublicationPath')->willReturn(($relativePublicationPath));
-        $mockResource->expects($this->any())->method('getFilename')->willReturn(($filename));
-        $mockResource->expects($this->any())->method('getSha1')->willReturn(($sha1));
+        $mockResource = $this->createMock(PersistentResource::class);
+        $mockResource->method('getRelativePublicationPath')->willReturn(($relativePublicationPath));
+        $mockResource->method('getFilename')->willReturn(($filename));
+        $mockResource->method('getSha1')->willReturn(($sha1));
 
         self::assertSame($expectedResult, $this->fileSystemTarget->getPublicPersistentResourceUri($mockResource));
     }
@@ -155,7 +154,7 @@ class FileSystemTargetTest extends UnitTestCase
         $this->provideBaseUri(new Uri('http://configured/http/base/uri/'));
 
         /** @var PersistentResource|\PHPUnit\Framework\MockObject\MockObject $mockResource */
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
+        $mockResource = $this->createStub(PersistentResource::class);
 
         self::assertStringStartsWith('http://configured/http/base/uri/', $this->fileSystemTarget->getPublicPersistentResourceUri($mockResource));
     }
@@ -166,10 +165,10 @@ class FileSystemTargetTest extends UnitTestCase
     public function getPublicPersistentResourceUriThrowsExceptionIfBaseUriCantBeResolved()
     {
         $this->expectException(\Neos\Flow\Http\Exception::class);
-        $this->mockBaseUriProvider->expects($this->any())->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willThrowException(new \Neos\Flow\Http\Exception('Test mock exception'));
+        $this->mockBaseUriProvider->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willThrowException(new \Neos\Flow\Http\Exception('Test mock exception'));
 
         /** @var PersistentResource|\PHPUnit\Framework\MockObject\MockObject $mockResource */
-        $mockResource = $this->getMockBuilder(PersistentResource::class)->disableOriginalConstructor()->getMock();
+        $mockResource = $this->createStub(PersistentResource::class);
 
         $this->fileSystemTarget->getPublicStaticResourceUri($mockResource);
     }
@@ -188,7 +187,7 @@ class FileSystemTargetTest extends UnitTestCase
         $packageStorage = new PackageStorage('testStorage');
         $packageStorage->initializeObject(ObjectManagerInterface::INITIALIZATIONCAUSE_CREATED);
 
-        $mockSystemLogger = $this->getMockBuilder(LoggerInterface::class)->getMock();
+        $mockSystemLogger = $this->createStub(LoggerInterface::class);
 
         $this->inject($packageStorage, 'packageManager', $packageManager);
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * Testcase for the file size validator
  *
  */
-class FileSizeValidatorTest extends AbstractValidatorTestcase
+final class FileSizeValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = FileSizeValidator::class;
 
@@ -111,12 +114,10 @@ class FileSizeValidatorTest extends AbstractValidatorTestcase
         };
     }
 
-    public static function emptyItems(): array
+    public static function emptyItems(): \Iterator
     {
-        return [
-            [null],
-            ['']
-        ];
+        yield [null];
+        yield [''];
     }
 
     /**
@@ -128,16 +129,14 @@ class FileSizeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public static function itemsWithAllowedSize(): array
+    public static function itemsWithAllowedSize(): \Iterator
     {
-        return [
-            [self::createResourceMetaDataInterfaceMock(200)],
-            [self::createResourceMetaDataInterfaceMock(800)],
-            [self::createResourceMetaDataInterfaceMock(1000)],
-            [self::createUploadedFileInterfaceMock(200)],
-            [self::createUploadedFileInterfaceMock(800)],
-            [self::createUploadedFileInterfaceMock(1000)]
-        ];
+        yield [self::createResourceMetaDataInterfaceMock(200)];
+        yield [self::createResourceMetaDataInterfaceMock(800)];
+        yield [self::createResourceMetaDataInterfaceMock(1000)];
+        yield [self::createUploadedFileInterfaceMock('200')];
+        yield [self::createUploadedFileInterfaceMock('800')];
+        yield [self::createUploadedFileInterfaceMock('1000')];
     }
 
     /**
@@ -149,14 +148,12 @@ class FileSizeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public static function itemsWithLargerThanAllowedSize(): array
+    public static function itemsWithLargerThanAllowedSize(): \Iterator
     {
-        return [
-            [self::createResourceMetaDataInterfaceMock(1001)],
-            [self::createResourceMetaDataInterfaceMock(PHP_INT_MAX)],
-            [self::createUploadedFileInterfaceMock(1001)],
-            [self::createUploadedFileInterfaceMock(PHP_INT_MAX)]
-        ];
+        yield [self::createResourceMetaDataInterfaceMock(1001)];
+        yield [self::createResourceMetaDataInterfaceMock(PHP_INT_MAX)];
+        yield [self::createUploadedFileInterfaceMock('1001')];
+        yield [self::createUploadedFileInterfaceMock(PHP_INT_MAX)];
     }
 
     /**
@@ -168,14 +165,12 @@ class FileSizeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 
-    public static function itemsWithSmallerThanAllowedSize(): array
+    public static function itemsWithSmallerThanAllowedSize(): \Iterator
     {
-        return [
-            [self::createResourceMetaDataInterfaceMock(199)],
-            [self::createResourceMetaDataInterfaceMock(0)],
-            [self::createUploadedFileInterfaceMock(199)],
-            [self::createUploadedFileInterfaceMock(0)]
-        ];
+        yield [self::createResourceMetaDataInterfaceMock(199)];
+        yield [self::createResourceMetaDataInterfaceMock(0)];
+        yield [self::createUploadedFileInterfaceMock('199')];
+        yield [self::createUploadedFileInterfaceMock('0')];
     }
 
     /**

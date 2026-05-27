@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Object configuration via Objects.yaml
  */
-class ConfigurationTest extends FunctionalTestCase
+final class ConfigurationTest extends FunctionalTestCase
 {
     /**
      * See the configuration in Testing/Objects.yaml

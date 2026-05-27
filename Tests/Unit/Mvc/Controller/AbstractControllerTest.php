@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -33,13 +36,8 @@ use Neos\Error\Messages as FlowError;
 /**
  * Testcase for the MVC Abstract Controller
  */
-class AbstractControllerTest extends UnitTestCase
+final class AbstractControllerTest extends UnitTestCase
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $mockHttpRequest;
-
     /**
      * @var ActionResponse
      */
@@ -52,12 +50,12 @@ class AbstractControllerTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
 
         $this->actionResponse = new ActionResponse();
 
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
-        $this->mockActionRequest->method('getHttpRequest')->willReturn($this->mockHttpRequest);
+        $this->mockActionRequest = $this->createMock(ActionRequest::class);
+        $this->mockActionRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
     }
 
     /**
@@ -95,31 +93,29 @@ class AbstractControllerTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function addFlashMessageDataProvider()
+    public static function addFlashMessageDataProvider(): \Iterator
     {
-        return [
-            [
-                new FlowError\Message('MessageBody'),
-                'MessageBody'
-            ],
-            [
-                new FlowError\Message('Some Other Message', 123, ['foo' => 'bar'], 'Message Title'),
-                'Some Other Message', 'Message Title', FlowError\Message::SEVERITY_OK, ['foo' => 'bar'], 123
-            ],
-            [
-                new FlowError\Notice('Some Notice', 123, ['foo' => 'bar'], 'Message Title'),
-                'Some Notice', 'Message Title', FlowError\Message::SEVERITY_NOTICE, ['foo' => 'bar'], 123
-            ],
-            [
-                new FlowError\Warning('Some Warning', 123, ['foo' => 'bar'], 'Message Title'),
-                'Some Warning', 'Message Title', FlowError\Message::SEVERITY_WARNING, ['foo' => 'bar'], 123
-            ],
-            [
-                new FlowError\Error('Some Error', 123, ['foo' => 'bar'], 'Message Title'),
-                'Some Error', 'Message Title', FlowError\Message::SEVERITY_ERROR, ['foo' => 'bar'], 123
-            ],
+        yield [
+            new FlowError\Message('MessageBody'),
+            'MessageBody'
+        ];
+        yield [
+            new FlowError\Message('Some Other Message', 123, ['foo' => 'bar'], 'Message Title'),
+            'Some Other Message', 'Message Title', FlowError\Message::SEVERITY_OK, ['foo' => 'bar'], 123
+        ];
+        yield [
+            new FlowError\Notice('Some Notice', 123, ['foo' => 'bar'], 'Message Title'),
+            'Some Notice', 'Message Title', FlowError\Message::SEVERITY_NOTICE, ['foo' => 'bar'], 123
+        ];
+        yield [
+            new FlowError\Warning('Some Warning', 123, ['foo' => 'bar'], 'Message Title'),
+            'Some Warning', 'Message Title', FlowError\Message::SEVERITY_WARNING, ['foo' => 'bar'], 123
+        ];
+        yield [
+            new FlowError\Error('Some Error', 123, ['foo' => 'bar'], 'Message Title'),
+            'Some Error', 'Message Title', FlowError\Message::SEVERITY_ERROR, ['foo' => 'bar'], 123
         ];
     }
 
@@ -132,7 +128,7 @@ class AbstractControllerTest extends UnitTestCase
         $flashMessageContainer = new FlashMessageContainer();
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
 
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)->disableOriginalConstructor()->getMock();
+        $controllerContext = $this->createMock(ControllerContext::class);
         $controllerContext->method('getFlashMessageContainer')->willReturn($flashMessageContainer);
         $this->inject($controller, 'controllerContext', $controllerContext);
 
@@ -149,7 +145,7 @@ class AbstractControllerTest extends UnitTestCase
         $flashMessageContainer = new FlashMessageContainer();
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
 
-        $controllerContext = $this->getMockBuilder(ControllerContext::class)->disableOriginalConstructor()->getMock();
+        $controllerContext = $this->createMock(ControllerContext::class);
         $controllerContext->method('getFlashMessageContainer')->willReturn($flashMessageContainer);
         $this->inject($controller, 'controllerContext', $controllerContext);
 

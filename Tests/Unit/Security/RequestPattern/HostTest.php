@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
@@ -20,21 +23,19 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the URI request pattern
  */
-class HostTest extends UnitTestCase
+final class HostTest extends UnitTestCase
 {
     /**
      * Data provider with URIs and host patterns
      */
-    public static function uriAndHostPatterns()
+    public static function uriAndHostPatterns(): \Iterator
     {
-        return [
-            ['http://neos.io/index.php', 'neos.*', true, 'Assert that wildcard matches.'],
-            ['http://www.neos.io/index.php', 'flow.neos.io', false, 'Assert that subdomains don\'t match.'],
-            ['http://www.neos.io/index.php', '*www.neos.io', true, 'Assert that prefix wildcard matches.'],
-            ['http://www.neos.io/index.php', '*.www.neos.io', false, 'Assert that subdomain wildcard doesn\'t match.'],
-            ['http://flow.neos.io/', '*.neos.io', true, 'Assert that subdomain wildcard matches.'],
-            ['http://flow.neos.io/', 'www.neos.io', false, 'Assert that different subdomain doesn\'t match.'],
-        ];
+        yield ['http://neos.io/index.php', 'neos.*', true, 'Assert that wildcard matches.'];
+        yield ['http://www.neos.io/index.php', 'flow.neos.io', false, 'Assert that subdomains don\'t match.'];
+        yield ['http://www.neos.io/index.php', '*www.neos.io', true, 'Assert that prefix wildcard matches.'];
+        yield ['http://www.neos.io/index.php', '*.www.neos.io', false, 'Assert that subdomain wildcard doesn\'t match.'];
+        yield ['http://flow.neos.io/', '*.neos.io', true, 'Assert that subdomain wildcard matches.'];
+        yield ['http://flow.neos.io/', 'www.neos.io', false, 'Assert that different subdomain doesn\'t match.'];
     }
 
     /**

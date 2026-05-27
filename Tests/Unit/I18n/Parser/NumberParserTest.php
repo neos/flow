@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Parser;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the NumberParser
  */
-class NumberParserTest extends UnitTestCase
+final class NumberParserTest extends UnitTestCase
 {
     /**
      * @var I18n\Locale
@@ -79,20 +82,18 @@ class NumberParserTest extends UnitTestCase
      * Note that this data provider has everything needed by any test method, so
      * not every element is used by every method.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleNumbersEasyToParse()
+    public static function sampleNumbersEasyToParse(): \Iterator
     {
-        return [
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '01234,5670', 1234.567, '0000.0000#', array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '0,1', 0.1, '0.0###', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '1 000,25', 1000.25, '#,##0.05', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '9 999,9', 9999.9, '#,##0.0', array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '(1 100,0)', -1100.0, '#,##0.0;(#)', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'negativePrefix' => '(', 'negativeSuffix' => ')'])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '-1,0', -1.0, '0.0;-#', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'negativePrefix' => '-'])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'd1,0b', 1.0, 'd0.0b', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'positivePrefix' => 'd', 'positiveSuffix' => 'b'])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_PERCENT, '85%', 0.85, '#0%', array_merge(self::$templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%'])],
-        ];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '01234,5670', 1234.567, '0000.0000#', array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '0,1', 0.1, '0.0###', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 4])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '1 000,25', 1000.25, '#,##0.05', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '9 999,9', 9999.9, '#,##0.0', array_merge(self::$templateFormat, ['maxDecimalDigits' => 3, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '(1 100,0)', -1100.0, '#,##0.0;(#)', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'negativePrefix' => '(', 'negativeSuffix' => ')'])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '-1,0', -1.0, '0.0;-#', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'negativePrefix' => '-'])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'd1,0b', 1.0, 'd0.0b', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'positivePrefix' => 'd', 'positiveSuffix' => 'b'])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_PERCENT, '85%', 0.85, '#0%', array_merge(self::$templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%'])];
     }
 
     /**
@@ -100,16 +101,14 @@ class NumberParserTest extends UnitTestCase
      * number harder to parse - only lenient parsing mode should be able to
      * parse them.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleNumbersHardToParse()
+    public static function sampleNumbersHardToParse(): \Iterator
     {
-        return [
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'foo01234,56780bar', 1234.5678, '0000.0000#', array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'foo+2 10 00,33baz', 21000.33, '#,##0.05', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '1foo10-', -110, '0.0;#-', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'negativePrefix' => '', 'negativeSuffix' => '-'])],
-            [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_PERCENT, '%5,3%%', 0.053, '#00.00%', array_merge(self::$templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%', 'minIntegerDigits' => 2, 'minDecimalDigits' => 2])],
-        ];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'foo01234,56780bar', 1234.5678, '0000.0000#', array_merge(self::$templateFormat, ['minDecimalDigits' => 4, 'maxDecimalDigits' => 5, 'minIntegerDigits' => 5])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, 'foo+2 10 00,33baz', 21000.33, '#,##0.05', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL, '1foo10-', -110, '0.0;#-', array_merge(self::$templateFormat, ['minDecimalDigits' => 1, 'maxDecimalDigits' => 1, 'negativePrefix' => '', 'negativeSuffix' => '-'])];
+        yield [I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_PERCENT, '%5,3%%', 0.053, '#00.00%', array_merge(self::$templateFormat, ['multiplier' => 100, 'positiveSuffix' => '%', 'negativeSuffix' => '%', 'minIntegerDigits' => 2, 'minDecimalDigits' => 2])];
     }
 
     /**

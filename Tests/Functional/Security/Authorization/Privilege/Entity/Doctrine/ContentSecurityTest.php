@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Flow\Security;
  * Testcase for content security using doctrine persistence
  *
  */
-class ContentSecurityTest extends FunctionalTestCase
+final class ContentSecurityTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -96,7 +99,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($defaultEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($hiddenEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -126,7 +129,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($defaultEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($hiddenEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -156,7 +159,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($defaultEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($deletedEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -186,7 +189,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($defaultEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($deletedEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -214,7 +217,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 0);
+        self::assertCount(0, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($defaultEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($hiddenEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -252,7 +255,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($ownEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($othersEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -290,7 +293,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($ownEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($othersEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -328,7 +331,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($ownEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($andisEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -366,7 +369,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->restrictableEntityDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($ownEntityIdentifier, Fixtures\RestrictableEntity::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($andisEntityIdentifier, Fixtures\RestrictableEntity::class));
@@ -398,7 +401,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityADoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityAIdentifier, Fixtures\TestEntityA::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityA2Identifier, Fixtures\TestEntityA::class));
@@ -430,7 +433,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityADoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityAIdentifier, Fixtures\TestEntityA::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityA2Identifier, Fixtures\TestEntityA::class));
@@ -473,7 +476,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityADoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityAIdentifier, Fixtures\TestEntityA::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityA2Identifier, Fixtures\TestEntityA::class));
@@ -514,7 +517,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityADoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 2);
+        self::assertCount(2, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityAIdentifier, Fixtures\TestEntityA::class));
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityA2Identifier, Fixtures\TestEntityA::class));
@@ -551,7 +554,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertNotNull($this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityC2Identifier, Fixtures\TestEntityC::class));
@@ -579,7 +582,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 0);
+        self::assertCount(0, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityC2Identifier, Fixtures\TestEntityC::class));
@@ -613,7 +616,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->persistenceManager->clearState();
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 0);
+        self::assertCount(0, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
 
@@ -630,7 +633,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $testEntityCIdentifier = $this->setupContainsRelationForOneToMany();
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 0);
+        self::assertCount(0, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
 
@@ -650,7 +653,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->authenticateRoles(['Neos.Flow:Customer']);
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertInstanceOf(Fixtures\TestEntityC::class, $this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
 
@@ -667,7 +670,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $testEntityCIdentifier = $this->setupContainsRelationForManyToMany();
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 0);
+        self::assertCount(0, $result);
 
         self::assertNull($this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
 
@@ -687,7 +690,7 @@ class ContentSecurityTest extends FunctionalTestCase
         $this->authenticateRoles(['Neos.Flow:Customer']);
 
         $result = $this->testEntityCDoctrineRepository->findAllWithDql();
-        self::assertTrue(count($result) === 1);
+        self::assertCount(1, $result);
 
         self::assertInstanceOf(Fixtures\TestEntityC::class, $this->persistenceManager->getObjectByIdentifier($testEntityCIdentifier, Fixtures\TestEntityC::class));
 

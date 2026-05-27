@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the CLI Request class
  */
-class RequestTest extends UnitTestCase
+final class RequestTest extends UnitTestCase
 {
     /**
      * @test
@@ -30,7 +33,7 @@ class RequestTest extends UnitTestCase
         $request->setControllerCommandName('flush');
 
         $command = $request->getCommand();
-        self::assertEquals('neos.flow:cache:flush', $command->getCommandIdentifier());
+        self::assertSame('neos.flow:cache:flush', $command->getCommandIdentifier());
     }
 
     /**
@@ -47,6 +50,6 @@ class RequestTest extends UnitTestCase
         $request->setControllerCommandName('drink');
 
         $command = $request->getCommand();
-        self::assertEquals('neos.flow:beer:drink', $command->getCommandIdentifier());
+        self::assertSame('neos.flow:beer:drink', $command->getCommandIdentifier());
     }
 }

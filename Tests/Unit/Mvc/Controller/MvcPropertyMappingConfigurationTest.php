@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC Controller Argument
  */
-class MvcPropertyMappingConfigurationTest extends UnitTestCase
+final class MvcPropertyMappingConfigurationTest extends UnitTestCase
 {
     /**
      * @var MvcPropertyMappingConfiguration

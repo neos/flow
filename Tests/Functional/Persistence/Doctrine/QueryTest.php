@@ -25,7 +25,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Testcase for query
  *
  */
-class QueryTest extends FunctionalTestCase
+final class QueryTest extends FunctionalTestCase
 {
     /**
      * @var bool
@@ -142,7 +142,7 @@ class QueryTest extends FunctionalTestCase
 
         $query = new Query(TestEntity::class);
 
-        self::assertEquals(3, $query->execute()->count());
+        self::assertCount(3, $query->execute());
     }
 
     /**
@@ -169,7 +169,7 @@ class QueryTest extends FunctionalTestCase
 
         $query = new Query(TestEntity::class);
 
-        self::assertEquals(2, $query->setLimit(2)->execute()->count());
+        self::assertCount(2, $query->setLimit(2)->execute());
     }
 
     /**
@@ -196,7 +196,7 @@ class QueryTest extends FunctionalTestCase
 
         $query = new Query(TestEntity::class);
 
-        self::assertEquals(1, $query->setOffset(2)->execute()->count());
+        self::assertCount(1, $query->setOffset(2)->execute());
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the URI class
  *
  */
-class UriTest extends UnitTestCase
+final class UriTest extends UnitTestCase
 {
     /**
      * Checks if a complete URI with all parts is transformed into an object correctly.
@@ -46,18 +49,16 @@ class UriTest extends UnitTestCase
     /**
      * Uri strings
      */
-    public static function uriStrings()
+    public static function uriStrings(): \Iterator
     {
-        return [
-            ['http://flow.neos.io/x'],
-            ['http://flow.neos.io/foo/bar?baz=1&quux=true'],
-            ['https://robert@localhost/arabica/coffee.html'],
-            ['http://127.0.0.1/bar.baz.com/foo.js'],
-            ['http://localhost:8080?foo=bar'],
-            ['http://localhost:443#hashme!x'],
-            ['http://[3b00:f59:1008::212:183:20]'],
-            ['http://[3b00:f59:1008::212:183:20]:443#hashme!x'],
-        ];
+        yield ['http://flow.neos.io/x'];
+        yield ['http://flow.neos.io/foo/bar?baz=1&quux=true'];
+        yield ['https://robert@localhost/arabica/coffee.html'];
+        yield ['http://127.0.0.1/bar.baz.com/foo.js'];
+        yield ['http://localhost:8080?foo=bar'];
+        yield ['http://localhost:443#hashme!x'];
+        yield ['http://[3b00:f59:1008::212:183:20]'];
+        yield ['http://[3b00:f59:1008::212:183:20]:443#hashme!x'];
     }
 
     /**
@@ -119,13 +120,11 @@ class UriTest extends UnitTestCase
     /**
      * URIs for testing host parsing
      */
-    public static function hostTestUris()
+    public static function hostTestUris(): \Iterator
     {
-        return [
-            ['http://www.neos.io/about/project', 'www.neos.io'],
-            ['http://flow.neos.io/foo', 'flow.neos.io'],
-            ['http://[3b00:f59:1008::212:183:20]', '[3b00:f59:1008::212:183:20]'],
-        ];
+        yield ['http://www.neos.io/about/project', 'www.neos.io'];
+        yield ['http://flow.neos.io/foo', 'flow.neos.io'];
+        yield ['http://[3b00:f59:1008::212:183:20]', '[3b00:f59:1008::212:183:20]'];
     }
 
     /**
@@ -148,12 +147,10 @@ class UriTest extends UnitTestCase
         self::assertEquals($plainHost, $uri->getHost());
     }
 
-    public static function uriStringTestUris()
+    public static function uriStringTestUris(): \Iterator
     {
-        return [
-            ['http://username:password@subdomain.domain.com:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'],
-            ['http://username:password@[2a00:f48:1008::212:183:10]:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'],
-        ];
+        yield ['http://username:password@subdomain.domain.com:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'];
+        yield ['http://username:password@[2a00:f48:1008::212:183:10]:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'];
     }
     /**
      * Checks if a complete URI with all parts is transformed into an object correctly.
@@ -177,7 +174,7 @@ class UriTest extends UnitTestCase
             new Uri(['foo']);
         } catch (\Throwable $error) {
         }
-        $this->assertNotEmpty($error);
+        $this->assertInstanceOf(\Throwable::class, $error);
     }
 
     /**

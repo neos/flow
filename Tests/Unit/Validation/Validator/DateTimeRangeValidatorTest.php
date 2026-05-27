@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ require_once 'AbstractValidatorTestcase.php';
  * Testcase for the number range validator
  *
  */
-class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
+final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
 {
     /**
      * @var string
@@ -45,7 +48,7 @@ class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
     public function parseReferenceDateReturnsInstanceOfDateTime()
     {
         $testResult = $this->accessibleValidator->_call('parseReferenceDate', '2007-03-01T13:00:00Z/P1Y2M10DT2H30M');
-        self::assertTrue($testResult instanceof \DateTime);
+        self::assertInstanceOf(\DateTime::class, $testResult);
     }
 
     /**
@@ -101,7 +104,7 @@ class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
 
         $errors = $this->validator->validate('no DateTime object')->getErrors();
-        self::assertSame(1, count($errors));
+        self::assertCount(1, $errors);
     }
 
     /**

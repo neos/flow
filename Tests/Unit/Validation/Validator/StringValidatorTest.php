@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -18,7 +21,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the string length validator
  *
  */
-class StringValidatorTest extends AbstractValidatorTestcase
+final class StringValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = StringValidator::class;
 

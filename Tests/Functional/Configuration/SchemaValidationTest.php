@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Configuration;
 
 /*
@@ -23,7 +26,7 @@ use Symfony\Component\Yaml\Yaml;
  * Testcase for the Flow Validation Framework
  *
  */
-class SchemaValidationTest extends FunctionalTestCase
+final class SchemaValidationTest extends FunctionalTestCase
 {
     protected static array $schemaPackageKeys = ['Neos.Flow', 'Neos.FluidAdaptor', 'Neos.Eel', 'Neos.Kickstart'];
 

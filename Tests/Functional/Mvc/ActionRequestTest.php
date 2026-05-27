@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the ActionRequest
  */
-class ActionRequestTest extends FunctionalTestCase
+final class ActionRequestTest extends FunctionalTestCase
 {
     /**
      * @test

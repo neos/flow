@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\View;
 
 /*
@@ -18,17 +21,12 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the JSON view
  */
-class JsonViewTest extends UnitTestCase
+final class JsonViewTest extends UnitTestCase
 {
     /**
      * @var Mvc\View\JsonView
      */
     protected $view;
-
-    /**
-     * @var Mvc\Controller\ControllerContext
-     */
-    protected $controllerContext;
 
     /**
      * @var Mvc\ActionResponse
@@ -42,10 +40,10 @@ class JsonViewTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->view = $this->getMockBuilder(Mvc\View\JsonView::class)->onlyMethods([])->getMock();
-        $this->controllerContext = $this->getMockBuilder(Mvc\Controller\ControllerContext::class)->disableOriginalConstructor()->getMock();
+        $controllerContext = $this->createMock(Mvc\Controller\ControllerContext::class);
         $this->response = new Mvc\ActionResponse();
-        $this->controllerContext->expects($this->any())->method('getResponse')->willReturn(($this->response));
-        $this->view->setControllerContext($this->controllerContext);
+        $controllerContext->method('getResponse')->willReturn(($this->response));
+        $this->view->setControllerContext($controllerContext);
     }
 
     /**
@@ -105,9 +103,9 @@ class JsonViewTest extends UnitTestCase
 
         $properties = ['foo' => 'bar', 'prohibited' => 'xxx'];
         $nestedObject = $this->createMock(Fixtures\NestedTestObject::class);
-        $nestedObject->expects($this->any())->method('getName')->willReturn(('name'));
-        $nestedObject->expects($this->any())->method('getPath')->willReturn(('path'));
-        $nestedObject->expects($this->any())->method('getProperties')->willReturn(($properties));
+        $nestedObject->method('getName')->willReturn(('name'));
+        $nestedObject->method('getPath')->willReturn(('path'));
+        $nestedObject->method('getProperties')->willReturn(($properties));
         $nestedObject->expects($this->never())->method('getOther');
         $object = $nestedObject;
         $configuration = [
@@ -208,29 +206,27 @@ class JsonViewTest extends UnitTestCase
     /**
      * A data provider
      */
-    public static function exposeClassNameSettingsAndResults()
+    public static function exposeClassNameSettingsAndResults(): \Iterator
     {
         $className = 'DummyClass' . md5(uniqid(mt_rand(), true));
         $namespace = 'Neos\Flow\Tests\Unit\Mvc\View\\' . $className;
-        return [
-            [
-                Mvc\View\JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,
-                $className,
-                $namespace,
-                ['value1' => ['__class' => $namespace . '\\' . $className]]
-            ],
-            [
-                Mvc\View\JsonView::EXPOSE_CLASSNAME_UNQUALIFIED,
-                $className,
-                $namespace,
-                ['value1' => ['__class' => $className]]
-            ],
-            [
-                null,
-                $className,
-                $namespace,
-                ['value1' => []]
-            ]
+        yield [
+            Mvc\View\JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,
+            $className,
+            $namespace,
+            ['value1' => ['__class' => $namespace . '\\' . $className]]
+        ];
+        yield [
+            Mvc\View\JsonView::EXPOSE_CLASSNAME_UNQUALIFIED,
+            $className,
+            $namespace,
+            ['value1' => ['__class' => $className]]
+        ];
+        yield [
+            null,
+            $className,
+            $namespace,
+            ['value1' => []]
         ];
     }
 
@@ -435,7 +431,7 @@ class JsonViewTest extends UnitTestCase
     public function renderTransformsJsonSerializableValues()
     {
         $value = $this->getMockBuilder('JsonSerializable')->onlyMethods(['jsonSerialize'])->getMock();
-        $value->expects($this->any())->method('jsonSerialize')->willReturn((['name' => 'Foo', 'age' => 42]));
+        $value->method('jsonSerialize')->willReturn((['name' => 'Foo', 'age' => 42]));
 
         $this->view->assign('value', $value);
         $this->view->setConfiguration([

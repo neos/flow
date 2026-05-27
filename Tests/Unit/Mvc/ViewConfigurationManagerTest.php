@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Eel\CompilingEvaluator;
  * Testcase for the MVC ViewConfigurationManager
  *
  */
-class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
+final class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
 {
     /**
      * @var ViewConfigurationManager
@@ -39,11 +42,6 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
      */
     protected $mockConfigurationManager;
 
-    /**
-     * @var VariableFrontend|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockCache;
-
 
     protected function setUp(): void
     {
@@ -54,22 +52,22 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         $this->inject($this->viewConfigurationManager, 'eelEvaluator', $eelEvaluator);
 
         // a dummy configuration manager is prepared
-        $this->mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $this->mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $this->inject($this->viewConfigurationManager, 'configurationManager', $this->mockConfigurationManager);
 
         // caching is deactivated
-        $this->mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
-        $this->mockCache->expects($this->any())->method('get')->willReturn((false));
-        $this->inject($this->viewConfigurationManager, 'cache', $this->mockCache);
+        $mockCache = $this->createMock(VariableFrontend::class);
+        $mockCache->method('get')->willReturn((false));
+        $this->inject($this->viewConfigurationManager, 'cache', $mockCache);
 
         // a dummy request is prepared
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
-        $this->mockActionRequest->expects($this->any())->method('getControllerPackageKey')->willReturn(('Neos.Flow'));
-        $this->mockActionRequest->expects($this->any())->method('getControllerSubpackageKey')->willReturn((''));
-        $this->mockActionRequest->expects($this->any())->method('getControllerName')->willReturn(('Standard'));
-        $this->mockActionRequest->expects($this->any())->method('getControllerActionName')->willReturn(('index'));
-        $this->mockActionRequest->expects($this->any())->method('getFormat')->willReturn(('html'));
-        $this->mockActionRequest->expects($this->any())->method('getParentRequest')->willReturn((null));
+        $this->mockActionRequest = $this->createMock(ActionRequest::class);
+        $this->mockActionRequest->method('getControllerPackageKey')->willReturn(('Neos.Flow'));
+        $this->mockActionRequest->method('getControllerSubpackageKey')->willReturn((''));
+        $this->mockActionRequest->method('getControllerName')->willReturn(('Standard'));
+        $this->mockActionRequest->method('getControllerActionName')->willReturn(('index'));
+        $this->mockActionRequest->method('getFormat')->willReturn(('html'));
+        $this->mockActionRequest->method('getParentRequest')->willReturn((null));
     }
 
     /**
@@ -89,7 +87,7 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
 
         $viewConfigurations = [$notMatchingConfiguration, $matchingConfiguration];
 
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->with('Views')->willReturn(($viewConfigurations));
+        $this->mockConfigurationManager->method('getConfiguration')->with('Views')->willReturn(($viewConfigurations));
         $calculatedConfiguration = $this->viewConfigurationManager->getViewConfiguration($this->mockActionRequest);
 
         self::assertEquals($calculatedConfiguration, $matchingConfiguration);
@@ -117,7 +115,7 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
 
         $viewConfigurations = [$notMatchingConfiguration, $matchingConfigurationOne, $matchingConfigurationTwo];
 
-        $this->mockConfigurationManager->expects($this->any())->method('getConfiguration')->with('Views')->willReturn(($viewConfigurations));
+        $this->mockConfigurationManager->method('getConfiguration')->with('Views')->willReturn(($viewConfigurations));
         $calculatedConfiguration = $this->viewConfigurationManager->getViewConfiguration($this->mockActionRequest);
 
         self::assertEquals($calculatedConfiguration, $matchingConfigurationTwo);
@@ -128,8 +126,8 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
      */
     protected function createEvaluator()
     {
-        $stringFrontendMock = $this->getMockBuilder(StringFrontend::class)->disableOriginalConstructor()->getMock();
-        $stringFrontendMock->expects($this->any())->method('get')->willReturn(false);
+        $stringFrontendMock = $this->createMock(StringFrontend::class);
+        $stringFrontendMock->method('get')->willReturn(false);
 
         $evaluator = new CompilingEvaluator();
         $evaluator->injectExpressionCache($stringFrontendMock);

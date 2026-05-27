@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC Web Routing DynamicRoutePart Class
  */
-class DynamicRoutePartTest extends UnitTestCase
+final class DynamicRoutePartTest extends UnitTestCase
 {
     /**
      * @var DynamicRoutePart
@@ -312,7 +315,7 @@ class DynamicRoutePartTest extends UnitTestCase
 
         $resolveResult = $this->dynamicRoutPart->resolve($routeValues);
         self::assertNotFalse($resolveResult);
-        self::assertEquals(['differentString' => 'value2'], $routeValues, 'Dynamic Route Part should unset matching element from $routeValues on successful resolve.');
+        self::assertSame(['differentString' => 'value2'], $routeValues, 'Dynamic Route Part should unset matching element from $routeValues on successful resolve.');
     }
 
     /**
@@ -325,7 +328,7 @@ class DynamicRoutePartTest extends UnitTestCase
 
         $resolveResult = $this->dynamicRoutPart->resolve($routeValues);
         self::assertNotFalse($resolveResult);
-        self::assertEquals(['foo' => ['bar' => ['otherKey' => 'should stay']], 'differentString' => 'value2'], $routeValues);
+        self::assertSame(['foo' => ['bar' => ['otherKey' => 'should stay']], 'differentString' => 'value2'], $routeValues);
     }
 
     /**
@@ -337,7 +340,7 @@ class DynamicRoutePartTest extends UnitTestCase
         $routeValues = ['differentString' => 'bar'];
 
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues));
-        self::assertEquals(['differentString' => 'bar'], $routeValues, 'Dynamic Route Part should not change $routeValues on unsuccessful resolve.');
+        self::assertSame(['differentString' => 'bar'], $routeValues, 'Dynamic Route Part should not change $routeValues on unsuccessful resolve.');
     }
 
     /**

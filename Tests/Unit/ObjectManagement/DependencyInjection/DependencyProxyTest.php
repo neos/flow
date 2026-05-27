@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\DependencyInjection;
 
 /*
@@ -14,7 +17,7 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\DependencyInjection;
 use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Tests\UnitTestCase;
 
-class DependencyProxyTest extends UnitTestCase
+final class DependencyProxyTest extends UnitTestCase
 {
     /**
      * @test

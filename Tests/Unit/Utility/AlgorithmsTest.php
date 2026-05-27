@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Utility\Algorithms;
  * Testcase for the Utility Algorithms class
  *
  */
-class AlgorithmsTest extends UnitTestCase
+final class AlgorithmsTest extends UnitTestCase
 {
     /**
      * @test
@@ -42,7 +45,7 @@ class AlgorithmsTest extends UnitTestCase
      */
     public function generateUUIDGeneratesAtLeastNotTheSameUuidOnSubsequentCalls()
     {
-        self::assertNotEquals(Algorithms::generateUUID(), Algorithms::generateUUID());
+        self::assertNotSame(Algorithms::generateUUID(), Algorithms::generateUUID());
     }
 
     /**
@@ -50,7 +53,7 @@ class AlgorithmsTest extends UnitTestCase
      */
     public function generateRandomBytesGeneratesRandomBytes()
     {
-        self::assertEquals(20, strlen(Algorithms::generateRandomBytes(20)));
+        self::assertSame(20, strlen(Algorithms::generateRandomBytes(20)));
     }
 
     /**
@@ -72,12 +75,10 @@ class AlgorithmsTest extends UnitTestCase
     /**
      * signature: $regularExpression, $charactersClass
      */
-    public static function randomStringCharactersDataProvider()
+    public static function randomStringCharactersDataProvider(): \Iterator
     {
-        return [
-            ['/^[#~+]{64}$/', '#~+'],
-            ['/^[a-f2-4%]{64}$/', 'abcdef234%'],
-        ];
+        yield ['/^[#~+]{64}$/', '#~+'];
+        yield ['/^[a-f2-4%]{64}$/', 'abcdef234%'];
     }
 
     /**

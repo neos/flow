@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
@@ -26,7 +29,7 @@ use Psr\SimpleCache\CacheInterface;
 /**
  * Testcase for the Cache Manager
  */
-class CacheManagerTest extends UnitTestCase
+final class CacheManagerTest extends UnitTestCase
 {
     /**
      * @var CacheManager
@@ -38,28 +41,18 @@ class CacheManagerTest extends UnitTestCase
      */
     protected $mockConfigurationManager;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $mockSystemLogger;
-
-    /**
-     * @var Environment
-     */
-    protected $mockEnvironment;
-
     protected function setUp(): void
     {
         vfsStream::setup('Foo');
         $this->cacheManager = new CacheManager();
 
-        $this->mockEnvironment = $this->getMockBuilder(Environment::class)->disableOriginalConstructor()->getMock();
-        $this->mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://Foo/'));
-        $this->cacheManager->injectEnvironment($this->mockEnvironment);
+        $mockEnvironment = $this->createMock(Environment::class);
+        $mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://Foo/'));
+        $this->cacheManager->injectEnvironment($mockEnvironment);
 
-        $this->mockSystemLogger = $this->createMock(LoggerInterface::class);
-        $this->cacheManager->injectLogger($this->mockSystemLogger);
-        $this->mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $mockSystemLogger = $this->createMock(LoggerInterface::class);
+        $this->cacheManager->injectLogger($mockSystemLogger);
+        $this->mockConfigurationManager = $this->createMock(ConfigurationManager::class);
         $this->cacheManager->injectConfigurationManager($this->mockConfigurationManager);
     }
 
@@ -84,10 +77,10 @@ class CacheManagerTest extends UnitTestCase
     public function managerThrowsExceptionOnCacheRegistrationWithAlreadyExistingIdentifier(): void
     {
         $this->expectException(Cache\Exception\DuplicateIdentifierException::class);
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('test'));
 
-        $cache2 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache2 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('test'));
 
         $this->cacheManager->registerCache($cache1);
@@ -99,10 +92,10 @@ class CacheManagerTest extends UnitTestCase
      */
     public function managerReturnsThePreviouslyRegisteredCached(): void
     {
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache1'));
 
-        $cache2 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache2 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache2'));
 
         $this->cacheManager->registerCache($cache1);
@@ -123,7 +116,7 @@ class CacheManagerTest extends UnitTestCase
     public function getCacheThrowsExceptionForNonExistingIdentifier(): void
     {
         $this->expectException(Cache\Exception\NoSuchCacheException::class);
-        $cache = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('someidentifier'));
 
         $this->cacheManager->registerCache($cache);
@@ -138,7 +131,7 @@ class CacheManagerTest extends UnitTestCase
     public function getCacheItemPoolThrowsExceptionForNonExistingIdentifier(): void
     {
         $this->expectException(Cache\Exception\NoSuchCacheException::class);
-        $cache = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('someidentifier'));
 
         $this->cacheManager->registerCache($cache);
@@ -153,7 +146,7 @@ class CacheManagerTest extends UnitTestCase
     public function getSimpleCacheThrowsExceptionForNonExistingIdentifier(): void
     {
         $this->expectException(Cache\Exception\NoSuchCacheException::class);
-        $cache = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('someidentifier'));
 
         $this->cacheManager->registerCache($cache);
@@ -167,7 +160,7 @@ class CacheManagerTest extends UnitTestCase
      */
     public function hasCacheReturnsCorrectResult(): void
     {
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache1'));
         $this->cacheManager->registerCache($cache1);
 
@@ -180,11 +173,11 @@ class CacheManagerTest extends UnitTestCase
      */
     public function isCachePersistentReturnsCorrectResult(): void
     {
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache1'));
         $this->cacheManager->registerCache($cache1);
 
-        $cache2 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache2 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache2'));
         $this->cacheManager->registerCache($cache2, true);
 
@@ -197,17 +190,17 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesByTagCallsTheFlushByTagMethodOfAllRegisteredCaches(): void
     {
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache1'));
         $cache1->expects($this->once())->method('flushByTag')->with(self::equalTo('theTag'));
         $this->cacheManager->registerCache($cache1);
 
-        $cache2 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache2 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache2'));
         $cache2->expects($this->once())->method('flushByTag')->with(self::equalTo('theTag'));
         $this->cacheManager->registerCache($cache2);
 
-        $persistentCache = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $persistentCache = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $persistentCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('persistentCache'));
         $persistentCache->expects($this->never())->method('flushByTag')->with(self::equalTo('theTag'));
         $this->cacheManager->registerCache($persistentCache, true);
@@ -220,17 +213,17 @@ class CacheManagerTest extends UnitTestCase
      */
     public function flushCachesCallsTheFlushMethodOfAllRegisteredCaches(): void
     {
-        $cache1 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache1 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache1->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache1'));
         $cache1->expects($this->once())->method('flush');
         $this->cacheManager->registerCache($cache1);
 
-        $cache2 = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $cache2 = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $cache2->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('cache2'));
         $cache2->expects($this->once())->method('flush');
         $this->cacheManager->registerCache($cache2);
 
-        $persistentCache = $this->getMockBuilder(Cache\Frontend\AbstractFrontend::class)->disableOriginalConstructor()->getMock();
+        $persistentCache = $this->createMock(Cache\Frontend\AbstractFrontend::class);
         $persistentCache->expects($this->atLeastOnce())->method('getIdentifier')->willReturn(('persistentCache'));
         $persistentCache->expects($this->never())->method('flush');
         $this->cacheManager->registerCache($persistentCache, true);
@@ -404,18 +397,16 @@ class CacheManagerTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function configurationFileChangesNeedAopProxyClassesRebuild(): array
+    public static function configurationFileChangesNeedAopProxyClassesRebuild(): \Iterator
     {
-        return [
-            ['A/Different/Package/Configuration/Routes.yaml', false],
-            ['A/Different/Package/Configuration/Views.yaml', false],
-            ['A/Different/Package/Configuration/Objects.yaml', true],
-            ['A/Different/Package/Configuration/Policy.yaml', true],
-            ['A/Different/Package/Configuration/Settings.yaml', true],
-            ['A/Different/Package/Configuration/Settings.Custom.yaml', true],
-        ];
+        yield ['A/Different/Package/Configuration/Routes.yaml', false];
+        yield ['A/Different/Package/Configuration/Views.yaml', false];
+        yield ['A/Different/Package/Configuration/Objects.yaml', true];
+        yield ['A/Different/Package/Configuration/Policy.yaml', true];
+        yield ['A/Different/Package/Configuration/Settings.yaml', true];
+        yield ['A/Different/Package/Configuration/Settings.Custom.yaml', true];
     }
 
     /**

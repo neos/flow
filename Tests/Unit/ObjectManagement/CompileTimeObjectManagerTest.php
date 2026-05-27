@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 /*
@@ -18,13 +21,8 @@ use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\UnitTestCase;
 use Psr\Log\LoggerInterface;
 
-class CompileTimeObjectManagerTest extends UnitTestCase
+final class CompileTimeObjectManagerTest extends UnitTestCase
 {
-    /**
-     * @var PackageManager
-     */
-    protected $mockPackageManager;
-
     /**
      * @var CompileTimeObjectManager
      */
@@ -33,7 +31,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         vfsStream::setup('Packages');
-        $this->mockPackageManager = $this->getMockBuilder(PackageManager::class)->disableOriginalConstructor()->getMock();
+        $mockPackageManager = $this->createMock(PackageManager::class);
         $this->compileTimeObjectManager = $this->getAccessibleMock(CompileTimeObjectManager::class, [], [], '', false);
         $this->compileTimeObjectManager->injectLogger($this->createMock(LoggerInterface::class));
         $configurations = [

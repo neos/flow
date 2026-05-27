@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Reflection;
 /**
  * Testcase for PropertyReflection
  */
-class PropertyReflectionTest extends UnitTestCase
+final class PropertyReflectionTest extends UnitTestCase
 {
     /**
      * @var string

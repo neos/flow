@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Aop;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Test suite for poincut expression related features
  *
  */
-class PointcutExpressionTest extends FunctionalTestCase
+final class PointcutExpressionTest extends FunctionalTestCase
 {
     /**
      * @test

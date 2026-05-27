@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -23,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Test case for the Http Cookie class
  */
-class BrowserTest extends UnitTestCase
+final class BrowserTest extends UnitTestCase
 {
     /**
      * @var Client\Browser
@@ -62,7 +65,6 @@ class BrowserTest extends UnitTestCase
     {
         $requestEngine = $this->createMock(Client\RequestEngineInterface::class);
         $requestEngine
-            ->expects($this->any())
             ->method('sendRequest')
             ->willReturn(new Response());
         $this->browser->setRequestEngine($requestEngine);
@@ -73,7 +75,7 @@ class BrowserTest extends UnitTestCase
 
         self::assertTrue($this->browser->getLastRequest()->hasHeader('X-Test-Header'));
         self::assertSame('Acme', $this->browser->getLastRequest()->getHeaderLine('X-Test-Header'));
-        self::assertStringContainsString('text/plain', $this->browser->getLastRequest()->getHeaderLine('Content-Type'));
+        self::assertStringContainsString('text/plain', (string) $this->browser->getLastRequest()->getHeaderLine('Content-Type'));
     }
 
     /**

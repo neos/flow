@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Translator
  */
-class TranslatorTest extends UnitTestCase
+final class TranslatorTest extends UnitTestCase
 {
     /**
      * @var I18n\Locale
@@ -48,9 +51,8 @@ class TranslatorTest extends UnitTestCase
         ];
 
         $mockLocalizationService = $this->createMock(I18n\Service::class);
-        $mockLocalizationService->expects($this->any())->method('getConfiguration')->willReturn((new I18n\Configuration('en_GB')));
+        $mockLocalizationService->method('getConfiguration')->willReturn((new I18n\Configuration('en_GB')));
         $mockLocalizationService
-            ->expects($this->any())
             ->method('getLocaleChain')
             ->with($this->defaultLocale)
             ->willReturn(($this->defaultLocaleChain))
@@ -246,14 +248,12 @@ class TranslatorTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function translateByOriginalLabelDataProvider()
+    public static function translateByOriginalLabelDataProvider(): \Iterator
     {
-        return [
-            ['originalLabel' => 'Some label', 'translatedLabel' => 'Translated label', 'expectedResult' => 'Translated label'],
-            ['originalLabel' => 'Some label', 'translatedLabel' => false, 'expectedResult' => 'Some label'],
-        ];
+        yield ['originalLabel' => 'Some label', 'translatedLabel' => 'Translated label', 'expectedResult' => 'Translated label'];
+        yield ['originalLabel' => 'Some label', 'translatedLabel' => false, 'expectedResult' => 'Some label'];
     }
 
     /**
@@ -279,14 +279,12 @@ class TranslatorTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function translateByIdDataProvider()
+    public static function translateByIdDataProvider(): \Iterator
     {
-        return [
-            ['id' => 'some.id', 'translatedId' => 'Translated id', 'expectedResult' => 'Translated id'],
-            ['id' => 'some.id', 'translatedId' => false, 'expectedResult' => null],
-        ];
+        yield ['id' => 'some.id', 'translatedId' => 'Translated id', 'expectedResult' => 'Translated id'];
+        yield ['id' => 'some.id', 'translatedId' => false, 'expectedResult' => null];
     }
 
     /**

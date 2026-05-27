@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\I18n;
  * Testcase for the I18N placeholder replacing
  *
  */
-class FormatResolverTest extends FunctionalTestCase
+final class FormatResolverTest extends FunctionalTestCase
 {
     protected FormatResolver $formatResolver;
 
@@ -32,15 +35,13 @@ class FormatResolverTest extends FunctionalTestCase
         $this->formatResolver = $this->objectManager->get(FormatResolver::class);
     }
 
-    public static function placeholderAndDateValues(): array
+    public static function placeholderAndDateValues(): \Iterator
     {
         $date = new \DateTime('@1322228231');
-        return [
-            ['{0,datetime,date,short}', [$date], new I18n\Locale('de'), '25.11.11'],
-            ['{0,datetime,date,short}', [$date], new I18n\Locale('en'), '11/25/11'],
-            ['{0,datetime,time,full}', [$date], new I18n\Locale('de'), '13:37:11 +00:00'],
-            ['{0,datetime,dateTime,short}', [$date], new I18n\Locale('en'), '11/25/11, 1:37 pm']
-        ];
+        yield ['{0,datetime,date,short}', [$date], new I18n\Locale('de'), '25.11.11'];
+        yield ['{0,datetime,date,short}', [$date], new I18n\Locale('en'), '11/25/11'];
+        yield ['{0,datetime,time,full}', [$date], new I18n\Locale('de'), '13:37:11 +00:00'];
+        yield ['{0,datetime,dateTime,short}', [$date], new I18n\Locale('en'), '11/25/11, 1:37 pm'];
     }
 
     /**

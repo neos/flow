@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session;
 
 /*
@@ -34,28 +37,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Unit tests for the Flow Session implementation
  */
-class SessionManagerTest extends UnitTestCase
+final class SessionManagerTest extends UnitTestCase
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $httpRequest;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $httpResponse;
-
-    /**
-     * @var Context|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockSecurityContext;
-
-    /**
-     * @var Bootstrap
-     */
-    protected $mockBootstrap;
-
     /**
      * @var ObjectManagerInterface
      */
@@ -93,20 +76,17 @@ class SessionManagerTest extends UnitTestCase
         vfsStream::setup('Foo');
 
         $serverRequestFactory = new ServerRequestFactory(new UriFactory());
-        $this->httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
-        $this->httpResponse = new Response();
+        $httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
+        $httpResponse = new Response();
 
         $mockRequestHandler = $this->createMock(RequestHandler::class);
-        $mockRequestHandler->expects($this->any())->method('getHttpRequest')->willReturn(($this->httpRequest));
-        $mockRequestHandler->expects($this->any())->method('getHttpResponse')->willReturn(($this->httpResponse));
+        $mockRequestHandler->method('getHttpRequest')->willReturn(($httpRequest));
+        $mockRequestHandler->method('getHttpResponse')->willReturn(($httpResponse));
 
-        $this->mockBootstrap = $this->createMock(Bootstrap::class);
-        $this->mockBootstrap->expects($this->any())->method('getActiveRequestHandler')->willReturn(($mockRequestHandler));
-
-        $this->mockSecurityContext = $this->createMock(Context::class);
+        $mockSecurityContext = $this->createMock(Context::class);
 
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects($this->any())->method('get')->with(Context::class)->willReturn(($this->mockSecurityContext));
+        $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($mockSecurityContext));
     }
 
     /**
@@ -121,7 +101,7 @@ class SessionManagerTest extends UnitTestCase
         $sessionManager = new SessionManager();
         $this->inject($sessionManager, 'metaDataCache', $metaDataCache);
         $this->inject($sessionManager, 'storageCache', $storageCache);
-        $this->inject($sessionManager, 'logger', $this->createMock(LoggerInterface::class));
+        $this->inject($sessionManager, 'logger', $this->createStub(LoggerInterface::class));
 
         $this->assertSame(0, $sessionManager->collectGarbage());
     }
@@ -180,7 +160,7 @@ class SessionManagerTest extends UnitTestCase
             $this->inject($sessionManager, 'inactivityTimeout', 1000);
             $this->inject($sessionManager, 'garbageCollectionProbability', 0);
             $this->inject($sessionManager, 'garbageCollectionMaximumPerRun', 5);
-            $this->inject($sessionManager, 'logger', $this->createMock(LoggerInterface::class));
+            $this->inject($sessionManager, 'logger', $this->createStub(LoggerInterface::class));
 
             $session = new Session();
             $this->inject($session, 'metaDataCache', $metaDataCache);

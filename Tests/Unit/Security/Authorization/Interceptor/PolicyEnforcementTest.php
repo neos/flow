@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
@@ -18,17 +21,17 @@ use Neos\Flow\Security;
 /**
  * Testcase for the policy enforcement interceptor
  */
-class PolicyEnforcementTest extends UnitTestCase
+final class PolicyEnforcementTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function invokeCallsTheAuthenticationManager()
     {
-        $securityContext = $this->createMock(Security\Context::class);
+        $securityContext = $this->createStub(Security\Context::class);
         $authenticationManager = $this->createMock(Security\Authentication\AuthenticationManagerInterface::class);
-        $privilegeManager = $this->createMock(Security\Authorization\PrivilegeManagerInterface::class);
-        $joinPoint = $this->createMock(JoinPointInterface::class);
+        $privilegeManager = $this->createStub(Security\Authorization\PrivilegeManagerInterface::class);
+        $joinPoint = $this->createStub(JoinPointInterface::class);
 
         $authenticationManager->expects($this->once())->method('authenticate');
 
@@ -43,10 +46,10 @@ class PolicyEnforcementTest extends UnitTestCase
      */
     public function invokeCallsThePrivilegeManagerToDecideOnTheCurrentJoinPoint()
     {
-        $securityContext = $this->createMock(Security\Context::class);
-        $authenticationManager = $this->createMock(Security\Authentication\AuthenticationManagerInterface::class);
+        $securityContext = $this->createStub(Security\Context::class);
+        $authenticationManager = $this->createStub(Security\Authentication\AuthenticationManagerInterface::class);
         $privilegeManager = $this->createMock(Security\Authorization\PrivilegeManagerInterface::class);
-        $joinPoint = $this->createMock(JoinPointInterface::class);
+        $joinPoint = $this->createStub(JoinPointInterface::class);
 
         $privilegeManager->expects($this->once())->method('isGranted')->with(Security\Authorization\Privilege\Method\MethodPrivilegeInterface::class);
 

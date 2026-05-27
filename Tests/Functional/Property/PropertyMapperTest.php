@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Property;
 
 /*
@@ -24,7 +27,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Test case for Property Mapper
  */
-class PropertyMapperTest extends FunctionalTestCase
+final class PropertyMapperTest extends FunctionalTestCase
 {
     /**
      *
@@ -423,7 +426,7 @@ class PropertyMapperTest extends FunctionalTestCase
 
         self::assertInstanceOf(Account::class, $account);
         self::assertCount(2, $account->getRoles());
-        self::assertEquals($expectedRoleIdentifiers, array_keys($account->getRoles()));
+        self::assertSame($expectedRoleIdentifiers, array_keys($account->getRoles()));
     }
 
     /**

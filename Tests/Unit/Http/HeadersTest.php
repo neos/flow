@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test case for the Http Headers class
  */
-class HeadersTest extends UnitTestCase
+final class HeadersTest extends UnitTestCase
 {
     /**
      * @test
@@ -173,7 +176,7 @@ class HeadersTest extends UnitTestCase
         $headers->eatCookie('Coffee-Fudge-Mess');
         unset($cookies['Coffee-Fudge-Mess']);
 
-        self::assertEquals(array_keys($cookies), array_keys($headers->getCookies()));
+        self::assertSame(array_keys($cookies), array_keys($headers->getCookies()));
     }
 
     /**
@@ -222,18 +225,16 @@ class HeadersTest extends UnitTestCase
     /**
      * Data provider with valid cache control headers
      */
-    public static function cacheControlHeaders()
+    public static function cacheControlHeaders(): \Iterator
     {
-        return [
-            ['public', 'public'],
-            ['private', 'private'],
-            ['no-cache', 'no-cache'],
-            ['private="X-Flow-Powered"', 'private="X-Flow-Powered"'],
-            ['no-cache= "X-Flow-Powered" ', 'no-cache="X-Flow-Powered"'],
-            ['max-age = 3600, must-revalidate', 'max-age=3600, must-revalidate'],
-            ['private, max-age=0, must-revalidate', 'private, max-age=0, must-revalidate'],
-            ['max-age=60, private,  proxy-revalidate', 'private, max-age=60, proxy-revalidate']
-        ];
+        yield ['public', 'public'];
+        yield ['private', 'private'];
+        yield ['no-cache', 'no-cache'];
+        yield ['private="X-Flow-Powered"', 'private="X-Flow-Powered"'];
+        yield ['no-cache= "X-Flow-Powered" ', 'no-cache="X-Flow-Powered"'];
+        yield ['max-age = 3600, must-revalidate', 'max-age=3600, must-revalidate'];
+        yield ['private, max-age=0, must-revalidate', 'private, max-age=0, must-revalidate'];
+        yield ['max-age=60, private,  proxy-revalidate', 'private, max-age=60, proxy-revalidate'];
     }
 
     /**
@@ -402,23 +403,21 @@ class HeadersTest extends UnitTestCase
     /**
      * Data provider for the test below
      */
-    public static function cacheDirectivesAndExampleValues()
+    public static function cacheDirectivesAndExampleValues(): \Iterator
     {
-        return [
-            ['public', true],
-            ['private', true],
-            ['private', 'X-Flow'],
-            ['no-cache', true],
-            ['no-cache', 'X-Flow'],
-            ['max-age', 60],
-            ['s-maxage', 120],
-            ['must-revalidate', true],
-            ['proxy-revalidate', true],
-            ['no-store', true],
-            ['no-transform', true],
-            ['must-revalidate', true],
-            ['proxy-revalidate', true]
-        ];
+        yield ['public', true];
+        yield ['private', true];
+        yield ['private', 'X-Flow'];
+        yield ['no-cache', true];
+        yield ['no-cache', 'X-Flow'];
+        yield ['max-age', 60];
+        yield ['s-maxage', 120];
+        yield ['must-revalidate', true];
+        yield ['proxy-revalidate', true];
+        yield ['no-store', true];
+        yield ['no-transform', true];
+        yield ['must-revalidate', true];
+        yield ['proxy-revalidate', true];
     }
 
     /**

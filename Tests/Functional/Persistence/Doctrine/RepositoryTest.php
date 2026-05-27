@@ -23,7 +23,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for basic repository operations
  */
-class RepositoryTest extends FunctionalTestCase
+final class RepositoryTest extends FunctionalTestCase
 {
     /**
      * @var bool
@@ -254,7 +254,7 @@ class RepositoryTest extends FunctionalTestCase
             $expectedCount++;
         }
 
-        self::assertEquals(2, $expectedCount);
+        self::assertSame(2, $expectedCount);
     }
 
     /**

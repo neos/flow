@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Error\Messages as Error;
  *
  * @covers \Neos\Flow\Property\TypeConverter\FloatConverter<extended>
  */
-class FloatConverterTest extends UnitTestCase
+final class FloatConverterTest extends UnitTestCase
 {
     /**
      * @var TypeConverterInterface

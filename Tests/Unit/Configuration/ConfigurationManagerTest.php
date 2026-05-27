@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Configuration;
 
 /*
@@ -34,7 +37,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Testcase for the configuration manager
  */
-class ConfigurationManagerTest extends UnitTestCase
+final class ConfigurationManagerTest extends UnitTestCase
 {
     /**
      * @var ApplicationContext|MockObject
@@ -87,7 +90,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function getConfigurationForTypeSettingsLoadsConfigurationIfNecessary(): void
     {
-        $packages = ['SomePackage' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock()];
+        $packages = ['SomePackage' => $this->createStub(Package::class)];
 
         $configurationManager = $this->getAccessibleConfigurationManager(['loadConfiguration', 'processConfigurationType']);
         $configurationManager->_set('configurations', [ConfigurationManager::CONFIGURATION_TYPE_SETTINGS => []]);
@@ -103,7 +106,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     public function getConfigurationForTypeObjectLoadsConfiguration(): void
     {
-        $packages = ['SomePackage' => $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock()];
+        $packages = ['SomePackage' => $this->createStub(Package::class)];
 
         $configurationManager = $this->getAccessibleConfigurationManager(['loadConfiguration', 'processConfigurationType']);
         $configurationManager->_set('configurations', [ConfigurationManager::CONFIGURATION_TYPE_OBJECTS => []]);
@@ -186,7 +189,7 @@ class ConfigurationManagerTest extends UnitTestCase
         $mockYamlSource = $this->getMockBuilder(YamlSource::class)->onlyMethods(['load', 'save'])->getMock();
         $mockYamlSource->method('load')->willReturnCallBack([$this, 'packageSettingsCallback']);
 
-        $mockPackageA = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
+        $mockPackageA = $this->createMock(Package::class);
         $mockPackageA->method('getConfigurationPath')->willReturn(('PackageA/Configuration/'));
         $mockPackageA->method('getPackageKey')->willReturn(('PackageA'));
 
@@ -694,8 +697,8 @@ class ConfigurationManagerTest extends UnitTestCase
         $settingsPhpString = var_export($settings, true);
         $configurationManager = $this->getAccessibleConfigurationManager([]);
         $processedPhpString = $configurationManager->_call('replaceVariablesInPhpString', $settingsPhpString);
-        self::assertStringContainsString("'baz' => (defined('PHP_VERSION') ? constant('PHP_VERSION') : null)", $processedPhpString);
-        self::assertStringContainsString("'to' => (defined('FLOW_PATH_ROOT') ? constant('FLOW_PATH_ROOT') : null)", $processedPhpString);
+        self::assertStringContainsString("'baz' => (defined('PHP_VERSION') ? constant('PHP_VERSION') : null)", (string) $processedPhpString);
+        self::assertStringContainsString("'to' => (defined('FLOW_PATH_ROOT') ? constant('FLOW_PATH_ROOT') : null)", (string) $processedPhpString);
     }
 
     /**
@@ -1760,7 +1763,7 @@ class ConfigurationManagerTest extends UnitTestCase
 
         // we don't invoke $configurationManager->setTemporaryDirectoryPath();, and thus the cache is disabled
 
-        $mockLoader = $this->getMockBuilder(LoaderInterface::class)->getMock();
+        $mockLoader = $this->createMock(LoaderInterface::class);
 
         $mockLoader->method('load')->willReturn(
             [
@@ -1826,7 +1829,7 @@ class ConfigurationManagerTest extends UnitTestCase
      */
     protected function getMockPackages(): array
     {
-        $mockPackageFlow = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
+        $mockPackageFlow = $this->createMock(Package::class);
         $mockPackageFlow->method('getConfigurationPath')->willReturn(('Flow/Configuration/'));
         $mockPackageFlow->method('getPackageKey')->willReturn(('Neos.Flow'));
 

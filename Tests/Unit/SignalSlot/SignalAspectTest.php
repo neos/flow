@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\SignalSlot;
 
 /*
@@ -19,17 +22,17 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Signal Aspect
  */
-class SignalAspectTest extends UnitTestCase
+final class SignalAspectTest extends UnitTestCase
 {
     /**
      * @test
      */
     public function forwardSignalToDispatcherForwardsTheSignalsMethodArgumentsToTheDispatcher()
     {
-        $mockJoinPoint = $this->getMockBuilder(JoinPoint::class)->disableOriginalConstructor()->getMock();
-        $mockJoinPoint->expects($this->any())->method('getClassName')->willReturn(('SampleClass'));
-        $mockJoinPoint->expects($this->any())->method('getMethodName')->willReturn(('emitSignal'));
-        $mockJoinPoint->expects($this->any())->method('getMethodArguments')->willReturn((['arg1' => 'val1', 'arg2' => ['val2']]));
+        $mockJoinPoint = $this->createMock(JoinPoint::class);
+        $mockJoinPoint->method('getClassName')->willReturn(('SampleClass'));
+        $mockJoinPoint->method('getMethodName')->willReturn(('emitSignal'));
+        $mockJoinPoint->method('getMethodArguments')->willReturn((['arg1' => 'val1', 'arg2' => ['val2']]));
 
         $mockDispatcher = $this->createMock(Dispatcher::class);
         $mockDispatcher->expects($this->once())->method('dispatch')->with('SampleClass', 'signal', ['arg1' => 'val1', 'arg2' => ['val2']]);

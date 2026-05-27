@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -22,7 +25,7 @@ require_once('AbstractValidatorTestcase.php');
 /**
  * Testcase for the number validator
  */
-class NumberValidatorTest extends AbstractValidatorTestcase
+final class NumberValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = NumberValidator::class;
 
@@ -72,7 +75,7 @@ class NumberValidatorTest extends AbstractValidatorTestcase
         $this->validatorOptions(['locale' => $this->sampleLocale]);
         $this->inject($this->validator, 'numberParser', $this->mockNumberParser);
 
-        self::assertEquals(1, count($this->validator->validate($sampleInvalidNumber)->getErrors()));
+        self::assertCount(1, $this->validator->validate($sampleInvalidNumber)->getErrors());
     }
 
     /**
@@ -87,6 +90,6 @@ class NumberValidatorTest extends AbstractValidatorTestcase
         $this->validatorOptions(['locale' => 'en_GB', 'formatLength' => NumbersReader::FORMAT_LENGTH_DEFAULT, 'formatType' => NumbersReader::FORMAT_TYPE_PERCENT]);
         $this->inject($this->validator, 'numberParser', $this->mockNumberParser);
 
-        self::assertEquals(1, count($this->validator->validate($sampleInvalidNumber)->getErrors()));
+        self::assertCount(1, $this->validator->validate($sampleInvalidNumber)->getErrors());
     }
 }

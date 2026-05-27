@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http\Component;
 
 /*
@@ -18,7 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class MethodOverrideMiddlewareTest extends UnitTestCase
+final class MethodOverrideMiddlewareTest extends UnitTestCase
 {
     /**
      * @var MethodOverrideMiddleware
@@ -39,8 +42,8 @@ class MethodOverrideMiddlewareTest extends UnitTestCase
     {
         $this->middleware = new MethodOverrideMiddleware();
 
-        $this->mockRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
-        $this->mockResponse = $this->getMockBuilder(ResponseInterface::class)->getMock();
+        $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
+        $this->mockResponse = $this->createMock(ResponseInterface::class);
     }
 
     public static function matchingRequests_dataProvider(): \Traversable
@@ -60,7 +63,7 @@ class MethodOverrideMiddlewareTest extends UnitTestCase
     public function process_matchingRequests(string $method, array $headers, array $parsedBody, string $expectedMethod): void
     {
         $mockRequest = $this->prepareMockRequest($method, $headers, $parsedBody);
-        $mockAlteredRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockAlteredRequest = $this->createStub(ServerRequestInterface::class);
         $mockRequest->expects($this->once())->method('withMethod')->with($expectedMethod)->willReturn($mockAlteredRequest);
         $this->mockRequestHandler->expects($this->once())->method('handle')->willReturnCallback(function ($request) use ($mockAlteredRequest) {
             self::assertSame($request, $mockAlteredRequest);
@@ -104,7 +107,7 @@ class MethodOverrideMiddlewareTest extends UnitTestCase
      */
     private function prepareMockRequest(string $method, array $headers, array $parsedBody)
     {
-        $mockRequest = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $mockRequest = $this->createMock(ServerRequestInterface::class);
         $mockRequest->method('getMethod')->willReturn($method);
         $mockRequest->method('getParsedBody')->willReturn($parsedBody);
         $mockRequest->method('hasHeader')->willReturnCallback(function ($header) use ($headers) {

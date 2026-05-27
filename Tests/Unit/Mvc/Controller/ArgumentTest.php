@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Error\Messages as FlowError;
 /**
  * Testcase for the MVC Controller Argument
  */
-class ArgumentTest extends UnitTestCase
+final class ArgumentTest extends UnitTestCase
 {
     /**
      * @var Mvc\Controller\Argument
@@ -107,7 +110,7 @@ class ArgumentTest extends UnitTestCase
      */
     public function setValidatorShouldProvideFluentInterfaceAndReallySetValidator()
     {
-        $mockValidator = $this->createMock(ValidatorInterface::class);
+        $mockValidator = $this->createStub(ValidatorInterface::class);
         $returnedArgument = $this->simpleValueArgument->setValidator($mockValidator);
         self::assertSame($this->simpleValueArgument, $returnedArgument, 'The returned argument is not the original argument.');
         self::assertSame($mockValidator, $this->simpleValueArgument->getValidator());

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
@@ -25,17 +28,12 @@ use Neos\Flow\Utility;
 /**
  * Test case for the Cache Factory
  */
-class CacheFactoryTest extends UnitTestCase
+final class CacheFactoryTest extends UnitTestCase
 {
     /**
      * @var Utility\Environment
      */
     protected $mockEnvironment;
-
-    /**
-     * @var CacheManager|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockCacheManager;
 
     /**
      * @var EnvironmentConfiguration
@@ -50,15 +48,15 @@ class CacheFactoryTest extends UnitTestCase
         vfsStream::setup('Foo');
 
         $this->mockEnvironment = $this->createMock(Utility\Environment::class);
-        $this->mockEnvironment->expects($this->any())->method('getPathToTemporaryDirectory')->willReturn(('vfs://Foo/'));
-        $this->mockEnvironment->expects($this->any())->method('getMaximumPathLength')->willReturn((1024));
-        $this->mockEnvironment->expects($this->any())->method('getContext')->willReturn((new ApplicationContext('Testing')));
+        $this->mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://Foo/'));
+        $this->mockEnvironment->method('getMaximumPathLength')->willReturn((1024));
+        $this->mockEnvironment->method('getContext')->willReturn((new ApplicationContext('Testing')));
 
-        $this->mockCacheManager = $this->getMockBuilder(CacheManager::class)
+        $mockCacheManager = $this->getMockBuilder(CacheManager::class)
             ->onlyMethods(['registerCache', 'isCachePersistent'])
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockCacheManager->expects($this->any())->method('isCachePersistent')->willReturn((false));
+        $mockCacheManager->method('isCachePersistent')->willReturn((false));
 
         $this->mockEnvironmentConfiguration = $this->getMockBuilder(EnvironmentConfiguration::class)
             ->onlyMethods([])

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Xliff;
 
 /*
@@ -18,7 +21,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the FileAdapter
  */
-class FileAdapterTest extends UnitTestCase
+final class FileAdapterTest extends UnitTestCase
 {
     /**
      * @var array
@@ -68,9 +71,7 @@ class FileAdapterTest extends UnitTestCase
         $result = $fileAdapter->getTargetByTransUnitId('key2', 1);
         self::assertEquals('Übersetzte Mehrzahl 1', $result);
 
-        $mockLogger = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockLogger = $this->createStub(LoggerInterface::class);
         $this->inject($fileAdapter, 'i18nLogger', $mockLogger);
 
         $result = $fileAdapter->getTargetByTransUnitId('not.existing');
@@ -97,9 +98,7 @@ class FileAdapterTest extends UnitTestCase
             'fileIdentifier' => 'Neos.Flow:Foo'
         ], new I18n\Locale('de'));
 
-        $mockLogger = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $mockLogger = $this->createMock(LoggerInterface::class);
         $mockLogger->expects($this->once())
             ->method('debug')
             ->with($this->stringStartsWith('No trans-unit elements were found'));

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -35,7 +38,7 @@ require_once(__DIR__ . '/Fixtures/MockRoutePartHandler.php');
 /**
  * Testcase for the MVC Web Routing Route Class
  */
-class RouteTest extends UnitTestCase
+final class RouteTest extends UnitTestCase
 {
     /**
      * @var Routing\Route
@@ -68,9 +71,9 @@ class RouteTest extends UnitTestCase
         $this->route->_set('objectManager', $this->mockObjectManager);
 
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $this->mockPersistenceManager->method('convertObjectsToIdentityArrays')->will(self::returnCallBack(function ($array) {
+        $this->mockPersistenceManager->method('convertObjectsToIdentityArrays')->willReturnCallback(function (array $array): array {
             return $array;
-        }));
+        });
         $this->inject($this->route, 'persistenceManager', $this->mockPersistenceManager);
     }
 
@@ -82,7 +85,7 @@ class RouteTest extends UnitTestCase
     {
         $mockUri = new Uri('http://localhost/' . $routePath);
         /** @var ServerRequestInterface|MockObject $mockHttpRequest */
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $mockHttpRequest->method('getUri')->willReturn($mockUri);
 
         $routeContext = new RouteContext($mockHttpRequest, RouteParameters::createEmpty());
@@ -153,7 +156,7 @@ class RouteTest extends UnitTestCase
                 ]
             ]
         );
-        $mockRoutePartHandler = $this->createMock(Routing\DynamicRoutePartInterface::class);
+        $mockRoutePartHandler = $this->createStub(Routing\DynamicRoutePartInterface::class);
         $this->mockObjectManager->expects($this->once())->method('get')->with('SomeRoutePartHandler')->willReturn($mockRoutePartHandler);
 
         $this->route->parse();
@@ -173,7 +176,7 @@ class RouteTest extends UnitTestCase
                 ]
             ]
         );
-        $mockRoutePartHandler = $this->createMock(Routing\StaticRoutePart::class);
+        $mockRoutePartHandler = $this->createStub(Routing\StaticRoutePart::class);
         $this->mockObjectManager->expects($this->once())->method('get')->with(Routing\StaticRoutePart::class)->willReturn($mockRoutePartHandler);
 
         $this->route->parse();
@@ -477,17 +480,15 @@ class RouteTest extends UnitTestCase
     /**
      * Data provider
      */
-    public static function matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider()
+    public static function matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider(): \Iterator
     {
         $object = new \stdClass();
-        return [
-            [true, ['foo' => $object]],
-            [true, ['foo' => 'bar', 'baz' => $object]],
-            [true, ['foo' => ['bar' => ['baz' => 'quux', 'here' => $object]]]],
-            [false, ['no object']],
-            [false, ['foo' => 'no object']],
-            [false, [true]]
-        ];
+        yield [true, ['foo' => $object]];
+        yield [true, ['foo' => 'bar', 'baz' => $object]];
+        yield [true, ['foo' => ['bar' => ['baz' => 'quux', 'here' => $object]]]];
+        yield [false, ['no object']];
+        yield [false, ['foo' => 'no object']];
+        yield [false, [true]];
     }
 
     /**
@@ -768,9 +769,9 @@ class RouteTest extends UnitTestCase
         $this->route->setHttpMethods(['POST', 'PUT']);
 
         /** @var ServerRequestInterface|MockObject $mockHttpRequest */
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
 
-        $mockUri = $this->getMockBuilder(UriInterface::class)->disableOriginalConstructor()->getMock();
+        $mockUri = $this->createMock(UriInterface::class);
         $mockUri->method('getPath')->willReturn('/');
         $mockUri->method('withQuery')->willReturn($mockUri);
         $mockUri->method('withFragment')->willReturn($mockUri);
@@ -790,9 +791,9 @@ class RouteTest extends UnitTestCase
         $this->route->setHttpMethods(['POST', 'PUT']);
 
         /** @var ServerRequestInterface|MockObject $mockHttpRequest */
-        $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
 
-        $mockUri = $this->getMockBuilder(Uri::class)->disableOriginalConstructor()->getMock();
+        $mockUri = $this->createMock(Uri::class);
         $mockUri->method('getPath')->willReturn('/');
         $mockUri->method('withQuery')->willReturn($mockUri);
         $mockUri->method('withFragment')->willReturn($mockUri);
@@ -1251,72 +1252,70 @@ class RouteTest extends UnitTestCase
     /**
      * Data provider
      */
-    public static function compareAndRemoveMatchingDefaultValuesDataProvider()
+    public static function compareAndRemoveMatchingDefaultValuesDataProvider(): \Iterator
     {
-        return [
-            [
-                'defaults' => [],
-                'routeValues' => [],
-                'expectedModifiedRouteValues' => [],
-                'expectedResult' => true
-            ],
-            [
-                'defaults' => [],
-                'routeValues' => ['foo' => 'bar'],
-                'expectedModifiedRouteValues' => ['foo' => 'bar'],
-                'expectedResult' => true
-            ],
-            [
-                'defaults' => ['foo' => 'bar'],
-                'routeValues' => [],
-                'expectedModifiedRouteValues' => [],
-                'expectedResult' => false
-            ],
-            [
-                'defaults' => ['foo' => 'bar'],
-                'routeValues' => ['foo' => 'bar'],
-                'expectedModifiedRouteValues' => [],
-                'expectedResult' => true
-            ],
-            [
-                'defaults' => ['someKey' => 'somevalue'],
-                'routeValues' => ['someKey' => 'SomeValue', 'SomeKey' => 'SomeOtherValue'],
-                'expectedModifiedRouteValues' => ['SomeKey' => 'SomeOtherValue'],
-                'expectedResult' => true
-            ],
-            [
-                'defaults' => ['foo' => 'bar'],
-                'routeValues' => ['foo' => 'bar', 'bar' => 'baz'],
-                'expectedModifiedRouteValues' => ['bar' => 'baz'],
-                'expectedResult' => true
-            ],
-            [
-                'defaults' => ['foo' => 'bar', 'bar' => 'baz'],
-                'routeValues' => ['foo' => 'bar'],
-                'expectedModifiedRouteValues' => [],
-                'expectedResult' => false
-            ],
-            [
-                'defaults' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue']]],
-                'routeValues' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue', 'someOtherKey' => 'someOtherValue']]],
-                'expectedModifiedRouteValues' => ['firstLevel' => ['secondLevel' => ['someOtherKey' => 'someOtherValue']]],
-                'expectedResult' => true],
-            [
-                'defaults' => ['foo' => 'bar'],
-                'routeValues' => ['foo' => 'baz'],
-                'expectedModifiedRouteValues' => null,
-                'expectedResult' => false],
-            [
-                'defaults' => ['foo' => 'bar'],
-                'routeValues' => ['foo' => ['bar' => 'bar']],
-                'expectedModifiedRouteValues' => null,
-                'expectedResult' => false],
-            [
-                'defaults' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue']]],
-                'routeValues' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeOtherValue']]],
-                'expectedModifiedRouteValues' => null,
-                'expectedResult' => false]
+        yield [
+            'defaults' => [],
+            'routeValues' => [],
+            'expectedModifiedRouteValues' => [],
+            'expectedResult' => true
         ];
+        yield [
+            'defaults' => [],
+            'routeValues' => ['foo' => 'bar'],
+            'expectedModifiedRouteValues' => ['foo' => 'bar'],
+            'expectedResult' => true
+        ];
+        yield [
+            'defaults' => ['foo' => 'bar'],
+            'routeValues' => [],
+            'expectedModifiedRouteValues' => [],
+            'expectedResult' => false
+        ];
+        yield [
+            'defaults' => ['foo' => 'bar'],
+            'routeValues' => ['foo' => 'bar'],
+            'expectedModifiedRouteValues' => [],
+            'expectedResult' => true
+        ];
+        yield [
+            'defaults' => ['someKey' => 'somevalue'],
+            'routeValues' => ['someKey' => 'SomeValue', 'SomeKey' => 'SomeOtherValue'],
+            'expectedModifiedRouteValues' => ['SomeKey' => 'SomeOtherValue'],
+            'expectedResult' => true
+        ];
+        yield [
+            'defaults' => ['foo' => 'bar'],
+            'routeValues' => ['foo' => 'bar', 'bar' => 'baz'],
+            'expectedModifiedRouteValues' => ['bar' => 'baz'],
+            'expectedResult' => true
+        ];
+        yield [
+            'defaults' => ['foo' => 'bar', 'bar' => 'baz'],
+            'routeValues' => ['foo' => 'bar'],
+            'expectedModifiedRouteValues' => [],
+            'expectedResult' => false
+        ];
+        yield [
+            'defaults' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue']]],
+            'routeValues' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue', 'someOtherKey' => 'someOtherValue']]],
+            'expectedModifiedRouteValues' => ['firstLevel' => ['secondLevel' => ['someOtherKey' => 'someOtherValue']]],
+            'expectedResult' => true];
+        yield [
+            'defaults' => ['foo' => 'bar'],
+            'routeValues' => ['foo' => 'baz'],
+            'expectedModifiedRouteValues' => null,
+            'expectedResult' => false];
+        yield [
+            'defaults' => ['foo' => 'bar'],
+            'routeValues' => ['foo' => ['bar' => 'bar']],
+            'expectedModifiedRouteValues' => null,
+            'expectedResult' => false];
+        yield [
+            'defaults' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeValue']]],
+            'routeValues' => ['firstLevel' => ['secondLevel' => ['someKey' => 'SomeOtherValue']]],
+            'expectedModifiedRouteValues' => null,
+            'expectedResult' => false];
     }
 
     /**

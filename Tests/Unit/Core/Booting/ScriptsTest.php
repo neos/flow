@@ -46,7 +46,7 @@ class ScriptsMock extends Scripts
 /**
  * Testcase for the initialization scripts
  */
-class ScriptsTest extends UnitTestCase
+final class ScriptsTest extends UnitTestCase
 {
     /**
      * @test
@@ -99,7 +99,7 @@ class ScriptsTest extends UnitTestCase
      */
     public function initializeConfigurationInjectsSettingsToPackageManager()
     {
-        $mockSignalSlotDispatcher = $this->createMock(Dispatcher::class);
+        $mockSignalSlotDispatcher = $this->createStub(Dispatcher::class);
         $mockPackageManager = $this->createMock(PackageManager::class, ['injectSettings'], [], '', false, true);
 
         $bootstrap = new Bootstrap('Testing');

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Configuration;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Utility\Environment;
 
-class ConfigurationManagerTest extends FunctionalTestCase
+final class ConfigurationManagerTest extends FunctionalTestCase
 {
     /**
      * @test

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Eel;
 use Neos\Flow\Tests\Functional\Security\Fixtures;
 
-class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
+final class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
 {
     protected static $testablePersistenceEnabled = true;
 
@@ -33,18 +36,15 @@ class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
         }
     }
 
-    public static function expressions(): array
+    public static function expressions(): \Iterator
     {
-        return [
-            [
-                'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name").equals("live")',
-                '(t0.name = \'live\')'
-            ],
-
-            [
-                'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name") == "live"',
-                '(t0.name = \'live\')'
-            ]
+        yield [
+            'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name").equals("live")',
+            '(t0.name = \'live\')'
+        ];
+        yield [
+            'isType("Neos\Flow\Tests\Functional\Security\Fixtures\RestrictableEntity") && property("name") == "live"',
+            '(t0.name = \'live\')'
         ];
     }
 

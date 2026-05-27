@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the BCryptHashingStrategy
  */
-class BCryptHashingStrategyTest extends UnitTestCase
+final class BCryptHashingStrategyTest extends UnitTestCase
 {
     /**
      * Test the implementation using the sample hashes shown on http://php.net/crypt
@@ -25,10 +28,10 @@ class BCryptHashingStrategyTest extends UnitTestCase
      */
     public function systemSupportsBlowfishCryptMethod()
     {
-        self::assertTrue(\CRYPT_BLOWFISH === 1);
+        self::assertSame(\CRYPT_BLOWFISH, 1);
 
         $cryptResult = crypt('rasmuslerdorf', '$2a$07$usesomesillystringforsalt$');
-        self::assertEquals('$2a$07$usesomesillystringfore2uDLvp1Ii2e./U9C8sBjqp8I90dH6hi', $cryptResult);
+        self::assertSame('$2a$07$usesomesillystringfore2uDLvp1Ii2e./U9C8sBjqp8I90dH6hi', $cryptResult);
     }
 
     /**

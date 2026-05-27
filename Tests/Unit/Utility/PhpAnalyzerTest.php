@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
@@ -17,26 +20,22 @@ use Neos\Flow\Utility\PhpAnalyzer;
 /**
  * Testcase for the PhpAnalyzer utility class
  */
-class PhpAnalyzerTest extends UnitTestCase
+final class PhpAnalyzerTest extends UnitTestCase
 {
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleClasses()
+    public static function sampleClasses(): \Iterator
     {
-        return [
-            ['phpCode' => '', 'namespace' => null, 'className' => null, 'fqn' => null],
-            ['phpCode' => 'namespace Foo;', 'namespace' => null, 'className' => null, 'fqn' => null],
-            ['phpCode' => 'class Bar {}', 'namespace' => null, 'className' => null, 'fqn' => null],
-            ['phpCode' => '<?php class {}', 'namespace' => null, 'className' => null, 'fqn' => null],
-
-            ['phpCode' => '<?php class SomeClass {}', 'namespace' => null, 'className' => 'SomeClass', 'fqn' => 'SomeClass'],
-            ['phpCode' => '<?php namespace Foo\Bar; class SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'],
-
-            ['phpCode' => '<?php namespace \Foo\Bar\; class SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'],
-            ['phpCode' => '<?php ' . chr(13) . '  namespace  Foo\Bar {' . chr(13) . '	 class    SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'],
-            ['phpCode' => 'foo <?php class SomeClass', 'namespace' => null, 'className' => 'SomeClass', 'fqn' => 'SomeClass'],
-        ];
+        yield ['phpCode' => '', 'namespace' => null, 'className' => null, 'fqn' => null];
+        yield ['phpCode' => 'namespace Foo;', 'namespace' => null, 'className' => null, 'fqn' => null];
+        yield ['phpCode' => 'class Bar {}', 'namespace' => null, 'className' => null, 'fqn' => null];
+        yield ['phpCode' => '<?php class {}', 'namespace' => null, 'className' => null, 'fqn' => null];
+        yield ['phpCode' => '<?php class SomeClass {}', 'namespace' => null, 'className' => 'SomeClass', 'fqn' => 'SomeClass'];
+        yield ['phpCode' => '<?php namespace Foo\Bar; class SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'];
+        yield ['phpCode' => '<?php namespace \Foo\Bar\; class SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'];
+        yield ['phpCode' => '<?php ' . chr(13) . '  namespace  Foo\Bar {' . chr(13) . '	 class    SomeClass {}', 'namespace' => 'Foo\Bar', 'className' => 'SomeClass', 'fqn' => 'Foo\Bar\SomeClass'];
+        yield ['phpCode' => 'foo <?php class SomeClass', 'namespace' => null, 'className' => 'SomeClass', 'fqn' => 'SomeClass'];
     }
 
     /**

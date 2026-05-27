@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Configuration;
 
 /*
@@ -26,7 +29,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 /**
  * Testcase for Configuration Validation
  */
-class ConfigurationValidationTest extends FunctionalTestCase
+final class ConfigurationValidationTest extends FunctionalTestCase
 {
     protected static array $contextNames = ['Development', 'Production', 'Testing'];
     protected static array $configurationTypes = ['Caches', 'Objects', 'Policy', 'Routes', 'Settings'];

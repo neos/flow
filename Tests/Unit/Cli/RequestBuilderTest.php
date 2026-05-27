@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Flow\Cli;
 /**
  * Testcase for the MVC CLI Request Builder
  */
-class RequestBuilderTest extends UnitTestCase
+final class RequestBuilderTest extends UnitTestCase
 {
     /**
      * @var Cli\RequestBuilder
@@ -35,19 +38,9 @@ class RequestBuilderTest extends UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @var Cli\Command
-     */
-    protected $mockCommand;
-
-    /**
      * @var Cli\CommandManager
      */
     protected $mockCommandManager;
-
-    /**
-     * @var ReflectionService
-     */
-    protected $mockReflectionService;
 
     /**
      * Sets up this test case
@@ -56,16 +49,14 @@ class RequestBuilderTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects($this->any())->method('getObjectNameByClassName')->with('Acme\Test\Command\DefaultCommandController')->willReturn(('Acme\Test\Command\DefaultCommandController'));
+        $this->mockObjectManager->method('getObjectNameByClassName')->with('Acme\Test\Command\DefaultCommandController')->willReturn(('Acme\Test\Command\DefaultCommandController'));
 
-        $this->mockCommand = $this->getMockBuilder(Cli\Command::class)->disableOriginalConstructor()->getMock();
-        $this->mockCommand->expects($this->any())->method('getControllerClassName')->willReturn(('Acme\Test\Command\DefaultCommandController'));
-        $this->mockCommand->expects($this->any())->method('getControllerCommandName')->willReturn(('list'));
+        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand->method('getControllerClassName')->willReturn(('Acme\Test\Command\DefaultCommandController'));
+        $mockCommand->method('getControllerCommandName')->willReturn(('list'));
 
         $this->mockCommandManager = $this->createMock(Cli\CommandManager::class);
-        $this->mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('acme.test:default:list')->willReturn(($this->mockCommand));
-
-        $this->mockReflectionService = $this->createMock(ReflectionService::class);
+        $this->mockCommandManager->method('getCommandByIdentifier')->with('acme.test:default:list')->willReturn(($mockCommand));
 
         $this->requestBuilder = new Cli\RequestBuilder();
         $this->requestBuilder->injectObjectManager($this->mockObjectManager);
@@ -97,7 +88,7 @@ class RequestBuilderTest extends UnitTestCase
         $this->mockCommandManager->getCommandByIdentifier('acme.test:default:list');
 
         $mockCommandManager = $this->createMock(Cli\CommandManager::class);
-        $mockCommandManager->expects($this->any())->method('getCommandByIdentifier')->with('test:default:list')->will(self::throwException(new NoSuchCommandException()));
+        $mockCommandManager->method('getCommandByIdentifier')->with('test:default:list')->willThrowException(new NoSuchCommandException());
         $this->requestBuilder->injectCommandManager($mockCommandManager);
 
         $request = $this->requestBuilder->build('test:default:list');
@@ -120,8 +111,8 @@ class RequestBuilderTest extends UnitTestCase
         $request = $this->requestBuilder->build('acme.test:default:list --test-argument=value --test-argument2=value2');
         self::assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
         self::assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
-        self::assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
-        self::assertSame($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
+        self::assertSame('value', $request->getArgument('testArgument'), 'The "testArgument" had not the given value.');
+        self::assertSame('value2', $request->getArgument('testArgument2'), 'The "testArgument2" had not the given value.');
     }
 
     /**
@@ -144,10 +135,10 @@ class RequestBuilderTest extends UnitTestCase
         self::assertTrue($request->hasArgument('testArgument2'), 'The given "testArgument2" was not found in the built request.');
         self::assertTrue($request->hasArgument('testArgument3'), 'The given "testArgument3" was not found in the built request.');
         self::assertTrue($request->hasArgument('testArgument4'), 'The given "testArgument4" was not found in the built request.');
-        self::assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
-        self::assertSame($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
-        self::assertSame($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
-        self::assertSame($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
+        self::assertSame('value', $request->getArgument('testArgument'), 'The "testArgument" had not the given value.');
+        self::assertSame('value2', $request->getArgument('testArgument2'), 'The "testArgument2" had not the given value.');
+        self::assertSame('value3', $request->getArgument('testArgument3'), 'The "testArgument3" had not the given value.');
+        self::assertSame('value4', $request->getArgument('testArgument4'), 'The "testArgument4" had not the given value.');
     }
 
     /**
@@ -168,9 +159,9 @@ class RequestBuilderTest extends UnitTestCase
         self::assertTrue($request->hasArgument('d'), 'The given "d" was not found in the built request.');
         self::assertTrue($request->hasArgument('f'), 'The given "f" was not found in the built request.');
         self::assertTrue($request->hasArgument('a'), 'The given "a" was not found in the built request.');
-        self::assertSame($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
-        self::assertSame($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
-        self::assertSame($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
+        self::assertSame('valued', $request->getArgument('d'), 'The "d" had not the given value.');
+        self::assertSame('valuef', $request->getArgument('f'), 'The "f" had not the given value.');
+        self::assertSame('valuea', $request->getArgument('a'), 'The "a" had not the given value.');
     }
 
     /**
@@ -214,15 +205,15 @@ class RequestBuilderTest extends UnitTestCase
         self::assertTrue($request->hasArgument('testArgument6'), 'The given "testArgument6" was not found in the built request.');
         self::assertTrue($request->hasArgument('j'), 'The given "j" was not found in the built request.');
         self::assertTrue($request->hasArgument('m'), 'The given "m" was not found in the built request.');
-        self::assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
-        self::assertSame($request->getArgument('testArgument2'), 'value2', 'The "testArgument2" had not the given value.');
-        self::assertSame($request->getArgument('testArgument3'), 'value3', 'The "testArgument3" had not the given value.');
-        self::assertSame($request->getArgument('testArgument4'), 'value4', 'The "testArgument4" had not the given value.');
-        self::assertSame($request->getArgument('f'), 'valuef', 'The "f" had not the given value.');
-        self::assertSame($request->getArgument('d'), 'valued', 'The "d" had not the given value.');
-        self::assertSame($request->getArgument('a'), 'valuea', 'The "a" had not the given value.');
-        self::assertSame($request->getArgument('testArgument5'), '5', 'The "testArgument4" had not the given value.');
-        self::assertSame($request->getArgument('j'), 'kjk', 'The "j" had not the given value.');
+        self::assertSame('value', $request->getArgument('testArgument'), 'The "testArgument" had not the given value.');
+        self::assertSame('value2', $request->getArgument('testArgument2'), 'The "testArgument2" had not the given value.');
+        self::assertSame('value3', $request->getArgument('testArgument3'), 'The "testArgument3" had not the given value.');
+        self::assertSame('value4', $request->getArgument('testArgument4'), 'The "testArgument4" had not the given value.');
+        self::assertSame('valuef', $request->getArgument('f'), 'The "f" had not the given value.');
+        self::assertSame('valued', $request->getArgument('d'), 'The "d" had not the given value.');
+        self::assertSame('valuea', $request->getArgument('a'), 'The "a" had not the given value.');
+        self::assertSame('5', $request->getArgument('testArgument5'), 'The "testArgument4" had not the given value.');
+        self::assertSame('kjk', $request->getArgument('j'), 'The "j" had not the given value.');
     }
 
     /**
@@ -237,7 +228,7 @@ class RequestBuilderTest extends UnitTestCase
 
         $request = $this->requestBuilder->build('acme.test:default:list --test-argument=value');
         self::assertTrue($request->hasArgument('testArgument'), 'The given "testArgument" was not found in the built request.');
-        self::assertSame($request->getArgument('testArgument'), 'value', 'The "testArgument" had not the given value.');
+        self::assertSame('value', $request->getArgument('testArgument'), 'The "testArgument" had not the given value.');
     }
 
     /**
@@ -249,7 +240,7 @@ class RequestBuilderTest extends UnitTestCase
             'testArgument1' => ['optional' => false, 'type' => 'string'],
             'testArgument2' => ['optional' => false, 'type' => 'string'],
         ];
-        $this->mockCommandManager->expects($this->any())->method('getCommandMethodParameters')->with('Acme\Test\Command\DefaultCommandController', 'listCommand')->willReturn(($methodParameters));
+        $this->mockCommandManager->method('getCommandMethodParameters')->with('Acme\Test\Command\DefaultCommandController', 'listCommand')->willReturn(($methodParameters));
 
         $request = $this->requestBuilder->build('acme.test:default:list --test-argument1 firstArgumentValue --test-argument2 secondArgumentValue');
         self::assertSame('firstArgumentValue', $request->getArgument('testArgument1'));
@@ -406,22 +397,20 @@ class RequestBuilderTest extends UnitTestCase
     /**
      * Data provider
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function quotedValues(): array
+    public static function quotedValues(): \Iterator
     {
-        return [
-            ["'value with spaces'", 'value with spaces'],
-            ["'value with spaces and \\' escaped'", 'value with spaces and \' escaped'],
-            ['"value with spaces"', 'value with spaces'],
-            ['"value with spaces and \\" escaped"', 'value with spaces and " escaped'],
-            ['value\\ with\\ spaces', 'value with spaces'],
-            ['no\\"spaces\\\'here', 'no"spaces\'here'],
-            ["nospaces\\'here", "nospaces'here"],
-            ['no\\"spaceshere', 'no"spaceshere'],
-            ['no\\\\spaceshere', 'no\\spaceshere'],
-            ["''", '']
-        ];
+        yield ["'value with spaces'", 'value with spaces'];
+        yield ["'value with spaces and \\' escaped'", 'value with spaces and \' escaped'];
+        yield ['"value with spaces"', 'value with spaces'];
+        yield ['"value with spaces and \\" escaped"', 'value with spaces and " escaped'];
+        yield ['value\\ with\\ spaces', 'value with spaces'];
+        yield ['no\\"spaces\\\'here', 'no"spaces\'here'];
+        yield ["nospaces\\'here", "nospaces'here"];
+        yield ['no\\"spaceshere', 'no"spaceshere'];
+        yield ['no\\\\spaceshere', 'no\\spaceshere'];
+        yield ["''", ''];
     }
 
     /**
@@ -445,26 +434,24 @@ class RequestBuilderTest extends UnitTestCase
     /**
      * Data provider
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function arrayCliArgumentValues(): array
+    public static function arrayCliArgumentValues(): \Iterator
     {
-        return [
-            [
-                '--a1 1 --a2 y --a1 x --a2 z',
-                ['a1' => ['1', 'x'], 'a2' => ['y', 'z']],
-                []
-            ],
-            [
-                '--a1 1 --a2 y --a1 x --a2 z foo bar',
-                ['a1' => ['1', 'x'], 'a2' => ['y', 'z']],
-                ['foo', 'bar']
-            ],
-            [
-                '--a1 1 --a1 x foo bar',
-                ['a1' => ['1', 'x']],
-                ['foo', 'bar']
-            ]
+        yield [
+            '--a1 1 --a2 y --a1 x --a2 z',
+            ['a1' => ['1', 'x'], 'a2' => ['y', 'z']],
+            []
+        ];
+        yield [
+            '--a1 1 --a2 y --a1 x --a2 z foo bar',
+            ['a1' => ['1', 'x'], 'a2' => ['y', 'z']],
+            ['foo', 'bar']
+        ];
+        yield [
+            '--a1 1 --a1 x foo bar',
+            ['a1' => ['1', 'x']],
+            ['foo', 'bar']
         ];
     }
 

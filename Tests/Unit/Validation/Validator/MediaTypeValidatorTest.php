@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * Testcase for the media type validator
  *
  */
-class MediaTypeValidatorTest extends AbstractValidatorTestcase
+final class MediaTypeValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = MediaTypeValidator::class;
 
@@ -45,12 +48,10 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         return $mock;
     }
 
-    public static function emptyItems(): array
+    public static function emptyItems(): \Iterator
     {
-        return [
-            [null],
-            ['']
-        ];
+        yield [null];
+        yield [''];
     }
 
     /**
@@ -63,14 +64,12 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
     }
 
 
-    public function itemsWithAllowedMediaType(): array
+    public function itemsWithAllowedMediaType(): \Iterator
     {
-        return [
-            [$this->createResourceMetaDataInterfaceMock('image/jpeg')],
-            [$this->createResourceMetaDataInterfaceMock('application/csv')],
-            [$this->createUploadedFileInterfaceMock('image/jpeg')],
-            [$this->createUploadedFileInterfaceMock('application/csv')]
-        ];
+        yield [$this->createResourceMetaDataInterfaceMock('image/jpeg')];
+        yield [$this->createResourceMetaDataInterfaceMock('application/csv')];
+        yield [$this->createUploadedFileInterfaceMock('image/jpeg')];
+        yield [$this->createUploadedFileInterfaceMock('application/csv')];
     }
 
     /**
@@ -82,14 +81,12 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public static function itemsWithUnhandledTypes(): array
+    public static function itemsWithUnhandledTypes(): \Iterator
     {
-        return [
-            [12],
-            ['hello'],
-            [(object) []],
-            [new \DateTime()]
-        ];
+        yield [12];
+        yield ['hello'];
+        yield [(object) []];
+        yield [new \DateTime()];
     }
 
     /**
@@ -101,14 +98,12 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithDisallowedMediaType(): array
+    public function itemsWithDisallowedMediaType(): \Iterator
     {
-        return [
-            [$this->createResourceMetaDataInterfaceMock('video/mp4')],
-            [$this->createResourceMetaDataInterfaceMock('application/pdf')],
-            [$this->createUploadedFileInterfaceMock('video/mp4')],
-            [$this->createUploadedFileInterfaceMock('application/pdf')],
-        ];
+        yield [$this->createResourceMetaDataInterfaceMock('video/mp4')];
+        yield [$this->createResourceMetaDataInterfaceMock('application/pdf')];
+        yield [$this->createUploadedFileInterfaceMock('video/mp4')];
+        yield [$this->createUploadedFileInterfaceMock('application/pdf')];
     }
 
     /**
@@ -120,12 +115,10 @@ class MediaTypeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithOtherMediaType(): array
+    public function itemsWithOtherMediaType(): \Iterator
     {
-        return [
-            [$this->createResourceMetaDataInterfaceMock('text/plain')],
-            [$this->createUploadedFileInterfaceMock('text/plain')],
-        ];
+        yield [$this->createResourceMetaDataInterfaceMock('text/plain')];
+        yield [$this->createUploadedFileInterfaceMock('text/plain')];
     }
 
     /**

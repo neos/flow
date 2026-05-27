@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Builder;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the ClassNameIndex
  */
-class ClassNameIndexTest extends UnitTestCase
+final class ClassNameIndexTest extends UnitTestCase
 {
     /**
      * @test
@@ -30,7 +33,7 @@ class ClassNameIndexTest extends UnitTestCase
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $intersectedIndex = $index1->intersect($index2);
 
-        self::assertEquals(['\Foo\Baz'], $intersectedIndex->getClassNames());
+        self::assertSame(['\Foo\Baz'], $intersectedIndex->getClassNames());
     }
 
     /**
@@ -44,7 +47,7 @@ class ClassNameIndexTest extends UnitTestCase
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $index1->applyIntersect($index2);
 
-        self::assertEquals(['\Foo\Baz'], $index1->getClassNames());
+        self::assertSame(['\Foo\Baz'], $index1->getClassNames());
     }
 
     /**
@@ -59,7 +62,7 @@ class ClassNameIndexTest extends UnitTestCase
         $intersectedIndex = $index1->union($index2);
         $intersectedIndex->sort();
 
-        self::assertEquals(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $intersectedIndex->getClassNames());
+        self::assertSame(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $intersectedIndex->getClassNames());
     }
 
     /**
@@ -74,7 +77,7 @@ class ClassNameIndexTest extends UnitTestCase
         $index1->applyUnion($index2);
         $index1->sort();
 
-        self::assertEquals(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $index1->getClassNames());
+        self::assertSame(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $index1->getClassNames());
     }
 
     /**
@@ -89,6 +92,6 @@ class ClassNameIndexTest extends UnitTestCase
 
         $filteredIndex = $index1->filterByPrefix('\Foo');
 
-        self::assertEquals(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $filteredIndex->getClassNames());
+        self::assertSame(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $filteredIndex->getClassNames());
     }
 }

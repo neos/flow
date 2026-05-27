@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -19,7 +22,7 @@ use Psr\Http\Message\UploadedFileInterface;
  * Testcase for the file extension validator
  *
  */
-class FileExtensionValidatorTest extends AbstractValidatorTestcase
+final class FileExtensionValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = FileExtensionValidator::class;
 
@@ -44,12 +47,10 @@ class FileExtensionValidatorTest extends AbstractValidatorTestcase
         return $mock;
     }
 
-    public static function emptyItems(): array
+    public static function emptyItems(): \Iterator
     {
-        return [
-            [null],
-            ['']
-        ];
+        yield [null];
+        yield [''];
     }
 
     /**
@@ -61,16 +62,14 @@ class FileExtensionValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithAllowedExtension(): array
+    public function itemsWithAllowedExtension(): \Iterator
     {
-        return [
-            [$this->createResourceMetaDataInterfaceMock('image.jpg')],
-            [$this->createResourceMetaDataInterfaceMock('image.jpeg')],
-            [$this->createResourceMetaDataInterfaceMock('image.png')],
-            [$this->createUploadedFileInterfaceMock('image.jpg')],
-            [$this->createUploadedFileInterfaceMock('image.jpeg')],
-            [$this->createUploadedFileInterfaceMock('image.png')]
-        ];
+        yield [$this->createResourceMetaDataInterfaceMock('image.jpg')];
+        yield [$this->createResourceMetaDataInterfaceMock('image.jpeg')];
+        yield [$this->createResourceMetaDataInterfaceMock('image.png')];
+        yield [$this->createUploadedFileInterfaceMock('image.jpg')];
+        yield [$this->createUploadedFileInterfaceMock('image.jpeg')];
+        yield [$this->createUploadedFileInterfaceMock('image.png')];
     }
 
     /**
@@ -82,14 +81,12 @@ class FileExtensionValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithDisallowedExtension(): array
+    public function itemsWithDisallowedExtension(): \Iterator
     {
-        return [
-            [$this->createResourceMetaDataInterfaceMock('evil.exe')],
-            [$this->createResourceMetaDataInterfaceMock('image.tiff')],
-            [$this->createUploadedFileInterfaceMock('evil.exe')],
-            [$this->createUploadedFileInterfaceMock('image.tiff')]
-        ];
+        yield [$this->createResourceMetaDataInterfaceMock('evil.exe')];
+        yield [$this->createResourceMetaDataInterfaceMock('image.tiff')];
+        yield [$this->createUploadedFileInterfaceMock('evil.exe')];
+        yield [$this->createUploadedFileInterfaceMock('image.tiff')];
     }
 
     /**

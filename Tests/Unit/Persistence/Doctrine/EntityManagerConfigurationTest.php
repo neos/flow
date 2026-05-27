@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -16,7 +19,7 @@ use Doctrine\DBAL\Connection;
 use Neos\Flow\Persistence\Doctrine\EntityManagerConfiguration;
 use Neos\Flow\Tests\UnitTestCase;
 
-class EntityManagerConfigurationTest extends UnitTestCase
+final class EntityManagerConfigurationTest extends UnitTestCase
 {
     /**
      * @test
@@ -59,9 +62,9 @@ class EntityManagerConfigurationTest extends UnitTestCase
         /** @var EntityManagerConfiguration $entityManagerConfiguration */
         $entityManagerConfiguration = $this->getAccessibleMock(EntityManagerConfiguration::class, ['applyCacheConfiguration']);
         /** @var Connection $connection */
-        $connection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $connection = $this->createMock(Connection::class);
         /** @var EventManager $eventManager */
-        $eventManager = $this->getMockBuilder(EventManager::class)->disableOriginalConstructor()->getMock();
+        $eventManager = $this->createMock(EventManager::class);
         $configuration = new \Doctrine\ORM\Configuration;
 
         $settingsArray = [

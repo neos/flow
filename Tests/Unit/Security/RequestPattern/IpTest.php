@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
 
 /*
@@ -20,27 +23,25 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Testcase for the IP request pattern
  */
-class IpTest extends UnitTestCase
+final class IpTest extends UnitTestCase
 {
     /**
      * Data provider with valid and invalid IP ranges
      */
-    public static function validAndInvalidIpPatterns()
+    public static function validAndInvalidIpPatterns(): \Iterator
     {
-        return [
-            ['127.0.0.1', '127.0.0.1', true],
-            ['127.0.0.0/24', '127.0.0.1', true],
-            ['255.255.255.255/0', '127.0.0.1', true],
-            ['127.0.255.255/16', '127.0.0.1', true],
-            ['127.0.0.1/32', '127.0.0.1', true],
-            ['1:2::3:4', '1:2:0:0:0:0:3:4', true],
-            ['127.0.0.2/32', '127.0.0.1', false],
-            ['127.0.1.0/24', '127.0.0.1', false],
-            ['127.0.0.255/31', '127.0.0.1', false],
-            ['::1', '127.0.0.1', false],
-            ['::127.0.0.1', '127.0.0.1', true],
-            ['127.0.0.1', '::127.0.0.1', true],
-        ];
+        yield ['127.0.0.1', '127.0.0.1', true];
+        yield ['127.0.0.0/24', '127.0.0.1', true];
+        yield ['255.255.255.255/0', '127.0.0.1', true];
+        yield ['127.0.255.255/16', '127.0.0.1', true];
+        yield ['127.0.0.1/32', '127.0.0.1', true];
+        yield ['1:2::3:4', '1:2:0:0:0:0:3:4', true];
+        yield ['127.0.0.2/32', '127.0.0.1', false];
+        yield ['127.0.1.0/24', '127.0.0.1', false];
+        yield ['127.0.0.255/31', '127.0.0.1', false];
+        yield ['::1', '127.0.0.1', false];
+        yield ['::127.0.0.1', '127.0.0.1', true];
+        yield ['127.0.0.1', '::127.0.0.1', true];
     }
 
     /**
@@ -49,10 +50,10 @@ class IpTest extends UnitTestCase
      */
     public function requestMatchingBasicallyWorks($pattern, $ip, $expected)
     {
-        $requestMock = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $requestMock = $this->createMock(ServerRequestInterface::class);
         $requestMock->expects($this->once())->method('getAttribute')->with(ServerRequestAttributes::CLIENT_IP)->willReturn($ip);
-        $actionRequestMock = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
-        $actionRequestMock->expects($this->any())->method('getHttpRequest')->willReturn(($requestMock));
+        $actionRequestMock = $this->createMock(ActionRequest::class);
+        $actionRequestMock->method('getHttpRequest')->willReturn(($requestMock));
 
         $requestPattern = new Ip(['cidrPattern' => $pattern]);
 

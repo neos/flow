@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Package;
 
 /*
@@ -22,20 +25,15 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the package class
  *
  */
-class PackageTest extends UnitTestCase
+final class PackageTest extends UnitTestCase
 {
-    /**
-     * @var PackageManager
-     */
-    protected $mockPackageManager;
-
     /**
      */
     protected function setUp(): void
     {
         ComposerUtility::flushCaches();
         vfsStream::setup('Packages');
-        $this->mockPackageManager = $this->getMockBuilder(\Neos\Flow\Package\PackageManager::class)->disableOriginalConstructor()->getMock();
+        $mockPackageManager = $this->createMock(\Neos\Flow\Package\PackageManager::class);
     }
 
     /**

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\EntryPoint;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for web redirect authentication entry point
  */
-class WebRedirectTest extends UnitTestCase
+final class WebRedirectTest extends UnitTestCase
 {
     /**
      * @test
@@ -46,7 +49,7 @@ class WebRedirectTest extends UnitTestCase
     public function startAuthenticationSetsTheCorrectValuesInTheResponseObjectIfUriIsSpecified()
     {
         $baseUriProviderMock = $this->createMock(BaseUriProvider::class);
-        $baseUriProviderMock->expects($this->any())->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willReturn(new Uri('http://robertlemke.com/'));
+        $baseUriProviderMock->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willReturn(new Uri('http://robertlemke.com/'));
 
         $request = new ServerRequest('GET', new Uri('http://robertlemke.com/admin'));
         $response = new Response();

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the Pointcut Class Type Filter
  */
-class PointcutClassTypeFilterTest extends UnitTestCase
+final class PointcutClassTypeFilterTest extends UnitTestCase
 {
     /**
      * @test
@@ -38,8 +41,8 @@ class PointcutClassTypeFilterTest extends UnitTestCase
         $availableClassNamesIndex = new Aop\Builder\ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->expects($this->any())->method('getAllImplementationClassNamesForInterface')->with($interfaceName)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('getAllImplementationClassNamesForInterface')->with($interfaceName)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
 
         $classTypeFilter = new Aop\Pointcut\PointcutClassTypeFilter($interfaceName);
         $classTypeFilter->injectReflectionService($mockReflectionService);
@@ -76,8 +79,8 @@ class PointcutClassTypeFilterTest extends UnitTestCase
         $availableClassNamesIndex = new Aop\Builder\ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
-        $mockReflectionService->expects($this->any())->method('getAllSubClassNamesForClass')->with($testClassName)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
+        $mockReflectionService = $this->createMock(ReflectionService::class);
+        $mockReflectionService->method('getAllSubClassNamesForClass')->with($testClassName)->willReturn((['TestPackage\Subpackage\Class1', 'TestPackage\Subpackage\SubSubPackage\Class3', 'SomeMoreClass']));
 
         $classTypeFilter = new Aop\Pointcut\PointcutClassTypeFilter($testClassName);
         $classTypeFilter->injectReflectionService($mockReflectionService);

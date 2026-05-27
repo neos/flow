@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -22,13 +25,8 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
  * HINT: The routes used in these tests are defined in the Routes.yaml file in the
  *       Testing context of the Flow package configuration.
  */
-class UriBuilderTest extends FunctionalTestCase
+final class UriBuilderTest extends FunctionalTestCase
 {
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    protected $serverRequestFactory;
-
     /**
      * Additional setup: Routes
      */
@@ -36,7 +34,7 @@ class UriBuilderTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->serverRequestFactory = $this->objectManager->get(ServerRequestFactoryInterface::class);
+        $serverRequestFactory = $this->objectManager->get(ServerRequestFactoryInterface::class);
     }
 
     private function registerSingleRoute($routePartHandler): void

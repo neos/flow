@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Session;
 /**
  * Testcase for the Transient Session implementation
  */
-class TransientSessionTest extends UnitTestCase
+final class TransientSessionTest extends UnitTestCase
 {
     /**
      * @test
@@ -35,7 +38,7 @@ class TransientSessionTest extends UnitTestCase
     {
         $session = new Session\TransientSession();
         $session->start();
-        self::assertTrue(strlen($session->getId()) == 13);
+        self::assertSame(13, strlen($session->getId()));
     }
 
     /**

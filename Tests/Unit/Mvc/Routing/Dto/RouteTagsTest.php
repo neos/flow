@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
 
 /*
@@ -17,15 +20,13 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the RouteTags DTO
  */
-class RouteTagsTest extends UnitTestCase
+final class RouteTagsTest extends UnitTestCase
 {
-    public static function createFromTagThrowsExceptionForInvalidTagsDataProvider()
+    public static function createFromTagThrowsExceptionForInvalidTagsDataProvider(): \Iterator
     {
-        return [
-            ['tag' => 'späcial'],
-            ['tag' => 'tag with spaces'],
-            ['tag' => 'verylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowed'],
-        ];
+        yield ['tag' => 'späcial'];
+        yield ['tag' => 'tag with spaces'];
+        yield ['tag' => 'verylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowed'];
     }
 
     /**

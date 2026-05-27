@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -22,7 +25,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the CLI Command class
  */
-class CommandTest extends UnitTestCase
+final class CommandTest extends UnitTestCase
 {
     /**
      * @var Cli\Command
@@ -88,7 +91,7 @@ class CommandTest extends UnitTestCase
      */
     public function hasArgumentsReturnsTrueIfCommandExpectsArguments(): void
     {
-        $parameterReflection = $this->createMock(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
+        $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([$parameterReflection]));
         self::assertTrue($this->command->hasArguments());
     }
@@ -107,7 +110,7 @@ class CommandTest extends UnitTestCase
      */
     public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments(): void
     {
-        $parameterReflection = $this->createMock(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
+        $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockMethodParameters = ['argument1' => ['optional' => false], 'argument2' => ['optional' => true]];
         $mockReflectionService->expects(self::atLeastOnce())->method('getMethodParameters')->willReturn($mockMethodParameters);
@@ -131,7 +134,7 @@ class CommandTest extends UnitTestCase
      */
     public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArgumentsEvenWhenDocBlocksAreMissing(): void
     {
-        $parameterReflection = $this->createMock(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
+        $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockMethodParameters = ['argument1' => ['optional' => false], 'argument2' => ['optional' => true]];
         $mockReflectionService->expects(self::atLeastOnce())->method('getMethodParameters')->willReturn($mockMethodParameters);

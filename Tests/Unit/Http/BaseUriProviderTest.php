@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -23,7 +26,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Test case for the BaseUriProvider class
  */
-class BaseUriProviderTest extends UnitTestCase
+final class BaseUriProviderTest extends UnitTestCase
 {
     /**
      * @var BaseUriProvider
@@ -51,9 +54,9 @@ class BaseUriProviderTest extends UnitTestCase
      */
     public function getConfiguredBaseUriOrFallbackToCurrentRequestReturnsBaseUriOfCurrentlyActiveRequestIfNoBaseUriIsConfigured(): void
     {
-        $mockBootstrap = $this->getMockBuilder(Bootstrap::class)->disableOriginalConstructor()->getMock();
-        $mockHttpRequestHandler = $this->getMockBuilder(HttpRequestHandlerInterface::class)->getMock();
-        $mockServerRequest = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $mockBootstrap = $this->createMock(Bootstrap::class);
+        $mockHttpRequestHandler = $this->createMock(HttpRequestHandlerInterface::class);
+        $mockServerRequest = $this->createMock(ServerRequestInterface::class);
         $uri = new Uri('http://uri-from-current-request/some/path');
         $mockServerRequest->method('getUri')->willReturn($uri);
         $mockHttpRequestHandler->method('getHttpRequest')->willReturn($mockServerRequest);
@@ -69,13 +72,13 @@ class BaseUriProviderTest extends UnitTestCase
      */
     public function getConfiguredBaseUriOrFallbackToCurrentRequestReturnsBaseUriFromFallbackRequestIfNoBaseUriIsConfiguredAndCurrentHttpRequestCantBeDetermined(): void
     {
-        $mockBootstrap = $this->getMockBuilder(Bootstrap::class)->disableOriginalConstructor()->getMock();
-        $mockNonHttpRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $mockBootstrap = $this->createMock(Bootstrap::class);
+        $mockNonHttpRequestHandler = $this->createStub(RequestHandlerInterface::class);
         $mockBootstrap->method('getActiveRequestHandler')->willReturn($mockNonHttpRequestHandler);
 
         $this->inject($this->baseUriProvider, 'bootstrap', $mockBootstrap);
 
-        $mockFallbackRequest = $this->getMockBuilder(ServerRequestInterface::class)->getMock();
+        $mockFallbackRequest = $this->createMock(ServerRequestInterface::class);
         $uri = new Uri('https://uri-from-fallback-request/some/path');
         $mockFallbackRequest->method('getUri')->willReturn($uri);
 
@@ -87,8 +90,8 @@ class BaseUriProviderTest extends UnitTestCase
      */
     public function getConfiguredBaseUriOrFallbackToCurrentRequestThrowsExceptionIfNoBaseUriIsConfiguredAndCurrentHttpRequestCantBeDeterminedAndNoFallbackRequestIsSpecified(): void
     {
-        $mockBootstrap = $this->getMockBuilder(Bootstrap::class)->disableOriginalConstructor()->getMock();
-        $mockNonHttpRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->getMock();
+        $mockBootstrap = $this->createMock(Bootstrap::class);
+        $mockNonHttpRequestHandler = $this->createStub(RequestHandlerInterface::class);
         $mockBootstrap->method('getActiveRequestHandler')->willReturn($mockNonHttpRequestHandler);
 
         $this->inject($this->baseUriProvider, 'bootstrap', $mockBootstrap);

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Flow\Aop;
 /**
  * Testcase for the Pointcut Class Filter
  */
-class PointcutClassNameFilterTest extends UnitTestCase
+final class PointcutClassNameFilterTest extends UnitTestCase
 {
     /**
      * Checks if the class filter fires on a concrete and simple class expression
@@ -30,7 +33,7 @@ class PointcutClassNameFilterTest extends UnitTestCase
      */
     public function matchesTellsIfTheSpecifiedRegularExpressionMatchesTheGivenClassName()
     {
-        $mockReflectionService = $this->getMockBuilder(ReflectionService::class)->disableOriginalConstructor()->getMock();
+        $mockReflectionService = $this->createStub(ReflectionService::class);
 
         $classFilter = new Aop\Pointcut\PointcutClassNameFilter('Neos\Virtual\Foo\Bar');
         $classFilter->injectReflectionService($mockReflectionService);

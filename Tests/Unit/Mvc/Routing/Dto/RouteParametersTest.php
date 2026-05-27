@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
 
 /*
@@ -19,15 +22,13 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the RouteParameters DTO
  */
-class RouteParametersTest extends UnitTestCase
+final class RouteParametersTest extends UnitTestCase
 {
-    public static function withParameterThrowsExceptionForInvalidParameterValuesDataProvider()
+    public static function withParameterThrowsExceptionForInvalidParameterValuesDataProvider(): \Iterator
     {
-        return [
-            ['parameterValue' => new \stdClass()],
-            ['parameterValue' => $this->getMockBuilder(RouterInterface::class)->getMock()],
-            ['parameterValue' => null],
-        ];
+        yield ['parameterValue' => new \stdClass()];
+        yield ['parameterValue' => $this->getMockBuilder(RouterInterface::class)->getMock()];
+        yield ['parameterValue' => null];
     }
 
     /**
@@ -40,16 +41,14 @@ class RouteParametersTest extends UnitTestCase
         RouteParameters::createEmpty()->withParameter('someParameter', $parameterValue);
     }
 
-    public function withParameterAcceptsValidParameterValuesDataProvider()
+    public function withParameterAcceptsValidParameterValuesDataProvider(): \Iterator
     {
-        return [
-            ['parameterValue' => 'string'],
-            ['parameterValue' => 123],
-            ['parameterValue' => 123.45],
-            ['parameterValue' => true],
-            ['parameterValue' => false],
-            ['parameterValue' => $this->getMockBuilder(CacheAwareInterface::class)->getMock()],
-        ];
+        yield ['parameterValue' => 'string'];
+        yield ['parameterValue' => 123];
+        yield ['parameterValue' => 123.45];
+        yield ['parameterValue' => true];
+        yield ['parameterValue' => false];
+        yield ['parameterValue' => $this->createStub(CacheAwareInterface::class)];
     }
 
     /**

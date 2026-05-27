@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\Functional\Property\Fixtures;
 
 /**
  */
-class ObjectConverterTest extends FunctionalTestCase
+final class ObjectConverterTest extends FunctionalTestCase
 {
     /**
      * @var ObjectConverter

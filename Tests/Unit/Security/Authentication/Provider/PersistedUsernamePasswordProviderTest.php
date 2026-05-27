@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Provider;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for username/password authentication provider. The account are stored in the CR.
  */
-class PersistedUsernamePasswordProviderTest extends UnitTestCase
+final class PersistedUsernamePasswordProviderTest extends UnitTestCase
 {
     /**
      * @var Security\Cryptography\HashService
@@ -64,17 +67,17 @@ class PersistedUsernamePasswordProviderTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockHashService = $this->createMock(Security\Cryptography\HashService::class);
-        $this->mockAccount = $this->getMockBuilder(Security\Account::class)->disableOriginalConstructor()->getMock();
-        $this->mockAccountRepository = $this->getMockBuilder(Security\AccountRepository::class)->disableOriginalConstructor()->getMock();
+        $this->mockAccount = $this->createMock(Security\Account::class);
+        $this->mockAccountRepository = $this->createMock(Security\AccountRepository::class);
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
-        $this->mockToken = $this->getMockBuilder(Security\Authentication\Token\UsernamePassword::class)->disableOriginalConstructor()->getMock();
+        $this->mockToken = $this->createMock(Security\Authentication\Token\UsernamePassword::class);
         $this->mockPrecomposedHashProvider = $this->createMock(Security\Cryptography\PrecomposedHashProvider::class);
         $this->mockPrecomposedHashProvider->method('getPrecomposedHash')->willReturn('bcrypt=>$2a$14$mYqRRlg5V2yUDy1bd9vt3Oq8Fa9d508WWazFWE5tcpTGn3G145RAm');
 
         $this->mockSecurityContext = $this->createMock(Security\Context::class);
-        $this->mockSecurityContext->expects($this->any())->method('withoutAuthorizationChecks')->will(self::returnCallBack(function ($callback) {
+        $this->mockSecurityContext->method('withoutAuthorizationChecks')->willReturnCallback(function ($callback) {
             return $callback->__invoke();
-        }));
+        });
 
         $this->persistedUsernamePasswordProvider = $this->getAccessibleMock(Security\Authentication\Provider\PersistedUsernamePasswordProvider::class, [], [], '', false);
         $this->persistedUsernamePasswordProvider->_set('name', 'myProvider');
@@ -177,7 +180,7 @@ class PersistedUsernamePasswordProviderTest extends UnitTestCase
     public function authenticatingAnUnsupportedTokenThrowsAnException()
     {
         $this->expectException(Security\Exception\UnsupportedAuthenticationTokenException::class);
-        $someNiceToken = $this->createMock(Security\Authentication\TokenInterface::class);
+        $someNiceToken = $this->createStub(Security\Authentication\TokenInterface::class);
 
         $usernamePasswordProvider = Security\Authentication\Provider\PersistedUsernamePasswordProvider::create('myProvider', []);
 

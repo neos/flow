@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Error;
 
 /*
@@ -20,7 +23,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Test case for the Abstract Exception Handler
  */
-class AbstractExceptionHandlerTest extends UnitTestCase
+final class AbstractExceptionHandlerTest extends UnitTestCase
 {
     /**
      * @test
@@ -40,7 +43,7 @@ class AbstractExceptionHandlerTest extends UnitTestCase
         $mockThrowableStorage = $this->createMock(ThrowableStorageInterface::class);
         $mockThrowableStorage->expects($this->once())->method('logThrowable')->with($exception)->willReturn('Exception got logged!');
 
-        $mockLogger = $this->createMock(LoggerInterface::class);
+        $mockLogger = $this->createStub(LoggerInterface::class);
 
         $exceptionHandler = $this->getMockForAbstractClass(AbstractExceptionHandler::class, [], '', false, true, true, ['echoExceptionCli']);
         /** @var AbstractExceptionHandler $exceptionHandler */
@@ -81,7 +84,7 @@ class AbstractExceptionHandlerTest extends UnitTestCase
         $exception = new NoMatchingRouteException();
 
         /** @var ThrowableStorageInterface|\PHPUnit\Framework\MockObject\MockObject $mockThrowableStorage */
-        $mockThrowableStorage = $this->getMockBuilder(ThrowableStorageInterface::class)->getMock();
+        $mockThrowableStorage = $this->createMock(ThrowableStorageInterface::class);
         $mockThrowableStorage->expects($this->never())->method('logThrowable');
 
         $exceptionHandler = $this->getMockForAbstractClass(AbstractExceptionHandler::class, [], '', false, true, true, ['echoExceptionCli']);

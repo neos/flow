@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -23,7 +26,7 @@ use Neos\Flow\Tests\UnitTestCase;
  *
  * @covers \Neos\Flow\Property\TypeConverter\ObjectConverter<extended>
  */
-class ObjectConverterTest extends UnitTestCase
+final class ObjectConverterTest extends UnitTestCase
 {
     /**
      * @var ObjectConverter
@@ -35,19 +38,14 @@ class ObjectConverterTest extends UnitTestCase
      */
     protected $mockReflectionService;
 
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $mockObjectManager;
-
     protected function setUp(): void
     {
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
-        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
 
         $this->converter = new ObjectConverter();
         $this->inject($this->converter, 'reflectionService', $this->mockReflectionService);
-        $this->inject($this->converter, 'objectManager', $this->mockObjectManager);
+        $this->inject($this->converter, 'objectManager', $mockObjectManager);
     }
 
     /**
@@ -60,13 +58,13 @@ class ObjectConverterTest extends UnitTestCase
         self::assertEquals(0, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    public static function dataProviderForCanConvert()
+    public static function dataProviderForCanConvert(): \Iterator
     {
-        return [
-            [true, false, false], // is entity => cannot convert
-            [false, true, false], // is valueobject => cannot convert
-            [false, false, true] // is no entity and no value object => can convert
-        ];
+        yield [true, false, false];
+        // is entity => cannot convert
+        yield [false, true, false];
+        // is valueobject => cannot convert
+        yield [false, false, true];
     }
 
     /**
@@ -94,8 +92,8 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
     {
-        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([
+        $this->mockReflectionService->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
+        $this->mockReflectionService->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([
             'thePropertyName' => [
                 'type' => 'TheTypeOfSubObject',
                 'elementType' => null
@@ -111,12 +109,12 @@ class ObjectConverterTest extends UnitTestCase
      */
     public function getTypeOfChildPropertyShouldRemoveLeadingBackslashesForAnnotationParameters()
     {
-        $this->mockReflectionService->expects($this->any())->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([]));
-        $this->mockReflectionService->expects($this->any())->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
-        $this->mockReflectionService->expects($this->any())->method('getClassPropertyNames')->with('TheTargetType')->willReturn(([
+        $this->mockReflectionService->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([]));
+        $this->mockReflectionService->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
+        $this->mockReflectionService->method('getClassPropertyNames')->with('TheTargetType')->willReturn(([
             'thePropertyName'
         ]));
-        $this->mockReflectionService->expects($this->any())->method('getPropertyTagValues')->with('TheTargetType', 'thePropertyName')->willReturn(([
+        $this->mockReflectionService->method('getPropertyTagValues')->with('TheTargetType', 'thePropertyName')->willReturn(([
             '\TheTypeOfSubObject'
         ]));
         $configuration = new PropertyMappingConfiguration();

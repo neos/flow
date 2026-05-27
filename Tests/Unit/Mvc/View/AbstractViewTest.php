@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\View;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MVC AbstractView
  */
-class AbstractViewTest extends UnitTestCase
+final class AbstractViewTest extends UnitTestCase
 {
     /**
      * @test

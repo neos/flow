@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Formatter;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the DatetimeFormatter
  */
-class DatetimeFormatterTest extends UnitTestCase
+final class DatetimeFormatterTest extends UnitTestCase
 {
     /**
      * Dummy locale used in methods where locale is needed.
@@ -77,20 +80,18 @@ class DatetimeFormatterTest extends UnitTestCase
     /**
      * Data provider with example parsed formats, and expected results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function parsedFormatsAndFormattedDatetimes()
+    public static function parsedFormatsAndFormattedDatetimes(): \Iterator
     {
-        return [
-            [['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'],
-            [['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzz'], '18:49:36 BST'],
-            [['EEE', [','], [' '], 'MMM', [' '], 'd', [','], [' '], ['\''], 'yy'], 'Thu, Jun 10, \'10'],
-            [['hh', [' '], ['o'], ['\''], ['clock'], [' '], 'a', [','], [' '], 'zzzz'], '06 o\'clock p.m., Europe/London'],
-            [['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE'], '0210January1612Thursday'],
-            [['QQQ', 'MMMMM', 'EEEEE', 'w', 'k'], 'Q26T2318'],
-            [['GGGGG', 'K', 'S', 'W', 'qqqq', 'GGGG', 'V'], 'A6032nd quarterAnno Domini'],
-            [['QQ', 'yy', 'LLLL', 'D', 'F', 'ccc'], '0210January1612Thu'],
-        ];
+        yield [['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'];
+        yield [['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzz'], '18:49:36 BST'];
+        yield [['EEE', [','], [' '], 'MMM', [' '], 'd', [','], [' '], ['\''], 'yy'], 'Thu, Jun 10, \'10'];
+        yield [['hh', [' '], ['o'], ['\''], ['clock'], [' '], 'a', [','], [' '], 'zzzz'], '06 o\'clock p.m., Europe/London'];
+        yield [['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE'], '0210January1612Thursday'];
+        yield [['QQQ', 'MMMMM', 'EEEEE', 'w', 'k'], 'Q26T2318'];
+        yield [['GGGGG', 'K', 'S', 'W', 'qqqq', 'GGGG', 'V'], 'A6032nd quarterAnno Domini'];
+        yield [['QQ', 'yy', 'LLLL', 'D', 'F', 'ccc'], '0210January1612Thu'];
     }
 
     /**
@@ -109,13 +110,11 @@ class DatetimeFormatterTest extends UnitTestCase
      * Data provider with custom formats, theirs parsed versions, and expected
      * results.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function customFormatsAndFormattedDatetimes()
+    public static function customFormatsAndFormattedDatetimes(): \Iterator
     {
-        return [
-            ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'],
-        ];
+        yield ['yyyy.MM.dd G', ['yyyy', ['.'], 'MM', ['.'], 'dd', [' '], 'G'], '2010.06.10 AD'];
     }
 
     /**
@@ -138,26 +137,24 @@ class DatetimeFormatterTest extends UnitTestCase
     /**
      * Data provider with parsed formats, expected results, and format types.
      *
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function sampleDataForSpecificFormattingMethods()
+    public static function sampleDataForSpecificFormattingMethods(): \Iterator
     {
-        return [
-            [
-                ['EEEE', [', '], 'y', [' '], 'MMMM', [' '], 'dd'],
-                'Thursday, 2010 January 10',
-                I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATE
-            ],
-            [
-                ['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzzz'],
-                '18:49:36 Europe/London',
-                I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_TIME
-            ],
-            [
-                ['EEEE', [', '], 'y', [' '], 'MMMM', [' '], 'dd', [' '], 'HH', [':'], 'mm', [':'], 'ss', [' '], 'zzzz'],
-                'Thursday, 2010 January 10 18:49:36 Europe/London',
-                I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATETIME
-            ]
+        yield [
+            ['EEEE', [', '], 'y', [' '], 'MMMM', [' '], 'dd'],
+            'Thursday, 2010 January 10',
+            I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATE
+        ];
+        yield [
+            ['HH', [':'], 'mm', [':'], 'ss', [' '], 'zzzz'],
+            '18:49:36 Europe/London',
+            I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_TIME
+        ];
+        yield [
+            ['EEEE', [', '], 'y', [' '], 'MMMM', [' '], 'dd', [' '], 'HH', [':'], 'mm', [':'], 'ss', [' '], 'zzzz'],
+            'Thursday, 2010 January 10 18:49:36 Europe/London',
+            I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATETIME
         ];
     }
 

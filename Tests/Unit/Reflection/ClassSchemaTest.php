@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Note that many parts of the class schema functionality are already tested by the class
  * schema builder testcase.
  */
-class ClassSchemaTest extends UnitTestCase
+final class ClassSchemaTest extends UnitTestCase
 {
     /**
      * @test
@@ -122,33 +125,31 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * data provider for addPropertyAcceptsValidPropertyTypes
      */
-    public static function validPropertyTypes()
+    public static function validPropertyTypes(): \Iterator
     {
-        return [
-            ['integer'],
-            ['int'],
-            ['float'],
-            ['boolean'],
-            ['bool'],
-            ['string'],
-            ['DateTime'],
-            ['array'],
-            ['ArrayObject'],
-            ['SplObjectStorage'],
-            ['Neos\Flow\Foo'],
-            ['\Neos\Flow\Bar'],
-            ['\Some\Object'],
-            ['SomeObject'],
-            ['array<string>'],
-            ['array<Neos\Flow\Baz>'],
-            ['?string'],
-            ['null|string'],
-            ['string|null'],
-            ['?\Some\Object'],
-            ['\Some\Object|null'],
-            ['?array<Neos\Flow\Baz>'],
-            ['null|array<Neos\Flow\Baz>']
-        ];
+        yield ['integer'];
+        yield ['int'];
+        yield ['float'];
+        yield ['boolean'];
+        yield ['bool'];
+        yield ['string'];
+        yield ['DateTime'];
+        yield ['array'];
+        yield ['ArrayObject'];
+        yield ['SplObjectStorage'];
+        yield ['Neos\Flow\Foo'];
+        yield ['\Neos\Flow\Bar'];
+        yield ['\Some\Object'];
+        yield ['SomeObject'];
+        yield ['array<string>'];
+        yield ['array<Neos\Flow\Baz>'];
+        yield ['?string'];
+        yield ['null|string'];
+        yield ['string|null'];
+        yield ['?\Some\Object'];
+        yield ['\Some\Object|null'];
+        yield ['?array<Neos\Flow\Baz>'];
+        yield ['null|array<Neos\Flow\Baz>'];
     }
 
     /**
@@ -165,12 +166,10 @@ class ClassSchemaTest extends UnitTestCase
     /**
      * data provider for addPropertyRejectsInvalidPropertyTypes
      */
-    public static function invalidPropertyTypes()
+    public static function invalidPropertyTypes(): \Iterator
     {
-        return [
-            ['string<string>'],
-            ['int<Neos\Flow\Baz>']
-        ];
+        yield ['string<string>'];
+        yield ['int<Neos\Flow\Baz>'];
     }
 
     /**
@@ -230,16 +229,14 @@ class ClassSchemaTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function collectionTypes()
+    public static function collectionTypes(): \Iterator
     {
-        return [
-            ['array'],
-            ['SplObjectStorage'],
-            ['Doctrine\Common\Collections\Collection'],
-            ['Doctrine\Common\Collections\ArrayCollection']
-        ];
+        yield ['array'];
+        yield ['SplObjectStorage'];
+        yield ['Doctrine\Common\Collections\Collection'];
+        yield ['Doctrine\Common\Collections\ArrayCollection'];
     }
 
     /**
@@ -255,16 +252,14 @@ class ClassSchemaTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      */
-    public static function nullableTypes()
+    public static function nullableTypes(): \Iterator
     {
-        return [
-            ['?string'],
-            ['integer|null'],
-            ['null|array'],
-            ['Doctrine\Common\Collections\ArrayCollection|null']
-        ];
+        yield ['?string'];
+        yield ['integer|null'];
+        yield ['null|array'];
+        yield ['Doctrine\Common\Collections\ArrayCollection|null'];
     }
 
     /**

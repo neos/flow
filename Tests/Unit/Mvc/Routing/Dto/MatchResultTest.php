@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
 
 /*
@@ -18,7 +21,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the MatchResult DTO
  */
-class MatchResultTest extends UnitTestCase
+final class MatchResultTest extends UnitTestCase
 {
     /**
      * @test

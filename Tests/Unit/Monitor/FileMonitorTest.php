@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Monitor;
 
 /*
@@ -22,7 +25,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the File Monitor class
  */
-class FileMonitorTest extends UnitTestCase
+final class FileMonitorTest extends UnitTestCase
 {
     /**
      * @var string
@@ -94,7 +97,7 @@ class FileMonitorTest extends UnitTestCase
      */
     public function detectChangesDetectsChangesInMonitoredFiles()
     {
-        $mockSystemLogger = $this->createMock(LoggerInterface::class);
+        $mockSystemLogger = $this->createStub(LoggerInterface::class);
 
         $mockMonitor = $this->getMockBuilder(FileMonitor::class)->onlyMethods(['loadDetectedDirectoriesAndFiles', 'detectChangedFiles'])->setConstructorArgs(['Flow_Test'])->getMock();
         $mockMonitor->expects($this->once())->method('detectChangedFiles')->with([$this->unixStylePathAndFilename])->willReturn(([]));
@@ -110,7 +113,7 @@ class FileMonitorTest extends UnitTestCase
      */
     public function detectChangesEmitsFilesHaveChangedSignalIfFilesHaveChanged()
     {
-        $mockSystemLogger = $this->createMock(LoggerInterface::class);
+        $mockSystemLogger = $this->createStub(LoggerInterface::class);
 
         $monitoredFiles = [__FILE__ . '1', __FILE__ . '2', __FILE__ . '3'];
 
@@ -135,7 +138,7 @@ class FileMonitorTest extends UnitTestCase
     public function detectChangedFilesFetchesTheStatusOfGivenFilesAndReturnsAListOfChangeFilesAndTheirStatus()
     {
         $mockStrategy = $this->createMock(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::class);
-        $mockStrategy->expects($this->exactly(2))->method('getFileStatus')->will($this->onConsecutiveCalls(ChangeDetectionStrategyInterface::STATUS_CREATED, ChangeDetectionStrategyInterface::STATUS_UNCHANGED));
+        $mockStrategy->expects($this->exactly(2))->method('getFileStatus')->willReturnOnConsecutiveCalls(ChangeDetectionStrategyInterface::STATUS_CREATED, ChangeDetectionStrategyInterface::STATUS_UNCHANGED);
 
         $mockMonitor = $this->getAccessibleMock(FileMonitor::class, [], ['Flow_Test'], '', true, true);
         $mockMonitor->injectChangeDetectionStrategy($mockStrategy);
@@ -282,13 +285,13 @@ class FileMonitorTest extends UnitTestCase
     protected function setUpFileMonitorForDetection(array $changeDetectionResult, array $expectedEmittedChanges, array $knownDirectoriesAndFiles)
     {
         $mockChangeDetectionStrategy = $this->createMock(ChangeDetectionStrategyInterface::class);
-        $mockChangeDetectionStrategy->expects($this->any())->method('getFileStatus')->will(self::returnCallBack(function ($pathAndFilename) use ($changeDetectionResult) {
+        $mockChangeDetectionStrategy->method('getFileStatus')->willReturnCallback(function ($pathAndFilename) use ($changeDetectionResult) {
             if (isset($changeDetectionResult[$pathAndFilename])) {
                 return $changeDetectionResult[$pathAndFilename];
             } else {
                 return ChangeDetectionStrategyInterface::STATUS_UNCHANGED;
             }
-        }));
+        });
 
         $fileMonitor = $this->getAccessibleMock(FileMonitor::class, ['emitFilesHaveChanged', 'emitDirectoriesHaveChanged'], ['Flow_Test'], '', true, true);
         $this->inject($fileMonitor, 'changeDetectionStrategy', $mockChangeDetectionStrategy);
@@ -297,7 +300,7 @@ class FileMonitorTest extends UnitTestCase
         $mockSystemLogger = $this->createMock(LoggerInterface::class);
         $fileMonitor->injectLogger($mockSystemLogger);
 
-        $mockCache = $this->getMockBuilder(Cache\Frontend\StringFrontend::class)->disableOriginalConstructor()->getMock();
+        $mockCache = $this->createMock(Cache\Frontend\StringFrontend::class);
         $mockCache->expects($this->once())->method('get')->willReturn((json_encode($knownDirectoriesAndFiles)));
         $fileMonitor->injectCache($mockCache);
 

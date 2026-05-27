@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session\Aspect;
 
 /*
@@ -20,7 +23,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Testcase for the Logging Aspect implementation
  */
-class LoggingAspectTest extends UnitTestCase
+final class LoggingAspectTest extends UnitTestCase
 {
     /**
      * Proofs correct logging behaviour

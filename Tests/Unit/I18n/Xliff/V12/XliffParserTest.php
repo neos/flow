@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Xliff\V12;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the XliffParser
  */
-class XliffParserTest extends UnitTestCase
+final class XliffParserTest extends UnitTestCase
 {
     /**
      * @test

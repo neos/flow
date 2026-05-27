@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -20,7 +23,7 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the UUID validator
  *
  */
-class UuidValidatorTest extends AbstractValidatorTestcase
+final class UuidValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = UuidValidator::class;
 

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for for the PHP (OpenSSL) based RSAWalletService
  */
 #[\PHPUnit\Framework\Attributes\RequiresFunction('openssl_pkey_new')]
-class RsaWalletServicePhpTest extends UnitTestCase
+final class RsaWalletServicePhpTest extends UnitTestCase
 {
     /**
      * @var RsaWalletServicePhp
@@ -118,11 +121,11 @@ class RsaWalletServicePhpTest extends UnitTestCase
      */
     public function shutdownSavesKeysToKeystoreFileIfKeysWereModified()
     {
-        self::assertFalse(file_exists('vfs://Foo/EncryptionKey'));
+        self::assertFileNotExists('vfs://Foo/EncryptionKey');
         $keyPairUuid = $this->rsaWalletService->generateNewKeypair(true);
         $this->rsaWalletService->shutdownObject();
 
-        self::assertTrue(file_exists('vfs://Foo/EncryptionKey'));
+        self::assertFileExists('vfs://Foo/EncryptionKey');
 
         $this->rsaWalletService->destroyKeypair($keyPairUuid);
         $this->rsaWalletService->initializeObject();
@@ -135,10 +138,10 @@ class RsaWalletServicePhpTest extends UnitTestCase
      */
     public function shutdownDoesNotSavesKeysToKeystoreFileIfKeysWereNotModified()
     {
-        self::assertFalse(file_exists('vfs://Foo/EncryptionKey'));
+        self::assertFileNotExists('vfs://Foo/EncryptionKey');
         $keyPairUuid = $this->rsaWalletService->generateNewKeypair(true);
         $this->rsaWalletService->shutdownObject();
-        self::assertTrue(file_exists('vfs://Foo/EncryptionKey'));
+        self::assertFileExists('vfs://Foo/EncryptionKey');
 
         $this->rsaWalletService->initializeObject();
         $this->rsaWalletService->getPublicKey($keyPairUuid);
@@ -147,7 +150,7 @@ class RsaWalletServicePhpTest extends UnitTestCase
         unlink('vfs://Foo/EncryptionKey');
 
         $this->rsaWalletService->shutdownObject();
-        self::assertFalse(file_exists('vfs://Foo/EncryptionKey'));
+        self::assertFileNotExists('vfs://Foo/EncryptionKey');
     }
 
     /**

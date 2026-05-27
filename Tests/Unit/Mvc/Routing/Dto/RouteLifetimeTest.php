@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the RouteLifetime DTO
  */
-class RouteLifetimeTest extends UnitTestCase
+final class RouteLifetimeTest extends UnitTestCase
 {
     /**
      * @test
@@ -45,7 +48,7 @@ class RouteLifetimeTest extends UnitTestCase
     public function createUndefinedCreatesANewInstanceWithNullValue()
     {
         $lifetime = RouteLifetime::createUndefined();
-        self::assertSame(null, $lifetime->getValue());
+        self::assertNull($lifetime->getValue());
         self::assertTrue($lifetime->isUndefined());
         self::assertFalse($lifetime->isInfinite());
     }
@@ -61,20 +64,18 @@ class RouteLifetimeTest extends UnitTestCase
         self::assertTrue($lifetime->isInfinite());
     }
 
-    public static function mergeReturnsLowerLifetimeOfNonNullValuesDataProvider(): array
+    public static function mergeReturnsLowerLifetimeOfNonNullValuesDataProvider(): \Iterator
     {
-        return [
-            [100, 200, 100],
-            [100, 100, 100],
-            [200, 100, 100],
-            [null, 200, 200],
-            [200, null, 200],
-            [null, null, null],
-            [100, 0, 100],
-            [0, 100, 100],
-            [0, null, 0],
-            [null, 0, 0]
-        ];
+        yield [100, 200, 100];
+        yield [100, 100, 100];
+        yield [200, 100, 100];
+        yield [null, 200, 200];
+        yield [200, null, 200];
+        yield [null, null, null];
+        yield [100, 0, 100];
+        yield [0, 100, 100];
+        yield [0, null, 0];
+        yield [null, 0, 0];
     }
 
     /**

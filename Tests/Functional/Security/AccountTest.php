@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Testcase for the account factory
  *
  */
-class AccountTest extends FunctionalTestCase
+final class AccountTest extends FunctionalTestCase
 {
     /**
      * @var boolean

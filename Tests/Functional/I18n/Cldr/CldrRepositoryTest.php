@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n\Cldr;
 
 /*
@@ -21,7 +24,7 @@ use Neos\Utility\ObjectAccess;
  * Testcase for the I18N CLDR Repository
  *
  */
-class CldrRepositoryTest extends FunctionalTestCase
+final class CldrRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var CldrRepository

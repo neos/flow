@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr;
 
 /*
@@ -19,7 +22,7 @@ use Neos\Flow\I18n;
 /**
  * Testcase for the CldrRepository
  */
-class CldrRepositoryTest extends UnitTestCase
+final class CldrRepositoryTest extends UnitTestCase
 {
     /**
      * @var I18n\Cldr\CldrRepository

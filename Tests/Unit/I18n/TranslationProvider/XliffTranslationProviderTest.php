@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\TranslationProvider;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the XliffTranslationProvider
  */
-class XliffTranslationProviderTest extends UnitTestCase
+final class XliffTranslationProviderTest extends UnitTestCase
 {
     /**
      * @var string
@@ -76,7 +79,7 @@ class XliffTranslationProviderTest extends UnitTestCase
             ->with($this->samplePackageKey . ':' . $this->sampleSourceName, $this->sampleLocale)
             ->willReturn($fileAdapter);
 
-        $this->mockPluralsReader->expects($this->any())->method('getPluralForms')
+        $this->mockPluralsReader->method('getPluralForms')
             ->with($this->sampleLocale)
             ->willReturn(([I18n\Cldr\Reader\PluralsReader::RULE_ONE, I18n\Cldr\Reader\PluralsReader::RULE_OTHER]));
 
@@ -99,7 +102,7 @@ class XliffTranslationProviderTest extends UnitTestCase
             ->with($this->samplePackageKey . ':' . $this->sampleSourceName, $this->sampleLocale)
             ->willReturn($fileAdapter);
 
-        $this->mockPluralsReader->expects($this->any())->method('getPluralForms')
+        $this->mockPluralsReader->method('getPluralForms')
             ->with($this->sampleLocale)
             ->willReturn(([I18n\Cldr\Reader\PluralsReader::RULE_ONE, I18n\Cldr\Reader\PluralsReader::RULE_OTHER]));
 
@@ -117,7 +120,7 @@ class XliffTranslationProviderTest extends UnitTestCase
     public function getTranslationByOriginalLabelThrowsExceptionWhenInvalidPluralFormProvided()
     {
         $this->expectException(I18n\TranslationProvider\Exception\InvalidPluralFormException::class);
-        $this->mockPluralsReader->expects($this->any())
+        $this->mockPluralsReader
             ->method('getPluralForms')
             ->with($this->sampleLocale)
             ->willReturn(([I18n\Cldr\Reader\PluralsReader::RULE_ONE, I18n\Cldr\Reader\PluralsReader::RULE_OTHER]));
@@ -134,7 +137,7 @@ class XliffTranslationProviderTest extends UnitTestCase
     public function getTranslationByIdThrowsExceptionWhenInvalidPluralFormProvided()
     {
         $this->expectException(I18n\TranslationProvider\Exception\InvalidPluralFormException::class);
-        $this->mockPluralsReader->expects($this->any())
+        $this->mockPluralsReader
             ->method('getPluralForms')
             ->with($this->sampleLocale)
             ->willReturn(([I18n\Cldr\Reader\PluralsReader::RULE_ONE, I18n\Cldr\Reader\PluralsReader::RULE_OTHER]));

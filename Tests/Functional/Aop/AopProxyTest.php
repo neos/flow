@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Aop;
 
 /*
@@ -16,7 +19,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Test suite for aop proxy classes
  */
-class AopProxyTest extends FunctionalTestCase
+final class AopProxyTest extends FunctionalTestCase
 {
     /**
      * @test

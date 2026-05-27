@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -14,7 +17,7 @@ namespace Neos\Flow\Tests\Functional\Mvc;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Tests\FunctionalTestCase;
 
-class AbstractControllerTest extends FunctionalTestCase
+final class AbstractControllerTest extends FunctionalTestCase
 {
     /**
      * @var boolean

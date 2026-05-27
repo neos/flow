@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -17,7 +20,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Pbkdf2HashingStrategy
  */
-class Pbkdf2HashingStrategyTest extends UnitTestCase
+final class Pbkdf2HashingStrategyTest extends UnitTestCase
 {
     /**
      * @test

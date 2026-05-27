@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Http\Client;
 
 /*
@@ -16,7 +19,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the HTTP browser
  */
-class BrowserTest extends FunctionalTestCase
+final class BrowserTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -82,7 +85,7 @@ class BrowserTest extends FunctionalTestCase
     {
         $this->browser->setFollowRedirects(false);
         $response = $this->browser->request('http://localhost/test/http/redirecting');
-        self::assertStringNotContainsString('arrived.', $response->getBody()->getContents());
+        self::assertStringNotContainsString('arrived.', (string) $response->getBody()->getContents());
         self::assertEquals(303, $response->getStatusCode());
         self::assertEquals('http://localhost/test/http/redirecting/tohere', $response->getHeaderLine('Location'));
     }

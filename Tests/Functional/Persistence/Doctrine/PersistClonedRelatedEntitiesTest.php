@@ -20,7 +20,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for persisting cloned related entities
  */
-class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
+final class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
 {
     /**
      * @var bool
