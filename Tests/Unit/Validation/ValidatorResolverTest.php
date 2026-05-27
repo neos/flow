@@ -238,7 +238,7 @@ final class ValidatorResolverTest extends UnitTestCase
      */
     public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions()
     {
-        $className = 'Test' . md5(uniqid(mt_rand(), true));
+        $className = 'Test' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $className . ' implements \Neos\Flow\Validation\Validator\ValidatorInterface {
 				protected $options = array();
 				public function __construct(array $options = array()) {
@@ -519,7 +519,7 @@ final class ValidatorResolverTest extends UnitTestCase
      */
     public function buildBaseValidatorConjunctionAddsCustomValidatorToTheReturnedConjunction()
     {
-        $modelClassName = 'Page' . md5(uniqid(mt_rand(), true));
+        $modelClassName = 'Page' . md5(uniqid((string)mt_rand(), true));
         $validatorClassName = 'Domain\Validator\Content\\' . $modelClassName . 'Validator';
         eval('namespace Domain\Model\Content; class ' . $modelClassName . '{}');
 
@@ -547,9 +547,9 @@ final class ValidatorResolverTest extends UnitTestCase
      */
     public function addCustomValidatorsAddsExpectedPolyTypeValidatorToTheConjunction()
     {
-        $highPriorityValidatorClassName = 'RandomHighPrio' . md5(uniqid(mt_rand(), true)) . 'PolyTypeValidator';
-        $lowPriorityValidatorClassName = 'RandomLowPrio' . md5(uniqid(mt_rand(), true)) . 'PolyTypeValidator';
-        $modelClassName = 'Acme\Test\Content\Page' . md5(uniqid(mt_rand(), true));
+        $highPriorityValidatorClassName = 'RandomHighPrio' . md5(uniqid((string)mt_rand(), true)) . 'PolyTypeValidator';
+        $lowPriorityValidatorClassName = 'RandomLowPrio' . md5(uniqid((string)mt_rand(), true)) . 'PolyTypeValidator';
+        $modelClassName = 'Acme\Test\Content\Page' . md5(uniqid((string)mt_rand(), true));
 
         $mockLowPriorityValidator = $this->createMock(PolyTypeObjectValidatorInterface::class, [], [], $lowPriorityValidatorClassName);
         $mockLowPriorityValidator->expects($this->atLeastOnce())->method('canValidate')->with($modelClassName)->willReturn(true);
@@ -592,11 +592,11 @@ final class ValidatorResolverTest extends UnitTestCase
      */
     public function buildBaseValidatorConjunctionAddsValidatorsOnlyForPropertiesHoldingPrototypes()
     {
-        $entityClassName = 'Entity' . md5(uniqid(mt_rand(), true));
+        $entityClassName = 'Entity' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $entityClassName . '{}');
-        $otherClassName = 'Other' . md5(uniqid(mt_rand(), true));
+        $otherClassName = 'Other' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $otherClassName . '{}');
-        $modelClassName = 'Model' . md5(uniqid(mt_rand(), true));
+        $modelClassName = 'Model' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $modelClassName . '{}');
 
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
@@ -659,7 +659,7 @@ final class ValidatorResolverTest extends UnitTestCase
      */
     public function buildBaseValidatorConjunctionSkipsPropertiesAnnotatedWithIgnoreValidation()
     {
-        $modelClassName = 'Model' . md5(uniqid(mt_rand(), true));
+        $modelClassName = 'Model' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $modelClassName . '{}');
 
         $mockReflectionService = $this->createMock(ReflectionService::class);

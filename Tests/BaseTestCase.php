@@ -118,7 +118,7 @@ abstract class BaseTestCase extends TestCase
      */
     protected function buildAccessibleProxy($className)
     {
-        $accessibleClassName = 'AccessibleTestProxy' . md5(uniqid(mt_rand(), true));
+        $accessibleClassName = 'AccessibleTestProxy' . md5(uniqid((string)mt_rand(), true));
         $class = new \ReflectionClass($className);
         $abstractModifier = $class->isAbstract() ? 'abstract ' : '';
         eval('#[\AllowDynamicProperties]

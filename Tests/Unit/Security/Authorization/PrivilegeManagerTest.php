@@ -93,8 +93,8 @@ final class PrivilegeManagerTest extends UnitTestCase
      */
     public function isGrantedGrantsIfNoPrivilegeWasConfigured()
     {
-        $role1ClassName = 'role1' . md5(uniqid(mt_rand(), true));
-        $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
+        $role1ClassName = 'role1' . md5(uniqid((string)mt_rand(), true));
+        $role2ClassName = 'role2' . md5(uniqid((string)mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
         $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([]));
@@ -135,8 +135,8 @@ final class PrivilegeManagerTest extends UnitTestCase
      */
     public function isGrantedDeniesAccessIfADenyPrivilegeWasConfiguredForOneOfTheRoles()
     {
-        $role1ClassName = 'role1' . md5(uniqid(mt_rand(), true));
-        $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
+        $role1ClassName = 'role1' . md5(uniqid((string)mt_rand(), true));
+        $role2ClassName = 'role2' . md5(uniqid((string)mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
         $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([$this->denyPrivilege]));
@@ -154,8 +154,8 @@ final class PrivilegeManagerTest extends UnitTestCase
      */
     public function isGrantedGrantsAccessIfAGrantPrivilegeAndNoDenyPrivilegeWasConfigured()
     {
-        $role1ClassName = 'role1' . md5(uniqid(mt_rand(), true));
-        $role2ClassName = 'role2' . md5(uniqid(mt_rand(), true));
+        $role1ClassName = 'role1' . md5(uniqid((string)mt_rand(), true));
+        $role2ClassName = 'role2' . md5(uniqid((string)mt_rand(), true));
 
         $mockRoleAdministrator = $this->createMock(Security\Policy\Role::class, [], [], $role1ClassName, false);
         $mockRoleAdministrator->method('getPrivilegesByType')->willReturn(([$this->grantPrivilege]));

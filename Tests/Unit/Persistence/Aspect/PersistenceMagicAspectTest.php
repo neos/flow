@@ -71,7 +71,7 @@ final class PersistenceMagicAspectTest extends UnitTestCase
      */
     public function generateUuidGeneratesUuidAndRegistersProxyAsNewObject()
     {
-        $className = 'Class' . md5(uniqid(mt_rand(), true));
+        $className = 'Class' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $className . ' implements \Neos\Flow\Persistence\Aspect\PersistenceMagicInterface { public $Persistence_Object_Identifier = NULL; }');
         $object = new $className();
 

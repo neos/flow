@@ -208,7 +208,7 @@ final class JsonViewTest extends UnitTestCase
      */
     public static function exposeClassNameSettingsAndResults(): \Iterator
     {
-        $className = 'DummyClass' . md5(uniqid(mt_rand(), true));
+        $className = 'DummyClass' . md5(uniqid((string)mt_rand(), true));
         $namespace = 'Neos\Flow\Tests\Unit\Mvc\View\\' . $className;
         yield [
             Mvc\View\JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,

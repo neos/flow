@@ -62,7 +62,7 @@ final class StringValidatorTest extends AbstractValidatorTestcase
      */
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven()
     {
-        $className = 'TestClass' . md5(uniqid(mt_rand(), true));
+        $className = 'TestClass' . md5(uniqid((string)mt_rand(), true));
 
         eval('
 			class ' . $className . ' {

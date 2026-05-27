@@ -81,9 +81,9 @@ final class CollectionValidatorTest extends AbstractValidatorTestcase
      */
     public function collectionValidatorValidatesNestedObjectStructuresWithoutEndlessLooping()
     {
-        $classNameA = 'A' . md5(uniqid(mt_rand(), true));
+        $classNameA = 'A' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $classNameA . '{ public $b = array(); public $integer = 5; }');
-        $classNameB = 'B' . md5(uniqid(mt_rand(), true));
+        $classNameB = 'B' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $classNameB . '{ public $a; public $c; public $integer = "Not an integer"; }');
         $A = new $classNameA();
         $B = new $classNameB();

@@ -74,7 +74,7 @@ final class DebuggerTest extends UnitTestCase
         // if the test fails, an exception raises an error, no assertion needed
         $this->expectNotToPerformAssertions();
 
-        $className = 'TestClass' . md5(uniqid(mt_rand(), true));
+        $className = 'TestClass' . md5(uniqid((string)mt_rand(), true));
         eval('
             class ' . $className . ' {
                 public string $stringProperty;
