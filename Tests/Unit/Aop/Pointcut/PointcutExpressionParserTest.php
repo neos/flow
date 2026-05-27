@@ -36,11 +36,6 @@ final class PointcutExpressionParserTest extends UnitTestCase
     protected $mockObjectManager;
 
     /**
-     * @var ReflectionService
-     */
-    protected $mockReflectionService;
-
-    /**
      * Setup
      *
      * @return void
@@ -48,7 +43,6 @@ final class PointcutExpressionParserTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockReflectionService = $this->createMock(ReflectionService::class);
     }
 
     /**
@@ -145,7 +139,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $mockPointcutFilterComposite->expects($this->once())->method('addFilter')->with('&&');
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
         $parser->injectObjectManager($this->mockObjectManager);
 
         $parser->_call('parseDesignatorClassAnnotatedWith', '&&', 'foo', $mockPointcutFilterComposite);
@@ -160,7 +154,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $mockPointcutFilterComposite->expects($this->once())->method('addFilter')->with('&&');
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
 
         $parser->_call('parseDesignatorClass', '&&', 'Foo', $mockPointcutFilterComposite);
     }
@@ -179,7 +173,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $mockPointcutFilterComposite->expects($this->once())->method('addFilter')->with('&&');
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
         $parser->injectObjectManager($this->mockObjectManager);
 
         $parser->_call('parseDesignatorMethodAnnotatedWith', '&&', 'foo', $mockPointcutFilterComposite);
@@ -209,7 +203,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $this->mockObjectManager->method('get')->willReturn($mockPsrLoggerFactory);
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
         $parser->injectObjectManager($this->mockObjectManager);
 
         $parser->_call('parseDesignatorMethod', '&&', 'protected Foo->bar()', $composite);
@@ -399,7 +393,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $pointcutFilterComposite = new PointcutFilterComposite();
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
         $parser->injectObjectManager($this->mockObjectManager);
 
         $parser->_call('parseDesignatorClassAnnotatedWith', '&&', 'foo(bar == false)', $pointcutFilterComposite);
@@ -437,7 +431,7 @@ final class PointcutExpressionParserTest extends UnitTestCase
         $pointcutFilterComposite = new PointcutFilterComposite();
 
         $parser = $this->getAccessibleMock(PointcutExpressionParser::class, [], [], '', false);
-        $parser->injectReflectionService($this->mockReflectionService);
+        $parser->injectReflectionService($this->createStub(\Neos\Flow\Reflection\ReflectionService::class));
         $parser->injectObjectManager($this->mockObjectManager);
 
         $parser->_call('parseDesignatorMethodAnnotatedWith', '&&', 'foo(bar == false)', $pointcutFilterComposite);

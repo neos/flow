@@ -47,11 +47,6 @@ final class ActionControllerTest extends UnitTestCase
      */
     protected $mockObjectManager;
 
-    /**
-     * @var Mvc\Controller\ControllerContext
-     */
-    protected $mockControllerContext;
-
     protected function setUp(): void
     {
         $this->actionController = $this->getAccessibleMock(ActionController::class, []);
@@ -66,9 +61,7 @@ final class ActionControllerTest extends UnitTestCase
 
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
-
-        $this->mockControllerContext = $this->createMock(Mvc\Controller\ControllerContext::class);
-        $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
+        $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
 
         $mockViewConfigurationManager = $this->createMock(Mvc\ViewConfigurationManager::class);
         $this->inject($this->actionController, 'viewConfigurationManager', $mockViewConfigurationManager);
@@ -152,7 +145,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->actionController = new ActionController();
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
-        $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
+        $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
 
         $mockRequest = $this->createMock(Mvc\ActionRequest::class);
         $mockRequest->method('getControllerActionName')->willReturn(('nonExisting'));
@@ -176,7 +169,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->actionController = new ActionController();
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
-        $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
+        $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
         $this->inject($this->actionController, 'arguments', new Arguments([]));
 
         $mockRequest = $this->createMock(Mvc\ActionRequest::class);
@@ -216,7 +209,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->actionController->method('resolveActionMethodName')->willReturn('indexAction');
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
-        $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
+        $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
         $this->inject($this->actionController, 'request', $this->mockRequest);
 
         $this->inject($this->actionController, 'arguments', new Arguments([]));
@@ -232,7 +225,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->inject($this->actionController, 'response', $mockResponse);
 
         $mockView = $this->createMock(Mvc\View\ViewInterface::class);
-        $mockView->expects($this->once())->method('setControllerContext')->with($this->mockControllerContext);
+        $mockView->expects($this->once())->method('setControllerContext')->with($this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
         $this->actionController->expects($this->once())->method('resolveView')->willReturn(($mockView));
         $this->actionController->expects($this->once())->method('resolveActionMethodName')->willReturn(('someAction'));
 
@@ -248,7 +241,7 @@ final class ActionControllerTest extends UnitTestCase
         $this->actionController->method('resolveActionMethodName')->willReturn('indexAction');
 
         $this->inject($this->actionController, 'objectManager', $this->mockObjectManager);
-        $this->inject($this->actionController, 'controllerContext', $this->mockControllerContext);
+        $this->inject($this->actionController, 'controllerContext', $this->createStub(\Neos\Flow\Mvc\Controller\ControllerContext::class));
 
         $mockSettings = ['foo', 'bar'];
         $this->inject($this->actionController, 'settings', $mockSettings);

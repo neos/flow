@@ -38,11 +38,6 @@ final class PrivilegeManagerTest extends UnitTestCase
     protected $mockSecurityContext;
 
     /**
-     * @var JoinPointInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockJoinPoint;
-
-    /**
      * @var PrivilegeInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $grantPrivilege;
@@ -69,7 +64,6 @@ final class PrivilegeManagerTest extends UnitTestCase
     {
         $this->mockSecurityContext = $this->createMock(Context::class);
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockJoinPoint = $this->createMock(JoinPoint::class);
 
         $this->privilegeManager = new PrivilegeManager($mockObjectManager, $this->mockSecurityContext);
 
@@ -111,7 +105,7 @@ final class PrivilegeManagerTest extends UnitTestCase
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
-        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->mockJoinPoint));
+        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->createStub(\Neos\Flow\Aop\JoinPoint::class)));
     }
 
     /**
@@ -121,7 +115,7 @@ final class PrivilegeManagerTest extends UnitTestCase
     {
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([]));
 
-        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->mockJoinPoint));
+        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->createStub(\Neos\Flow\Aop\JoinPoint::class)));
     }
 
     /**
@@ -134,7 +128,7 @@ final class PrivilegeManagerTest extends UnitTestCase
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$testRole1]));
 
-        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->mockJoinPoint));
+        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, $this->createStub(\Neos\Flow\Aop\JoinPoint::class)));
     }
 
     /**
@@ -153,7 +147,7 @@ final class PrivilegeManagerTest extends UnitTestCase
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
-        self::assertFalse($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, new MethodPrivilegeSubject($this->mockJoinPoint)));
+        self::assertFalse($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, new MethodPrivilegeSubject($this->createStub(\Neos\Flow\Aop\JoinPoint::class))));
     }
 
     /**
@@ -172,7 +166,7 @@ final class PrivilegeManagerTest extends UnitTestCase
 
         $this->mockSecurityContext->expects($this->once())->method('getRoles')->willReturn(([$mockRoleAdministrator, $mockRoleCustomer]));
 
-        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, new MethodPrivilegeSubject($this->mockJoinPoint)));
+        self::assertTrue($this->privilegeManager->isGranted(MethodPrivilegeInterface::class, new MethodPrivilegeSubject($this->createStub(\Neos\Flow\Aop\JoinPoint::class))));
     }
 
     /**

@@ -40,11 +40,6 @@ final class PersistedUsernamePasswordProviderTest extends UnitTestCase
     protected $mockAccountRepository;
 
     /**
-     * @var PersistenceManagerInterface
-     */
-    protected $mockPersistenceManager;
-
-    /**
      * @var Security\Authentication\Token\UsernamePassword
      */
     protected $mockToken;
@@ -69,7 +64,6 @@ final class PersistedUsernamePasswordProviderTest extends UnitTestCase
         $this->mockHashService = $this->createMock(Security\Cryptography\HashService::class);
         $this->mockAccount = $this->createMock(Security\Account::class);
         $this->mockAccountRepository = $this->createMock(Security\AccountRepository::class);
-        $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->mockToken = $this->createMock(Security\Authentication\Token\UsernamePassword::class);
         $this->mockPrecomposedHashProvider = $this->createMock(Security\Cryptography\PrecomposedHashProvider::class);
         $this->mockPrecomposedHashProvider->method('getPrecomposedHash')->willReturn('bcrypt=>$2a$14$mYqRRlg5V2yUDy1bd9vt3Oq8Fa9d508WWazFWE5tcpTGn3G145RAm');
@@ -84,7 +78,7 @@ final class PersistedUsernamePasswordProviderTest extends UnitTestCase
         $this->persistedUsernamePasswordProvider->_set('options', []);
         $this->persistedUsernamePasswordProvider->_set('hashService', $this->mockHashService);
         $this->persistedUsernamePasswordProvider->_set('accountRepository', $this->mockAccountRepository);
-        $this->persistedUsernamePasswordProvider->_set('persistenceManager', $this->mockPersistenceManager);
+        $this->persistedUsernamePasswordProvider->_set('persistenceManager', $this->createStub(\Neos\Flow\Persistence\PersistenceManagerInterface::class));
         $this->persistedUsernamePasswordProvider->_set('securityContext', $this->mockSecurityContext);
         $this->persistedUsernamePasswordProvider->_set('precomposedHashProvider', $this->mockPrecomposedHashProvider);
     }
@@ -133,7 +127,7 @@ final class PersistedUsernamePasswordProviderTest extends UnitTestCase
         $persistedUsernamePasswordProvider = PersistedUsernamePasswordProvider::create('providerName', ['lookupProviderName' => 'customLookupName']);
         $this->inject($persistedUsernamePasswordProvider, 'hashService', $this->mockHashService);
         $this->inject($persistedUsernamePasswordProvider, 'accountRepository', $this->mockAccountRepository);
-        $this->inject($persistedUsernamePasswordProvider, 'persistenceManager', $this->mockPersistenceManager);
+        $this->inject($persistedUsernamePasswordProvider, 'persistenceManager', $this->createStub(\Neos\Flow\Persistence\PersistenceManagerInterface::class));
         $this->inject($persistedUsernamePasswordProvider, 'securityContext', $this->mockSecurityContext);
         $this->inject($persistedUsernamePasswordProvider, 'precomposedHashProvider', $this->mockPrecomposedHashProvider);
 

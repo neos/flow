@@ -852,11 +852,11 @@ final class ValidatorResolverTest extends UnitTestCase
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService->method('getAllImplementationClassNamesForInterface')->with(PolyTypeObjectValidatorInterface::class)->willReturn([]);
-        $mockReflectionService->method('getClassPropertyNames')->willReturnMap([
+        $mockReflectionService->expects($this->exactly(2))->method('getClassPropertyNames')->willReturnMap([
             [$fooClassName, ['bar']],
             [$barClassName, ['foo']]
         ]);
-        $mockReflectionService->method('getPropertyTagsValues')->willReturnMap([
+        $mockReflectionService->expects($this->exactly(2))->method('getPropertyTagsValues')->willReturnMap([
             [$fooClassName, 'bar', $fooPropertyTagsValues['bar']],
             [$barClassName, 'foo', $barPropertyTagsValues['foo']]
         ]);

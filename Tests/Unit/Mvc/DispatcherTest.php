@@ -54,11 +54,6 @@ final class DispatcherTest extends UnitTestCase
     protected $mockActionRequest;
 
     /**
-     * @var ActionRequest|MockObject
-     */
-    protected $mockMainRequest;
-
-    /**
      * @var ActionResponse
      */
     protected $actionResponse;
@@ -90,9 +85,7 @@ final class DispatcherTest extends UnitTestCase
 
         $this->mockParentRequest = $this->createMock(ActionRequest::class);
         $this->mockActionRequest->method('getParentRequest')->willReturn($this->mockParentRequest);
-
-        $this->mockMainRequest = $this->createMock(ActionRequest::class);
-        $this->mockActionRequest->method('getMainRequest')->willReturn($this->mockMainRequest);
+        $this->mockActionRequest->method('getMainRequest')->willReturn($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $this->mockActionRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
@@ -237,7 +230,7 @@ final class DispatcherTest extends UnitTestCase
         $this->expectException(AuthenticationRequiredException::class);
         $this->mockActionRequest->method('isDispatched')->willReturn(true);
 
-        $this->mockSecurityContext->expects($this->never())->method('setInterceptedRequest')->with($this->mockMainRequest);
+        $this->mockSecurityContext->expects($this->never())->method('setInterceptedRequest')->with($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $this->mockFirewall->expects($this->once())->method('blockIllegalRequests')->willThrowException(new AuthenticationRequiredException());
 

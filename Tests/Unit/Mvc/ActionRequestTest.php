@@ -38,15 +38,9 @@ final class ActionRequestTest extends UnitTestCase
      */
     protected $actionRequest;
 
-    /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockHttpRequest;
-
     protected function setUp(): void
     {
-        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
-        $this->actionRequest = ActionRequest::fromHttpRequest($this->mockHttpRequest);
+        $this->actionRequest = ActionRequest::fromHttpRequest($this->createStub(\Psr\Http\Message\ServerRequestInterface::class));
     }
 
     /**
@@ -81,9 +75,9 @@ final class ActionRequestTest extends UnitTestCase
         $anotherActionRequest = $this->actionRequest->createSubRequest();
         $yetAnotherActionRequest = $anotherActionRequest->createSubRequest();
 
-        self::assertSame($this->mockHttpRequest, $this->actionRequest->getHttpRequest());
-        self::assertSame($this->mockHttpRequest, $yetAnotherActionRequest->getHttpRequest());
-        self::assertSame($this->mockHttpRequest, $anotherActionRequest->getHttpRequest());
+        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $this->actionRequest->getHttpRequest());
+        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $yetAnotherActionRequest->getHttpRequest());
+        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $anotherActionRequest->getHttpRequest());
     }
 
     /**

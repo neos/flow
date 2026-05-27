@@ -50,11 +50,6 @@ final class DispatchMiddlewareTest extends UnitTestCase
     protected $mockDispatcher;
 
     /**
-     * @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockActionRequest;
-
-    /**
      * @return void
      */
     protected function setUp(): void
@@ -71,9 +66,7 @@ final class DispatchMiddlewareTest extends UnitTestCase
 
         $this->mockDispatcher = $this->createMock(Dispatcher::class);
         $this->inject($this->dispatchMiddleware, 'dispatcher', $this->mockDispatcher);
-
-        $this->mockActionRequest = $this->createMock(ActionRequest::class);
-        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->mockActionRequest);
+        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
     }
 
     /**
@@ -82,7 +75,7 @@ final class DispatchMiddlewareTest extends UnitTestCase
     public function processDispatchesTheRequest()
     {
         $this->mockHttpRequest->method('getQueryParams')->willReturn([]);
-        $this->mockDispatcher->expects($this->once())->method('dispatch')->with($this->mockActionRequest);
+        $this->mockDispatcher->expects($this->once())->method('dispatch')->with($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $response = $this->dispatchMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
         self::assertInstanceOf(ResponseInterface::class, $response);

@@ -31,11 +31,6 @@ final class JsonArrayTypeTest extends UnitTestCase
     protected $jsonArrayTypeMock;
 
     /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $abstractPlatformMock;
-
-    /**
      * @return void
      */
     protected function setUp(): void
@@ -44,8 +39,6 @@ final class JsonArrayTypeTest extends UnitTestCase
             ->onlyMethods(['initializeDependencies'])
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->abstractPlatformMock = $this->createMock('Doctrine\DBAL\Platforms\AbstractPlatform');
     }
 
     /**
@@ -53,7 +46,7 @@ final class JsonArrayTypeTest extends UnitTestCase
      */
     public function jsonConversionReturnsNullIfArrayIsNull()
     {
-        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(null, $this->abstractPlatformMock);
+        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(null, $this->createStub(\Doctrine\DBAL\Platforms\AbstractPlatform::class));
         self::assertEquals(null, $json);
     }
 
@@ -63,7 +56,7 @@ final class JsonArrayTypeTest extends UnitTestCase
     public function passSimpleArrayAndConvertToJson(): void
     {
         $this->inject($this->jsonArrayTypeMock, 'persistenceManager', $this->createStub(PersistenceManagerInterface::class));
-        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(['simplestring',1,['nestedArray']], $this->abstractPlatformMock);
+        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(['simplestring',1,['nestedArray']], $this->createStub(\Doctrine\DBAL\Platforms\AbstractPlatform::class));
         self::assertEquals("{\n    \"0\": \"simplestring\",\n    \"1\": 1,\n    \"2\": {\n        \"0\": \"nestedArray\"\n    }\n}", $json);
     }
 

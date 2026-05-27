@@ -36,14 +36,14 @@ final class MethodOverrideMiddlewareTest extends UnitTestCase
     /**
      * @var ResponseInterface|MockObject
      */
-    private $mockResponse;
+    private \PHPUnit\Framework\MockObject\Stub $mockResponse;
 
     public function setUp(): void
     {
         $this->middleware = new MethodOverrideMiddleware();
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockResponse = $this->createMock(ResponseInterface::class);
+        $this->mockResponse = $this->createStub(ResponseInterface::class);
     }
 
     public static function matchingRequests_dataProvider(): \Traversable

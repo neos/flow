@@ -43,11 +43,6 @@ final class ContextTest extends UnitTestCase
     protected $securityContext;
 
     /**
-     * @var ActionRequest
-     */
-    protected $mockActionRequest;
-
-    /**
      * @var TokenAndProviderFactoryInterface
      */
     protected $mockTokenAndProviderFactory;
@@ -77,9 +72,7 @@ final class ContextTest extends UnitTestCase
 
         $this->mockTokenAndProviderFactory = $this->getMockBuilder(TokenAndProviderFactoryInterface::class)->onlyMethods(['getTokens', 'getProviders'])->getMock();
         $this->securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
-
-        $this->mockActionRequest = $this->createMock(ActionRequest::class);
-        $this->securityContext->setRequest($this->mockActionRequest);
+        $this->securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
     }
 
     /**
@@ -88,7 +81,7 @@ final class ContextTest extends UnitTestCase
     public function currentRequestIsSetInTheSecurityContext()
     {
         $this->securityContext->initialize();
-        self::assertSame($this->mockActionRequest, $this->securityContext->_get('request'));
+        self::assertSame($this->createStub(\Neos\Flow\Mvc\ActionRequest::class), $this->securityContext->_get('request'));
     }
 
     /**
@@ -194,13 +187,13 @@ final class ContextTest extends UnitTestCase
         $securityContext = $this->getAccessibleMock(Context::class, []);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
         $securityContext->injectSettings($settings);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
         $securityContext->_set('sessionManager', $mockSessionManager);
         $securityContext->_set('securityLogger', $mockSecurityLogger);
         $securityContext->_set('tokens', [$token1, $token3, $token4]);
 
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('tokens', [$token1, $token3, $token4]);
         $securityContext->initialize();
 
@@ -248,7 +241,7 @@ final class ContextTest extends UnitTestCase
             $sessionlessToken,
         ]);
         $securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $expectedTokens = ['inactiveTokenProvider' => $inactiveToken, 'activeTokenProvider' => $activeToken];
         $this->mockSessionDataContainer->expects($this->once())->method('setSecurityTokens')->with($expectedTokens);
@@ -331,7 +324,7 @@ final class ContextTest extends UnitTestCase
         $mockRequestPatterns = [];
         foreach ($patterns as $pattern) {
             $mockRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('RequestPattern_' . $pattern['type'] . '_' . mt_rand())->getMock();
-            $mockRequestPattern->method('matchRequest')->with($this->mockActionRequest)->willReturn(($pattern['matchesRequest']));
+            $mockRequestPattern->method('matchRequest')->with($this->createStub(\Neos\Flow\Mvc\ActionRequest::class))->willReturn(($pattern['matchesRequest']));
             $mockRequestPatterns[] = $mockRequestPattern;
         }
 
@@ -347,7 +340,7 @@ final class ContextTest extends UnitTestCase
         $settings = [];
         $settings['security']['authentication']['authenticationStrategy'] = 'allTokens';
         $this->securityContext->injectSettings($settings);
-        $this->securityContext->setRequest($this->mockActionRequest);
+        $this->securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $this->securityContext->initialize();
         if ($expectedActive) {
@@ -368,7 +361,7 @@ final class ContextTest extends UnitTestCase
 
         $this->mockTokenAndProviderFactory->expects($this->once())->method('getTokens')->willReturn([]);
 
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $securityContext->initialize();
     }
@@ -408,7 +401,7 @@ final class ContextTest extends UnitTestCase
         $this->mockSessionDataContainer->expects($this->once())->method('getSecurityTokens')->willReturn($tokensFromTheSession);
 
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
         $securityContext->_set('sessionManager', $mockSessionManager);
         $securityContext->_set('securityLogger', $mockSecurityLogger);
@@ -448,7 +441,7 @@ final class ContextTest extends UnitTestCase
         $securityContext->_set('tokenAndProviderFactory', $mockTokenAndProviderFactory);
 
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
 
         $securityContext->_call('initialize');
     }
@@ -900,7 +893,7 @@ final class ContextTest extends UnitTestCase
 
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('initialized', true);
         $securityContext->expects($this->once())->method('getAuthenticationTokens')->willReturn(([$token1, $token2, $token3]));
 
@@ -929,7 +922,7 @@ final class ContextTest extends UnitTestCase
 
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('activeTokens', ['SomeOhterProvider' => $token1, 'SecondProvider' => $token2, 'MatchingProvider' => $token3]);
         $securityContext->_set('initialized', true);
 
@@ -944,7 +937,7 @@ final class ContextTest extends UnitTestCase
         /** @var Context $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('activeTokens', []);
         $securityContext->_set('initialized', true);
 
@@ -959,7 +952,7 @@ final class ContextTest extends UnitTestCase
         /** @var Context $securityContext */
         $securityContext = $this->getAccessibleMock(Context::class, ['getAuthenticationTokens']);
         $this->inject($securityContext, 'objectManager', $this->mockObjectManager);
-        $securityContext->setRequest($this->mockActionRequest);
+        $securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $securityContext->_set('csrfTokens', []);
         $securityContext->_set('initialized', true);
 
@@ -974,7 +967,7 @@ final class ContextTest extends UnitTestCase
         $existingTokens = ['token1' => true, 'token2' => true];
 
         /** @var Context $securityContext */
-        $this->securityContext->setRequest($this->mockActionRequest);
+        $this->securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $this->securityContext->_set('csrfTokens', $existingTokens);
         $this->securityContext->_set('csrfStrategy', Context::CSRF_ONE_PER_URI);
 
@@ -990,7 +983,7 @@ final class ContextTest extends UnitTestCase
         $this->mockSessionDataContainer->method('getCsrfProtectionTokens')->willReturn($existingTokens);
 
         /** @var Context $securityContext */
-        $this->securityContext->setRequest($this->mockActionRequest);
+        $this->securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $this->securityContext->_set('objectManager', $this->mockObjectManager);
         $this->securityContext->_set('csrfProtectionTokens', $existingTokens);
 
@@ -1012,7 +1005,7 @@ final class ContextTest extends UnitTestCase
         $mockObjectManager->method('get')->with(SessionDataContainer::class)->willReturn($sessionDataContainer);
 
         /** @var Context $securityContext */
-        $this->securityContext->setRequest($this->mockActionRequest);
+        $this->securityContext->setRequest($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
         $this->securityContext->_set('objectManager', $mockObjectManager);
         $this->securityContext->_set('initialized', true);
         $this->securityContext->_set('csrfProtectionStrategy', Context::CSRF_ONE_PER_URI);

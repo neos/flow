@@ -46,7 +46,7 @@ final class UriBuilderTest extends UnitTestCase
     /**
      * @var UriInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $mockBaseUri;
+    protected \PHPUnit\Framework\MockObject\Stub $mockBaseUri;
 
     /**
      * @var Mvc\ActionRequest|\PHPUnit\Framework\MockObject\MockObject
@@ -71,7 +71,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
 
-        $this->mockBaseUri = $this->createMock(UriInterface::class);
+        $this->mockBaseUri = $this->createStub(UriInterface::class);
         $mockBaseUriProvider = $this->createMock(Http\BaseUriProvider::class);
         $mockBaseUriProvider->method('getConfiguredBaseUriOrFallbackToCurrentRequest')->willReturn($this->mockBaseUri);
 

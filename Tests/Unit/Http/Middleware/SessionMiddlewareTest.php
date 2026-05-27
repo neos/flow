@@ -42,11 +42,6 @@ final class SessionMiddlewareTest extends UnitTestCase
      * @var ServerRequestInterface|MockObject
      */
     private $mockHttpRequest;
-
-    /**
-     * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockHttpRequestHandler;
     /**
      * @var array
      */
@@ -68,7 +63,6 @@ final class SessionMiddlewareTest extends UnitTestCase
         $this->inject($this->sessionMiddleware, 'sessionManager', $this->mockSessionManager);
 
         $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
-        $this->mockHttpRequestHandler = $this->createMock(RequestHandlerInterface::class);
 
 
         $this->inject($this->sessionMiddleware, 'sessionSettings', [
@@ -88,7 +82,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 
     /**
@@ -105,7 +99,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 
     /**
@@ -121,7 +115,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 
     /**
@@ -137,7 +131,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 
     public static function sessionCookieSettingsProvider(): \Iterator
@@ -170,7 +164,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame($expectedNewCookieValue, (string)$cookie);
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 
     public static function cookieValueDataProvider(): \Iterator
@@ -205,6 +199,6 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame($expectedNewCookieValue, $cookie->getValue());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->mockHttpRequestHandler);
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
     }
 }
