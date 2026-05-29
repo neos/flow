@@ -204,10 +204,10 @@ final class ContextTest extends UnitTestCase
 
         $securityContext->injectSettings(['security' => ['authentication' => ['authenticationStrategy' => 'allTokens']]]);
 
-        $matchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeRequestPattern')->getMock();
+        $matchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeRequestPattern' . uniqid())->getMock();
         $matchingRequestPattern->method('matchRequest')->willReturn(true);
 
-        $notMatchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeOtherRequestPattern')->getMock();
+        $notMatchingRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('SomeOtherRequestPattern' . uniqid())->getMock();
         $notMatchingRequestPattern->method('matchRequest')->willReturn(false);
 
         $inactiveToken = $this->createMock(TokenInterface::class);
