@@ -58,7 +58,22 @@ abstract class BaseTestCase extends TestCase
     protected function getAccessibleMock(string $originalClassName, array $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
         $mockBuilder = $this->getMockBuilder($this->buildAccessibleProxy($originalClassName));
-        $mockBuilder->onlyMethods($methods)->setConstructorArgs($arguments)->setMockClassName($mockClassName);
+        // PHPUnit 10+ rejects onlyMethods() entries that don't exist on the class. Split
+        // off non-existing methods (e.g. AOP-emitted signal methods, magic methods) so they
+        // can be added via addMethods() instead of failing the mock build.
+        $existingMethods = [];
+        $addedMethods = [];
+        foreach ($methods as $method) {
+            if (method_exists($originalClassName, $method)) {
+                $existingMethods[] = $method;
+            } else {
+                $addedMethods[] = $method;
+            }
+        }
+        $mockBuilder->onlyMethods($existingMethods)->setConstructorArgs($arguments)->setMockClassName($mockClassName);
+        if ($addedMethods !== []) {
+            $mockBuilder->addMethods($addedMethods);
+        }
         if ($callOriginalConstructor === false) {
             $mockBuilder->disableOriginalConstructor();
         }

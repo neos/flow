@@ -28,8 +28,8 @@ final class DispatcherTest extends UnitTestCase
     public function connectAllowsForConnectingASlotWithASignal(): void
     {
 
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
-        $mockSlot = $this->getMockBuilder('stdClass')->onlyMethods(['someSlotMethod'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
+        $mockSlot = $this->getMockBuilder('stdClass')->addMethods(['someSlotMethod'])->getMock();
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect(get_class($mockSignal), 'someSignal', get_class($mockSlot), 'someSlotMethod', false);
@@ -43,8 +43,8 @@ final class DispatcherTest extends UnitTestCase
     #[Test]
     public function connectAlsoAcceptsObjectsInPlaceOfTheClassName(): void
     {
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
-        $mockSlot = $this->getMockBuilder('stdClass')->onlyMethods(['someSlotMethod'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
+        $mockSlot = $this->getMockBuilder('stdClass')->addMethods(['someSlotMethod'])->getMock();
 
         $dispatcher = new Dispatcher();
         $dispatcher->connect(get_class($mockSignal), 'someSignal', $mockSlot, 'someSlotMethod', false);
@@ -58,7 +58,7 @@ final class DispatcherTest extends UnitTestCase
     #[Test]
     public function connectAlsoAcceptsClosuresActingAsASlot(): void
     {
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
         $mockSlot = function () {
         };
 
@@ -74,8 +74,8 @@ final class DispatcherTest extends UnitTestCase
     #[Test]
     public function wireAllowsForConnectingASlotWithASignal(): void
     {
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
-        $mockSlot = $this->getMockBuilder('stdClass')->onlyMethods(['someSlotMethod'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
+        $mockSlot = $this->getMockBuilder('stdClass')->addMethods(['someSlotMethod'])->getMock();
 
         $dispatcher = new Dispatcher();
         $dispatcher->wire(get_class($mockSignal), 'someSignal', get_class($mockSlot), 'someSlotMethod', false);
@@ -89,8 +89,8 @@ final class DispatcherTest extends UnitTestCase
     #[Test]
     public function wireAlsoAcceptsObjectsInPlaceOfTheClassName(): void
     {
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
-        $mockSlot = $this->getMockBuilder('stdClass')->onlyMethods(['someSlotMethod'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
+        $mockSlot = $this->getMockBuilder('stdClass')->addMethods(['someSlotMethod'])->getMock();
 
         $dispatcher = new Dispatcher();
         $dispatcher->wire(get_class($mockSignal), 'someSignal', $mockSlot, 'someSlotMethod', false);
@@ -104,7 +104,7 @@ final class DispatcherTest extends UnitTestCase
     #[Test]
     public function wireAlsoAcceptsClosuresActingAsASlot(): void
     {
-        $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
+        $mockSignal = $this->getMockBuilder('stdClass')->addMethods(['emitSomeSignal'])->getMock();
         $mockSlot = function () {
         };
 
