@@ -81,7 +81,7 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         };
     }
 
-    protected static function createUploadedFileInterfaceMock(string $filesize): UploadedFileInterface
+    protected static function createUploadedFileInterfaceMock(int $filesize): UploadedFileInterface
     {
         return new class ($filesize) implements UploadedFileInterface {
             public function __construct(protected int $filesize)
@@ -133,9 +133,9 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         yield [self::createResourceMetaDataInterfaceMock(200)];
         yield [self::createResourceMetaDataInterfaceMock(800)];
         yield [self::createResourceMetaDataInterfaceMock(1000)];
-        yield [self::createUploadedFileInterfaceMock('200')];
-        yield [self::createUploadedFileInterfaceMock('800')];
-        yield [self::createUploadedFileInterfaceMock('1000')];
+        yield [self::createUploadedFileInterfaceMock(200)];
+        yield [self::createUploadedFileInterfaceMock(800)];
+        yield [self::createUploadedFileInterfaceMock(1000)];
     }
 
     #[DataProvider('itemsWithAllowedSize')]
@@ -149,7 +149,7 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
     {
         yield [self::createResourceMetaDataInterfaceMock(1001)];
         yield [self::createResourceMetaDataInterfaceMock(PHP_INT_MAX)];
-        yield [self::createUploadedFileInterfaceMock('1001')];
+        yield [self::createUploadedFileInterfaceMock(1001)];
         yield [self::createUploadedFileInterfaceMock(PHP_INT_MAX)];
     }
 
@@ -164,8 +164,8 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
     {
         yield [self::createResourceMetaDataInterfaceMock(199)];
         yield [self::createResourceMetaDataInterfaceMock(0)];
-        yield [self::createUploadedFileInterfaceMock('199')];
-        yield [self::createUploadedFileInterfaceMock('0')];
+        yield [self::createUploadedFileInterfaceMock(199)];
+        yield [self::createUploadedFileInterfaceMock(0)];
     }
 
     #[DataProvider('itemsWithSmallerThanAllowedSize')]
