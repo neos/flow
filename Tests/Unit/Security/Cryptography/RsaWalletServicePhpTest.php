@@ -110,7 +110,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
     #[Test]
     public function shutdownSavesKeysToKeystoreFileIfKeysWereModified()
     {
-        self::assertFileNotExists('vfs://Foo/EncryptionKey');
+        self::assertFileDoesNotExist('vfs://Foo/EncryptionKey');
         $keyPairUuid = $this->rsaWalletService->generateNewKeypair(true);
         $this->rsaWalletService->shutdownObject();
 
@@ -125,7 +125,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
     #[Test]
     public function shutdownDoesNotSavesKeysToKeystoreFileIfKeysWereNotModified()
     {
-        self::assertFileNotExists('vfs://Foo/EncryptionKey');
+        self::assertFileDoesNotExist('vfs://Foo/EncryptionKey');
         $keyPairUuid = $this->rsaWalletService->generateNewKeypair(true);
         $this->rsaWalletService->shutdownObject();
         self::assertFileExists('vfs://Foo/EncryptionKey');
@@ -137,7 +137,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         unlink('vfs://Foo/EncryptionKey');
 
         $this->rsaWalletService->shutdownObject();
-        self::assertFileNotExists('vfs://Foo/EncryptionKey');
+        self::assertFileDoesNotExist('vfs://Foo/EncryptionKey');
     }
 
     #[Test]

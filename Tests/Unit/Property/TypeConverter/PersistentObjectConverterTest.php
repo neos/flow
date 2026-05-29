@@ -177,11 +177,11 @@ final class PersistentObjectConverterTest extends UnitTestCase
         $this->mockReflectionService
             ->expects($matcher)
             ->method('getMethodParameters')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->getInvocationCount() === 1) {
+            if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
                 $this->assertSame(self::equalTo('__construct'), $parameters[1]);
             }
-            if ($matcher->getInvocationCount() === 2) {
+            if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
                 $this->assertSame(self::equalTo('setVirtualPropertyName'), $parameters[1]);
             }
