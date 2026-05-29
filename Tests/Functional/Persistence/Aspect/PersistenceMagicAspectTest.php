@@ -80,7 +80,7 @@ final class PersistenceMagicAspectTest extends FunctionalTestCase
 
     #[DataProvider('sameValueObjectDataProvider')]
     #[Test]
-    public function valueObjectsWithTheSamePropertyValuesAreEqual(object $valueObject1, object $valueObject2): void
+    public function valueObjectsWithTheSamePropertyValuesAreEqual(\Closure $closure): void
     {
         [$valueObject1, $valueObject2] = $closure();
         self::assertEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));
@@ -96,7 +96,7 @@ final class PersistenceMagicAspectTest extends FunctionalTestCase
 
     #[DataProvider('differentValueObjectDataProvider')]
     #[Test]
-    public function valueObjectWithDifferentPropertyValuesAreNotEqual(object $valueObject1, object $valueObject2): void
+    public function valueObjectWithDifferentPropertyValuesAreNotEqual(\Closure $closure): void
     {
         [$valueObject1, $valueObject2] = $closure();
         self::assertNotEquals($this->persistenceManager->getIdentifierByObject($valueObject1), $this->persistenceManager->getIdentifierByObject($valueObject2));

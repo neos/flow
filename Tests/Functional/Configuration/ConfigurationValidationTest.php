@@ -25,6 +25,7 @@ use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\Functional\Configuration\Fixtures\RootDirectoryIgnoringYamlSource;
 use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Utility\ObjectAccess;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
