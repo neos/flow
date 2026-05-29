@@ -178,12 +178,12 @@ final class PersistentObjectConverterTest extends UnitTestCase
             ->expects($matcher)
             ->method('getMethodParameters')->willReturnCallback(function (...$parameters) use ($matcher) {
             if ($matcher->numberOfInvocations() === 1) {
-                $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
-                $this->assertSame(self::equalTo('__construct'), $parameters[1]);
+                $this->assertSame('TheTargetType', $parameters[0]);
+                $this->assertSame('__construct', $parameters[1]);
             }
             if ($matcher->numberOfInvocations() === 2) {
-                $this->assertSame(self::equalTo('TheTargetType'), $parameters[0]);
-                $this->assertSame(self::equalTo('setVirtualPropertyName'), $parameters[1]);
+                $this->assertSame('TheTargetType', $parameters[0]);
+                $this->assertSame('setVirtualPropertyName', $parameters[1]);
             }
             return [
                 ['type' => 'TheTypeOfSubObject']

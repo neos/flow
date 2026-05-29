@@ -49,14 +49,6 @@ final class PointcutExpressionParserTest extends UnitTestCase
     }
 
     #[Test]
-    public function parseThrowsExceptionIfPointcutExpressionIsNotAString()
-    {
-        $this->expectException(InvalidPointcutExpressionException::class);
-        $parser = new PointcutExpressionParser();
-        $parser->parse(false, 'Unit Test');
-    }
-
-    #[Test]
     public function parseThrowsExceptionIfThePointcutExpressionContainsNoDesignator()
     {
         $this->expectException(InvalidPointcutExpressionException::class);

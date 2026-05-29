@@ -160,14 +160,14 @@ final class DispatcherTest extends UnitTestCase
         $this->mockParentRequest->expects($this->atLeastOnce())->method('isDispatched')->willReturn(false);
         $matcher = self::exactly(2);
 
-        $this->mockController->expects($matcher)->method('processRequest')->willReturnCallback(function (...$parameters) use ($matcher) {
+        $this->mockController->expects($matcher)->method('processRequest')->willReturnCallback(function (...$parameters) use ($matcher, $forwardException) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($this->mockActionRequest, $parameters[0]);
-                return self::throwException(new StopActionException());
+                throw new StopActionException();
             }
             if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($this->mockParentRequest, $parameters[0]);
-                return self::throwException($forwardException);
+                throw $forwardException;
             }
         });
 

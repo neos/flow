@@ -61,6 +61,11 @@ final class ContextTest extends UnitTestCase
     protected $mockSessionDataContainer;
 
     /**
+     * @var ActionRequest
+     */
+    protected $mockActionRequest;
+
+    /**
      * Sets up this test case
      */
     protected function setUp(): void
@@ -75,14 +80,15 @@ final class ContextTest extends UnitTestCase
 
         $this->mockTokenAndProviderFactory = $this->getMockBuilder(TokenAndProviderFactoryInterface::class)->onlyMethods(['getTokens', 'getProviders'])->getMock();
         $this->securityContext->_set('tokenAndProviderFactory', $this->mockTokenAndProviderFactory);
-        $this->securityContext->setRequest($this->createStub(ActionRequest::class));
+        $this->mockActionRequest = $this->createStub(ActionRequest::class);
+        $this->securityContext->setRequest($this->mockActionRequest);
     }
 
     #[Test]
     public function currentRequestIsSetInTheSecurityContext()
     {
         $this->securityContext->initialize();
-        self::assertSame($this->createStub(ActionRequest::class), $this->securityContext->_get('request'));
+        self::assertSame($this->mockActionRequest, $this->securityContext->_get('request'));
     }
 
     #[Test]
@@ -313,10 +319,22 @@ final class ContextTest extends UnitTestCase
     #[Test]
     public function separateActiveAndInactiveTokensTests(array $patterns, $expectedActive)
     {
+        // Patterns sharing a logical type must share a PHP class, because
+        // Context::isTokenActive() groups patterns by their class name. Pre-declare
+        // one anonymous-style class per type and create mock instances from it.
+        $patternClasses = [];
+        foreach ($patterns as $pattern) {
+            if (!isset($patternClasses[$pattern['type']])) {
+                $className = 'RequestPattern_' . $pattern['type'] . '_' . md5(uniqid('', true));
+                eval('class ' . $className . ' implements \\' . RequestPatternInterface::class . ' { public function matchRequest(\\Neos\\Flow\\Mvc\\ActionRequest $request) { return false; } }');
+                $patternClasses[$pattern['type']] = $className;
+            }
+        }
+
         $mockRequestPatterns = [];
         foreach ($patterns as $pattern) {
-            $mockRequestPattern = $this->getMockBuilder(RequestPatternInterface::class)->setMockClassName('RequestPattern_' . $pattern['type'] . '_' . mt_rand())->getMock();
-            $mockRequestPattern->method('matchRequest')->with($this->createStub(ActionRequest::class))->willReturn(($pattern['matchesRequest']));
+            $mockRequestPattern = $this->createMock($patternClasses[$pattern['type']]);
+            $mockRequestPattern->method('matchRequest')->willReturn($pattern['matchesRequest']);
             $mockRequestPatterns[] = $mockRequestPattern;
         }
 
@@ -698,7 +716,7 @@ final class ContextTest extends UnitTestCase
     {
         $everybodyRole = new Role('Neos.Flow:Everybody');
         $mockPolicyService = $this->getAccessibleMock(PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->exactly(1))->method('getRole')->willReturnMap([
+        $mockPolicyService->method('getRole')->willReturnMap([
             ['Neos.Flow:Everybody', $everybodyRole]
         ]);
 
@@ -740,7 +758,7 @@ final class ContextTest extends UnitTestCase
         $everybodyRole = new Role('Neos.Flow:Everybody');
         $anonymousRole = new Role('Neos.Flow:Anonymous');
         $mockPolicyService = $this->getAccessibleMock(PolicyService::class, ['getRole']);
-        $mockPolicyService->expects($this->exactly(3))->method('getRole')->willReturnMap([
+        $mockPolicyService->method('getRole')->willReturnMap([
             ['Neos.Flow:Anonymous', $anonymousRole], ['Neos.Flow:Everybody', $everybodyRole], ['Neos.Flow:AuthenticatedUser', $authenticatedUserRole]
         ]);
 

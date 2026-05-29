@@ -40,9 +40,15 @@ final class ActionRequestTest extends UnitTestCase
      */
     protected $actionRequest;
 
+    /**
+     * @var ServerRequestInterface
+     */
+    protected $httpRequest;
+
     protected function setUp(): void
     {
-        $this->actionRequest = ActionRequest::fromHttpRequest($this->createStub(ServerRequestInterface::class));
+        $this->httpRequest = $this->createStub(ServerRequestInterface::class);
+        $this->actionRequest = ActionRequest::fromHttpRequest($this->httpRequest);
     }
 
     /**
@@ -72,9 +78,9 @@ final class ActionRequestTest extends UnitTestCase
         $anotherActionRequest = $this->actionRequest->createSubRequest();
         $yetAnotherActionRequest = $anotherActionRequest->createSubRequest();
 
-        self::assertSame($this->createStub(ServerRequestInterface::class), $this->actionRequest->getHttpRequest());
-        self::assertSame($this->createStub(ServerRequestInterface::class), $yetAnotherActionRequest->getHttpRequest());
-        self::assertSame($this->createStub(ServerRequestInterface::class), $anotherActionRequest->getHttpRequest());
+        self::assertSame($this->httpRequest, $this->actionRequest->getHttpRequest());
+        self::assertSame($this->httpRequest, $yetAnotherActionRequest->getHttpRequest());
+        self::assertSame($this->httpRequest, $anotherActionRequest->getHttpRequest());
     }
 
     #[Test]

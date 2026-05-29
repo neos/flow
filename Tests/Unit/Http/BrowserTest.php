@@ -109,15 +109,13 @@ final class BrowserTest extends UnitTestCase
         $requestEngine->expects($matcher)
             ->method('sendRequest')->willReturnCallback(function (...$parameters) use ($matcher, $initialUri, $redirectUri, $firstResponse, $secondResponse) {
             if ($matcher->numberOfInvocations() === 1) {
-                $this->assertSame(self::callback(function (ServerRequestInterface $request) use ($initialUri) {
-                    return (string)$request->getUri() === (string)$initialUri;
-                }), $parameters[0]);
+                self::assertInstanceOf(ServerRequestInterface::class, $parameters[0]);
+                self::assertSame((string)$initialUri, (string)$parameters[0]->getUri());
                 return $firstResponse;
             }
             if ($matcher->numberOfInvocations() === 2) {
-                $this->assertSame(self::callback(function (ServerRequestInterface $request) use ($redirectUri) {
-                    return (string)$request->getUri() === (string)$redirectUri;
-                }), $parameters[0]);
+                self::assertInstanceOf(ServerRequestInterface::class, $parameters[0]);
+                self::assertSame((string)$redirectUri, (string)$parameters[0]->getUri());
                 return $secondResponse;
             }
         });
