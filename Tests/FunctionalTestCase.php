@@ -165,7 +165,7 @@ abstract class FunctionalTestCase extends BaseTestCase
         self::$bootstrap->getObjectManager()->forgetInstance(ResourceManager::class);
         $session = $this->objectManager->get(SessionInterface::class);
         if ($session->isStarted()) {
-            $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->getName()));
+            $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->name()));
         }
 
         $privilegeManager = $this->objectManager->get(TestingPrivilegeManager::class);
@@ -189,7 +189,7 @@ abstract class FunctionalTestCase extends BaseTestCase
 
         $session = $this->objectManager->get(SessionInterface::class);
         if ($session->isStarted()) {
-            $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->getName()));
+            $session->destroy(sprintf('assure that session is fresh, in setUp() method of functional test %s.', get_class($this) . '::' . $this->name()));
         }
 
         $this->setupSecurity();
