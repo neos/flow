@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Http\Component;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\Middleware\MethodOverrideMiddleware;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -36,7 +38,7 @@ final class MethodOverrideMiddlewareTest extends UnitTestCase
     /**
      * @var ResponseInterface|MockObject
      */
-    private \PHPUnit\Framework\MockObject\Stub $mockResponse;
+    private Stub $mockResponse;
 
     public function setUp(): void
     {
@@ -56,10 +58,8 @@ final class MethodOverrideMiddlewareTest extends UnitTestCase
         yield 'parsedBody and both headers' => ['method' => 'POST', 'headers' => ['X-Http-Method-Override' => 'PATCH', 'X-Http-Method' => 'DELETE'], 'parsedBody' => ['__method' => 'PUT'], 'expectedMethod' => 'PUT'];
     }
 
-    /**
-     * @test
-     * @dataProvider matchingRequests_dataProvider
-     */
+    #[DataProvider('matchingRequests_dataProvider')]
+    #[Test]
     public function process_matchingRequests(string $method, array $headers, array $parsedBody, string $expectedMethod): void
     {
         $mockRequest = $this->prepareMockRequest($method, $headers, $parsedBody);
@@ -80,10 +80,8 @@ final class MethodOverrideMiddlewareTest extends UnitTestCase
         yield 'DELETE request with parsedBody' => ['method' => 'DELETE', 'headers' => [], 'parsedBody' => ['__method' => 'PUT']];
     }
 
-    /**
-     * @test
-     * @dataProvider nonMatchingRequests_dataProvider
-     */
+    #[DataProvider('nonMatchingRequests_dataProvider')]
+    #[Test]
     public function process_nonMatchingRequests(string $method, array $headers, array $parsedBody): void
     {
         $mockRequest = $this->prepareMockRequest($method, $headers, $parsedBody);

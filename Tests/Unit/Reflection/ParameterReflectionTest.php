@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\ParameterReflection;
 use Neos\Flow\Tests\UnitTestCase;
@@ -23,18 +23,14 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class ParameterReflectionTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getDeclaringClassReturnsFlowsClassReflection($dummy = null)
     {
         $parameter = new ParameterReflection([__CLASS__, 'fixtureMethod'], 'arg2');
         self::assertInstanceOf(ClassReflection::class, $parameter->getDeclaringClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getClassReturnsFlowsClassReflection($dummy = null)
     {
         $parameter = new ParameterReflection([__CLASS__, 'fixtureMethod'], 'arg1');

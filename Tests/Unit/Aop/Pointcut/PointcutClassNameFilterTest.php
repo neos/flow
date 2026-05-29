@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Aop\Pointcut\PointcutClassNameFilter;
+use Neos\Flow\Aop\Builder\ClassNameIndex;
+
 /*
  * This file is part of the Neos.Flow package.
  *
@@ -28,29 +32,26 @@ final class PointcutClassNameFilterTest extends UnitTestCase
 {
     /**
      * Checks if the class filter fires on a concrete and simple class expression
-     *
-     * @test
      */
+    #[Test]
     public function matchesTellsIfTheSpecifiedRegularExpressionMatchesTheGivenClassName()
     {
         $mockReflectionService = $this->createStub(ReflectionService::class);
 
-        $classFilter = new Aop\Pointcut\PointcutClassNameFilter('Neos\Virtual\Foo\Bar');
+        $classFilter = new PointcutClassNameFilter('Neos\Virtual\Foo\Bar');
         $classFilter->injectReflectionService($mockReflectionService);
         self::assertTrue($classFilter->matches('Neos\Virtual\Foo\Bar', '', '', 1), 'No. 1');
 
-        $classFilter = new Aop\Pointcut\PointcutClassNameFilter('.*Virtual.*');
+        $classFilter = new PointcutClassNameFilter('.*Virtual.*');
         $classFilter->injectReflectionService($mockReflectionService);
         self::assertTrue($classFilter->matches('Neos\Virtual\Foo\Bar', '', '', 1), 'No. 2');
 
-        $classFilter = new Aop\Pointcut\PointcutClassNameFilter('Neos\Firtual.*');
+        $classFilter = new PointcutClassNameFilter('Neos\Firtual.*');
         $classFilter->injectReflectionService($mockReflectionService);
         self::assertFalse($classFilter->matches('Neos\Virtual\Foo\Bar', '', '', 1), 'No. 3');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reduceTargetClassNamesFiltersAllClassesNotMatchedByAClassNameFilter()
     {
         $availableClassNames = [
@@ -60,25 +61,23 @@ final class PointcutClassNameFilterTest extends UnitTestCase
             'TestPackage\Subpackage2\Class4'
         ];
         sort($availableClassNames);
-        $availableClassNamesIndex = new Aop\Builder\ClassNameIndex();
+        $availableClassNamesIndex = new ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
         $expectedClassNames = [
             'TestPackage\Subpackage\SubSubPackage\Class3'
         ];
         sort($expectedClassNames);
-        $expectedClassNamesIndex = new Aop\Builder\ClassNameIndex();
+        $expectedClassNamesIndex = new ClassNameIndex();
         $expectedClassNamesIndex->setClassNames($expectedClassNames);
 
-        $classNameFilter = new Aop\Pointcut\PointcutClassNameFilter('TestPackage\Subpackage\SubSubPackage\Class3');
+        $classNameFilter = new PointcutClassNameFilter('TestPackage\Subpackage\SubSubPackage\Class3');
         $result = $classNameFilter->reduceTargetClassNames($availableClassNamesIndex);
 
         self::assertEquals($expectedClassNamesIndex, $result, 'The wrong class names have been filtered');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reduceTargetClassNamesFiltersAllClassesNotMatchedByAClassNameFilterWithRegularExpressions()
     {
         $availableClassNames = [
@@ -88,7 +87,7 @@ final class PointcutClassNameFilterTest extends UnitTestCase
             'TestPackage\Subpackage2\Class4'
         ];
         sort($availableClassNames);
-        $availableClassNamesIndex = new Aop\Builder\ClassNameIndex();
+        $availableClassNamesIndex = new ClassNameIndex();
         $availableClassNamesIndex->setClassNames($availableClassNames);
 
         $expectedClassNames = [
@@ -96,10 +95,10 @@ final class PointcutClassNameFilterTest extends UnitTestCase
             'TestPackage\Subpackage\SubSubPackage\Class3'
         ];
         sort($expectedClassNames);
-        $expectedClassNamesIndex = new Aop\Builder\ClassNameIndex();
+        $expectedClassNamesIndex = new ClassNameIndex();
         $expectedClassNamesIndex->setClassNames($expectedClassNames);
 
-        $classNameFilter = new Aop\Pointcut\PointcutClassNameFilter('TestPackage\Subpackage\.*');
+        $classNameFilter = new PointcutClassNameFilter('TestPackage\Subpackage\.*');
         $result = $classNameFilter->reduceTargetClassNames($availableClassNamesIndex);
 
         self::assertEquals($expectedClassNamesIndex, $result, 'The wrong class names have been filtered');

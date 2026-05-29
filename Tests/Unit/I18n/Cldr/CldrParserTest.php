@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Cldr\CldrParser;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
 
@@ -23,15 +24,13 @@ use Neos\Flow\I18n;
  */
 final class CldrParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCldrDataCorrectly()
     {
         $sampleFilenamePath = __DIR__ . '/../Fixtures/MockCldrData.xml';
         $sampleParsedData = require(__DIR__ . '/../Fixtures/MockParsedCldrData.php');
 
-        $parser = new I18n\Cldr\CldrParser();
+        $parser = new CldrParser();
 
         $result = $parser->getParsedData($sampleFilenamePath);
         self::assertEquals($sampleParsedData, $result);

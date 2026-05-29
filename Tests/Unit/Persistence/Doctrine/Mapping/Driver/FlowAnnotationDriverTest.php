@@ -12,7 +12,10 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Security\Policy\Role;
+use Neos\Flow\Security\Account;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security;
@@ -34,15 +37,13 @@ final class FlowAnnotationDriverTest extends UnitTestCase
     public static function classNameToTableNameMappings(): \Iterator
     {
         yield ['SomePackage\Domain\Model\Blob', 'somepackage_domain_model_blob'];
-        yield [Security\Policy\Role::class, 'neos_flow_security_policy_role'];
-        yield [Security\Account::class, 'neos_flow_security_account'];
+        yield [Role::class, 'neos_flow_security_policy_role'];
+        yield [Account::class, 'neos_flow_security_account'];
         yield ['Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration', 'neos_flow_security_authorization_resource_securitypublishi_07c54'];
     }
 
-    /**
-     * @test
-     * @dataProvider classNameToTableNameMappings
-     */
+    #[DataProvider('classNameToTableNameMappings')]
+    #[Test]
     public function testInferTableNameFromClassName($className, $tableName): void
     {
         /** @var FlowAnnotationDriver|MockObject $driver */
@@ -59,17 +60,15 @@ final class FlowAnnotationDriverTest extends UnitTestCase
     public static function classAndPropertyNameToJoinTableNameMappings(): \Iterator
     {
         yield [64, 'SomePackage\Domain\Model\Blob', 'propertyName', 'somepackage_domain_model_blob_propertyname_join'];
-        yield [64, Security\Policy\Role::class, 'propertyName', 'neos_flow_security_policy_role_propertyname_join'];
-        yield [64, Security\Account::class, 'propertyName', 'neos_flow_security_account_propertyname_join'];
+        yield [64, Role::class, 'propertyName', 'neos_flow_security_policy_role_propertyname_join'];
+        yield [64, Account::class, 'propertyName', 'neos_flow_security_account_propertyname_join'];
         yield [64, 'Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration', 'propertyName', 'neos_flow_security_authorization_resourc_07c54_propertyname_join'];
         yield [30, 'Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration', 'propertyName', 'neos_f_07c54_propertyname_join'];
         yield [30, 'Neos\Flow\Security\Authorization\Resource\SecurityPublishingConfiguration', 'somePrettyLongPropertyNameWhichMustBeShortened', 'neos_flow_security_autho_6afa5'];
     }
 
-    /**
-     * @test
-     * @dataProvider classAndPropertyNameToJoinTableNameMappings
-     */
+    #[DataProvider('classAndPropertyNameToJoinTableNameMappings')]
+    #[Test]
     public function testInferJoinTableNameFromClassAndPropertyName($maxIdentifierLength, $className, $propertyName, $expectedTableName): void
     {
         $driver = $this->getAccessibleMock(FlowAnnotationDriver::class, ['getMaxIdentifierLength']);
@@ -81,9 +80,7 @@ final class FlowAnnotationDriverTest extends UnitTestCase
         self::assertLessThanOrEqual($maxIdentifierLength, strlen($actualTableName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaxIdentifierLengthAsksDoctrineForValue(): void
     {
         $mockDatabasePlatform = $this->getMockForAbstractClass(AbstractPlatform::class, [], '', true, true, true, ['getMaxIdentifierLength']);

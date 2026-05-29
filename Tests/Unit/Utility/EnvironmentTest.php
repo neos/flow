@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility\Environment;
@@ -24,9 +24,7 @@ use Neos\Utility\Files;
  */
 final class EnvironmentTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathToTemporaryDirectoryReturnsPathWithTrailingSlash()
     {
         $environment = new Environment(new ApplicationContext('Testing'));
@@ -35,9 +33,7 @@ final class EnvironmentTest extends UnitTestCase
         self::assertSame('/', substr($path, -1, 1), 'The temporary path did not end with slash.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathToTemporaryDirectoryReturnsAnExistingPath()
     {
         $environment = new Environment(new ApplicationContext('Testing'));
@@ -47,9 +43,7 @@ final class EnvironmentTest extends UnitTestCase
         self::assertFileExists($path, 'The temporary path does not exist.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaximumPathLengthReturnsCorrectValue()
     {
         $environment = new Environment(new ApplicationContext('Testing'));

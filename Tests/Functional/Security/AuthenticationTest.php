@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Security\AccountFactory;
@@ -119,9 +119,8 @@ final class AuthenticationTest extends FunctionalTestCase
      * current request in the session and then redirect to the entry point. After
      * successful authentication the intercepted request should be contained in
      * the security context and can be fetched from there.
-     *
-     * @test
      */
+    #[Test]
     public function theInterceptedRequestIsStoredInASessionForLaterRetrieval()
     {
         $this->markTestIncomplete('Needs to be implemented');
@@ -136,9 +135,7 @@ final class AuthenticationTest extends FunctionalTestCase
         // -> then: expect a redirect to the above page and $this->securityContext->getInterceptedRequest() should contain the expected request
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function successfulAuthenticationResetsAuthenticatedRoles()
     {
         $uri = new Uri('http://localhost/test/security/authentication/httpbasic');
@@ -152,9 +149,7 @@ final class AuthenticationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function successfulAuthenticationCallsOnAuthenticationSuccessMethod()
     {
         $arguments = [];
@@ -168,18 +163,14 @@ final class AuthenticationTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function failedAuthenticationCallsOnAuthenticationFailureMethod()
     {
         $response = $this->browser->request('http://localhost/test/security/authentication');
         self::assertStringContainsString('Uncaught Exception in Flow #42: Failure Method Exception', (string) $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function successfulAuthenticationDoesNotStartASessionIfNoTokenRequiresIt()
     {
         $uri = new Uri('http://localhost/test/security/authentication/httpbasic');
@@ -189,9 +180,7 @@ final class AuthenticationTest extends FunctionalTestCase
         self::assertEmpty($response->getHeader('Set-Cookie'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function successfulAuthenticationDoesStartASessionIfTokenRequiresIt()
     {
         $arguments = [];
@@ -202,9 +191,7 @@ final class AuthenticationTest extends FunctionalTestCase
         self::assertNotEmpty($response->getHeaderLine('Set-Cookie'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noSessionIsStartedIfAUnrestrictedActionIsCalled()
     {
         $response = $this->browser->request('http://localhost/test/security/restricted/public');

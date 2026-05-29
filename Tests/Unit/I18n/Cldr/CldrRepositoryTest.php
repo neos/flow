@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use Neos\Flow\I18n\Locale;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Utility\ObjectAccess;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Tests\UnitTestCase;
@@ -41,15 +43,13 @@ final class CldrRepositoryTest extends UnitTestCase
     {
         vfsStream::setup('Foo');
 
-        $this->repository = $this->getAccessibleMock(I18n\Cldr\CldrRepository::class, []);
+        $this->repository = $this->getAccessibleMock(CldrRepository::class, []);
         $this->repository->_set('cldrBasePath', 'vfs://Foo/');
 
-        $this->dummyLocale = new I18n\Locale('en');
+        $this->dummyLocale = new Locale('en');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modelIsReturnedCorrectlyForSingleFile()
     {
         file_put_contents('vfs://Foo/Bar.xml', '');
@@ -61,9 +61,7 @@ final class CldrRepositoryTest extends UnitTestCase
         self::assertEquals(false, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modelIsReturnedCorrectlyForGroupOfFiles()
     {
         mkdir('vfs://Foo/Directory');

@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Core\Bootstrap;
@@ -43,7 +45,7 @@ final class PackageManagerTest extends UnitTestCase
     protected $packageManager;
 
     /**
-     * @var Dispatcher|\PHPUnit\Framework\MockObject\MockObject
+     * @var Dispatcher|MockObject
      */
     protected $mockDispatcher;
 
@@ -80,9 +82,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->initialize($mockBootstrap);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPackageReturnsTheSpecifiedPackage()
     {
         $this->packageManager->createPackage('Some.Test.Package', [], 'vfs://Test/Packages/Application');
@@ -91,9 +91,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertInstanceOf(PackageInterface::class, $package, 'The result of getPackage() was no valid package object.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPackageThrowsExceptionOnUnknownPackage()
     {
         $this->expectException(UnknownPackageException::class);
@@ -124,9 +122,7 @@ final class PackageManagerTest extends UnitTestCase
         return new $fullyQualifiedClassName();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCaseSensitivePackageKeyReturnsTheUpperCamelCaseVersionOfAGivenPackageKeyIfThePackageIsRegistered()
     {
         $packageManager = $this->getAccessibleMock(PackageManager::class, [], ['', '']);
@@ -134,9 +130,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals('Acme.TestPackage', $packageManager->getCaseSensitivePackageKey('acme.testpackage'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRegistersPackagesItFinds()
     {
         $expectedPackageKeys = [
@@ -170,9 +164,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertSame($expectedPackageKeys, $actualPackageKeys);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function scanAvailablePackagesTraversesThePackagesDirectoryAndRespectsPackageCollectionsAndRegistersPackagesItFinds()
     {
         $expectedPackageKeys = [
@@ -219,9 +211,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertSame($expectedPackageKeys, $actualPackageKeys);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function packageStatesConfigurationContainsRelativePaths()
     {
         $packageKeys = [
@@ -274,10 +264,8 @@ final class PackageManagerTest extends UnitTestCase
         yield ['RobertLemke.Flow.NothingElse', 'vfs://Test/Packages/Application/RobertLemke.Flow.NothingElse/'];
     }
 
-    /**
-     * @test
-     * @dataProvider packageKeysAndPaths
-     */
+    #[DataProvider('packageKeysAndPaths')]
+    #[Test]
     public function createPackageCreatesPackageFolderAndReturnsPackage($packageKey, $expectedPackagePath)
     {
         $actualPackage = $this->packageManager->createPackage($packageKey, [], 'vfs://Test/Packages/Application');
@@ -289,9 +277,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertTrue($this->packageManager->isPackageAvailable($packageKey));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPackageWritesAComposerManifestUsingTheGivenMetaObject()
     {
         $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage', [
@@ -312,9 +298,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals('Yet Another Test Package', $composerManifest->description);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPackageCanChangePackageTypeInComposerManifest()
     {
         $metaData = [
@@ -337,9 +321,7 @@ final class PackageManagerTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPackageAlwaysSetsThePackageType()
     {
         $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage2', [], 'vfs://Test/Packages/Application');
@@ -352,9 +334,8 @@ final class PackageManagerTest extends UnitTestCase
 
     /**
      * Checks if createPackage() creates the folders for classes, configuration, documentation, resources and tests.
-     *
-     * @test
      */
+    #[Test]
     public function createPackageCreatesCommonFolders()
     {
         $package = $this->packageManager->createPackage('Acme.YetAnotherTestPackage', [], 'vfs://Test/Packages/Application');
@@ -369,9 +350,8 @@ final class PackageManagerTest extends UnitTestCase
 
     /**
      * Makes sure that an exception is thrown and no directory is created on passing invalid package keys.
-     *
-     * @test
      */
+    #[Test]
     public function createPackageThrowsExceptionOnInvalidPackageKey()
     {
         try {
@@ -383,9 +363,8 @@ final class PackageManagerTest extends UnitTestCase
 
     /**
      * Makes sure that duplicate package keys are detected.
-     *
-     * @test
      */
+    #[Test]
     public function createPackageThrowsExceptionForExistingPackageKey()
     {
         $this->expectException(PackageKeyAlreadyExistsException::class);
@@ -393,9 +372,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->createPackage('Acme.YetAnotherTestPackage', [], 'vfs://Test/Packages/Application');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPackageMakesTheNewlyCreatedPackageAvailable()
     {
         $this->packageManager->createPackage('Acme.YetAnotherTestPackage', [], 'vfs://Test/Packages/Application');
@@ -413,10 +390,8 @@ final class PackageManagerTest extends UnitTestCase
         yield ['Neos/Flow', 'Neos.Flow'];
     }
 
-    /**
-     * @test
-     * @dataProvider composerNamesAndPackageKeys
-     */
+    #[DataProvider('composerNamesAndPackageKeys')]
+    #[Test]
     public function getPackageKeyFromComposerNameIgnoresCaseDifferences($composerName, $packageKey)
     {
         $packageStatesConfiguration = [
@@ -438,9 +413,7 @@ final class PackageManagerTest extends UnitTestCase
         self::assertEquals($packageKey, $packageManager->_call('getPackageKeyFromComposerName', $composerName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeringTheSamePackageKeyWithDifferentCaseShouldThrowException()
     {
         $this->expectException(PackageKeyAlreadyExistsException::class);
@@ -448,9 +421,7 @@ final class PackageManagerTest extends UnitTestCase
         $this->packageManager->createPackage('doctrine.Instantiator', [], 'vfs://Test/Packages/Application');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPackageEmitsPackageStatesUpdatedSignal()
     {
         $this->mockDispatcher->expects($this->once())->method('dispatch')->with(PackageManager::class, 'packageStatesUpdated');

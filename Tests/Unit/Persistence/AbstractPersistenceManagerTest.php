@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Persistence;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\AbstractPersistenceManager;
 use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Tests\UnitTestCase;
@@ -33,9 +33,7 @@ final class AbstractPersistenceManagerTest extends UnitTestCase
         $this->abstractPersistenceManager = $this->getMockBuilder(AbstractPersistenceManager::class)->onlyMethods(['persistAll', 'isNewObject', 'getObjectByIdentifier', 'createQueryForType', 'add', 'remove', 'update', 'getIdentifierByObject', 'clearState', 'isConnected'])->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectToIdentityArrayConvertsAnObject()
     {
         $someObject = new \stdClass();
@@ -46,9 +44,7 @@ final class AbstractPersistenceManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectToIdentityArrayThrowsExceptionIfIdentityForTheGivenObjectCantBeDetermined()
     {
         $this->expectException(UnknownObjectException::class);
@@ -58,9 +54,7 @@ final class AbstractPersistenceManagerTest extends UnitTestCase
         $this->abstractPersistenceManager->convertObjectToIdentityArray($someObject);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectsToIdentityArraysRecursivelyConvertsObjects()
     {
         $object1 = new \stdClass();
@@ -84,9 +78,7 @@ final class AbstractPersistenceManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectsToIdentityArraysConvertsObjectsInIterators()
     {
         $object1 = new \stdClass();

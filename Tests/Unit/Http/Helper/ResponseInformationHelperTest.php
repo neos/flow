@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\Http\Helper;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Utils;
@@ -16,9 +18,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 {
     /**
      * RFC 2616 / 14.9.4
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantRemovesMaxAgeIfNoCacheIsSet()
     {
         $request = ServerRequest::fromGlobals();
@@ -30,9 +31,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 4.4 (Message Length)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantRemovesTheContentLengthHeaderIfTransferLengthIsDifferent()
     {
         $content = 'Pat grabbed her hat';
@@ -46,9 +46,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 4.4 (Message Length)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantSetsAContentLengthHeaderIfNotPresent()
     {
         $content = '
@@ -71,9 +70,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 4.4 (Message Length)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantEnsuresEmptyBodyForHeadRequests()
     {
         $request = ServerRequest::fromGlobals()->withMethod('HEAD');
@@ -107,10 +105,9 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 14.25 (If-Modified-Since)
-     *
-     * @test
-     * @dataProvider makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider
      */
+    #[DataProvider('makeStandardsCompliantEnsures304BasedOnLastModificationDataProvider')]
+    #[Test]
     public function makeStandardsCompliantEnsures304BasedOnLastModification($requestMethod, $requestHeaders, $responseStatus, $responseHeaders, $expoectedStatus)
     {
         $request = ServerRequest::fromGlobals()->withMethod($requestMethod);
@@ -150,10 +147,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
         yield ['HEAD', ['If-None-Match' => '"12345"'], 203, ['ETag' => '"12345"'], 203];
     }
 
-    /**
-     * @test
-     * @dataProvider makeStandardsCompliantEnsures304BasedOnEtagDataProvider
-     */
+    #[DataProvider('makeStandardsCompliantEnsures304BasedOnEtagDataProvider')]
+    #[Test]
     public function makeStandardsCompliantEnsures304BasedOnEtag($requestMethod, $requestHeaders, $responseStatus, $responseHeaders, $expoectedStatus)
     {
         $request = ServerRequest::fromGlobals()->withMethod($requestMethod);
@@ -169,9 +164,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 14.28 (If-Unmodified-Since)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantReturns412StatusIfUnmodifiedSinceDoesNotMatch()
     {
         $unmodifiedSince = 'Tue, 15 May 2012 09:00:00 GMT';
@@ -195,9 +189,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
      * 10.1.2 (101 Switching Protocols)
      * 10.2.5 (204 No Content)
      * 10.3.5 (304 Not Modified)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantRemovesBodyContentIfStatusCodeImpliesIt()
     {
         foreach ([100, 101, 204, 304] as $statusCode) {
@@ -210,9 +203,8 @@ final class ResponseInformationHelperTest extends UnitTestCase
 
     /**
      * RFC 2616 / 14.21 (Expires)
-     *
-     * @test
      */
+    #[Test]
     public function makeStandardsCompliantRemovesMaxAgeDireciveIfExpiresHeaderIsPresent()
     {
         $expires = 'Tue, 19 Jan 2038 03:14:07 GMT';
@@ -225,9 +217,7 @@ final class ResponseInformationHelperTest extends UnitTestCase
         $this->assertSame($expires, $response->getHeaderLine('Expires'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function makeStandardCompliantEnsuresCorrectCacheControlHeader()
     {
         $request = ServerRequest::fromGlobals();

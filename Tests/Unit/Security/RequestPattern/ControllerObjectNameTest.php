@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\RequestPattern\ControllerObjectName;
 use Neos\Flow\Tests\UnitTestCase;
@@ -23,9 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class ControllerObjectNameTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsTrueIfTheCurrentRequestMatchesTheControllerObjectNamePattern()
     {
         $request = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
@@ -36,9 +34,7 @@ final class ControllerObjectNameTest extends UnitTestCase
         self::assertTrue($requestPattern->matchRequest($request));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfTheCurrentRequestDoesNotMatchTheControllerObjectNamePattern()
     {
         $request = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();

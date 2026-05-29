@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Core;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Exception;
 use Neos\Flow\Tests\UnitTestCase;
@@ -38,10 +39,8 @@ final class ApplicationContextTest extends UnitTestCase
         yield ['Production/SpecialDeployment/LiveSystem'];
     }
 
-    /**
-     * @test
-     * @dataProvider allowedContexts
-     */
+    #[DataProvider('allowedContexts')]
+    #[Test]
     public function contextStringCanBeSetInConstructorAndReadByCallingToString($allowedContext): void
     {
         $context = new ApplicationContext($allowedContext);
@@ -61,10 +60,8 @@ final class ApplicationContextTest extends UnitTestCase
         yield ['DevelopmentStuff/FooBar'];
     }
 
-    /**
-     * @test
-     * @dataProvider forbiddenContexts
-     */
+    #[DataProvider('forbiddenContexts')]
+    #[Test]
     public function constructorThrowsExceptionIfMainContextIsForbidden($forbiddenContext): void
     {
         $this->expectException(Exception::class);
@@ -122,10 +119,8 @@ final class ApplicationContextTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider isMethods
-     */
+    #[DataProvider('isMethods')]
+    #[Test]
     public function contextMethodsReturnTheCorrectValues($contextName, $isDevelopment, $isProduction, $isTesting, $parentContext): void
     {
         $context = new ApplicationContext($contextName);
@@ -135,9 +130,7 @@ final class ApplicationContextTest extends UnitTestCase
         self::assertSame((string)$parentContext, (string)$context->getParent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parentContextIsConnectedRecursively(): void
     {
         $context = new ApplicationContext('Production/Foo/Bar');
@@ -156,11 +149,11 @@ final class ApplicationContextTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider getHierarchyDataProvider
-     * @test
      * @param string $contextString
      * @param array $expectedResult
      */
+    #[DataProvider('getHierarchyDataProvider')]
+    #[Test]
     public function getHierarchyTest(string $contextString, array $expectedResult): void
     {
         $context = new ApplicationContext($contextString);

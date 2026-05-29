@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Cache;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Utility\Environment;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Cache\EnvironmentConfiguration;
 use org\bovigo\vfs\vfsStream;
 use Neos\Cache\Backend\FileBackend;
@@ -47,7 +48,7 @@ final class CacheFactoryTest extends UnitTestCase
     {
         vfsStream::setup('Foo');
 
-        $this->mockEnvironment = $this->createMock(Utility\Environment::class);
+        $this->mockEnvironment = $this->createMock(Environment::class);
         $this->mockEnvironment->method('getPathToTemporaryDirectory')->willReturn(('vfs://Foo/'));
         $this->mockEnvironment->method('getMaximumPathLength')->willReturn((1024));
         $this->mockEnvironment->method('getContext')->willReturn((new ApplicationContext('Testing')));
@@ -68,9 +69,7 @@ final class CacheFactoryTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfTheSpecifiedCacheFrontend()
     {
         $factory = new CacheFactory(new ApplicationContext('Testing'), $this->mockEnvironment, 'UnitTesting');
@@ -80,9 +79,7 @@ final class CacheFactoryTest extends UnitTestCase
         self::assertInstanceOf(VariableFrontend::class, $cache);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInjectsAnInstanceOfTheSpecifiedBackendIntoTheCacheFrontend()
     {
         $factory = new CacheFactory(new ApplicationContext('Testing'), $this->mockEnvironment, 'UnitTesting');
@@ -92,9 +89,7 @@ final class CacheFactoryTest extends UnitTestCase
         self::assertInstanceOf(FileBackend::class, $cache->getBackend());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aDifferentDefaultCacheDirectoryIsUsedForPersistentFileCaches()
     {
         $factory = new CacheFactory(new ApplicationContext('Testing'), $this->mockEnvironment, 'UnitTesting');

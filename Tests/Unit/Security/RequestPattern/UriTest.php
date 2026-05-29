@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\RequestPattern\Uri as UriPattern;
 use Neos\Flow\Tests\UnitTestCase;
@@ -33,10 +34,8 @@ final class UriTest extends UnitTestCase
         yield ['uriPath' => '/some/other/path', 'pattern' => '.*/other/.*', 'shouldMatch' => true];
     }
 
-    /**
-     * @test
-     * @dataProvider matchRequestDataProvider
-     */
+    #[DataProvider('matchRequestDataProvider')]
+    #[Test]
     public function matchRequestTests($uriPath, $pattern, $shouldMatch)
     {
         $mockActionRequest = $this->createMock(ActionRequest::class);

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Exception\NoMatchingRouteException;
@@ -71,9 +72,7 @@ final class RoutingTest extends FunctionalTestCase
         return $actionRequest;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function httpMethodsAreRespectedForGetRequests(): void
     {
         $requestUri = 'http://localhost/neos/flow/test/httpmethods';
@@ -84,9 +83,7 @@ final class RoutingTest extends FunctionalTestCase
         self::assertSame('first', $actionRequest->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function httpMethodsAreRespectedForPostRequests(): void
     {
         $requestUri = 'http://localhost/neos/flow/test/httpmethods';
@@ -177,10 +174,8 @@ final class RoutingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider routeTestsDataProvider
-     */
+    #[DataProvider('routeTestsDataProvider')]
+    #[Test]
     public function routeTests(string $requestUri, ?string $expectedMatchingRouteName, ?string $expectedControllerObjectName = null, ?array $expectedArguments = null): void
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri($requestUri));
@@ -252,10 +247,8 @@ final class RoutingTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider resolveTestsDataProvider
-     */
+    #[DataProvider('resolveTestsDataProvider')]
+    #[Test]
     public function resolveTests(array $routeValues, string $expectedResolvedRouteName, ?string $expectedResolvedUriPath = null): void
     {
         $baseUri = new Uri('http://localhost');
@@ -277,10 +270,8 @@ final class RoutingTest extends FunctionalTestCase
         yield ['DELETE', 200];
     }
 
-    /**
-     * @test
-     * @dataProvider requestMethodAcceptArray
-     */
+    #[DataProvider('requestMethodAcceptArray')]
+    #[Test]
     public function routesWithoutRequestedHttpMethodConfiguredResultInA404(string $requestMethod, int $expectedStatus): void
     {
         $this->registerRoute(
@@ -301,9 +292,7 @@ final class RoutingTest extends FunctionalTestCase
         self::assertEquals($expectedStatus, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routerInitializesRoutesIfNotInjectedExplicitly(): void
     {
         $routeValues = [
@@ -319,9 +308,7 @@ final class RoutingTest extends FunctionalTestCase
         self::assertSame('/neos/flow/test/http/foo', (string)$actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPathPrefixIsRespectedInRoute(): void
     {
         $routeValues = [
@@ -337,9 +324,7 @@ final class RoutingTest extends FunctionalTestCase
         self::assertSame('/index.php/neos/flow/test/http/foo', (string)$actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function explicitlySpecifiedRoutesOverruleConfiguredRoutes(): void
     {
         $routeValues = [

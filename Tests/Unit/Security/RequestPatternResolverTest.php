@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ObjectManagement\ObjectManager;
 use Neos\Flow\Security\Exception\NoRequestPatternFoundException;
 use Neos\Flow\Security\RequestPatternResolver;
@@ -24,9 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class RequestPatternResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRequestPatternClassThrowsAnExceptionIfNoRequestPatternIsAvailable()
     {
         $this->expectException(NoRequestPatternFoundException::class);
@@ -38,9 +36,7 @@ final class RequestPatternResolverTest extends UnitTestCase
         $requestPatternResolver->resolveRequestPatternClass('notExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRequestPatternReturnsTheCorrectRequestPatternForAShortName()
     {
         $longNameForTest = 'Neos\Flow\Security\RequestPattern\ValidShortName';
@@ -64,9 +60,7 @@ final class RequestPatternResolverTest extends UnitTestCase
         self::assertEquals($longNameForTest, $requestPatternClass, 'The wrong classname has been resolved');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRequestPatternReturnsTheCorrectRequestPatternForACompleteClassName()
     {
         $mockObjectManager = $this->createMock(ObjectManager::class);

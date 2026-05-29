@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Http;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\UriTemplate;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -116,10 +117,8 @@ final class UriTemplateTest extends UnitTestCase
         yield ['associative?nested{&list*}', ['list' => ['red' => 'rouge', 'green' => ['blue' => 'mountain']]], 'associative?nested&red=rouge&green%5Bblue%5D=mountain'];
     }
 
-    /**
-     * @dataProvider templateStrings
-     * @test
-     */
+    #[DataProvider('templateStrings')]
+    #[Test]
     public function uriTemplatesAreExpandedCorrectly($templateString, array $variables, $expectedString)
     {
         $expandedTemplate = UriTemplate::expand($templateString, $variables);

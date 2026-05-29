@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Http\Client;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
@@ -56,9 +56,7 @@ final class BrowserTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsAreSentAsRequestBodyEvenInGetRequest()
     {
         $response = $this->browser->request('http://localhost/test/http/request/body', 'GET', ['foo' => 'bar']);
@@ -67,9 +65,8 @@ final class BrowserTest extends FunctionalTestCase
 
     /**
      * Check if the browser can handle redirects
-     *
-     * @test
      */
+    #[Test]
     public function redirectsAreFollowed()
     {
         $response = $this->browser->request('http://localhost/test/http/redirecting');
@@ -78,9 +75,8 @@ final class BrowserTest extends FunctionalTestCase
 
     /**
      * Check if the browser doesn't follow redirects if told so
-     *
-     * @test
      */
+    #[Test]
     public function redirectsAreNotFollowedIfSwitchedOff()
     {
         $this->browser->setFollowRedirects(false);
@@ -92,9 +88,8 @@ final class BrowserTest extends FunctionalTestCase
 
     /**
      * Check if request method can be overridden (@see https://github.com/neos/flow-development-collection/issues/2856)
-     *
-     * @test
      */
+    #[Test]
     public function methodCanBeOverriddenInPostRequests(): void
     {
         $response = $this->browser->request('http://localhost/test/http/request/method', 'POST', ['__method' => 'DELETE']);

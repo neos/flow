@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Property\TypeConverter\IntegerConverter;
 use Neos\Flow\Property\TypeConverterInterface;
 use Neos\Flow\Tests\UnitTestCase;
@@ -21,9 +22,8 @@ use Neos\Error\Messages as FlowError;
 
 /**
  * Testcase for the Integer converter
- *
- * @covers \Neos\Flow\Property\TypeConverter\IntegerConverter<extended>
  */
+#[CoversClass('\Neos\Flow\Property\TypeConverter\IntegerConverter<extended>::class')]
 final class IntegerConverterTest extends UnitTestCase
 {
     /**
@@ -36,9 +36,7 @@ final class IntegerConverterTest extends UnitTestCase
         $this->converter = new IntegerConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['integer', 'string', 'DateTime'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -46,91 +44,69 @@ final class IntegerConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromCastsStringToInteger()
     {
         self::assertSame(15, $this->converter->convertFrom('15', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromCastsDateTimeToInteger()
     {
         $dateTime = new \DateTime();
         self::assertSame($dateTime->format('U'), $this->converter->convertFrom($dateTime, 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesNotModifyIntegers()
     {
         $source = 123;
         self::assertSame($source, $this->converter->convertFrom($source, 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfEmptyStringSpecified()
     {
         self::assertNull($this->converter->convertFrom('', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorIfSpecifiedStringIsNotNumeric()
     {
         self::assertInstanceOf(FlowError\Error::class, $this->converter->convertFrom('not numeric', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrueForANumericStringSource()
     {
         self::assertTrue($this->converter->canConvertFrom('15', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrueForAnIntegerSource()
     {
         self::assertTrue($this->converter->canConvertFrom(123, 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrueForAnEmptyValue()
     {
         self::assertTrue($this->converter->canConvertFrom('', 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrueForANullValue()
     {
         self::assertTrue($this->converter->canConvertFrom(null, 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrueForADateTimeValue()
     {
         self::assertTrue($this->converter->canConvertFrom(new \DateTime(), 'integer'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));

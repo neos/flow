@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Configuration\Source;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Configuration\Exception;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Configuration\Source\YamlSource;
@@ -34,9 +34,7 @@ final class YamlSourceTest extends UnitTestCase
         vfsStream::setup('testDirectory');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyArrayOnNonExistingFile()
     {
         $configurationSource = new YamlSource();
@@ -44,9 +42,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertSame([], $configuration, 'No empty array was returned.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionSetInTheConfigurationFileReallyEndsUpInTheArray()
     {
         $pathAndFilename = __DIR__ . '/../Fixture/YAMLConfigurationFile';
@@ -55,9 +51,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertTrue($configuration['configurationFileHasBeenLoaded'], 'The option has not been set by the fixture.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveWritesArrayToGivenFileAsYAML()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -74,9 +68,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveKeepsQuotedKey()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -93,9 +85,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveDoesNotOverwriteExistingHeaderCommentsIfFileExists()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -110,9 +100,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertStringNotContainsString('Test: foo', (string) $yaml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function yamlFileIsParsedToArray()
     {
         $expectedConfiguration = [
@@ -132,9 +120,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertSame($expectedConfiguration, $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function splitConfigurationFilesAreMergedAsExpected()
     {
         $expectedConfiguration = [
@@ -155,9 +141,7 @@ final class YamlSourceTest extends UnitTestCase
         self::assertSame($expectedConfiguration, $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurationFileWithYmlExtensionResultsInException()
     {
         $this->expectException(Exception::class);

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Session\Aspect;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\JoinPoint;
 use Neos\Flow\Session\TransientSession;
 use Neos\Flow\Session\Aspect\LoggingAspect;
@@ -27,8 +27,8 @@ final class LoggingAspectTest extends UnitTestCase
 {
     /**
      * Proofs correct logging behaviour
-     * @test
      */
+    #[Test]
     public function logDestroyLogsSessionIdAndArgumentReason()
     {
         $testSession = new TransientSession();
@@ -49,9 +49,8 @@ final class LoggingAspectTest extends UnitTestCase
 
     /**
      * Proofs correct logging behaviour without argument reason given
-     *
-     * @test
      */
+    #[Test]
     public function logDestroyDoesNotRequireArgumentReason()
     {
         $testSession = new TransientSession();

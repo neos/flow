@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+
 /*
  * This file is part of the Neos.Flow package.
  *
@@ -29,9 +32,8 @@ use Neos\Flow\Annotations as Flow;
 
 /**
  * Test case for the ScalarTypeToObjectConverter
- *
- * @covers \Neos\Flow\Property\TypeConverter\ScalarTypeToObjectConverter<extended>
  */
+#[CoversClass('\Neos\Flow\Property\TypeConverter\ScalarTypeToObjectConverter<extended>::class')]
 final class ScalarTypeToObjectConverterTest extends UnitTestCase
 {
     /**
@@ -49,9 +51,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
             ->willReturn(false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromStringToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();
@@ -59,9 +59,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
         self::assertEquals('Hello World!', $valueObject->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromIntegerToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();
@@ -69,9 +67,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
         self::assertSame(42, $valueObject->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromBoolToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();
@@ -79,9 +75,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
         self::assertTrue($valueObject->value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromBoolToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();
@@ -96,9 +90,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
         self::assertTrue($canConvert);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromIntegerToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();
@@ -113,9 +105,7 @@ final class ScalarTypeToObjectConverterTest extends UnitTestCase
         self::assertTrue($canConvert);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromFloatToValueObject()
     {
         $converter = new ScalarTypeToObjectConverter();

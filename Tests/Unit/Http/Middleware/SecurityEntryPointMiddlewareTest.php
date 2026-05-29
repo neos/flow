@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Http\Middleware;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Http\Middleware\SecurityEntryPointMiddleware;
 use Neos\Flow\Http\ServerRequestAttributes;
 use Neos\Flow\Mvc\ActionRequest;
@@ -109,20 +110,16 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockHttpRequest->method('getUploadedFiles')->willReturn([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processReturnsIfNoAuthenticationExceptionWasSet(): void
     {
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->mockSecurityContext->expects($this->never())->method('getAuthenticationTokens');
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRethrowsAuthenticationRequiredExceptionIfSecurityContextDoesNotContainAnyAuthenticationToken(): void
     {
         $this->mockSecurityContext->expects($this->atLeastOnce())->method('getAuthenticationTokens')->willReturn([]);
@@ -131,9 +128,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processCallsStartAuthenticationOnAllActiveEntryPoints(): void
     {
         $mockAuthenticationToken1 = $this->createMockTokenWithEntryPoint();
@@ -142,18 +137,16 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
 
         /** @var EntryPointInterface|MockObject $mockEntryPoint1 */
         $mockEntryPoint1 = $mockAuthenticationToken1->getAuthenticationEntryPoint();
-        $mockEntryPoint1->expects($this->once())->method('startAuthentication')->with($this->mockHttpRequest, self::isInstanceOf(ResponseInterface::class))->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $mockEntryPoint1->expects($this->once())->method('startAuthentication')->with($this->mockHttpRequest, self::isInstanceOf(ResponseInterface::class))->willReturn($this->createStub(ResponseInterface::class));
 
         /** @var EntryPointInterface|MockObject $mockEntryPoint2 */
         $mockEntryPoint2 = $mockAuthenticationToken2->getAuthenticationEntryPoint();
-        $mockEntryPoint2->expects($this->once())->method('startAuthentication')->with($this->mockHttpRequest, self::isInstanceOf(ResponseInterface::class))->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $mockEntryPoint2->expects($this->once())->method('startAuthentication')->with($this->mockHttpRequest, self::isInstanceOf(ResponseInterface::class))->willReturn($this->createStub(ResponseInterface::class));
 
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processAllowsAllEntryPointsToModifyTheHttpResponse(): void
     {
         $mockAuthenticationToken1 = $this->createMockTokenWithEntryPoint();
@@ -188,8 +181,8 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
     /**
      * Note: This test only exists to make sure the security context works inside this middleware as of now.
      * Can be removed once the SecurityContext no longer depends on the ActionRequest
-     * @test
      */
+    #[Test]
     public function processSetsSecurityContextRequest(): void
     {
         $this->mockSecurityContext->expects($this->atLeastOnce())->method('getAuthenticationTokens')->willReturn([$this->mockTokenWithEntryPoint]);
@@ -198,9 +191,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSetsInterceptedRequestIfSecurityContextContainsAuthenticationTokensWithEntryPoints(): void
     {
         $this->mockSecurityContext->expects($this->atLeastOnce())->method('getAuthenticationTokens')->willReturn([$this->mockTokenWithEntryPoint]);
@@ -211,9 +202,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotSetInterceptedRequestIfRequestMethodIsNotGET(): void
     {
         $this->mockSecurityContext->expects($this->atLeastOnce())->method('getAuthenticationTokens')->willReturn([$this->mockTokenWithEntryPoint]);
@@ -224,9 +213,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotSetInterceptedRequestIfAllAuthenticatedTokensAreSessionless(): void
     {
         $mockAuthenticationToken1 = $this->createMock(TestingToken::class);
@@ -251,10 +238,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
      * NOTE: The following tests were moved here from DispatchMiddlewareTest, because this middleware currently builds the ActionRequest.
      * Make sure to move them again, once the ActionRequest is built in the DispatchMiddleware again, where it belongs.
      */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function processMergesInternalArgumentsWithRoutingMatchResults()
     {
         $this->buildMockHttpRequest([
@@ -275,7 +259,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         ]);
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
@@ -339,10 +323,8 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider processMergesArgumentsWithRoutingMatchResultsDataProvider()
-     */
+    #[DataProvider('processMergesArgumentsWithRoutingMatchResultsDataProvider')]
+    #[Test]
     public function processMergesArgumentsWithRoutingMatchResults(array $requestArguments, array $requestBodyArguments, ?array $routingMatchResults, array $expectedArguments)
     {
         $this->mockActionRequest->expects($this->once())->method('setArguments')->with($expectedArguments);
@@ -351,13 +333,11 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ROUTING_RESULTS)->willReturn($routingMatchResults);
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processSetsDefaultControllerAndActionNameIfTheyAreNotSetYet()
     {
         $this->mockActionRequest->expects($this->once())->method('getControllerName')->willReturn('');
@@ -366,13 +346,11 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockActionRequest->expects($this->once())->method('setControllerActionName')->with('index');
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDoesNotSetDefaultControllerAndActionNameIfTheyAreSetAlready()
     {
         $this->mockHttpRequest->method('withParsedBody')->willReturn($this->mockHttpRequest);
@@ -383,12 +361,10 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockActionRequest->expects($this->never())->method('setControllerActionName');
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
-    /**
-     * @test
-     */
+    #[Test]
     public function processSetsActionRequestArgumentsIfARouteMatches()
     {
         $this->mockHttpRequest->method('withParsedBody')->willReturn($this->mockHttpRequest);
@@ -403,7 +379,7 @@ final class SecurityEntryPointMiddlewareTest extends UnitTestCase
         $this->mockActionRequest->expects($this->once())->method('setArguments')->with($matchResults);
 
         $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
-        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(\Psr\Http\Message\ResponseInterface::class));
+        $this->mockRequestHandler->method('handle')->willReturn($this->createStub(ResponseInterface::class));
         $this->securityEntryPointMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
     }
 }

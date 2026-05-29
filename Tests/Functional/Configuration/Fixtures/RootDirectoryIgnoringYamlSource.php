@@ -10,10 +10,10 @@ namespace Neos\Flow\Tests\Functional\Configuration\Fixtures;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Annotations as Flow;
 
-class RootDirectoryIgnoringYamlSource extends \Neos\Flow\Configuration\Source\YamlSource
+class RootDirectoryIgnoringYamlSource extends YamlSource
 {
     /**
      * Loads the specified configuration file and returns its content as an

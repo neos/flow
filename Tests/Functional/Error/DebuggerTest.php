@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Error;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Utility\ObjectAccess;
@@ -40,9 +40,7 @@ final class DebuggerTest extends FunctionalTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoredClassesCanBeOverwrittenBySettings()
     {
         $object = new ApplicationContext('Development');

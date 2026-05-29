@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Parser\NumberParser;
@@ -47,25 +47,19 @@ final class NumberValidatorTest extends AbstractValidatorTestcase
         $this->mockNumberParser = $this->createMock(NumberParser::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
         $sampleInvalidNumber = 'this is not a number';
@@ -78,9 +72,7 @@ final class NumberValidatorTest extends AbstractValidatorTestcase
         self::assertCount(1, $this->validator->validate($sampleInvalidNumber)->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsFalseForIncorrectValues()
     {
         $sampleInvalidNumber = 'this is not a number';

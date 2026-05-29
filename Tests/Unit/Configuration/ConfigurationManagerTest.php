@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Loader\AppendLoader;
 use Neos\Flow\Configuration\Loader\LoaderInterface;
@@ -49,9 +50,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->mockContext = new ApplicationContext('Testing');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForSettingsLoadsConfigurationIfNecessary(): void
     {
         $initialConfigurations = [
@@ -66,9 +65,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'Foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForTypeSettingsReturnsRespectiveConfigurationArray(): void
     {
         $expectedConfiguration = ['foo' => 'bar'];
@@ -85,9 +82,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame($expectedConfiguration, $actualConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForTypeSettingsLoadsConfigurationIfNecessary(): void
     {
         $packages = ['SomePackage' => $this->createStub(Package::class)];
@@ -101,9 +96,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'SomePackage');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForTypeObjectLoadsConfiguration(): void
     {
         $packages = ['SomePackage' => $this->createStub(Package::class)];
@@ -117,9 +110,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_OBJECTS, 'SomePackage');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForRoutesAndCachesLoadsConfigurationIfNecessary(): void
     {
         $initialConfigurations = [
@@ -141,9 +132,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfigurationForRoutesAndCachesReturnsRespectiveConfigurationArray(): void
     {
         $expectedConfigurations = [
@@ -161,9 +150,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function gettingUnregisteredConfigurationTypeFails(): void
     {
         $this->expectException(InvalidConfigurationTypeException::class);
@@ -171,9 +158,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->getConfiguration('Custom');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerConfigurationTypeThrowsExceptionOnInvalidConfigurationProcessingType(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -181,9 +166,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->registerConfigurationType('MyCustomType', 'Nonsense');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationOverridesSettingsByContext(): void
     {
         $mockYamlSource = $this->getMockBuilder(YamlSource::class)->onlyMethods(['load', 'save'])->getMock();
@@ -214,9 +197,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame($expectedSettings, $actualConfigurations[ConfigurationManager::CONFIGURATION_TYPE_SETTINGS]['PackageA']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationOverridesGlobalSettingsByContext(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageSettingsCallback', 'Testing/System1');
@@ -354,9 +335,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationForObjectsOverridesConfigurationByContext(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageObjectsCallback', 'Testing/System1');
@@ -472,9 +451,7 @@ final class ConfigurationManagerTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationForCachesOverridesConfigurationByContext(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageCachesCallback', 'Testing/System1');
@@ -583,9 +560,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationCacheLoadsConfigurationsFromCacheIfACacheFileExists(): void
     {
         vfsStream::setup('Temporary', null, [
@@ -609,9 +584,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame(['bar' => 'touched'], $configurationManager->_get('configurations'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationCorrectlyMergesSettings(): void
     {
         $mockYamlSource = $this->getMockBuilder(YamlSource::class)->onlyMethods(['load', 'save'])->getMock();
@@ -637,9 +610,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedConfiguration, $actualConfigurations[ConfigurationManager::CONFIGURATION_TYPE_SETTINGS]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveConfigurationCacheSavesTheCurrentConfigurationAsPhpCode(): void
     {
         vfsStream::setup('Flow');
@@ -680,9 +651,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $this->assertStringEqualsFile($cachedConfigurationsPathAndFilename, $expectedInclusionCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replaceVariablesInPhpStringReplacesConstantMarkersByRealGlobalConstantCode(): void
     {
         $settings = [
@@ -701,9 +670,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertStringContainsString("'to' => (defined('FLOW_PATH_ROOT') ? constant('FLOW_PATH_ROOT') : null)", (string) $processedPhpString);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replaceVariablesInPhpStringMaintainsConstantTypeIfOnlyValue(): void
     {
         $settings = [
@@ -727,9 +694,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame('Version id is ' . PHP_VERSION_ID, $settings['casted']['to']['string']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replaceVariablesInPhpStringReplacesClassConstantMarkersWithApproppriateConstants(): void
     {
         $settings = [
@@ -753,9 +718,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame(FlowPackageInterface::DIRECTORY_CLASSES, $settings['inspiring']['people']['share']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function replaceVariablesInPhpStringReplacesEnvMarkersWithEnvironmentValues(): void
     {
         $envVarName = 'NEOS_FLOW_TESTS_UNIT_CONFIGURATION_CONFIGURATIONMANAGERTEST_MOCKENVVAR';
@@ -822,10 +785,8 @@ final class ConfigurationManagerTest extends UnitTestCase
         yield 'format string casts non-existing env variable to ""' => ['envVarName' => '', 'envVarValue' => '', 'setting' => '%env(string):NEOS_FLOW_TESTS_UNIT_CONFIGURATION_NON_EXISTING_ENVIRONMENT_VARIABLE%', 'expectedResult' => ''];
     }
 
-    /**
-     * @test
-     * @dataProvider replaceVariablesInPhpStringReplacesEnvMarkersDataProvider
-     */
+    #[DataProvider('replaceVariablesInPhpStringReplacesEnvMarkersDataProvider')]
+    #[Test]
     public function replaceVariablesInPhpStringReplacesEnvMarkersTests(string $envVarName, string $envVarValue, string $setting, $expectedResult): void
     {
         if ($envVarName !== '') {
@@ -845,9 +806,8 @@ final class ConfigurationManagerTest extends UnitTestCase
 
     /**
      * We expect that the context specific routes are loaded *first*
-     *
-     * @test
      */
+    #[Test]
     public function loadConfigurationForRoutesLoadsContextSpecificRoutesFirst(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageRoutesCallback', 'Testing/System1');
@@ -1008,9 +968,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationForRoutesLoadsSubRoutesRecursively(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageSubRoutesCallback', 'Testing/System1');
@@ -1151,9 +1109,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationForRoutesIncludesSubRoutesFromSettings(): void
     {
         $mockYamlSource = $this->getMockBuilder(YamlSource::class)->onlyMethods(['load', 'save'])->getMock();
@@ -1261,9 +1217,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadConfigurationForRoutesThrowsExceptionIfSubRoutesContainCircularReferences(): void
     {
         $this->expectException(RecursionException::class);
@@ -1293,9 +1247,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $configurationManager->_call('loadConfiguration', ConfigurationManager::CONFIGURATION_TYPE_ROUTES, $mockPackages);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeRoutesWithSubRoutesThrowsExceptionIfRouteRefersToNonExistingOrInactivePackages(): void
     {
         $this->expectException(ParseErrorException::class);
@@ -1324,9 +1276,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $mockRoutesLoader->_call('mergeRoutesWithSubRoutes', $mockPackages, $applicationContext, $routesConfiguration, $subRoutesRecursionLevel);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeRoutesWithSubRoutesRespectsSuffixSubRouteOption(): void
     {
         $mockRoutesConfiguration = [
@@ -1373,9 +1323,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         $mockRoutesLoader->_call('mergeRoutesWithSubRoutes', $this->getMockPackages(), new ApplicationContext('Testing/System1'), $routesConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildSubrouteConfigurationsCorrectlyMergesRoutes(): void
     {
         $routesConfiguration = [
@@ -1474,9 +1422,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildSubrouteConfigurationsMergesSubRoutesAndProcessesPlaceholders(): void
     {
         $routesConfiguration = [
@@ -1574,9 +1520,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildSubrouteConfigurationsWontReplaceNonStringValues(): void
     {
         $routesConfiguration = [
@@ -1633,9 +1577,8 @@ final class ConfigurationManagerTest extends UnitTestCase
 
     /**
      * We expect that the context specific Views configurations are loaded *first*
-     *
-     * @test
      */
+    #[Test]
     public function loadConfigurationForViewsLoadsAppendsAllConfigurations(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('packageViewConfigurationsCallback', 'Testing/System1');
@@ -1730,9 +1673,7 @@ final class ConfigurationManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function loadingConfigurationOfCustomConfigurationTypeWorks(): void
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('loadingConfigurationOfCustomConfigurationTypeCallback', 'Testing');
@@ -1754,9 +1695,8 @@ final class ConfigurationManagerTest extends UnitTestCase
      * Test the disabled cache and that we still replace env variables.
      *
      * {@see ConfigurationManager::$temporaryDirectoryPath} === null
-     *
-     * @test
      */
+    #[Test]
     public function configurationManagerWithDisabledCache(): void
     {
         $configurationManager = new ConfigurationManager(new ApplicationContext('Testing'));

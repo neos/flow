@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Aop\Pointcut\PointcutSettingFilter;
+use Neos\Flow\Aop\Exception\InvalidPointcutExpressionException;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Aop;
@@ -23,9 +25,7 @@ use Neos\Flow\Aop;
  */
 final class PointcutSettingFilterTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function filterMatchesOnConfigurationSettingSetToTrue()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -33,14 +33,12 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = true;
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertTrue($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterMatchesOnConfigurationSettingSetToFalse()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -48,29 +46,25 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = false;
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertFalse($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterThrowsAnExceptionForNotExistingConfigurationSetting()
     {
-        $this->expectException(Aop\Exception\InvalidPointcutExpressionException::class);
+        $this->expectException(InvalidPointcutExpressionException::class);
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
 
         $settings['foo']['bar']['baz']['value'] = true;
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.foozy.baz.value');
+        $filter = new PointcutSettingFilter('package.foo.foozy.baz.value');
         $filter->injectConfigurationManager($mockConfigurationManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterDoesNotMatchOnConfigurationSettingThatIsNotBoolean()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -78,14 +72,12 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = 'not boolean';
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertFalse($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterCanHandleMissingSpacesInTheConfigurationSettingPath()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -93,14 +85,12 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = true;
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertTrue($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterMatchesOnAConditionSetInSingleQuotes()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -108,14 +98,12 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = 'option value';
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value = \'option value\'');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value = \'option value\'');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertTrue($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterMatchesOnAConditionSetInDoubleQuotes()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -123,14 +111,12 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = 'option value';
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value = "option value"');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value = "option value"');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertTrue($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterDoesNotMatchOnAFalseCondition()
     {
         $mockConfigurationManager = $this->createMock(ConfigurationManager::class);
@@ -138,23 +124,20 @@ final class PointcutSettingFilterTest extends UnitTestCase
         $settings['foo']['bar']['baz']['value'] = 'some other value';
         $mockConfigurationManager->expects($this->atLeastOnce())->method('getConfiguration')->with(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, 'package')->willReturn(($settings));
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value = \'some value\'');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value = \'some value\'');
         $filter->injectConfigurationManager($mockConfigurationManager);
         self::assertFalse($filter->matches('', '', '', 1));
     }
 
-    /**
-     * @test
-     *
-     */
+    #[Test]
     public function filterThrowsAnExceptionForAnIncorectCondition()
     {
-        $this->expectException(Aop\Exception\InvalidPointcutExpressionException::class);
+        $this->expectException(InvalidPointcutExpressionException::class);
         $mockConfigurationManager = $this->createStub(ConfigurationManager::class);
 
         $settings['foo']['bar']['baz']['value'] = 'option value';
 
-        $filter = new Aop\Pointcut\PointcutSettingFilter('package.foo.bar.baz.value = "forgot to close quotes');
+        $filter = new PointcutSettingFilter('package.foo.bar.baz.value = "forgot to close quotes');
         $filter->injectConfigurationManager($mockConfigurationManager);
     }
 }

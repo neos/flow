@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\ActionRequest;
@@ -42,9 +42,7 @@ final class UsernamePasswordHttpBasicTest extends UnitTestCase
         $this->token = new UsernamePasswordHttpBasic();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function credentialsAreSetCorrectlyFromRequestHeadersArguments()
     {
         $serverEnvironment = [
@@ -63,9 +61,7 @@ final class UsernamePasswordHttpBasicTest extends UnitTestCase
         self::assertSame(TokenInterface::AUTHENTICATION_NEEDED, $this->token->getAuthenticationStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function credentialsAreSetCorrectlyForCGI()
     {
         $expectedCredentials = ['username' => 'robert', 'password' => 'mysecretpassword, containing a : colon ;-)'];
@@ -83,9 +79,7 @@ final class UsernamePasswordHttpBasicTest extends UnitTestCase
         self::assertSame(TokenInterface::AUTHENTICATION_NEEDED, $this->token->getAuthenticationStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateCredentialsSetsTheCorrectAuthenticationStatusIfNoCredentialsArrived()
     {
         $httpRequest = new ServerRequest('GET', new Uri('http://foo.com'));

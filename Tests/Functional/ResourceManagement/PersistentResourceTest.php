@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\ResourceManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -45,9 +45,7 @@ final class PersistentResourceTest extends FunctionalTestCase
         $this->resourceManager = $this->objectManager->get(ResourceManager::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileGetContentsReturnFixtureContentForResourceUri()
     {
         $resource = $this->resourceManager->importResourceFromContent('fixture', 'fixture.txt');

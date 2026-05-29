@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\Package\Package;
@@ -52,9 +52,7 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
         $this->compileTimeObjectManager->injectAllSettings($configurations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flowPackageClassesAreNotFilteredFromObjectManagementByDefault()
     {
         $packagePath = 'vfs://Packages/Vendor.TestPackage/';
@@ -70,9 +68,7 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertArrayHasKey('Vendor.TestPackage', $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesAreFilteredFromObjectManagementByDefault()
     {
         $packagePath = 'vfs://Packages/NonFlow.TestPackage/';
@@ -87,9 +83,7 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertCount(1, $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesCanBeIncludedInObjectManagementByConfiguration()
     {
         $packagePath = 'vfs://Packages/NonFlow.IncludeAllClasses/';
@@ -105,9 +99,7 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertArrayHasKey('NonFlow.IncludeAllClasses', $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesExcludedAndIncludedWillNotBeIncluded()
     {
         $packagePath = 'vfs://Packages/NonFlow.IncludeAndExclude/';
@@ -122,9 +114,7 @@ final class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertCount(1, $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flowPackageClassesForNonMatchingIncludesAreRemoved()
     {
         $packagePath = 'vfs://Packages/Vendor.AnotherPackage/';

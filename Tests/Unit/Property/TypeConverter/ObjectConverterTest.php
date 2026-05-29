@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Property\PropertyMappingConfiguration;
@@ -23,9 +25,8 @@ use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the ObjectConverter
- *
- * @covers \Neos\Flow\Property\TypeConverter\ObjectConverter<extended>
  */
+#[CoversClass('\Neos\Flow\Property\TypeConverter\ObjectConverter<extended>::class')]
 final class ObjectConverterTest extends UnitTestCase
 {
     /**
@@ -47,9 +48,7 @@ final class ObjectConverterTest extends UnitTestCase
         $this->inject($this->converter, 'objectManager', $this->createStub(ObjectManagerInterface::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -66,10 +65,8 @@ final class ObjectConverterTest extends UnitTestCase
         yield [false, false, true];
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForCanConvert
-     */
+    #[DataProvider('dataProviderForCanConvert')]
+    #[Test]
     public function canConvertFromReturnsTrueIfClassIsTaggedWithEntityOrValueObject(bool $isEntity, bool $isValueObject, bool $expected): void
     {
         $this->mockReflectionService->method('isClassAnnotatedWith')->willReturnCallback(
@@ -86,9 +83,7 @@ final class ObjectConverterTest extends UnitTestCase
         self::assertSame($expected, $this->converter->canConvertFrom('myInputData', 'TheTargetType'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyShouldUseReflectionServiceToDetermineType()
     {
         $this->mockReflectionService->method('hasMethod')->with('TheTargetType', 'setThePropertyName')->willReturn((false));
@@ -103,9 +98,7 @@ final class ObjectConverterTest extends UnitTestCase
         self::assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'thePropertyName', $configuration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyShouldRemoveLeadingBackslashesForAnnotationParameters()
     {
         $this->mockReflectionService->method('getMethodParameters')->with('TheTargetType', '__construct')->willReturn(([]));

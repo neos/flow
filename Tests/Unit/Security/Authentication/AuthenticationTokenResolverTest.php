@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ObjectManagement\ObjectManager;
 use Neos\Flow\Security\Authentication\AuthenticationTokenResolver;
 use Neos\Flow\Security\Exception\NoAuthenticationTokenFoundException;
@@ -24,9 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class AuthenticationTokenResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveTokenObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
         $this->expectException(NoAuthenticationTokenFoundException::class);
@@ -38,9 +36,7 @@ final class AuthenticationTokenResolverTest extends UnitTestCase
         $providerResolver->resolveTokenClass('notExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveTokenReturnsTheCorrectTokenForAShortName()
     {
         $longClassNameForTest = 'Neos\Flow\Security\Authentication\Token\ValidShortName';
@@ -64,9 +60,7 @@ final class AuthenticationTokenResolverTest extends UnitTestCase
         self::assertSame($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveTokenReturnsTheCorrectTokenForACompleteClassName()
     {
         $mockObjectManager = $this->createMock(ObjectManager::class);

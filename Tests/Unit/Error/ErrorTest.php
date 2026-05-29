@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Error;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Error\Messages\Error as FlowError;
 
@@ -22,9 +22,7 @@ use Neos\Error\Messages\Error as FlowError;
  */
 final class ErrorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheErrorMessageCorrectly()
     {
         $errorMessage = 'The message';
@@ -33,9 +31,7 @@ final class ErrorTest extends UnitTestCase
         self::assertSame($errorMessage, $error->getMessage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theConstructorSetsTheErrorCodeCorrectly()
     {
         $errorCode = 123456789;

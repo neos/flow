@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\EntryPoint;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
@@ -28,9 +28,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class WebRedirectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function startAuthenticationThrowsAnExceptionIfTheConfigurationOptionsAreMissing()
     {
         $this->expectException(MissingConfigurationException::class);
@@ -43,9 +41,7 @@ final class WebRedirectTest extends UnitTestCase
         $entryPoint->startAuthentication($request, $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startAuthenticationSetsTheCorrectValuesInTheResponseObjectIfUriIsSpecified()
     {
         $baseUriProviderMock = $this->createMock(BaseUriProvider::class);
@@ -64,9 +60,7 @@ final class WebRedirectTest extends UnitTestCase
         self::assertEquals('http://robertlemke.com/some/page', $response->getHeaderLine('Location'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startAuthenticationDoesNotPrefixAConfiguredUriIfItsAbsolute()
     {
         $request = new ServerRequest('GET', new Uri('http://robertlemke.com/admin'));
@@ -80,9 +74,7 @@ final class WebRedirectTest extends UnitTestCase
         self::assertEquals('http://some.abs/olute/url', $response->getHeaderLine('Location'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startAuthenticationThrowsAnExceptionIfTheConfiguredRoutePartsAreInvalid()
     {
         $this->expectException(MissingConfigurationException::class);
@@ -94,9 +86,7 @@ final class WebRedirectTest extends UnitTestCase
         $entryPoint->startAuthentication($request, $response);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function startAuthenticationSetsTheCorrectValuesInTheResponseObjectIfRouteValuesAreSpecified()
     {
         $request = new ServerRequest('GET', new Uri('http://robertlemke.com/admin'));

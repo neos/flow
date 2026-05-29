@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Reflection\ClassSchema;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Validation\Exception\InvalidValidationOptionsException;
@@ -27,13 +28,13 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
     protected $validatorClassName = UniqueEntityValidator::class;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      * @see \Neos\Flow\Reflection\ClassSchema
      */
     protected $classSchema;
 
     /**
-     * @var \PHPUnit\Framework\MockObject\MockObject
+     * @var MockObject
      * @see \Neos\Flow\Reflection\ReflectionService
      */
     protected $reflectionService;
@@ -50,9 +51,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->inject($this->validator, 'reflectionService', $this->reflectionService);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionIfValueIsNotAnObject()
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -60,9 +59,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->validator->validate('a string');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionIfValueIsNotReflectedAtAll()
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -72,9 +69,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->validator->validate(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionIfValueIsNotAFlowEntity()
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -84,9 +79,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->validator->validate(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionIfSetupPropertiesAreNotPresentInActualClass()
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -102,9 +95,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->validator->validate(new \StdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionIfThereIsNoIdentityProperty()
     {
         $this->expectException(InvalidValidationOptionsException::class);
@@ -118,9 +109,7 @@ final class UniqueEntityValidatorTest extends AbstractValidatorTestcase
         $this->validator->validate(new \StdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorThrowsExceptionOnMultipleOrmIdAnnotations()
     {
         $this->expectException(InvalidValidationOptionsException::class);

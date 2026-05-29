@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Neos\Flow\Validation\Error;
 use Neos\Flow\Validation\Validator\TextValidator;
 use Neos\Flow\Validation;
 
@@ -27,9 +29,7 @@ final class TextValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = TextValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
@@ -44,9 +44,7 @@ final class TextValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function textValidatorReturnsNoErrorForASimpleString()
     {
         self::assertFalse($this->validator->validate('this is a very simple string')->hasErrors());
@@ -63,10 +61,10 @@ final class TextValidatorTest extends AbstractValidatorTestcase
     }
 
     /**
-     * @test
-     * @dataProvider validInput
      * @param string $input
      */
+    #[DataProvider('validInput')]
+    #[Test]
     public function textValidatorAcceptsValidInput($input)
     {
         $textValidator = new TextValidator();
@@ -83,21 +81,19 @@ final class TextValidatorTest extends AbstractValidatorTestcase
     }
 
     /**
-     * @test
-     * @dataProvider invalidInput
      * @param string $input
      */
+    #[DataProvider('invalidInput')]
+    #[Test]
     public function textValidatorRejectsInvalidInput($input)
     {
         self::assertTrue($this->validator->validate($input)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function textValidatorCreatesTheCorrectErrorIfTheSubjectContainsHtmlEntities()
     {
-        $expected = [new Validation\Error('Valid text without any XML tags is expected.', 1221565786)];
+        $expected = [new Error('Valid text without any XML tags is expected.', 1221565786)];
         self::assertEquals($expected, $this->validator->validate('<span style="color: #BBBBBB;">a nice text</span>')->getErrors());
     }
 }

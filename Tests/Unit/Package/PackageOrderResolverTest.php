@@ -13,12 +13,15 @@ namespace Neos\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Package\PackageOrderResolver;
 
 /**
  * Test the PackageOrderResolver
  */
-final class PackageOrderResolverTest extends \Neos\Flow\Tests\UnitTestCase
+final class PackageOrderResolverTest extends UnitTestCase
 {
     /**
      * Data provider for testing if a list of unordered packages gets ordered correctly.
@@ -352,11 +355,11 @@ final class PackageOrderResolverTest extends \Neos\Flow\Tests\UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider packagesAndDependenciesOrder
      * @param array $packages
      * @param array $expectedPackageOrder
      */
+    #[DataProvider('packagesAndDependenciesOrder')]
+    #[Test]
     public function availablePackagesAreSortedAfterTheirDependencies($packages, $expectedPackageOrder)
     {
         $orderResolver = new PackageOrderResolver($packages, $packages);

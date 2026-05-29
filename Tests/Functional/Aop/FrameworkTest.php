@@ -13,7 +13,15 @@ namespace Neos\Flow\Tests\Functional\Aop;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass01;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\Name;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\ChildClassOfTargetClass01;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass02;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass03;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\Introduced01Interface;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithFinalModifier;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp7Features;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithPhp8Features;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -23,22 +31,20 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 final class FrameworkTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfSayHelloMethodIsModifiedByWorldAdvice(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertSame('Hello World', $targetClass->sayHello());
     }
 
     /**
-     * @test
      * @throws
      */
+    #[Test]
     public function adviceRecoversFromException(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         try {
             $targetClass->sayHelloAndThrow(true);
         } catch (\Exception) {
@@ -46,24 +52,20 @@ final class FrameworkTest extends FunctionalTestCase
         self::assertSame('Hello World', $targetClass->sayHelloAndThrow(false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfGreetMethodIsModifiedBySpecialNameAdvice(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertSame('Hello, me', $targetClass->greet('Flow'));
         self::assertSame('Hello, Christopher', $targetClass->greet('Christopher'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containWithSplObjectStorageInRuntimeEvaluation(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
-        $name = new Fixtures\Name('Flow');
-        $otherName = new Fixtures\Name('Neos');
+        $targetClass = new TargetClass01();
+        $name = new Name('Flow');
+        $otherName = new Name('Neos');
         $splObjectStorage = new \SplObjectStorage();
         $splObjectStorage->attach($name);
         $targetClass->setCurrentName($name);
@@ -74,42 +76,34 @@ final class FrameworkTest extends FunctionalTestCase
         self::assertEquals('Hello, Flow', $targetClass->greetMany($splObjectStorage));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorAdvicesAreInvoked(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertSame('AVRO RJ100 is lousier than A-380', $targetClass->constructorResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withinPointcutsAlsoAcceptClassNames(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertSame('Flow is Rocket Science', $targetClass->sayWhatFlowIs(), 'TargetClass01');
-        $childClass = new Fixtures\ChildClassOfTargetClass01();
+        $childClass = new ChildClassOfTargetClass01();
         self::assertSame('Flow is not Rocket Science', $childClass->sayWhatFlowIs(), 'Child class of TargetClass01');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function adviceInformationIsAlsoBuiltWhenTheTargetClassIsDeserialized(): void
     {
-        $className = Fixtures\TargetClass01::class;
+        $className = TargetClass01::class;
         $targetClass = unserialize('O:' . strlen($className) . ':"' . $className . '":0:{}');
         self::assertSame('Hello, me', $targetClass->greet('Flow'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterReturningAdviceIsTakingEffect(): void
     {
-        $targetClass = new Fixtures\TargetClass02();
+        $targetClass = new TargetClass02();
         $targetClass->publicTargetMethod('foo');
         self::assertTrue($targetClass->afterReturningAdviceWasInvoked);
     }
@@ -121,12 +115,11 @@ final class FrameworkTest extends FunctionalTestCase
      * executed once.
      *
      * Test for bugfix #25610
-     *
-     * @test
      */
+    #[Test]
     public function codeAfterTheAopCodeInTheProxyMethodIsOnlyCalledOnce(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertEquals(1, $targetClass->initializeObjectCallCounter);
     }
 
@@ -135,49 +128,42 @@ final class FrameworkTest extends FunctionalTestCase
      * The necessary advice is defined in BaseFunctionalityAspect.
      *
      * Test for bugfix #2581
-     *
-     * @test
      */
+    #[Test]
     public function protectedMethodsCanAlsoBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClass02();
+        $targetClass = new TargetClass02();
         $result = $targetClass->publicTargetMethod('foo');
         self::assertEquals('foo bar', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfGreetObjectMethodIsModifiedByAdvice(): void
     {
-        $targetClass = $this->objectManager->get(Fixtures\TargetClass01::class);
-        $name = new Fixtures\Name('Neos');
+        $targetClass = $this->objectManager->get(TargetClass01::class);
+        $name = new Name('Neos');
         self::assertSame('Hello, old friend', $targetClass->greetObject($name), 'Aspect should greet with "old friend" if the name property equals "Neos"');
-        $name = new Fixtures\Name('Christopher');
+        $name = new Name('Christopher');
         self::assertSame('Hello, Christopher', $targetClass->greetObject($name));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function thisIsSupportedInMethodRuntimeCondition(): void
     {
-        $targetClass = $this->objectManager->get(Fixtures\TargetClass01::class);
-        $name = new Fixtures\Name('Fusion');
+        $targetClass = $this->objectManager->get(TargetClass01::class);
+        $name = new Name('Fusion');
         $targetClass->setCurrentName($name);
         self::assertSame('Hello, you', $targetClass->greetObject($name), 'Aspect should greet with "you" if the current name equals the name argument');
 
-        $name = new Fixtures\Name('Christopher');
+        $name = new Name('Christopher');
         $targetClass->setCurrentName();
         self::assertSame('Hello, Christopher', $targetClass->greetObject($name), 'Aspect should greet with given name if the current name is not equal to the name argument');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function globalObjectsAreSupportedInMethodRuntimeCondition(): void
     {
-        $targetClass = $this->objectManager->get(Fixtures\TargetClass01::class);
+        $targetClass = $this->objectManager->get(TargetClass01::class);
         self::assertSame('Hello, superstar', $targetClass->greet('Robbie'), 'Aspect should greet with "superstar" if the global context getNameOfTheWeek equals the given name');
         self::assertSame('Hello, Christopher', $targetClass->greet('Christopher'), 'Aspect should greet with given name if the global context getNameOfTheWeek does not equal the given name');
     }
@@ -185,35 +171,32 @@ final class FrameworkTest extends FunctionalTestCase
     /**
      * An interface with a method which is not advised and thus not implemented can be introduced.
      * The proxy class contains a placeholder implementation of that introduced method.
-     *
-     * @test
      */
+    #[Test]
     public function interfaceWithMethodCanBeIntroduced(): void
     {
-        $targetClass = new Fixtures\TargetClass03();
+        $targetClass = new TargetClass03();
 
-        self::assertInstanceOf(Fixtures\Introduced01Interface::class, $targetClass);
+        self::assertInstanceOf(Introduced01Interface::class, $targetClass);
         self::assertTrue(method_exists($targetClass, 'introducedMethod01'));
         self::assertTrue(method_exists($targetClass, 'introducedMethodWithArguments'));
     }
 
     /**
-     * @test
      * @noinspection VariableFunctionsUsageInspection
      */
+    #[Test]
     public function traitWithNewMethodCanBeIntroduced(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
 
         self::assertEquals('I\'m the traitor', call_user_func([$targetClass, 'introducedTraitMethod']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function introducedTraitMethodWontOverrideExistingMethods(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
 
         self::assertNotEquals('Hello from trait', $targetClass->sayHello());
         self::assertEquals('Hello World', $targetClass->sayHello());
@@ -221,12 +204,11 @@ final class FrameworkTest extends FunctionalTestCase
 
     /**
      * Public and protected properties can be introduced.
-     *
-     * @test
      */
+    #[Test]
     public function propertiesCanBeIntroduced(): void
     {
-        $targetClass = new Fixtures\TargetClass03();
+        $targetClass = new TargetClass03();
 
         self::assertTrue(property_exists(get_class($targetClass), 'introducedPublicProperty'));
         self::assertTrue(property_exists(get_class($targetClass), 'introducedProtectedProperty'));
@@ -234,101 +216,88 @@ final class FrameworkTest extends FunctionalTestCase
 
     /**
      * Public and protected properties can be introduced.
-     *
-     * @test
      */
+    #[Test]
     public function onlyPropertiesCanBeIntroduced(): void
     {
-        $targetClass = new Fixtures\TargetClass04();
+        $targetClass = new TargetClass04();
 
         self::assertTrue(property_exists(get_class($targetClass), 'introducedPublicProperty'));
         self::assertTrue(property_exists(get_class($targetClass), 'introducedProtectedProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodArgumentsCanBeSetInTheJoinPoint(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         $result = $targetClass->greet('Andi');
         self::assertEquals('Hello, Robert', $result, 'The method argument "name" has not been changed as expected by the "changeNameArgumentAdvice".');
     }
 
     /**
-     * @test
      * @noinspection PhpUndefinedFieldInspection
      */
+    #[Test]
     public function introducedPropertiesCanHaveADefaultValue(): void
     {
-        $targetClass = new Fixtures\TargetClass03();
+        $targetClass = new TargetClass03();
 
         self::assertNull($targetClass->introducedPublicProperty);
         self::assertSame('thisIsADefaultValueBelieveItOrNot', $targetClass->introducedProtectedPropertyWithDefaultValue);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithStaticTypeDeclarationsCanBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClassWithPhp7Features();
+        $targetClass = new TargetClassWithPhp7Features();
 
         self::assertSame('This is so NaN', $targetClass->methodWithStaticTypeDeclarations('The answer', 42, $targetClass));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finalClassesCanBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClassWithFinalModifier();
+        $targetClass = new TargetClassWithFinalModifier();
         self::assertSame('nothing is final!', $targetClass->someMethod());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function finalMethodsCanBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertSame('I am final. But, as said, nothing is final!', $targetClass->someFinalMethod());
     }
 
     /**
-     * @test
      * @throws
      */
+    #[Test]
     public function finalMethodsStayFinalEvenIfTheyAreNotAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClass01();
+        $targetClass = new TargetClass01();
         self::assertTrue((new \ReflectionMethod($targetClass, 'someOtherFinalMethod'))->isFinal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithStaticScalarReturnTypeDeclarationCanBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClassWithPhp7Features();
+        $targetClass = new TargetClassWithPhp7Features();
 
         self::assertSame('advised: it works', $targetClass->methodWithStaticScalarReturnTypeDeclaration());
     }
 
     /**
-     * @test
      * @noinspection UnnecessaryAssertionInspection
      */
+    #[Test]
     public function methodWithStaticObjectReturnTypeDeclarationCanBeAdvised(): void
     {
-        $targetClass = new Fixtures\TargetClassWithPhp7Features();
+        $targetClass = new TargetClassWithPhp7Features();
 
-        self::assertInstanceOf(Fixtures\TargetClassWithPhp7Features::class, $targetClass->methodWithStaticObjectReturnTypeDeclaration());
+        self::assertInstanceOf(TargetClassWithPhp7Features::class, $targetClass->methodWithStaticObjectReturnTypeDeclaration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithNullableScalarReturnTypeDeclarationCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithPhp7Features();
@@ -336,9 +305,7 @@ final class FrameworkTest extends FunctionalTestCase
         self::assertSame('advised: NULL', $targetClass->methodWithNullableScalarReturnTypeDeclaration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithNullableObjectReturnTypeDeclarationCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithPhp7Features();
@@ -346,9 +313,7 @@ final class FrameworkTest extends FunctionalTestCase
         self::assertNull($targetClass->methodWithNullableObjectReturnTypeDeclaration());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithUnionTypesCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithPhp8Features();
@@ -362,9 +327,9 @@ final class FrameworkTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @see https://github.com/neos/flow-development-collection/issues/2899
      */
+    #[Test]
     public function methodWithReturnTypeMixedIsGeneratedCorrectly(): void
     {
         $targetClass = new TargetClassWithPhp8Features();
@@ -375,10 +340,10 @@ final class FrameworkTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @see https://github.com/neos/flow-development-collection/issues/3027
      * @throws
      */
+    #[Test]
     public function methodsWithReturnPhp8SimpleReturnTypesAreGeneratedCorrectly(): void
     {
         $targetClass = new TargetClassWithPhp8Features();

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Property\TypeConverter\DenormalizingObjectConverter;
 use Neos\Flow\Tests\Unit\Property\TypeConverter\Fixture\ArrayBasedValueObject;
 use Neos\Flow\Tests\Unit\Property\TypeConverter\Fixture\BooleanBasedValueObject;
@@ -27,9 +27,9 @@ use Neos\Flow\Tests\UnitTestCase;
 final class DenormalizingObjectConverterTest extends UnitTestCase
 {
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function identifiesDenormalizableClasses(): void
     {
         $this->assertTrue(DenormalizingObjectConverter::isDenormalizable(ArrayBasedValueObject::class));
@@ -47,9 +47,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromArray(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -57,9 +57,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromArray(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -70,9 +70,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromString(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -80,9 +80,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromString(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -93,9 +93,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromBoolean(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -103,9 +103,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromBoolean(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -121,9 +121,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromBooleanWithLongName(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -131,9 +131,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromBooleanWithLongName(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -150,9 +150,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
 
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromInteger(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -160,9 +160,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromInteger(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -173,9 +173,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromIntegerWithLongName(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -183,9 +183,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromIntegerWithLongName(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -196,9 +196,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function canConvertFromFloat(): void
     {
         $typeConverter = new DenormalizingObjectConverter();
@@ -206,9 +206,9 @@ final class DenormalizingObjectConverterTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsFromFloat(): void
     {
         $typeConverter = new DenormalizingObjectConverter();

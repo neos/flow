@@ -24,6 +24,6 @@ namespace Neos\Flow\Tests;
  *
  * @api
  */
-abstract class UnitTestCase extends \Neos\Flow\Tests\BaseTestCase
+abstract class UnitTestCase extends BaseTestCase
 {
 }

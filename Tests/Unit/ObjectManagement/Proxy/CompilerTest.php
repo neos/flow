@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /*
  * This file is part of the Neos.Flow package.
  *
@@ -97,10 +100,8 @@ final class CompilerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider annotationsAndStrings()
-     * @test
-     */
+    #[DataProvider('annotationsAndStrings')]
+    #[Test]
     public function renderAnnotationRendersCorrectly($annotation, $expectedString): void
     {
         self::assertEquals($expectedString, Compiler::renderAnnotation($annotation));
@@ -170,10 +171,8 @@ final class CompilerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @dataProvider attributes()
-     * @test
-     */
+    #[DataProvider('attributes')]
+    #[Test]
     public function renderAttributesRendersCorrectly(\ReflectionAttribute $attribute, string $expectedResult): void
     {
         $this->assertSame($expectedResult, Compiler::renderAttribute($attribute));
@@ -197,10 +196,8 @@ final class CompilerTest extends UnitTestCase
         yield ['classCode' => "<?php\nsecond line\n<?php\nthird line", 'expectedResult' => "\nsecond line\n<?php\nthird line"];
     }
 
-    /**
-     * @test
-     * @dataProvider stripOpeningPhpTagCorrectlyStripsPhpTagDataProvider()
-     */
+    #[DataProvider('stripOpeningPhpTagCorrectlyStripsPhpTagDataProvider')]
+    #[Test]
     public function stripOpeningPhpTagCorrectlyStripsPhpTagTests($classCode, $expectedResult): void
     {
         $actualResult = $this->compiler->_call('stripOpeningPhpTag', $classCode);
@@ -302,10 +299,8 @@ final class CompilerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider classCodeExamples()
-     */
+    #[DataProvider('classCodeExamples')]
+    #[Test]
     public function replaceClassNameAppendsSuffixToOriginalClassName(string $originalClassCode, string $expectedClassCode, string $pathAndFilename): void
     {
         $actualClassCode = $this->compiler->_call('replaceClassName', $originalClassCode, $pathAndFilename);

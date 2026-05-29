@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\NotEmptyValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,57 +26,43 @@ final class NotEmptyValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = NotEmptyValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsNoErrorForASimpleString()
     {
         self::assertFalse($this->validator->validate('a not empty string')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForAnEmptyString()
     {
         self::assertTrue($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForANullValue()
     {
         self::assertTrue($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForAnEmptyArray()
     {
         self::assertTrue($this->validator->validate([])->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorReturnsErrorForAnEmptyCountableObject()
     {
         self::assertTrue($this->validator->validate(new \SplObjectStorage())->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorCreatesTheCorrectErrorForAnEmptySubject()
     {
         self::assertCount(1, $this->validator->validate('')->getErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notEmptyValidatorCreatesTheCorrectErrorForANullValue()
     {
         self::assertCount(1, $this->validator->validate(null)->getErrors());

@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\DataTypes;
 * information, please view the LICENSE file which was distributed with this
 * source code.
 */
-
+use PHPUnit\Framework\Attributes\Test;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Persistence\Doctrine\DataTypes\JsonArrayType;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Tests\Unit\Property\TypeConverter\Fixture\ArrayBasedValueObject;
@@ -26,7 +28,7 @@ use Neos\Flow\Tests\UnitTestCase;
 final class JsonArrayTypeTest extends UnitTestCase
 {
     /**
-     * @var JsonArrayType|\PHPUnit\Framework\MockObject\MockObject
+     * @var JsonArrayType|MockObject
      */
     protected $jsonArrayTypeMock;
 
@@ -41,29 +43,25 @@ final class JsonArrayTypeTest extends UnitTestCase
             ->getMock();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function jsonConversionReturnsNullIfArrayIsNull()
     {
-        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(null, $this->createStub(\Doctrine\DBAL\Platforms\AbstractPlatform::class));
+        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(null, $this->createStub(AbstractPlatform::class));
         self::assertEquals(null, $json);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passSimpleArrayAndConvertToJson(): void
     {
         $this->inject($this->jsonArrayTypeMock, 'persistenceManager', $this->createStub(PersistenceManagerInterface::class));
-        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(['simplestring',1,['nestedArray']], $this->createStub(\Doctrine\DBAL\Platforms\AbstractPlatform::class));
+        $json = $this->jsonArrayTypeMock->convertToDatabaseValue(['simplestring',1,['nestedArray']], $this->createStub(AbstractPlatform::class));
         self::assertEquals("{\n    \"0\": \"simplestring\",\n    \"1\": 1,\n    \"2\": {\n        \"0\": \"nestedArray\"\n    }\n}", $json);
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function convertsValueObjectsToSerializableArrayStructures(): void
     {
         $this->assertSame(
@@ -148,9 +146,9 @@ final class JsonArrayTypeTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function deserializesValueObjectsFromSerializableArrayStructures(): void
     {
         //

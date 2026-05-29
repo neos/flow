@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Validation\Validator\CountValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,18 +27,14 @@ final class CountValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = CountValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countValidatorReturnsNoErrorsIfTheGivenValueIsNull()
     {
         $this->validatorOptions(['minimum' => 1, 'maximum' => 10]);
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countValidatorReturnsNoErrorsIfTheGivenStringIsEmpty()
     {
         $this->validatorOptions(['minimum' => 1, 'maximum' => 10]);
@@ -58,20 +55,16 @@ final class CountValidatorTest extends AbstractValidatorTestcase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider countables
-     */
+    #[DataProvider('countables')]
+    #[Test]
     public function countValidatorReturnsNoErrorsForValidCountables($countable)
     {
         $this->validatorOptions(['minimum' => 1, 'maximum' => 10]);
         self::assertFalse($this->validator->validate($countable)->hasErrors());
     }
 
-    /**
-     * @test
-     * @dataProvider countables
-     */
+    #[DataProvider('countables')]
+    #[Test]
     public function countValidatorReturnsErrorsForInvalidCountables($countable)
     {
         $this->validatorOptions(['minimum' => 5, 'maximum' => 10]);
@@ -91,10 +84,8 @@ final class CountValidatorTest extends AbstractValidatorTestcase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider nonCountables
-     */
+    #[DataProvider('nonCountables')]
+    #[Test]
     public function countValidatorReturnsErrorsForNonCountables($nonCountable)
     {
         self::assertTrue($this->validator->validate($nonCountable)->hasErrors());

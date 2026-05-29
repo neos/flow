@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfiguration;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -48,10 +49,8 @@ final class MvcPropertyMappingConfigurationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fluentInterfaceMethodsDataProvider
-     */
+    #[DataProvider('fluentInterfaceMethodsDataProvider')]
+    #[Test]
     public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
     {
         $actualResult = call_user_func_array([$this->mvcPropertyMappingConfiguration, $methodToTestForFluentInterface], $argumentsForMethod);

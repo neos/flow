@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility\PhpAnalyzer;
 
@@ -41,9 +42,9 @@ final class PhpAnalyzerTest extends UnitTestCase
     /**
      * @param string $phpCode
      * @param string $namespace
-     * @test
-     * @dataProvider sampleClasses
      */
+    #[DataProvider('sampleClasses')]
+    #[Test]
     public function extractNamespaceTests($phpCode, $namespace, $className, $fqn)
     {
         $phpAnalyzer = new PhpAnalyzer($phpCode);
@@ -54,9 +55,9 @@ final class PhpAnalyzerTest extends UnitTestCase
      * @param string $phpCode
      * @param string $namespace
      * @param string $className
-     * @test
-     * @dataProvider sampleClasses
      */
+    #[DataProvider('sampleClasses')]
+    #[Test]
     public function extractClassNameTests($phpCode, $namespace, $className, $fqn)
     {
         $phpAnalyzer = new PhpAnalyzer($phpCode);
@@ -68,9 +69,9 @@ final class PhpAnalyzerTest extends UnitTestCase
      * @param string $namespace
      * @param string $className
      * @param string $fqn
-     * @test
-     * @dataProvider sampleClasses
      */
+    #[DataProvider('sampleClasses')]
+    #[Test]
     public function extractFullyQualifiedClassNameTests($phpCode, $namespace, $className, $fqn)
     {
         $phpAnalyzer = new PhpAnalyzer($phpCode);

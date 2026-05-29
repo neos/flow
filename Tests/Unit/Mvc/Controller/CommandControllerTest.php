@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ActionResponse;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Cli\CommandManager;
 use Neos\Flow\Cli\ConsoleOutput;
@@ -35,7 +38,7 @@ final class CommandControllerTest extends UnitTestCase
     protected $commandController;
 
     /**
-     * @var ConsoleOutput|\PHPUnit\Framework\MockObject\MockObject
+     * @var ConsoleOutput|MockObject
      */
     protected $mockConsoleOutput;
 
@@ -52,21 +55,17 @@ final class CommandControllerTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRequestThrowsExceptionIfGivenRequestIsNoCliRequest()
     {
         $this->expectException(\Error::class);
-        $mockRequest = $this->createStub(Mvc\ActionRequest::class);
-        $mockResponse = new Mvc\ActionResponse();
+        $mockRequest = $this->createStub(ActionRequest::class);
+        $mockResponse = new ActionResponse();
 
         $this->commandController->processRequest($mockRequest, $mockResponse);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRequestMarksRequestDispatched()
     {
         $mockRequest = $this->createMock(Request::class);
@@ -77,9 +76,7 @@ final class CommandControllerTest extends UnitTestCase
         $this->commandController->processRequest($mockRequest, $mockResponse);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processRequestResetsCommandMethodArguments()
     {
         $mockRequest = $this->createStub(Request::class);
@@ -94,18 +91,14 @@ final class CommandControllerTest extends UnitTestCase
         self::assertCount(0, $this->commandController->_get('arguments'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function outputWritesGivenStringToTheConsoleOutput()
     {
         $this->mockConsoleOutput->expects($this->once())->method('output')->with('some text');
         $this->commandController->_call('output', 'some text');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function outputReplacesArgumentsInGivenString()
     {
         $this->mockConsoleOutput->expects($this->once())->method('output')->with('%2$s %1$s', ['text', 'some']);

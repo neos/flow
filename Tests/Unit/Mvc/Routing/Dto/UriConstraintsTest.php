@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\Tests\UnitTestCase;
@@ -24,9 +25,7 @@ use Neos\Utility\ObjectAccess;
  */
 final class UriConstraintsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeCombinesTwoInstancesWithPrecedenceToTheLatter()
     {
         $uriConstraints1 = UriConstraints::create()->withPath('some/path');
@@ -99,10 +98,8 @@ final class UriConstraintsTest extends UnitTestCase
         yield ['constraints' => [UriConstraints::CONSTRAINT_FRAGMENT => 'fragment'], 'templateUri' => 'http://some-domain.tld/some/path#replaceme', 'forceAbsoluteUri' => false, 'expectedUri' => '/some/path#fragment'];
     }
 
-    /**
-     * @test
-     * @dataProvider applyToDataProvider
-     */
+    #[DataProvider('applyToDataProvider')]
+    #[Test]
     public function applyToTests(array $constraints, string $templateUri, bool $forceAbsoluteUri, string $expectedUri)
     {
         $uriConstraints = UriConstraints::create();
@@ -111,9 +108,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedUri, (string)$resultingUri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withSchemeReturnsANewInstanceWithSchemeConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withScheme('scheme-constraint');
@@ -123,9 +118,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withHostReturnsANewInstanceWithHostConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withHost('host-constraint');
@@ -135,9 +128,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withHostPrefixReturnsANewInstanceWithSubDomainConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withHostPrefix('host-prefix', ['replace', 'prefixes']);
@@ -150,9 +141,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withHostSuffixReturnsANewInstanceWithSubDomainConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withHostSuffix('host-suffix', ['replace', 'suffixes']);
@@ -166,9 +155,7 @@ final class UriConstraintsTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPortReturnsANewInstanceWithPortConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withPort(1234);
@@ -178,9 +165,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathReturnsANewInstanceWithPathConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withPath('path-constraint');
@@ -190,9 +175,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withQueryStringReturnsANewInstanceWithQueryStringConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withQueryString('some=query&string');
@@ -202,9 +185,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withAddedQueryValuesReturnsANewInstanceWithQueryStringConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withAddedQueryValues(['some' => ['nested' => ['páram' => 'some vàlue', 'new' => 'some other válue']]]);
@@ -214,9 +195,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withAddedQueryValuesReturnsANewInstanceWithMergedQueryStringConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withQueryString('some[nested][páram]=vâlue&some[other]=valúe')->withAddedQueryValues(['some' => ['nested' => ['páram' => 'overridden', 'new' => 'new válue']]]);
@@ -226,9 +205,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withFragmentReturnsANewInstanceWithFragmentConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withFragment('some-fragment');
@@ -238,9 +215,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathPrefixReturnsANewInstanceWithPathPrefixConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withPathPrefix('path-prefix-constraint');
@@ -250,9 +225,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathPrefixPrependsNewPrefixByDefault()
     {
         $uriConstraints = UriConstraints::create()->withPathPrefix('prefix1')->withPathPrefix('prefix2');
@@ -262,9 +235,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathPrefixAppendsNewPrefixIfSpecified()
     {
         $uriConstraints = UriConstraints::create()->withPathPrefix('prefix1')->withPathPrefix('prefix2', true);
@@ -276,8 +247,8 @@ final class UriConstraintsTest extends UnitTestCase
 
     /**
      * Note: This test merely documents the current behavior – I'm not sure if it makes sense really
-     * @test
      */
+    #[Test]
     public function withPathPrefixReturnsTheCurrentInstanceIfPathPrefixIsEmpty()
     {
         $uriConstraints = UriConstraints::create();
@@ -285,18 +256,14 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($uriConstraints, $uriConstraints2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathPrefixThrowsExceptionIfPrefixStartsWithASlash()
     {
         $this->expectException(\InvalidArgumentException::class);
         UriConstraints::create()->withPathPrefix('/prefix1');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathSuffixReturnsANewInstanceWitPathSuffixConstraintSet()
     {
         $uriConstraints = UriConstraints::create()->withPathSuffix('path-suffix-constraint');
@@ -306,9 +273,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathSuffixAppendsNewSuffixByDefault()
     {
         $uriConstraints = UriConstraints::create()->withPathSuffix('suffix1')->withPathSuffix('suffix2');
@@ -318,9 +283,7 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withPathSuffixPrependsNewSuffixIfSpecified()
     {
         $uriConstraints = UriConstraints::create()->withPathSuffix('suffix1')->withPathSuffix('suffix2', true);
@@ -330,17 +293,13 @@ final class UriConstraintsTest extends UnitTestCase
         self::assertSame($expectedResult, ObjectAccess::getProperty($uriConstraints, 'constraints', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathConstraintReturnsNullByDefault()
     {
         self::assertNull(UriConstraints::create()->getPathConstraint());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathConstraintReturnsPathConstraintWithoutPrefixAndSuffix()
     {
         $uriConstraints = UriConstraints::create()
@@ -363,11 +322,11 @@ final class UriConstraintsTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider fromUriDataProvider
      * @param string $uri
      * @param array $expectedConstraints
      */
+    #[DataProvider('fromUriDataProvider')]
+    #[Test]
     public function fromUriTests(string $uri, array $expectedConstraints)
     {
         $uriConstraints = UriConstraints::fromUri(new Uri($uri));

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Validation\Validator\FloatValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,17 +27,13 @@ final class FloatValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = FloatValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
@@ -57,10 +54,8 @@ final class FloatValidatorTest extends AbstractValidatorTestcase
         yield [123.45e3];
     }
 
-    /**
-     * @test
-     * @dataProvider validFloats
-     */
+    #[DataProvider('validFloats')]
+    #[Test]
     public function floatValidatorReturnsNoErrorsForAValidFloat($float)
     {
         self::assertFalse($this->validator->validate($float)->hasErrors());
@@ -79,10 +74,8 @@ final class FloatValidatorTest extends AbstractValidatorTestcase
         yield ['not a number'];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidFloats
-     */
+    #[DataProvider('invalidFloats')]
+    #[Test]
     public function floatValidatorReturnsErrorForAnInvalidFloat($float)
     {
         self::assertTrue($this->validator->validate($float)->hasErrors());

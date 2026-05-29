@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Reflection\MethodReflection;
+use Neos\Flow\Reflection\ClassReflection;
+use Neos\Flow\Reflection\ParameterReflection;
 use Neos\Flow\Reflection;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -27,23 +30,19 @@ final class MethodReflectionTest extends UnitTestCase
      */
     protected $someProperty;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getDeclaringClassReturnsFlowsClassReflection()
     {
-        $method = new Reflection\MethodReflection(__CLASS__, __FUNCTION__);
-        self::assertInstanceOf(Reflection\ClassReflection::class, $method->getDeclaringClass());
+        $method = new MethodReflection(__CLASS__, __FUNCTION__);
+        self::assertInstanceOf(ClassReflection::class, $method->getDeclaringClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParametersReturnsFlowsParameterReflection($dummyArg1 = null, $dummyArg2 = null)
     {
-        $method = new Reflection\MethodReflection(__CLASS__, __FUNCTION__);
+        $method = new MethodReflection(__CLASS__, __FUNCTION__);
         foreach ($method->getParameters() as $parameter) {
-            self::assertInstanceOf(Reflection\ParameterReflection::class, $parameter);
+            self::assertInstanceOf(ParameterReflection::class, $parameter);
             self::assertEquals(__CLASS__, $parameter->getDeclaringClass()->getName());
         }
     }

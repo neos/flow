@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ResourceManagement\ResourceMetaDataInterface;
 use Neos\Flow\Validation\Validator\FileExtensionValidator;
 use Psr\Http\Message\UploadedFileInterface;
@@ -53,10 +54,8 @@ final class FileExtensionValidatorTest extends AbstractValidatorTestcase
         yield [''];
     }
 
-    /**
-     * @test
-     * @dataProvider emptyItems
-     */
+    #[DataProvider('emptyItems')]
+    #[Test]
     public function validateAcceptsEmptyValue($item)
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
@@ -72,10 +71,8 @@ final class FileExtensionValidatorTest extends AbstractValidatorTestcase
         yield [$this->createUploadedFileInterfaceMock('image.png')];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsWithAllowedExtension
-     */
+    #[DataProvider('itemsWithAllowedExtension')]
+    #[Test]
     public function validateAcceptsItemsWithAllowedExtension($item)
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
@@ -89,10 +86,8 @@ final class FileExtensionValidatorTest extends AbstractValidatorTestcase
         yield [$this->createUploadedFileInterfaceMock('image.tiff')];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsWithDisallowedExtension
-     */
+    #[DataProvider('itemsWithDisallowedExtension')]
+    #[Test]
     public function validateRejectsItemsWithDisallowedExtension($item)
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());

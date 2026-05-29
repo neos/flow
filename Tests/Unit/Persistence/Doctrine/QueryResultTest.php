@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Persistence\Doctrine\QueryResult;
 use Neos\Flow\Persistence\Doctrine\Query;
 use Neos\Flow\Persistence\QueryInterface;
@@ -30,7 +31,7 @@ final class QueryResultTest extends UnitTestCase
     protected $queryResult;
 
     /**
-     * @var Query|\PHPUnit\Framework\MockObject\MockObject
+     * @var Query|MockObject
      */
     protected $query;
 
@@ -45,42 +46,32 @@ final class QueryResultTest extends UnitTestCase
         $this->queryResult = new QueryResult($this->query);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryReturnsQueryObject()
     {
         self::assertInstanceOf(QueryInterface::class, $this->queryResult->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getQueryReturnsAClone()
     {
         self::assertNotSame($this->query, $this->queryResult->getQuery());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function offsetGetReturnsNullIfOffsetDoesNotExist()
     {
         self::assertNull($this->queryResult->offsetGet('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCallsCountOnTheQuery()
     {
         $this->query->expects($this->once())->method('count')->willReturn((123));
         self::assertCount(123, $this->queryResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCountsQueryResultDirectlyIfAlreadyInitialized()
     {
         $this->query->expects($this->never())->method('count');
@@ -88,9 +79,7 @@ final class QueryResultTest extends UnitTestCase
         self::assertCount(3, $this->queryResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countCallsCountOnTheQueryOnlyOnce()
     {
         $this->query->expects($this->once())->method('count')->willReturn((321));

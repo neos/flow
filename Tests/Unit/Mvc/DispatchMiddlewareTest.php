@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Http\ServerRequestAttributes;
 use Neos\Flow\Mvc\ActionRequest;
@@ -35,17 +36,17 @@ final class DispatchMiddlewareTest extends UnitTestCase
     protected $dispatchMiddleware;
 
     /**
-     * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RequestHandlerInterface|MockObject
      */
     protected $mockRequestHandler;
 
     /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ServerRequestInterface|MockObject
      */
     protected $mockHttpRequest;
 
     /**
-     * @var Dispatcher|\PHPUnit\Framework\MockObject\MockObject
+     * @var Dispatcher|MockObject
      */
     protected $mockDispatcher;
 
@@ -66,16 +67,14 @@ final class DispatchMiddlewareTest extends UnitTestCase
 
         $this->mockDispatcher = $this->createMock(Dispatcher::class);
         $this->inject($this->dispatchMiddleware, 'dispatcher', $this->mockDispatcher);
-        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
+        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->createStub(ActionRequest::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDispatchesTheRequest()
     {
         $this->mockHttpRequest->method('getQueryParams')->willReturn([]);
-        $this->mockDispatcher->expects($this->once())->method('dispatch')->with($this->createStub(\Neos\Flow\Mvc\ActionRequest::class));
+        $this->mockDispatcher->expects($this->once())->method('dispatch')->with($this->createStub(ActionRequest::class));
 
         $response = $this->dispatchMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
         self::assertInstanceOf(ResponseInterface::class, $response);

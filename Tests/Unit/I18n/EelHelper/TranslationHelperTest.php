@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\I18n\EelHelper;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\I18n\EelHelper\TranslationHelper;
 use Neos\Flow\I18n\EelHelper\TranslationParameterToken;
 use Neos\Flow\Tests\UnitTestCase;
@@ -23,9 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class TranslationHelperTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function translateReturnsCorrectlyConfiguredTranslationParameterTokenWhenCalledWithLongArgumentList()
     {
         $mockTranslationParameterToken = $this->createMock(TranslationParameterToken::class);
@@ -68,9 +66,7 @@ final class TranslationHelperTest extends UnitTestCase
         self::assertEquals('I am a translation result', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translateReturnsCorrectlyConfiguredTranslationParameterTokenWhenCalledWithShortHandString()
     {
         $mockTranslationParameterToken = $this->createMock(TranslationParameterToken::class);
@@ -96,9 +92,7 @@ final class TranslationHelperTest extends UnitTestCase
         self::assertEquals('I am a translation result', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function idReturnsTranslationParameterTokenWithPreconfiguredId()
     {
         $mockTranslationHelper = $this->getMockBuilder(TranslationHelper::class)->onlyMethods(['createTranslationParameterToken'])->getMock();
@@ -110,9 +104,7 @@ final class TranslationHelperTest extends UnitTestCase
         self::assertEquals('TranslationParameterTokenWithPreconfiguredId', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueReturnsTranslationParameterTokenWithPreconfiguredValue()
     {
         $mockTranslationHelper = $this->getMockBuilder(TranslationHelper::class)->onlyMethods(['createTranslationParameterToken'])->getMock();

@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Validation;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Annotations\Validate;
+use Neos\Flow\Annotations\IgnoreValidation;
 use Neos\Flow\Annotations;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\ObjectManagement\Configuration\Configuration;
@@ -60,9 +62,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $this->inject($this->validatorResolver, 'objectManager', $this->mockObjectManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameReturnsFalseIfValidatorCantBeResolved()
     {
         $this->mockReflectionService->method('getAllImplementationClassNamesForInterface')->with(ValidatorInterface::class)->willReturn(['Foo']);
@@ -82,9 +82,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertFalse($this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameReturnsTheGivenArgumentIfAnObjectOfThatNameIsRegisteredAndImplementsValidatorInterface()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -94,9 +92,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame('Foo', $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameReturnsFalseIfAnObjectOfTheArgumentNameIsRegisteredButDoesNotImplementValidatorInterface()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -116,9 +112,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertFalse($this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameReturnsValidatorObjectNameIfAnObjectOfTheArgumentNameIsRegisteredAndDoesNotImplementValidatorInterfaceAndAValidatorForTheObjectExists()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -137,9 +131,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame(DateTimeValidator::class, $this->validatorResolver->_call('resolveValidatorObjectName', 'DateTime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameRemovesALeadingBackslashFromThePassedType()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -149,9 +141,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame('Foo\Bar', $this->validatorResolver->_call('resolveValidatorObjectName', '\Foo\Bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameCanResolveShorthandValidatornames()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -172,9 +162,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame('Mypkg\Validation\Validator\MyValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Mypkg:My'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameCanResolveShorthandValidatornamesForHierarchicalPackages()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -195,9 +183,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame('Mypkg\Foo\Validation\Validator\MyValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Mypkg.Foo:My'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameCanResolveShortNamesOfBuiltInValidators()
     {
         $this->mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
@@ -216,9 +202,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame('Neos\Flow\Validation\Validator\FooValidator', $this->validatorResolver->_call('resolveValidatorObjectName', 'Foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValidatorObjectNameCallsGetValidatorType()
     {
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
@@ -233,9 +217,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_call('resolveValidatorObjectName', 'someDataType');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidatorResolvesAndReturnsAValidatorAndPassesTheGivenOptions()
     {
         $className = 'Test' . md5(uniqid((string)mt_rand(), true));
@@ -258,9 +240,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertEquals(['foo' => 'bar'], $validator->getOptions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidatorReturnsNullIfAValidatorCouldNotBeResolved()
     {
         $validatorResolver = $this->getMockBuilder(ValidatorResolver::class)->onlyMethods(['resolveValidatorObjectName'])->getMock();
@@ -269,9 +249,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertNull($validator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createValidatorThrowsExceptionForSingletonValidatorsWithOptions()
     {
         $this->expectException(InvalidValidationConfigurationException::class);
@@ -284,9 +262,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->createValidator('FooType', ['foo' => 'bar']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorCachesTheResultOfTheBuildBaseValidatorConjunctionCalls()
     {
         $mockReflectionService = $this->createMock(ReflectionService::class);
@@ -312,9 +288,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame($result1, $result2, '#2');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodArgumentsValidatorConjunctionsReturnsEmptyArrayIfMethodHasNoArguments()
     {
         $mockController = $this->getAccessibleMock(ActionController::class, ['fooAction'], [], '', false);
@@ -329,9 +303,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertSame([], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodArgumentsValidatorConjunctionsBuildsAConjunctionFromValidateAnnotationsOfTheSpecifiedMethod()
     {
         $mockObject = new \stdClass();
@@ -346,16 +318,16 @@ final class ValidatorResolverTest extends UnitTestCase
 
         ];
         $validateAnnotations = [
-            new Annotations\Validate(
+            new Validate(
                 '$arg1',
                 'Foo',
                 ['bar' => 'baz']
             ),
-            new Annotations\Validate(
+            new Validate(
                 '$arg1',
                 'Bar'
             ),
-            new Annotations\Validate(
+            new Validate(
                 '$arg2',
                 'Neos\TestPackage\Quux'
             ),
@@ -363,7 +335,7 @@ final class ValidatorResolverTest extends UnitTestCase
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->willReturn($methodParameters);
-        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Annotations\Validate::class)->willReturn($validateAnnotations);
+        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Validate::class)->willReturn($validateAnnotations);
 
         $mockStringValidator = $this->createStub(ValidatorInterface::class);
         $mockArrayValidator = $this->createStub(ValidatorInterface::class);
@@ -398,7 +370,7 @@ final class ValidatorResolverTest extends UnitTestCase
 
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, ['createValidator'], [], '', false);
         $matcher = self::exactly(7);
-        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher) {
+        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $conjunction1, $conjunction2, $mockFooValidator, $mockBarValidator, $mockStringValidator, $mockArrayValidator, $mockQuuxValidator) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ConjunctionValidator::class, $parameters[0]);
                 return $conjunction1;
@@ -436,9 +408,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertEquals(['arg1' => $conjunction1, 'arg2' => $conjunction2], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodArgumentsValidatorConjunctionsReturnsEmptyConjunctionIfNoValidatorIsFoundForMethodParameter()
     {
         $mockObject = new \stdClass();
@@ -451,7 +421,7 @@ final class ValidatorResolverTest extends UnitTestCase
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->willReturn($methodParameters);
-        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Annotations\Validate::class)->willReturn([]);
+        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Validate::class)->willReturn([]);
 
         $conjunction = $this->createMock(ConjunctionValidator::class);
         $conjunction->expects($this->never())->method('addValidator');
@@ -464,9 +434,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockObject), 'fooAction');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodArgumentsValidatorConjunctionsThrowsExceptionIfValidationAnnotationForNonExistingArgumentExists()
     {
         $this->expectException(InvalidValidationConfigurationException::class);
@@ -478,14 +446,14 @@ final class ValidatorResolverTest extends UnitTestCase
             ]
         ];
         $validateAnnotations = [
-            new Annotations\Validate(
+            new Validate(
                 '$arg2',
                 'Neos\TestPackage\Quux'
             ),
         ];
 
         $mockReflectionService = $this->createMock(ReflectionService::class);
-        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Annotations\Validate::class)->willReturn($validateAnnotations);
+        $mockReflectionService->expects($this->once())->method('getMethodAnnotations')->with(get_class($mockObject), 'fooAction', Validate::class)->willReturn($validateAnnotations);
         $mockReflectionService->expects($this->once())->method('getMethodParameters')->with(get_class($mockObject), 'fooAction')->willReturn($methodParameters);
 
         $mockStringValidator = $this->createStub(ValidatorInterface::class);
@@ -495,7 +463,7 @@ final class ValidatorResolverTest extends UnitTestCase
 
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, ['createValidator'], [], '', false);
         $matcher = self::exactly(3);
-        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher) {
+        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $conjunction1, $mockStringValidator, $mockQuuxValidator) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(ConjunctionValidator::class, $parameters[0]);
                 return $conjunction1;
@@ -514,9 +482,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->buildMethodArgumentsValidatorConjunctions(get_class($mockObject), 'fooAction');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionAddsCustomValidatorToTheReturnedConjunction()
     {
         $modelClassName = 'Page' . md5(uniqid((string)mt_rand(), true));
@@ -542,9 +508,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertTrue($builtValidators[$modelClassName]->validate('foo')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addCustomValidatorsAddsExpectedPolyTypeValidatorToTheConjunction()
     {
         $highPriorityValidatorClassName = 'RandomHighPrio' . md5(uniqid((string)mt_rand(), true)) . 'PolyTypeValidator';
@@ -569,7 +533,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_set('reflectionService', $mockReflectionService);
         $validatorResolver->_set('objectManager', $mockObjectManager);
         $matcher = self::exactly(3);
-        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName, $highPriorityValidatorClassName, $lowPriorityValidatorClassName) {
+        $validatorResolver->expects($matcher)->method('createValidator')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName, $highPriorityValidatorClassName, $lowPriorityValidatorClassName, $mockHighPriorityValidator, $mockLowPriorityValidator) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName . 'Validator', $parameters[0]);
                 return null;
@@ -587,9 +551,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_callRef('addCustomValidators', $modelClassName, $mockConjunctionValidator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionAddsValidatorsOnlyForPropertiesHoldingPrototypes()
     {
         $entityClassName = 'Entity' . md5(uniqid((string)mt_rand(), true));
@@ -617,7 +579,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->method('getAllImplementationClassNamesForInterface')->with(PolyTypeObjectValidatorInterface::class)->willReturn([]);
         $mockReflectionService->method('getClassPropertyNames')->willReturn(['entityProperty', 'otherProperty']);
         $matcher = self::exactly(2);
-        $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName) {
+        $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $modelClassName, $entityClassName, $otherClassName) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('entityProperty', $parameters[1]);
@@ -635,12 +597,12 @@ final class ValidatorResolverTest extends UnitTestCase
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('entityProperty', $parameters[1]);
-                $this->assertSame(Annotations\Validate::class, $parameters[2]);
+                $this->assertSame(Validate::class, $parameters[2]);
             }
             if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame($modelClassName, $parameters[0]);
                 $this->assertSame('otherProperty', $parameters[1]);
-                $this->assertSame(Annotations\Validate::class, $parameters[2]);
+                $this->assertSame(Validate::class, $parameters[2]);
             }
             return [];
         });
@@ -654,9 +616,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_call('buildBaseValidatorConjunction', $modelClassName, $modelClassName, ['Default']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionSkipsPropertiesAnnotatedWithIgnoreValidation()
     {
         $modelClassName = 'Model' . md5(uniqid((string)mt_rand(), true));
@@ -666,7 +626,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->method('getAllImplementationClassNamesForInterface')->willReturn([]);
         $mockReflectionService->expects($this->once())->method('getClassPropertyNames')->willReturn(['entityProperty']);
         $mockReflectionService->expects($this->once())->method('getPropertyTagsValues')->with($modelClassName, 'entityProperty')->willReturn(['var' => ['ToBeIgnored']]);
-        $mockReflectionService->expects($this->once())->method('isPropertyAnnotatedWith')->with($modelClassName, 'entityProperty', Annotations\IgnoreValidation::class)->willReturn(true);
+        $mockReflectionService->expects($this->once())->method('isPropertyAnnotatedWith')->with($modelClassName, 'entityProperty', IgnoreValidation::class)->willReturn(true);
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($mockReflectionService);
 
@@ -678,9 +638,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $validatorResolver->_call('buildBaseValidatorConjunction', $modelClassName, $modelClassName, ['Default']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionReturnsNullIfNoValidatorBuilt()
     {
         $mockReflectionService = $this->createMock(ReflectionService::class);
@@ -703,9 +661,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertNull($validatorResolver->_call('buildBaseValidatorConjunction', 'NonExistingClassName', 'NonExistingClassName', ['Default']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionAddsValidatorsDefinedByAnnotationsInTheClassToTheReturnedConjunction()
     {
         $mockObject = $this->createStub(\stdClass::class);
@@ -724,22 +680,22 @@ final class ValidatorResolverTest extends UnitTestCase
         ];
         $validateAnnotations = [
             'foo' => [
-                new Annotations\Validate(
+                new Validate(
                     null,
                     'Foo',
                     ['bar' => 'baz']
                 ),
-                new Annotations\Validate(
+                new Validate(
                     null,
                     'Bar'
                 ),
-                new Annotations\Validate(
+                new Validate(
                     null,
                     'Baz'
                 ),
             ],
             'bar' => [
-                new Annotations\Validate(
+                new Validate(
                     null,
                     'Neos\TestPackage\Quux'
                 ),
@@ -751,7 +707,7 @@ final class ValidatorResolverTest extends UnitTestCase
         $mockReflectionService->method('getClassSchema')->willReturn(null);
         $mockReflectionService->method('getClassPropertyNames')->with($className)->willReturn(['foo', 'bar', 'baz']);
         $matcher = self::exactly(3);
-        $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $className) {
+        $mockReflectionService->expects($matcher)->method('getPropertyTagsValues')->willReturnCallback(function (...$parameters) use ($matcher, $className, $propertyTagsValues) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame($className, $parameters[0]);
                 $this->assertSame('foo', $parameters[1]);
@@ -770,23 +726,23 @@ final class ValidatorResolverTest extends UnitTestCase
         });
         $mockReflectionService->expects($this->exactly(3))->method('isPropertyAnnotatedWith')->willReturn(false);
         $matcher = self::exactly(3);
-        $mockReflectionService->expects($matcher)->method('getPropertyAnnotations')->willReturnCallback(function (...$parameters) use ($matcher, $mockObject) {
+        $mockReflectionService->expects($matcher)->method('getPropertyAnnotations')->willReturnCallback(function (...$parameters) use ($matcher, $mockObject, $validateAnnotations) {
             if ($matcher->numberOfInvocations() === 1) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('foo', $parameters[1]);
-                $this->assertSame(Annotations\Validate::class, $parameters[2]);
+                $this->assertSame(Validate::class, $parameters[2]);
                 return $validateAnnotations['foo'];
             }
             if ($matcher->numberOfInvocations() === 2) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('bar', $parameters[1]);
-                $this->assertSame(Annotations\Validate::class, $parameters[2]);
+                $this->assertSame(Validate::class, $parameters[2]);
                 return $validateAnnotations['bar'];
             }
             if ($matcher->numberOfInvocations() === 3) {
                 $this->assertSame(get_class($mockObject), $parameters[0]);
                 $this->assertSame('baz', $parameters[1]);
-                $this->assertSame(Annotations\Validate::class, $parameters[2]);
+                $this->assertSame(Validate::class, $parameters[2]);
                 return [];
             }
         });
@@ -829,9 +785,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertInstanceOf(ConjunctionValidator::class, $builtValidators[$className . 'Default']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildBaseValidatorConjunctionBuildsCorrectValidationChainForCyclicRelations()
     {
         $fooMockObject = $this->getMockBuilder(\stdClass::class)->setMockClassName('FooMock')->getMock();
@@ -890,9 +844,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertGreaterThan(0, $barValidators->current()->getPropertyValidators('foo')->count());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getValidatorTypeCorrectlyRenamesPhpDataTypes()
     {
         $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
@@ -911,9 +863,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertEquals('Number', $validatorResolver->_call('getValidatorType', 'numeric'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getValidatorTypeRenamesMixedToRaw()
     {
         $mockObjectManager = $this->createStub(ObjectManagerInterface::class);
@@ -922,9 +872,7 @@ final class ValidatorResolverTest extends UnitTestCase
         self::assertEquals('Raw', $validatorResolver->_call('getValidatorType', 'mixed'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetEmptiesBaseValidatorConjunctions()
     {
         $validatorResolver = $this->getAccessibleMock(ValidatorResolver::class, []);

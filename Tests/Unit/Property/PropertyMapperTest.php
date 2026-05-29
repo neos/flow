@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Property;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Property\Exception\DuplicateTypeConverterException;
 use Neos\Flow\Property\Exception\InvalidSourceException;
@@ -60,10 +63,8 @@ final class PropertyMapperTest extends UnitTestCase
         yield [new \stdClass(), ['stdClass', 'object']];
     }
 
-    /**
-     * @test
-     * @dataProvider validSourceTypes
-     */
+    #[DataProvider('validSourceTypes')]
+    #[Test]
     public function sourceTypeCanBeCorrectlyDetermined($source, $sourceTypes): void
     {
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
@@ -78,10 +79,8 @@ final class PropertyMapperTest extends UnitTestCase
         yield [null];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidSourceTypes
-     */
+    #[DataProvider('invalidSourceTypes')]
+    #[Test]
     public function sourceWhichIsNoSimpleTypeOrObjectThrowsException($source): void
     {
         $this->expectException(InvalidSourceException::class);
@@ -94,7 +93,7 @@ final class PropertyMapperTest extends UnitTestCase
      * @param boolean $canConvertFrom
      * @param array $properties
      * @param string $typeOfSubObject
-     * @return TypeConverterInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return TypeConverterInterface|MockObject
      */
     protected function getMockTypeConverter($name = '', $canConvertFrom = true, array $properties = [], $typeOfSubObject = '')
     {
@@ -113,9 +112,7 @@ final class PropertyMapperTest extends UnitTestCase
         return $mockTypeConverter;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTypeConverterShouldReturnTypeConverterFromConfigurationIfItIsSet(): void
     {
         $mockTypeConverter = $this->getMockTypeConverter();
@@ -165,10 +162,8 @@ final class PropertyMapperTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForFindTypeConverter
-     */
+    #[DataProvider('dataProviderForFindTypeConverter')]
+    #[Test]
     public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter): void
     {
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
@@ -177,9 +172,7 @@ final class PropertyMapperTest extends UnitTestCase
         self::assertSame($expectedTypeConverter, self::$mockTypeConverterNames[$actualTypeConverter]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findEligibleConverterWithHighestPrioritySkipsConvertersWithNegativePriorities(): void
     {
         $internalTypeConverter1 = $this->getMockTypeConverter('string2string,prio-1');
@@ -196,9 +189,7 @@ final class PropertyMapperTest extends UnitTestCase
         self::assertNull($propertyMapper->_call('findEligibleConverterWithHighestPriority', $mockTypeConverters, 'foo', 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findTypeConverterThrowsExceptionIfAllMatchingConvertersHaveNegativePriorities(): void
     {
         $this->expectException(TypeConverterException::class);
@@ -351,10 +342,8 @@ final class PropertyMapperTest extends UnitTestCase
         return $data;
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForObjectTypeConverters
-     */
+    #[DataProvider('dataProviderForObjectTypeConverters')]
+    #[Test]
     public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = false): void
     {
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
@@ -373,9 +362,7 @@ final class PropertyMapperTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertShouldAskConfigurationBuilderForDefaultConfiguration(): void
     {
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
@@ -391,9 +378,7 @@ final class PropertyMapperTest extends UnitTestCase
         self::assertEquals('string2string', $propertyMapper->convert('source', 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertDoesNotCatchSecurityExceptions(): void
     {
         $this->expectException(Exception::class);
@@ -403,18 +388,14 @@ final class PropertyMapperTest extends UnitTestCase
         $propertyMapper->convert('sourceType', 'targetType', $this->mockConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findFirstEligibleTypeConverterInObjectHierarchyShouldReturnNullIfSourceTypeIsUnknown(): void
     {
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
         self::assertNull($propertyMapper->_call('findFirstEligibleTypeConverterInObjectHierarchy', 'source', 'unknownSourceType', Bootstrap::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doMappingReturnsSourceUnchangedIfAlreadyConverted(): void
     {
         $source = new \ArrayObject();
@@ -424,9 +405,7 @@ final class PropertyMapperTest extends UnitTestCase
         self::assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doMappingReturnsSourceUnchangedIfAlreadyConvertedToCompositeType(): void
     {
         $source = new \ArrayObject();
@@ -436,10 +415,8 @@ final class PropertyMapperTest extends UnitTestCase
         self::assertSame($source, $propertyMapper->_callRef('doMapping', $source, $targetType, $this->mockConfiguration, $propertyPath));
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function convertSkipsPropertiesIfConfiguredTo(): void
     {
         $source = ['firstProperty' => 1, 'secondProperty' => 2];
@@ -459,10 +436,8 @@ final class PropertyMapperTest extends UnitTestCase
         $propertyMapper->convert($source, 'stdClass', $configuration->allowProperties('firstProperty')->skipProperties('secondProperty'));
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function convertSkipsUnknownPropertiesIfConfiguredTo(): void
     {
         $source = ['firstProperty' => 1, 'secondProperty' => 2];
@@ -494,10 +469,8 @@ final class PropertyMapperTest extends UnitTestCase
         yield ['source' => 'foo', 'fullTargetType' => 'SplObjectStorage<Some\Element\Type>'];
     }
 
-    /**
-     * @test
-     * @dataProvider convertCallsCanConvertFromWithTheFullNormalizedTargetTypeDataProvider
-     */
+    #[DataProvider('convertCallsCanConvertFromWithTheFullNormalizedTargetTypeDataProvider')]
+    #[Test]
     public function convertCallsCanConvertFromWithTheFullNormalizedTargetType($source, $fullTargetType): void
     {
         $mockTypeConverter = $this->getMockTypeConverter();
@@ -527,10 +500,8 @@ final class PropertyMapperTest extends UnitTestCase
         yield ['source' => 'foo', 'fullTargetType' => 'SplObjectStorage<Some\Element\Type>|null'];
     }
 
-    /**
-     * @test
-     * @dataProvider convertCallsCanConvertFromWithNullableTargetTypeDataProvider
-     */
+    #[DataProvider('convertCallsCanConvertFromWithNullableTargetTypeDataProvider')]
+    #[Test]
     public function convertCallsCanConvertFromWithNullableTargetType($source, $fullTargetType): void
     {
         $fullTargetTypeWithoutNull = TypeHandling::stripNullableType($fullTargetType);
@@ -549,9 +520,7 @@ final class PropertyMapperTest extends UnitTestCase
         $propertyMapper->convert($source, $fullTargetType, $mockConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertCallsConvertToNullWithNullableTargetType(): void
     {
         $source = null;

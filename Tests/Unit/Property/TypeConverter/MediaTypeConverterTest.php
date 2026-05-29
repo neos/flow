@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\MediaTypeConverter;
 use Neos\Flow\Property\TypeConverter\MediaTypeConverterInterface;
@@ -30,7 +32,7 @@ final class MediaTypeConverterTest extends UnitTestCase
     protected $mediaTypeConverter;
 
     /**
-     * @var PropertyMappingConfigurationInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var PropertyMappingConfigurationInterface|MockObject
      */
     protected $mockPropertyMappingConfiguration;
 
@@ -44,9 +46,7 @@ final class MediaTypeConverterTest extends UnitTestCase
         $this->mockPropertyMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertExpectsJsonAsDefault()
     {
         $actualResult = $this->mediaTypeConverter->convertFrom('{"jsonArgument":"jsonValue"}', 'array');
@@ -54,9 +54,7 @@ final class MediaTypeConverterTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertReturnsEmptyArrayIfBodyCantBeParsed()
     {
         $actualResult = $this->mediaTypeConverter->convertFrom('<root><xmlArgument>xmlValue</xmlArgument></root>', 'array');
@@ -64,9 +62,7 @@ final class MediaTypeConverterTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertReturnsEmptyArrayIfGivenMediaTypeIsInvalid()
     {
         $this->mockPropertyMappingConfiguration->expects($this->atLeastOnce())->method('getConfigurationValue')->with(MediaTypeConverterInterface::class, MediaTypeConverterInterface::CONFIGURATION_MEDIA_TYPE)->willReturn(('someInvalidMediaType'));
@@ -95,10 +91,8 @@ final class MediaTypeConverterTest extends UnitTestCase
         yield ['text/x-json', '{"jsonArgument":"jsonValue"}', ['jsonArgument' => 'jsonValue']];
     }
 
-    /**
-     * @test
-     * @dataProvider contentTypesBodiesAndExpectedUnifiedArguments
-     */
+    #[DataProvider('contentTypesBodiesAndExpectedUnifiedArguments')]
+    #[Test]
     public function convertTests($mediaType, $requestBody, array $expectedResult)
     {
         $this->mockPropertyMappingConfiguration->expects($this->atLeastOnce())->method('getConfigurationValue')->with(MediaTypeConverterInterface::class, MediaTypeConverterInterface::CONFIGURATION_MEDIA_TYPE)->willReturn(($mediaType));

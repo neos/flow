@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Cache\CacheAwareInterface;
 use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\RouterInterface;
@@ -31,10 +32,8 @@ final class RouteParametersTest extends UnitTestCase
         yield ['parameterValue' => null];
     }
 
-    /**
-     * @test
-     * @dataProvider withParameterThrowsExceptionForInvalidParameterValuesDataProvider
-     */
+    #[DataProvider('withParameterThrowsExceptionForInvalidParameterValuesDataProvider')]
+    #[Test]
     public function withParameterThrowsExceptionForInvalidParameterValues($parameterValue)
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -51,19 +50,15 @@ final class RouteParametersTest extends UnitTestCase
         yield ['parameterValue' => $this->createStub(CacheAwareInterface::class)];
     }
 
-    /**
-     * @test
-     * @dataProvider withParameterAcceptsValidParameterValuesDataProvider
-     */
+    #[DataProvider('withParameterAcceptsValidParameterValuesDataProvider')]
+    #[Test]
     public function withParameterAcceptsValidParameterValues($parameterValue)
     {
         RouteParameters::createEmpty()->withParameter('someParameter', $parameterValue);
         $this->addToAssertionCount(1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withParameterDoesNotMutateTheObject()
     {
         $originalParameters = RouteParameters::createEmpty();
@@ -71,18 +66,14 @@ final class RouteParametersTest extends UnitTestCase
         self::assertFalse($originalParameters->has('someParameter'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withParameterReturnsANewInstanceWithTheGivenParameter()
     {
         $originalParameters = RouteParameters::createEmpty()->withParameter('someParameter', 'someValue');
         self::assertSame('someValue', $originalParameters->getValue('someParameter'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withParameterOverridesAnyPreviousParameters()
     {
         $originalParameters = RouteParameters::createEmpty()->withParameter('someParameter', 'someValue');

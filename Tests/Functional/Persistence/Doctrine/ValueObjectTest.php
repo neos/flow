@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Functional\Persistence\Doctrine;
 
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Persistence\Doctrine\Query;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
@@ -35,9 +36,8 @@ final class ValueObjectTest extends FunctionalTestCase
      *
      * The exception thrown is an ORMInvalidArgumentException with message:
      * "A managed+dirty entity test can not be scheduled for insertion."
-     *
-     * @test
      */
+    #[Test]
     public function valueObjectsGetDeduplicatedAndCanBePersisted(): void
     {
         for ($i = 0; $i < 2; $i++) {

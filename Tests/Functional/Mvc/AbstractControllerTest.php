@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -46,9 +46,8 @@ final class AbstractControllerTest extends FunctionalTestCase
 
     /**
      * Checks if a request is forwarded to the second action.
-     *
-     * @test
      */
+    #[Test]
     public function forwardPassesRequestToActionWithoutArguments()
     {
         $response = $this->browser->request('http://localhost/test/mvc/abstractcontrollertesta/forward?actionName=second');
@@ -58,9 +57,8 @@ final class AbstractControllerTest extends FunctionalTestCase
     /**
      * Checks if a request is forwarded to the second action and passes the givn
      * straight-value arguments.
-     *
-     * @test
      */
+    #[Test]
     public function forwardPassesRequestToActionWithArguments()
     {
         $response = $this->browser->request('http://localhost/test/mvc/abstractcontrollertesta/forward?actionName=third&arguments[firstArgument]=foo&arguments[secondArgument]=bar');
@@ -70,18 +68,15 @@ final class AbstractControllerTest extends FunctionalTestCase
     /**
      * Checks if a request is forwarded to the second action and passes the givn
      * straight-value arguments.
-     *
-     * @test
      */
+    #[Test]
     public function forwardPassesRequestToActionWithInternalArgumentsContainingObjects()
     {
         $response = $this->browser->request('http://localhost/test/mvc/abstractcontrollertesta/forward?actionName=fourth&passSomeObjectArguments=1&arguments[nonObject1]=First&arguments[nonObject2]=42');
         self::assertEquals('fourthAction-First-42-Neos\Error\Messages\Message', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function responseContainsNegotiatedContentType()
     {
         $response = $this->browser->request('http://localhost/test/mvc/abstractcontrollertesta/second');

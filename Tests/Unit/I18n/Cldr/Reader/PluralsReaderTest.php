@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Cldr\CldrModel;
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Locale;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\I18n\Cldr\Reader\PluralsReader;
 use Neos\Flow\Tests\UnitTestCase;
@@ -46,10 +50,10 @@ final class PluralsReaderTest extends UnitTestCase
             ]
         ];
 
-        $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray'], [['fake/path']]);
+        $mockModel = $this->getAccessibleMock(CldrModel::class, ['getRawArray'], [['fake/path']]);
         $mockModel->expects($this->once())->method('getRawArray')->with('plurals')->willReturn(($samplePluralRulesData));
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModel')->with('supplemental/plurals')->willReturn(($mockModel));
 
         $mockCache = $this->createMock(VariableFrontend::class);
@@ -100,13 +104,11 @@ final class PluralsReaderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quantities
-     */
+    #[DataProvider('quantities')]
+    #[Test]
     public function returnsCorrectPluralForm($localeName, $quantities)
     {
-        $locale = new I18n\Locale($localeName);
+        $locale = new Locale($localeName);
         foreach ($quantities as $value) {
             list($quantity, $pluralForm) = $value;
             $result = $this->reader->getPluralForm($quantity, $locale);

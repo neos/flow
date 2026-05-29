@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Property\TypeConverter\UriTypeConverter;
 use Neos\Flow\Tests\UnitTestCase;
@@ -38,9 +38,7 @@ final class UriTypeConverterTest extends UnitTestCase
         $this->typeConverter = new UriTypeConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sourceTypeIsStringOnly()
     {
         $sourceTypes = $this->typeConverter->getSupportedSourceTypes();
@@ -48,25 +46,19 @@ final class UriTypeConverterTest extends UnitTestCase
         self::assertSame('string', $sourceTypes[0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function targetTypeIsUri()
     {
         self::assertSame(UriInterface::class, $this->typeConverter->getSupportedTargetType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typeConverterReturnsUriOnValidUri()
     {
         self::assertInstanceOf(Uri::class, $this->typeConverter->convertFrom('http://localhost/foo', Uri::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typeConverterReturnsErrorOnMalformedUri()
     {
         $actual = $this->typeConverter->convertFrom('http:////localhost', Uri::class);

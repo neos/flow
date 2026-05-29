@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\I18n\Formatter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Locale;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Formatter\NumberFormatter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\I18n\Cldr\Reader\CurrencyReader;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Tests\UnitTestCase;
@@ -84,17 +87,15 @@ final class NumberFormatterTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->sampleLocale = new I18n\Locale('en');
+        $this->sampleLocale = new Locale('en');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatMethodsAreChoosenCorrectly()
     {
         $sampleNumber = 123.456;
 
-        $formatter = $this->getAccessibleMock(I18n\Formatter\NumberFormatter::class, ['formatDecimalNumber', 'formatPercentNumber']);
+        $formatter = $this->getAccessibleMock(NumberFormatter::class, ['formatDecimalNumber', 'formatPercentNumber']);
         $formatter->expects($this->once())->method('formatDecimalNumber')->with($sampleNumber, $this->sampleLocale, NumbersReader::FORMAT_LENGTH_DEFAULT)->willReturn('bar1');
         $formatter->expects($this->once())->method('formatPercentNumber')->with($sampleNumber, $this->sampleLocale, NumbersReader::FORMAT_LENGTH_DEFAULT)->willReturn('bar2');
 
@@ -121,13 +122,11 @@ final class NumberFormatterTest extends UnitTestCase
         yield [1000.23, '1 000,25', array_merge(self::$templateFormat, ['maxDecimalDigits' => 2, 'primaryGroupingSize' => 3, 'secondaryGroupingSize' => 3, 'rounding' => 0.05])];
     }
 
-    /**
-     * @test
-     * @dataProvider sampleNumbersAndParsedFormats
-     */
+    #[DataProvider('sampleNumbersAndParsedFormats')]
+    #[Test]
     public function parsedFormatsAreUsedCorrectly($number, $expectedResult, array $parsedFormat)
     {
-        $formatter = $this->getAccessibleMock(I18n\Formatter\NumberFormatter::class, []);
+        $formatter = $this->getAccessibleMock(NumberFormatter::class, []);
         $result = $formatter->_call('doFormattingWithParsedFormat', $number, $parsedFormat, $this->sampleLocalizedSymbols);
         self::assertEquals($expectedResult, $result);
     }
@@ -156,17 +155,15 @@ final class NumberFormatterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider customFormatsAndFormatterNumbers
-     */
+    #[DataProvider('customFormatsAndFormatterNumbers')]
+    #[Test]
     public function formattingUsingCustomPatternWorks($number, $format, array $parsedFormat, $expectedResult)
     {
         $mockNumbersReader = $this->createMock(NumbersReader::class);
         $mockNumbersReader->expects($this->once())->method('parseCustomFormat')->with($format)->willReturn(($parsedFormat));
         $mockNumbersReader->expects($this->once())->method('getLocalizedSymbolsForLocale')->with($this->sampleLocale)->willReturn(($this->sampleLocalizedSymbols));
 
-        $formatter = new I18n\Formatter\NumberFormatter();
+        $formatter = new NumberFormatter();
         $formatter->injectNumbersReader($mockNumbersReader);
 
         $result = $formatter->formatNumberWithCustomPattern($number, $format, $this->sampleLocale);
@@ -222,10 +219,8 @@ final class NumberFormatterTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sampleDataForSpecificFormattingMethods
-     */
+    #[DataProvider('sampleDataForSpecificFormattingMethods')]
+    #[Test]
     public function specificFormattingMethodsWork($number, array $parsedFormat, $expectedResult, $formatType, $currencySign = null, $currencyCode = 'DEFAULT')
     {
         $mockNumbersReader = $this->createMock(NumbersReader::class);
@@ -235,7 +230,7 @@ final class NumberFormatterTest extends UnitTestCase
         $mockCurrencyReader = $this->createMock(CurrencyReader::class);
         $mockCurrencyReader->method('getFraction')->with($currencyCode)->willReturn(($this->sampleCurrencyFractions[$currencyCode]));
 
-        $formatter = new I18n\Formatter\NumberFormatter();
+        $formatter = new NumberFormatter();
         $formatter->injectNumbersReader($mockNumbersReader);
         $formatter->injectCurrencyReader($mockCurrencyReader);
 

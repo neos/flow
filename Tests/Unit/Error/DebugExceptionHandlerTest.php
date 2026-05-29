@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Error;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Error\DebugExceptionHandler;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -95,9 +96,9 @@ Third line'
      * @param string $message
      * @param string $expectedSubject
      * @param string $expectedBody
-     * @test
-     * @dataProvider splitExceptionMessageDataProvider
      */
+    #[DataProvider('splitExceptionMessageDataProvider')]
+    #[Test]
     public function splitExceptionMessageTests($message, $expectedSubject, $expectedBody)
     {
         $debugExceptionHandler = $this->getAccessibleMock(DebugExceptionHandler::class, [], [], '', false);

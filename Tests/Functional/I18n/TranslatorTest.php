@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Functional\I18n;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Translator;
+use Neos\Flow\I18n\Locale;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\I18n;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -23,26 +26,24 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 final class TranslatorTest extends FunctionalTestCase
 {
-    protected I18n\Translator $translator;
+    protected Translator $translator;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->translator = $this->objectManager->get(I18n\Translator::class);
+        $this->translator = $this->objectManager->get(Translator::class);
     }
 
     public static function idAndLocaleForTranslation(): \Iterator
     {
-        yield ['authentication.username', new I18n\Locale('en'), 'Username'];
-        yield ['authentication.username', new I18n\Locale('de_CH'), 'Benutzername'];
-        yield ['update', new I18n\Locale('en'), 'Update'];
-        yield ['update', new I18n\Locale('de'), 'Aktualisieren'];
+        yield ['authentication.username', new Locale('en'), 'Username'];
+        yield ['authentication.username', new Locale('de_CH'), 'Benutzername'];
+        yield ['update', new Locale('en'), 'Update'];
+        yield ['update', new Locale('de'), 'Aktualisieren'];
     }
 
-    /**
-     * @test
-     * @dataProvider idAndLocaleForTranslation
-     */
+    #[DataProvider('idAndLocaleForTranslation')]
+    #[Test]
     public function simpleTranslationByIdWorks($id, $locale, $translation): void
     {
         $result = $this->translator->translateById($id, [], null, $locale, 'Main', 'Neos.Flow');
@@ -51,14 +52,12 @@ final class TranslatorTest extends FunctionalTestCase
 
     public static function labelAndLocaleForTranslation(): \Iterator
     {
-        yield ['Update', new I18n\Locale('en'), 'Update'];
-        yield ['Update', new I18n\Locale('de'), 'Aktualisieren'];
+        yield ['Update', new Locale('en'), 'Update'];
+        yield ['Update', new Locale('de'), 'Aktualisieren'];
     }
 
-    /**
-     * @test
-     * @dataProvider labelAndLocaleForTranslation
-     */
+    #[DataProvider('labelAndLocaleForTranslation')]
+    #[Test]
     public function simpleTranslationByLabelWorks($label, $locale, $translation): void
     {
         $result = $this->translator->translateByOriginalLabel($label, [], null, $locale, 'Main', 'Neos.Flow');
@@ -71,19 +70,15 @@ final class TranslatorTest extends FunctionalTestCase
         yield ['Untranslated label value is expected to be {0}.', ['foo'], 'Untranslated label value is expected to be foo.'];
     }
 
-    /**
-     * @test
-     * @dataProvider labelAndArgumentsForTranslation
-     */
+    #[DataProvider('labelAndArgumentsForTranslation')]
+    #[Test]
     public function translationByLabelUsesPlaceholders($label, $arguments, $translation): void
     {
-        $result = $this->translator->translateByOriginalLabel($label, $arguments, null, new I18n\Locale('en'), 'ValidationErrors', 'Neos.Flow');
+        $result = $this->translator->translateByOriginalLabel($label, $arguments, null, new Locale('en'), 'ValidationErrors', 'Neos.Flow');
         self::assertEquals($translation, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function translationByIdReturnsNullOnFailure(): void
     {
         $result = $this->translator->translateById('non-existing-id');

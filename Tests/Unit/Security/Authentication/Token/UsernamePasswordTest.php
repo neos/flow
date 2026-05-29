@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Security\Authentication\Token\UsernamePassword;
@@ -32,12 +33,12 @@ final class UsernamePasswordTest extends UnitTestCase
     protected $token;
 
     /**
-     * @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject
+     * @var ActionRequest|MockObject
      */
     protected $mockActionRequest;
 
     /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ServerRequestInterface|MockObject
      */
     protected $mockHttpRequest;
 
@@ -54,9 +55,7 @@ final class UsernamePasswordTest extends UnitTestCase
         $this->mockActionRequest->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function credentialsAreSetCorrectlyFromPostArguments()
     {
         $arguments = [];
@@ -72,9 +71,7 @@ final class UsernamePasswordTest extends UnitTestCase
         self::assertEquals($expectedCredentials, $this->token->getCredentials(), 'The credentials have not been extracted correctly from the POST arguments');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateCredentialsSetsTheCorrectAuthenticationStatusIfNewCredentialsArrived()
     {
         $arguments = [];
@@ -89,9 +86,7 @@ final class UsernamePasswordTest extends UnitTestCase
         self::assertSame(TokenInterface::AUTHENTICATION_NEEDED, $this->token->getAuthenticationStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateCredentialsIgnoresAnythingOtherThanPostRequests()
     {
         $arguments = [];
@@ -107,7 +102,7 @@ final class UsernamePasswordTest extends UnitTestCase
         $secondToken = new UsernamePassword();
         $secondMockActionRequest = $this->createMock(ActionRequest::class);
 
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $secondMockActionRequest */
+        /** @var ActionRequest|MockObject $secondMockActionRequest */
         $secondMockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $secondMockActionRequest->method('getHttpRequest')->willReturn(($secondMockHttpRequest));
         $secondMockHttpRequest->expects($this->atLeastOnce())->method('getMethod')->willReturn(('GET'));
@@ -115,9 +110,7 @@ final class UsernamePasswordTest extends UnitTestCase
         self::assertEquals(['username' => '', 'password' => ''], $secondToken->getCredentials());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tokenCanBeCastToString()
     {
         $arguments = [];

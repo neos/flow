@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Cryptography;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\RequiresFunction;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Exception\DecryptionNotAllowedException;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Security\Cryptography\RsaWalletServicePhp;
@@ -22,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for for the PHP (OpenSSL) based RSAWalletService
  */
-#[\PHPUnit\Framework\Attributes\RequiresFunction('openssl_pkey_new')]
+#[RequiresFunction('openssl_pkey_new')]
 final class RsaWalletServicePhpTest extends UnitTestCase
 {
     /**
@@ -56,9 +57,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         $this->keyPairUuid = $this->rsaWalletService->generateNewKeypair();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function encryptingAndDecryptingBasicallyWorks()
     {
         $plaintext = 'some very sensitive data!';
@@ -68,9 +67,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         self::assertEquals($plaintext, $this->rsaWalletService->decrypt($ciphertext, $this->keyPairUuid));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function signAndVerifySignatureBasicallyWorks()
     {
         $plaintext = 'trustworthy data!';
@@ -80,9 +77,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         self::assertFalse($this->rsaWalletService->verifySignature('modified data!', $signature, $this->keyPairUuid));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRSAEncryptedPasswordReturnsTrueForACorrectPassword()
     {
         $encryptedPassword = $this->rsaWalletService->encryptWithPublicKey('password', $this->keyPairUuid);
@@ -93,9 +88,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         self::assertTrue($this->rsaWalletService->checkRSAEncryptedPassword($encryptedPassword, $passwordHash, $salt, $this->keyPairUuid));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkRSAEncryptedPasswordReturnsFalseForAnIncorrectPassword()
     {
         $encryptedPassword = $this->rsaWalletService->encryptWithPublicKey('wrong password', $this->keyPairUuid);
@@ -106,9 +99,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         self::assertFalse($this->rsaWalletService->checkRSAEncryptedPassword($encryptedPassword, $passwordHash, $salt, $this->keyPairUuid));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function decryptingWithAKeypairUUIDMarkedForPasswordUsageThrowsAnException()
     {
         $this->expectException(DecryptionNotAllowedException::class);
@@ -116,9 +107,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         $this->rsaWalletService->decrypt('some cipher', $this->keyPairUuid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shutdownSavesKeysToKeystoreFileIfKeysWereModified()
     {
         self::assertFileNotExists('vfs://Foo/EncryptionKey');
@@ -133,9 +122,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         $this->rsaWalletService->getPublicKey($keyPairUuid);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shutdownDoesNotSavesKeysToKeystoreFileIfKeysWereNotModified()
     {
         self::assertFileNotExists('vfs://Foo/EncryptionKey');
@@ -153,9 +140,7 @@ final class RsaWalletServicePhpTest extends UnitTestCase
         self::assertFileNotExists('vfs://Foo/EncryptionKey');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFingerprintByPublicKeyCalculatesCorrectFingerprint()
     {
         $keyString = '-----BEGIN PUBLIC KEY-----
@@ -168,9 +153,7 @@ p2P76gIh+wUlPjsr/QIDAQAB
         self::assertEquals('cfa6879e3dfcf709db4cfd8e61fdd782', $this->rsaWalletService->getFingerprintByPublicKey($keyString));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerPublicKeyFromStringUsesFingerprintAsUuid()
     {
         $keyString = '-----BEGIN PUBLIC KEY-----

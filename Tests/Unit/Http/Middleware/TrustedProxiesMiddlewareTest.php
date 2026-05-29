@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Http\Middleware;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Tests\Unit\Http\Fixtures\SpyRequestHandler;
 use Psr\Http\Server\RequestHandlerInterface;
 use Neos\Flow\Http\Middleware\TrustedProxiesMiddleware;
@@ -89,9 +91,9 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
 
     /**
      * RFC 2616 / 14.23 (Host)
-     * @test
      */
-    #[\PHPUnit\Framework\Attributes\BackupGlobals(false)]
+    #[BackupGlobals(false)]
+    #[Test]
     public function portInProxyHeaderIsAcknowledged()
     {
         $server = array_merge($_SERVER, [
@@ -114,7 +116,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
      *
      * @test_disabled
      */
-    #[\PHPUnit\Framework\Attributes\BackupGlobals(false)]
+    #[BackupGlobals(false)]
     public function portInProxyHeaderIsAcknowledgedWithIpv6()
     {
         $server = array_merge($_SERVER, [
@@ -153,10 +155,8 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         yield [['HTTP_X_FORWARDED_FOR' => '2607:ff10:c5:509a::1'], '2607:ff10:c5:509a::1'];
     }
 
-    /**
-     * @test
-     * @dataProvider serverEnvironmentsForClientIpAddresses
-     */
+    #[DataProvider('serverEnvironmentsForClientIpAddresses')]
+    #[Test]
     public function getClientIpAddressReturnsTheIpAddressDerivedFromSeveralServerEnvironmentVariables(array $serverEnvironment, $expectedIpAddress)
     {
         $defaultServerEnvironment = [
@@ -189,10 +189,8 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         yield [['HTTP_FORWARDED' => 'for=192.0.2.60; proto=https; host=www.acme.org:8080; by=203.0.113.43'], '192.0.2.60', 'https', 'www.acme.org', 8080];
     }
 
-    /**
-     * @test
-     * @dataProvider serverEnvironmentsForForwardedHeader
-     */
+    #[DataProvider('serverEnvironmentsForForwardedHeader')]
+    #[Test]
     public function trustedProxyCorrectlyParsesForwardedHeaders(array $serverEnvironment, $expectedIpAddress, $expectedProto, $expectedHost, $expectedPort)
     {
         $defaultServerEnvironment = [
@@ -218,9 +216,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertSame($expectedPort, $trustedRequest->getUri()->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isSecureReturnsTrueEvenIfTheSchemeIsHttpButTheRequestWasForwardedAndOriginallyWasHttps()
     {
         $server = [
@@ -235,9 +231,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('https', $trustedRequest->getUri()->getScheme());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isSecureReturnsFalseIfTheRequestWasForwardedAndOriginallyWasHttp()
     {
         $server = [
@@ -252,9 +246,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('http', $trustedRequest->getUri()->getScheme());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFromTrustedProxyByDefault()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('https://acme.com'));
@@ -262,9 +254,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertTrue($trustedRequest->getAttribute(ServerRequestAttributes::TRUSTED_PROXY));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isFromTrustedProxyIfRemoteAddressMatchesRange()
     {
         $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.0/24']]);
@@ -273,9 +263,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertTrue($trustedRequest->getAttribute(ServerRequestAttributes::TRUSTED_PROXY));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotFromTrustedProxyIfNoProxiesAreTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => []]);
@@ -284,9 +272,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertFalse($trustedRequest->getAttribute(ServerRequestAttributes::TRUSTED_PROXY));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isNotFromTrustedProxyIfRemoteAddressDoesntMatch()
     {
         $this->withTrustedProxiesSettings(['proxies' => ['10.0.0.1/24']]);
@@ -295,9 +281,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertFalse($trustedRequest->getAttribute(ServerRequestAttributes::TRUSTED_PROXY));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsRemoteAddressIfNoProxiesAreTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => [], 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
@@ -306,9 +290,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('127.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsRemoteAddressIfHeaderNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.1'], 'headers' => []]);
@@ -317,9 +299,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('127.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsForwardedForAddressIfProxyTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.1'], 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
@@ -328,9 +308,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('13.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpV6AddressIsForwardedForAddressIfProxyTrusted()
     {
         if (PHP_VERSION_ID < 80316 || (PHP_VERSION_ID >= 80400 && PHP_VERSION_ID < 80403)) {
@@ -342,9 +320,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('2001:db8:cafe::17', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsFirstForwardedForAddressIfAllProxiesTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
@@ -353,9 +329,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('13.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsRightMostForwardedForAddressThatIsNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => ['127.0.0.1','10.0.0.1/24'], 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-For']]);
@@ -364,9 +338,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('215.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedClientIpAddressIsRemoteAddressIfTheHeaderIsNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => [TrustedProxiesMiddleware::HEADER_CLIENT_IP => 'X-Forwarded-Ip']]);
@@ -375,9 +347,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('127.0.0.1', $trustedRequest->getAttribute(ServerRequestAttributes::CLIENT_IP));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function portIsNotOverridenIfTheHeaderIsNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => []]);
@@ -386,9 +356,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals(null, $trustedRequest->getUri()->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function protocolIsNotOverridenIfTheHeaderIsNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => []]);
@@ -397,9 +365,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('http', $trustedRequest->getUri()->getScheme());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hostIsNotOverridenIfTheHeaderIsNotTrusted()
     {
         $this->withTrustedProxiesSettings(['proxies' => '*', 'headers' => []]);
@@ -408,9 +374,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('acme.com', $trustedRequest->getUri()->getHost());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hostIsOverridenIfTheHeaderIsTrusted()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), ['HTTP_X_FORWARDED_HOST' => 'neos.io']);
@@ -418,9 +382,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals('neos.io', $trustedRequest->getUri()->getHost());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function portIsOverridenIfTheHostHeaderContainsPort()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), ['HTTP_X_FORWARDED_HOST' => 'neos.io:443']);
@@ -428,9 +390,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals(443, $trustedRequest->getUri()->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function portIsOverridenIfTheHostHeaderContainsJustThePort()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), ['HTTP_X_FORWARDED_HOST' => ':443']);
@@ -438,9 +398,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals(443, $trustedRequest->getUri()->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function portIsOverridenIfTheHostHeaderContainsPortAlsoIfProtocolHeaderIsSet()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), ['HTTP_X_FORWARDED_HOST' => 'neos.io:443', 'HTTP_X_FORWARDED_PROTO' => 'http']);
@@ -448,9 +406,7 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         self::assertEquals(443, $trustedRequest->getUri()->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function portFromHostHeaderIsOverriddenByPortHeader()
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://acme.com'), ['HTTP_X_FORWARDED_PORT' => 8080, 'HTTP_X_FORWARDED_HOST' => 'neos.io:443']);
@@ -570,10 +526,8 @@ final class TrustedProxiesMiddlewareTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider forwardHeaderTestsDataProvider
-     */
+    #[DataProvider('forwardHeaderTestsDataProvider')]
+    #[Test]
     public function forwardHeaderTests(?string $forwardedProtocol, $forwardedPort, string $requestUri, string $expectedUri)
     {
         $server = [];

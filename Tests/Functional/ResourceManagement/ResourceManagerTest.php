@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\ResourceManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\ResourceManagement\ResourceRepository;
@@ -47,9 +47,7 @@ final class ResourceManagerTest extends FunctionalTestCase
         $resourceRepository = $this->objectManager->get(ResourceRepository::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteResourceKeepsDataIfStillInUse()
     {
         $this->resourceManager->importResourceFromContent('fixture', 'fixture.txt');
@@ -60,9 +58,7 @@ final class ResourceManagerTest extends FunctionalTestCase
         self::assertStringEqualsFile(FLOW_PATH_DATA . 'Persistent/Test/Resources/5/1/c/f/51cff3c1f0bc59f6187e7040cc12a4e9b1eca7aa', 'fixture');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteResourceRemovesDataIfStillInUseButCollectionDiffersWithoutPersistAll()
     {
         $this->resourceManager->importResourceFromContent('fixture', 'fixture.txt');
@@ -74,9 +70,7 @@ final class ResourceManagerTest extends FunctionalTestCase
         self::assertFileDoesNotExist(FLOW_PATH_DATA . 'Persistent/Test/CustomResources/5/1/c/f/51cff3c1f0bc59f6187e7040cc12a4e9b1eca7aa');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function deleteResourceRemovesDataIfStillInUseButCollectionDiffersWithPersistAll()
     {
         $this->resourceManager->importResourceFromContent('fixture', 'fixture.txt');

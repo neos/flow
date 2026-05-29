@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\TypeConverter\ArrayFromObjectConverter;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -33,9 +34,7 @@ final class ArrayFromObjectConverterTest extends UnitTestCase
         $this->converter = new ArrayFromObjectConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['object'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -43,9 +42,7 @@ final class ArrayFromObjectConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedReturnsSubObjectsArray()
     {
         $source = new \stdClass();
@@ -61,10 +58,8 @@ final class ArrayFromObjectConverterTest extends UnitTestCase
         yield [new \stdClass(), ['__type' => 'stdClass']];
     }
 
-    /**
-     * @test
-     * @dataProvider objectToArrayDataProvider
-     */
+    #[DataProvider('objectToArrayDataProvider')]
+    #[Test]
     public function canConvertFromObjectToArray($source, $expectedResult)
     {
         if (is_array($source)) {

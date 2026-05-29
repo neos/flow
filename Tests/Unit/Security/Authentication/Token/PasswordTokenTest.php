@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Security\Authentication\Token\PasswordToken;
@@ -53,9 +53,7 @@ final class PasswordTokenTest extends UnitTestCase
         $this->mockActionRequest->method('getHttpRequest')->willReturn(($this->mockHttpRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function credentialsAreSetCorrectlyFromPostArguments()
     {
         $arguments = [];
@@ -70,9 +68,7 @@ final class PasswordTokenTest extends UnitTestCase
         self::assertEquals($expectedCredentials, $this->token->getCredentials(), 'The credentials have not been extracted correctly from the POST arguments');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateCredentialsSetsTheCorrectAuthenticationStatusIfNewCredentialsArrived()
     {
         $arguments = [];
@@ -86,9 +82,7 @@ final class PasswordTokenTest extends UnitTestCase
         self::assertSame(TokenInterface::AUTHENTICATION_NEEDED, $this->token->getAuthenticationStatus());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function updateCredentialsIgnoresAnythingOtherThanPostRequests()
     {
         $arguments = [];

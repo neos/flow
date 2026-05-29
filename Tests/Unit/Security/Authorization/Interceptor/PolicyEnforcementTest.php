@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
+use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Flow\Security\Authorization\Interceptor\PolicyEnforcement;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security;
@@ -23,37 +28,33 @@ use Neos\Flow\Security;
  */
 final class PolicyEnforcementTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function invokeCallsTheAuthenticationManager()
     {
-        $securityContext = $this->createStub(Security\Context::class);
-        $authenticationManager = $this->createMock(Security\Authentication\AuthenticationManagerInterface::class);
-        $privilegeManager = $this->createStub(Security\Authorization\PrivilegeManagerInterface::class);
+        $securityContext = $this->createStub(Context::class);
+        $authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
+        $privilegeManager = $this->createStub(PrivilegeManagerInterface::class);
         $joinPoint = $this->createStub(JoinPointInterface::class);
 
         $authenticationManager->expects($this->once())->method('authenticate');
 
-        $interceptor = new Security\Authorization\Interceptor\PolicyEnforcement($securityContext, $authenticationManager, $privilegeManager);
+        $interceptor = new PolicyEnforcement($securityContext, $authenticationManager, $privilegeManager);
         $interceptor->setJoinPoint($joinPoint);
         $interceptor->invoke();
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invokeCallsThePrivilegeManagerToDecideOnTheCurrentJoinPoint()
     {
-        $securityContext = $this->createStub(Security\Context::class);
-        $authenticationManager = $this->createStub(Security\Authentication\AuthenticationManagerInterface::class);
-        $privilegeManager = $this->createMock(Security\Authorization\PrivilegeManagerInterface::class);
+        $securityContext = $this->createStub(Context::class);
+        $authenticationManager = $this->createStub(AuthenticationManagerInterface::class);
+        $privilegeManager = $this->createMock(PrivilegeManagerInterface::class);
         $joinPoint = $this->createStub(JoinPointInterface::class);
 
-        $privilegeManager->expects($this->once())->method('isGranted')->with(Security\Authorization\Privilege\Method\MethodPrivilegeInterface::class);
+        $privilegeManager->expects($this->once())->method('isGranted')->with(MethodPrivilegeInterface::class);
 
-        $interceptor = new Security\Authorization\Interceptor\PolicyEnforcement($securityContext, $authenticationManager, $privilegeManager);
+        $interceptor = new PolicyEnforcement($securityContext, $authenticationManager, $privilegeManager);
         $interceptor->setJoinPoint($joinPoint);
         $interceptor->invoke();
     }

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Cryptography;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Cryptography\BCryptHashingStrategy;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -24,8 +24,8 @@ final class BCryptHashingStrategyTest extends UnitTestCase
 {
     /**
      * Test the implementation using the sample hashes shown on http://php.net/crypt
-     * @test
      */
+    #[Test]
     public function systemSupportsBlowfishCryptMethod()
     {
         self::assertSame(\CRYPT_BLOWFISH, 1);
@@ -34,9 +34,7 @@ final class BCryptHashingStrategyTest extends UnitTestCase
         self::assertSame('$2a$07$usesomesillystringfore2uDLvp1Ii2e./U9C8sBjqp8I90dH6hi', $cryptResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashPasswordWithMatchingPasswordAndParametersSucceeds()
     {
         $strategy = new BCryptHashingStrategy(10);
@@ -46,9 +44,7 @@ final class BCryptHashingStrategyTest extends UnitTestCase
         self::assertFalse($strategy->validatePassword('pass', $derivedKeyWithSalt));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashAndValidatePasswordWithNotMatchingPasswordFails()
     {
         $strategy = new BCryptHashingStrategy(10);
@@ -57,9 +53,7 @@ final class BCryptHashingStrategyTest extends UnitTestCase
         self::assertFalse($strategy->validatePassword('pass', $derivedKeyWithSalt), 'Different password should not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashAndValidatePasswordWithDifferentCostsMatch()
     {
         $strategy = new BCryptHashingStrategy(10);
@@ -70,9 +64,7 @@ final class BCryptHashingStrategyTest extends UnitTestCase
         self::assertTrue($strategy->validatePassword('password', $derivedKeyWithSalt), 'Hashing strategy should validate password with different cost');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatePasswordWithInvalidHashFails()
     {
         $strategy = new BCryptHashingStrategy(10);

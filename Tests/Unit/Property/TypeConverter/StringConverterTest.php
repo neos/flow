@@ -13,16 +13,17 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\TypeConverter\StringConverter;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the String converter
- *
- * @covers \Neos\Flow\Property\TypeConverter\StringConverter<extended>
  */
+#[CoversClass('\Neos\Flow\Property\TypeConverter\StringConverter<extended>::class')]
 final class StringConverterTest extends UnitTestCase
 {
     /**
@@ -35,9 +36,7 @@ final class StringConverterTest extends UnitTestCase
         $this->converter = new StringConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string', 'integer', 'float', 'boolean', 'array', \DateTimeInterface::class], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -45,17 +44,13 @@ final class StringConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldReturnSourceString()
     {
         self::assertEquals('myString', $this->converter->convertFrom('myString', 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromConvertsDateTimeObjects()
     {
         $date = new \DateTime('1980-12-13');
@@ -64,9 +59,7 @@ final class StringConverterTest extends UnitTestCase
         self::assertEquals('13.12.1980', $this->converter->convertFrom($date, 'string', [], $propertyMappingConfiguration));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromConvertsDateTimeImmutableObjects()
     {
         $date = new \DateTimeImmutable('1980-12-13');
@@ -76,17 +69,13 @@ final class StringConverterTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrue()
     {
         self::assertTrue($this->converter->canConvertFrom('myString', 'string'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted('myString'));
@@ -101,10 +90,8 @@ final class StringConverterTest extends UnitTestCase
         yield [[1,2, 'foo'], '[1,2,"foo"]', [StringConverter::CONFIGURATION_ARRAY_FORMAT => StringConverter::ARRAY_FORMAT_JSON]];
     }
 
-    /**
-     * @test
-     * @dataProvider arrayToStringDataProvider
-     */
+    #[DataProvider('arrayToStringDataProvider')]
+    #[Test]
     public function canConvertFromStringToArray($source, $expectedResult, $mappingConfiguration)
     {
         // Create a map of arguments to return values.

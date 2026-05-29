@@ -13,7 +13,13 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Locale;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Cldr\CldrModel;
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Neos\Flow\I18n\Cldr\Reader\Exception\UnsupportedNumberFormatException;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
@@ -61,18 +67,16 @@ final class NumbersReaderTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->sampleLocale = new I18n\Locale('en');
+        $this->sampleLocale = new Locale('en');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatIsCorrectlyReadFromCldr(): void
     {
-        $mockModel = $this->createMock(I18n\Cldr\CldrModel::class);
+        $mockModel = $this->createMock(CldrModel::class);
         $mockModel->expects($this->once())->method('getElement')->with('numbers/decimalFormats/decimalFormatLength/decimalFormat/pattern')->willReturn('mockFormatString');
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn($mockModel);
 
         $mockCache = $this->createMock(VariableFrontend::class);
@@ -116,13 +120,13 @@ final class NumbersReaderTest extends UnitTestCase
         });
 
         /** @var MockObject|I18n\Cldr\Reader\NumbersReader $reader */
-        $reader = $this->getAccessibleMock(I18n\Cldr\Reader\NumbersReader::class, ['parseFormat']);
+        $reader = $this->getAccessibleMock(NumbersReader::class, ['parseFormat']);
         $reader->expects($this->once())->method('parseFormat')->with('mockFormatString')->willReturn(['mockParsedFormat']);
         $reader->injectCldrRepository($mockRepository);
         $reader->injectCache($mockCache);
         $reader->initializeObject();
 
-        $result = $reader->parseFormatFromCldr($this->sampleLocale, I18n\Cldr\Reader\NumbersReader::FORMAT_TYPE_DECIMAL);
+        $result = $reader->parseFormatFromCldr($this->sampleLocale, NumbersReader::FORMAT_TYPE_DECIMAL);
         self::assertEquals(['mockParsedFormat'], $result);
 
         $reader->shutdownObject();
@@ -142,14 +146,14 @@ final class NumbersReaderTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider formatStringsAndParsedFormats
      * @param string $format
      * @param array $expectedResult
      */
+    #[DataProvider('formatStringsAndParsedFormats')]
+    #[Test]
     public function formatStringsAreParsedCorrectly(string $format, array $expectedResult): void
     {
-        $reader = $this->getAccessibleMock(I18n\Cldr\Reader\NumbersReader::class, []);
+        $reader = $this->getAccessibleMock(NumbersReader::class, []);
 
         $result = $reader->_call('parseFormat', $format);
         self::assertEquals($expectedResult, $result);
@@ -170,14 +174,14 @@ final class NumbersReaderTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider unsupportedFormats
      * @param string $format
      */
+    #[DataProvider('unsupportedFormats')]
+    #[Test]
     public function throwsExceptionWhenUnsupportedFormatsEncountered(string $format): void
     {
-        $this->expectException(I18n\Cldr\Reader\Exception\UnsupportedNumberFormatException::class);
-        $reader = $this->getAccessibleMock(I18n\Cldr\Reader\NumbersReader::class, []);
+        $this->expectException(UnsupportedNumberFormatException::class);
+        $reader = $this->getAccessibleMock(NumbersReader::class, []);
 
         $reader->_call('parseFormat', $format);
     }

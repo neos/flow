@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Package\Exception\CorruptPackageException;
 use Neos\Flow\Package\Exception\InvalidPackagePathException;
 use org\bovigo\vfs\vfsStream;
@@ -42,18 +42,14 @@ final class PackageFactoryTest extends UnitTestCase
         $this->packageFactory = new PackageFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionWhenSpecifyingANonExistingPackagePath()
     {
         $this->expectException(InvalidPackagePathException::class);
         $this->packageFactory->create('vfs://Packages/', 'Some/Non/Existing/Path/Some.Package/', 'Some.Package', 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionIfCustomPackageFileCantBeAnalyzed()
     {
         $this->expectException(CorruptPackageException::class);
@@ -66,9 +62,7 @@ final class PackageFactoryTest extends UnitTestCase
         $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', 'Some.Package', 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionIfCustomPackageDoesNotImplementPackageInterface()
     {
         $this->expectException(CorruptPackageException::class);
@@ -83,9 +77,7 @@ final class PackageFactoryTest extends UnitTestCase
         $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', 'Some.Package', 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfCustomPackageIfItExists()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';
@@ -100,9 +92,7 @@ final class PackageFactoryTest extends UnitTestCase
         self::assertInstanceOf('Neos\Flow\Fixtures\CustomPackage2', $package);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createTakesAutoloaderTypeIntoAccountWhenLoadingCustomPackage()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';
@@ -119,9 +109,7 @@ final class PackageFactoryTest extends UnitTestCase
         self::assertInstanceOf('Neos\Flow\Fixtures\CustomPackage3', $package);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsAnInstanceOfTheDefaultPackageIfNoCustomPackageExists()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';

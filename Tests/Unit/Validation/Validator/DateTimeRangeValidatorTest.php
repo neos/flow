@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\DateTimeRangeValidator;
 
 require_once 'AbstractValidatorTestcase.php';
@@ -42,63 +42,49 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         $this->accessibleValidator = $this->getAccessibleMock(DateTimeRangeValidator::class, []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReferenceDateReturnsInstanceOfDateTime()
     {
         $testResult = $this->accessibleValidator->_call('parseReferenceDate', '2007-03-01T13:00:00Z/P1Y2M10DT2H30M');
         self::assertInstanceOf(\DateTime::class, $testResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReferenceDateReturnsTimeWithoutCalculationCorrectly()
     {
         $testResult = $this->accessibleValidator->_call('parseReferenceDate', '2007-03-01T13:00:00Z');
         self::assertEquals('2007-03-01 13:00', $testResult->format('Y-m-d H:i'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReferenceDateAddsTimeIntervalCorrectlyUsingOnlyHourAndMinute()
     {
         $testResult = $this->accessibleValidator->_call('parseReferenceDate', '2007-03-01T13:00:00Z/PT2H30M');
         self::assertEquals('2007-03-01 15:30', $testResult->format('Y-m-d H:i'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseReferenceDateSubstractsTimeIntervalCorrectlyUsingMonthAndMinuteForcingYearSwap()
     {
         $testResult = $this->accessibleValidator->_call('parseReferenceDate', 'P4MT15M/2013-02-01T13:00:00Z');
         self::assertEquals('2012-10-01 12:45', $testResult->format('Y-m-d H:i'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsOneErrorIfGivenValueIsNoDate()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
@@ -107,9 +93,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertCount(1, $errors);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateMustBeingAfterAFixDate()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
@@ -117,9 +101,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime('2009-03-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsErrorForAGivenDateMustBeingAfterAFixDate()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z']);
@@ -127,9 +109,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate(new \DateTime('2007-02-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateMustBeingAfterACalculatedDateRangeViaAdding()
     {
         $this->validatorOptions(['earliestDate' => '2007-03-01T13:00:00Z/P1Y2M10DT2H30M']);
@@ -137,9 +117,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime('2009-03-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsErrorForAGivenDateMustBeingAfterACalculatedDateRangeViaSubstracting()
     {
         $this->validatorOptions(['earliestDate' => 'P2M10DT2H30M/2011-03-01T13:00:00Z']);
@@ -147,9 +125,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate(new \DateTime('2009-03-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateMustBeingBeforeACalculatedDateRangeViaAdding()
     {
         $this->validatorOptions(['latestDate' => '2007-03-01T13:00:00Z/P1Y2M10DT2H30M']);
@@ -157,9 +133,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime('2008-03-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsErrorForAGivenDateMustBeingBeforeACalculatedDateRangeViaSubstracting()
     {
         $this->validatorOptions(['latestDate' => 'P2M10DT2H30M/2011-03-01T13:00:00Z']);
@@ -167,9 +141,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate(new \DateTime('2011-02-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsErrorForAGivenDateOutsideUpperAndLowerBoundaries()
     {
         $this->validatorOptions([
@@ -180,9 +152,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate(new \DateTime('2011-04-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateInsideUpperAndLowerBoundaries()
     {
         $this->validatorOptions([
@@ -193,9 +163,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime('2011-02-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateThatIsEqualToTheMinimumDate()
     {
         $this->validatorOptions([
@@ -205,9 +173,7 @@ final class DateTimeRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime('2011-01-01T13:00:00Z'))->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorForAGivenDateThatIsEqualToTheMaximumDate()
     {
         $this->validatorOptions([

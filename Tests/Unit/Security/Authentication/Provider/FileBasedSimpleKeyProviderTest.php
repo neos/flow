@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\Provider;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Security\Authentication\Provider\FileBasedSimpleKeyProvider;
 use Neos\Flow\Security\Authentication\Token\PasswordToken;
 use Neos\Flow\Security\Authentication\Token\PasswordTokenInterface;
@@ -42,22 +43,22 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
     protected $testKeyHashed = 'pbkdf2=>DPIFYou4eD8=,nMRkJ9708Ryq3zIZcCLQrBiLQ0ktNfG8tVRJoKPTGcG/6N+tyzQHObfH5y5HCra1hAVTBrbgfMjPU6BipIe9xg==%';
 
     /**
-     * @var PolicyService|\PHPUnit\Framework\MockObject\MockObject
+     * @var PolicyService|MockObject
      */
     protected $mockPolicyService;
 
     /**
-     * @var FileBasedSimpleKeyService|\PHPUnit\Framework\MockObject\MockObject
+     * @var FileBasedSimpleKeyService|MockObject
      */
     protected $mockFileBasedSimpleKeyService;
 
     /**
-     * @var HashService|\PHPUnit\Framework\MockObject\MockObject
+     * @var HashService|MockObject
      */
     protected $mockHashService;
 
     /**
-     * @var PasswordToken|\PHPUnit\Framework\MockObject\MockObject
+     * @var PasswordToken|MockObject
      */
     protected $mockToken;
 
@@ -83,9 +84,7 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         $this->mockToken = $this->createMock(PasswordToken::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticatingAPasswordTokenChecksIfTheGivenClearTextPasswordMatchesThePersistedHashedPassword()
     {
         $this->mockToken->expects($this->atLeastOnce())->method('getPassword')->willReturn(($this->testKeyClearText));
@@ -99,9 +98,7 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         $authenticationProvider->authenticate($this->mockToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticationAddsAnAccountHoldingTheConfiguredRoles()
     {
         $this->mockToken = $this->getMockBuilder(PasswordToken::class)->disableOriginalConstructor()->onlyMethods(['getPassword'])->getMock();
@@ -118,9 +115,7 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         self::assertContains('Neos.Flow:TestRoleIdentifier', array_keys($authenticatedRoles));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticationFailsWithWrongCredentialsInAPasswordToken()
     {
         $this->mockToken->expects($this->atLeastOnce())->method('getPassword')->willReturn(('wrong password'));
@@ -134,9 +129,7 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         $authenticationProvider->authenticate($this->mockToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticationIsSkippedIfNoCredentialsInAPasswordToken()
     {
         $this->mockToken->expects($this->atLeastOnce())->method('getPassword')->willReturn((''));
@@ -150,18 +143,14 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         $authenticationProvider->authenticate($this->mockToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTokenClassNameReturnsCorrectClassNames()
     {
         $authenticationProvider = FileBasedSimpleKeyProvider::create('myProvider', []);
         self::assertSame($authenticationProvider->getTokenClassNames(), [PasswordTokenInterface::class]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function authenticatingAnUnsupportedTokenThrowsAnException()
     {
         $this->expectException(UnsupportedAuthenticationTokenException::class);
@@ -172,9 +161,7 @@ final class FileBasedSimpleKeyProviderTest extends UnitTestCase
         $authenticationProvider->authenticate($someInvalidToken);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canAuthenticateReturnsTrueOnlyForAnTokenThatHasTheCorrectProviderNameSet()
     {
         $mockToken1 = $this->createMock(TokenInterface::class);

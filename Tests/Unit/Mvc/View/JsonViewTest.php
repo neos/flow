@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Unit\Mvc\View;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Mvc\View\JsonView;
+use Neos\Flow\Mvc\Controller\ControllerContext;
+use Neos\Flow\Mvc\ActionResponse;
+use Neos\Flow\Tests\Unit\Mvc\View\Fixtures\NestedTestObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\UnitTestCase;
@@ -39,9 +44,9 @@ final class JsonViewTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->view = $this->getMockBuilder(Mvc\View\JsonView::class)->onlyMethods([])->getMock();
-        $controllerContext = $this->createMock(Mvc\Controller\ControllerContext::class);
-        $this->response = new Mvc\ActionResponse();
+        $this->view = $this->getMockBuilder(JsonView::class)->onlyMethods([])->getMock();
+        $controllerContext = $this->createMock(ControllerContext::class);
+        $this->response = new ActionResponse();
         $controllerContext->method('getResponse')->willReturn(($this->response));
         $this->view->setControllerContext($controllerContext);
     }
@@ -143,13 +148,11 @@ final class JsonViewTest extends UnitTestCase
         return $output;
     }
 
-    /**
-     * @test
-     * @dataProvider jsonViewTestData
-     */
+    #[DataProvider('jsonViewTestData')]
+    #[Test]
     public function testTransformValue($object, $configuration, $expected, $description)
     {
-        $jsonView = $this->getAccessibleMock(Mvc\View\JsonView::class, [], [], '');
+        $jsonView = $this->getAccessibleMock(JsonView::class, [], [], '');
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);
 
@@ -186,14 +189,12 @@ final class JsonViewTest extends UnitTestCase
         return $output;
     }
 
-    /**
-     * @test
-     * @dataProvider objectIdentifierExposureTestData
-     */
+    #[DataProvider('objectIdentifierExposureTestData')]
+    #[Test]
     public function testTransformValueWithObjectIdentifierExposure($object, $configuration, $expected, $dummyIdentifier, $description)
     {
         $persistenceManagerMock = $this->getMockBuilder(PersistenceManager::class)->onlyMethods(['getIdentifierByObject'])->getMock();
-        $jsonView = $this->getAccessibleMock(Mvc\View\JsonView::class, [], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, [], [], '', false);
         $jsonView->_set('persistenceManager', $persistenceManagerMock);
 
         $persistenceManagerMock->expects($this->once())->method('getIdentifierByObject')->with($object->value1)->willReturn(($dummyIdentifier));
@@ -211,13 +212,13 @@ final class JsonViewTest extends UnitTestCase
         $className = 'DummyClass' . md5(uniqid((string)mt_rand(), true));
         $namespace = 'Neos\Flow\Tests\Unit\Mvc\View\\' . $className;
         yield [
-            Mvc\View\JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,
+            JsonView::EXPOSE_CLASSNAME_FULLY_QUALIFIED,
             $className,
             $namespace,
             ['value1' => ['__class' => $namespace . '\\' . $className]]
         ];
         yield [
-            Mvc\View\JsonView::EXPOSE_CLASSNAME_UNQUALIFIED,
+            JsonView::EXPOSE_CLASSNAME_UNQUALIFIED,
             $className,
             $namespace,
             ['value1' => ['__class' => $className]]
@@ -230,10 +231,8 @@ final class JsonViewTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider exposeClassNameSettingsAndResults
-     */
+    #[DataProvider('exposeClassNameSettingsAndResults')]
+    #[Test]
     public function viewExposesClassNameFullyIfConfiguredSo($exposeClassNameSetting, $className, $namespace, $expected)
     {
         $fullyQualifiedClassName = $namespace . '\\' . $className;
@@ -251,7 +250,7 @@ final class JsonViewTest extends UnitTestCase
             ]
         ];
 
-        $jsonView = $this->getAccessibleMock(Mvc\View\JsonView::class, [], [], '', false);
+        $jsonView = $this->getAccessibleMock(JsonView::class, [], [], '', false);
         $actual = $jsonView->_call('transformValue', $object, $configuration);
         self::assertEquals($expected, $actual);
     }
@@ -266,9 +265,7 @@ final class JsonViewTest extends UnitTestCase
         $this->view->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsJsonRepresentationOfAssignedObject()
     {
         $object = new \stdClass();
@@ -280,9 +277,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsJsonRepresentationOfAssignedArray()
     {
         $array = ['foo' => 'Foo', 'bar' => 'Bar'];
@@ -293,9 +288,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsJsonRepresentationOfAssignedSimpleValue()
     {
         $value = 'Foo';
@@ -306,9 +299,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderReturnsNullIfNameOfAssignedVariableIsNotEqualToValue()
     {
         $value = 'Foo';
@@ -319,9 +310,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderOnlyRendersVariableWithTheNameValue()
     {
         $this->view
@@ -333,9 +322,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setVariablesToRenderOverridesValueToRender()
     {
         $value = 'Foo';
@@ -347,9 +334,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRendersMultipleValuesIfTheyAreSpecifiedAsVariablesToRender()
     {
         $this->view
@@ -363,9 +348,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCanRenderMultipleComplexObjects()
     {
         $array = ['foo' => ['bar' => 'Baz']];
@@ -383,9 +366,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderCanRenderPlainArray()
     {
         $array = [['name' => 'Foo', 'secret' => true], ['name' => 'Bar', 'secret' => true]];
@@ -404,9 +385,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function descendAllKeepsArrayIndexes()
     {
         $array = [['name' => 'Foo', 'secret' => true], ['name' => 'Bar', 'secret' => true]];
@@ -425,9 +404,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderTransformsJsonSerializableValues()
     {
         $value = $this->getMockBuilder('JsonSerializable')->onlyMethods(['jsonSerialize'])->getMock();
@@ -445,9 +422,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewAcceptsJsonEncodingOptions()
     {
         $array = ['foo' => ['bar' => 'Baz', 'foo' => '1']];
@@ -465,9 +440,7 @@ final class JsonViewTest extends UnitTestCase
         self::assertNotEquals($unexpectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function viewObeysDateTimeFormatOption()
     {
         $array = ['foo' => new \DateTime('2021-05-02T13:00:00+0000')];

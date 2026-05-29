@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\ServerRequest;
 use Neos\Flow\Http\ContentStream;
 use GuzzleHttp\Psr7\Uri;
@@ -82,9 +83,8 @@ final class ActionControllerTest extends FunctionalTestCase
      * Checks if a simple request is handled correctly. The route matching the
      * specified URI defines a default action "first" which results in firstAction
      * being called.
-     *
-     * @test
      */
+    #[Test]
     public function defaultActionSpecifiedInRouteIsCalledAndResponseIsReturned(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta');
@@ -95,9 +95,8 @@ final class ActionControllerTest extends FunctionalTestCase
     /**
      * Checks if a simple request is handled correctly if another than the default
      * action is specified.
-     *
-     * @test
      */
+    #[Test]
     public function actionSpecifiedInActionRequestIsCalledAndResponseIsReturned(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta/second');
@@ -108,18 +107,15 @@ final class ActionControllerTest extends FunctionalTestCase
     /**
      * Checks if query parameters are handled correctly and default arguments are
      * respected / overridden.
-     *
-     * @test
      */
+    #[Test]
     public function queryStringOfAGetRequestIsParsedAndPassedToActionAsArguments(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta/third?secondArgument=bar&firstArgument=foo&third=baz');
         self::assertEquals('thirdAction-foo-bar-baz-default', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultTemplateIsResolvedAndUsedAccordingToConventions(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta/fourth?emailAddress=example@neos.io');
@@ -128,9 +124,8 @@ final class ActionControllerTest extends FunctionalTestCase
 
     /**
      * Bug #36913
-     *
-     * @test
      */
+    #[Test]
     public function argumentsOfPutRequestArePassedToAction(): void
     {
         $request = $this->serverRequestFactory->createServerRequest('PUT', new Uri('http://localhost/test/mvc/actioncontrollertesta/put?getArgument=getValue'));
@@ -145,9 +140,8 @@ final class ActionControllerTest extends FunctionalTestCase
 
     /**
      * RFC 2616 / 10.4.5 (404 Not Found)
-     *
-     * @test
      */
+    #[Test]
     public function notFoundStatusIsReturnedIfASpecifiedObjectCantBeFound(): void
     {
         $request = new ServerRequest('GET', new Uri('http://localhost/test/mvc/actioncontrollertestc/non-existing-id'));
@@ -159,9 +153,8 @@ final class ActionControllerTest extends FunctionalTestCase
 
     /**
      * RFC 2616 / 10.4.7 (406 Not Acceptable)
-     *
-     * @test
      */
+    #[Test]
     public function notAcceptableStatusIsReturnedIfMediaTypeDoesNotMatchSupportedMediaTypes(): void
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://localhost/test/mvc/actioncontrollertesta'))
@@ -173,9 +166,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame(406, $response->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ignoreValidationAnnotationsAreObservedForPost(): void
     {
         $arguments = [
@@ -192,17 +183,15 @@ final class ActionControllerTest extends FunctionalTestCase
 
     /**
      * See http://forge.typo3.org/issues/37385
-     * @test
      */
+    #[Test]
     public function ignoreValidationAnnotationIsObservedWithAndWithoutDollarSign(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertesta/ignorevalidation?brokenArgument1=toolong&brokenArgument2=tooshort');
         self::assertEquals('action was called', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsOfPutRequestWithJsonOrXmlTypeAreAlsoPassedToAction(): void
     {
         $request = $this->serverRequestFactory->createServerRequest('PUT', new Uri('http://localhost/test/mvc/actioncontrollertesta/put?getArgument=getValue'))
@@ -214,9 +203,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals('putAction-first value-getValue', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectArgumentsAreValidatedByDefault(): void
     {
         $arguments = [
@@ -231,9 +218,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionalObjectArgumentsAreValidatedByDefault(): void
     {
         $arguments = [
@@ -248,9 +233,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionalObjectArgumentsCanBeOmitted(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/optionalobject');
@@ -259,9 +242,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionalObjectArgumentsCanBeAnnotatedNullable(): void
     {
         $response = $this->browser->request('http://localhost/test/mvc/actioncontrollertestb/optionalannotatedobject');
@@ -270,9 +251,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notValidatedGroupObjectArgumentsAreNotValidated(): void
     {
         $arguments = [
@@ -287,9 +266,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notValidatedGroupCollectionsAreNotValidated(): void
     {
         $arguments = [
@@ -309,9 +286,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notValidatedGroupModelRelationIsNotValidated(): void
     {
         $arguments = [
@@ -330,9 +305,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatedGroupObjectArgumentsAreValidated(): void
     {
         $arguments = [
@@ -347,9 +320,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatedGroupCollectionsAreValidated(): void
     {
         $arguments = [
@@ -369,9 +340,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatedGroupModelRelationIsValidated(): void
     {
         $arguments = [
@@ -432,10 +401,8 @@ final class ActionControllerTest extends FunctionalTestCase
         yield 'optional date - empty value' => ['optionalDate', '', 'null', 200];
     }
 
-    /**
-     * @test
-     * @dataProvider argumentTestsDataProvider
-     */
+    #[DataProvider('argumentTestsDataProvider')]
+    #[Test]
     public function argumentTests(string $action, mixed $argument, mixed $expectedResult, int $expectedStatusCode): void
     {
         $arguments = [
@@ -448,9 +415,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertStringStartsWith((string)$expectedResult, trim($response->getBody()->getContents()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requiredDateNullArgumentTest(): void
     {
         $arguments = [
@@ -463,9 +428,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame(0, strpos(trim($response->getBody()->getContents()), (string)$expectedResult), sprintf('The resulting string did not start with the expected string. Expected: "%s", Actual: "%s"', $expectedResult, $response->getBody()->getContents()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wholeRequestBodyCanBeMapped(): void
     {
         $arguments = [
@@ -480,9 +443,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wholeRequestBodyCanBeMappedWithoutAnnotation(): void
     {
         $arguments = [
@@ -497,9 +458,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicArgumentCanBeValidatedByInternalTypeProperty(): void
     {
         $arguments = [
@@ -515,9 +474,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicArgumentCanBeValidatedByConfiguredType(): void
     {
         $arguments = [
@@ -532,9 +489,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function trustedPropertiesConfigurationDoesNotIgnoreWildcardConfigurationInController(): void
     {
         $entity = new TestEntity();
@@ -569,9 +524,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame('Entity "Foo" updated', $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flashMessagesGetRenderedAfterRedirect(): void
     {
         $request = $this->serverRequestFactory->createServerRequest('GET', new Uri('http://localhost/test/mvc/actioncontrollertest/redirectWithFlashMessage'));
@@ -599,9 +552,7 @@ final class ActionControllerTest extends FunctionalTestCase
         self::assertSame($expected, $redirectResponse->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonstandardStatusCodeIsReturnedWithRedirect(): void
     {
         $this->browser->setFollowRedirects(false);

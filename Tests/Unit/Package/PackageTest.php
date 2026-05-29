@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Composer\Exception\MissingPackageManifestException;
 use Neos\Flow\Package\Package;
@@ -35,9 +36,7 @@ final class PackageTest extends UnitTestCase
         vfsStream::setup('Packages');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getClassFilesReturnsAListOfClassFilesOfThePackage()
     {
         $packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
@@ -66,9 +65,7 @@ final class PackageTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function packageManifestContainsPackageType()
     {
         $packagePath = 'vfs://Packages/Application/Acme.MyPackage/';
@@ -81,9 +78,7 @@ final class PackageTest extends UnitTestCase
         self::assertEquals('flow-test', $packageType);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwExceptionWhenSpecifyingAPathWithMissingComposerManifest()
     {
         $this->expectException(MissingPackageManifestException::class);
@@ -93,13 +88,11 @@ final class PackageTest extends UnitTestCase
         $package->getComposerManifest();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInstalledVersionReturnsFallback()
     {
-        /** @var Package|\PHPUnit\Framework\MockObject\MockObject $package */
-        $package = $this->getMockBuilder(\Neos\Flow\Package\Package::class)->onlyMethods(['getComposerManifest'])->setConstructorArgs(['Some.Package', 'some/package', 'vfs://Packages/Some/Path/Some.Package/', []])->getMock();
+        /** @var Package|MockObject $package */
+        $package = $this->getMockBuilder(Package::class)->onlyMethods(['getComposerManifest'])->setConstructorArgs(['Some.Package', 'some/package', 'vfs://Packages/Some/Path/Some.Package/', []])->getMock();
         $package->method('getComposerManifest')->willReturn('1.2.3');
 
         self::assertEquals('1.2.3', $package->getInstalledVersion('some/package'));

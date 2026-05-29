@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\Http\Helper;
 
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\ServerRequest;
 use Neos\Flow\Http\Helper\RequestInformationHelper;
 use Neos\Flow\Tests\UnitTestCase;
@@ -13,9 +14,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class RequestInformationHelperTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderRequestHeadersWillNotDiscloseAuthorizationCredentials()
     {
         $request = ServerRequest::fromGlobals()

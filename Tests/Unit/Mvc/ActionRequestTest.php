@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Exception\InvalidActionNameException;
 use Neos\Flow\Mvc\Exception\InvalidArgumentNameException;
@@ -40,16 +42,15 @@ final class ActionRequestTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->actionRequest = ActionRequest::fromHttpRequest($this->createStub(\Psr\Http\Message\ServerRequestInterface::class));
+        $this->actionRequest = ActionRequest::fromHttpRequest($this->createStub(ServerRequestInterface::class));
     }
 
     /**
      * By design, the root request will always be an HTTP request because it is
      * the only of the two types which can be instantiated without having to pass
      * another request as the parent request.
-     *
-     * @test
      */
+    #[Test]
     public function anActionRequestIsRequiredAsParentRequest()
     {
         self::assertNull($this->actionRequest->getParentRequest());
@@ -58,31 +59,25 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($this->actionRequest, $anotherActionRequest->getParentRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsAnExceptionIfNoValidRequestIsPassed()
     {
         $this->expectException(\Error::class);
         new ActionRequest(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getHttpRequestReturnsTheHttpRequestWhichIsTheRootOfAllActionRequests()
     {
         $anotherActionRequest = $this->actionRequest->createSubRequest();
         $yetAnotherActionRequest = $anotherActionRequest->createSubRequest();
 
-        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $this->actionRequest->getHttpRequest());
-        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $yetAnotherActionRequest->getHttpRequest());
-        self::assertSame($this->createStub(\Psr\Http\Message\ServerRequestInterface::class), $anotherActionRequest->getHttpRequest());
+        self::assertSame($this->createStub(ServerRequestInterface::class), $this->actionRequest->getHttpRequest());
+        self::assertSame($this->createStub(ServerRequestInterface::class), $yetAnotherActionRequest->getHttpRequest());
+        self::assertSame($this->createStub(ServerRequestInterface::class), $anotherActionRequest->getHttpRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMainRequestReturnsTheTopLevelActionRequestWhoseParentIsTheHttpRequest()
     {
         $anotherActionRequest = $this->actionRequest->createSubRequest();
@@ -93,9 +88,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($this->actionRequest, $anotherActionRequest->getMainRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isMainRequestChecksIfTheParentRequestIsNotAnHttpRequest()
     {
         $anotherActionRequest = $this->actionRequest->createSubRequest();
@@ -106,9 +99,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertFalse($yetAnotherActionRequest->isMainRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function requestIsDispatchable()
     {
         $mockDispatcher = $this->createStub(Dispatcher::class);
@@ -124,9 +115,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertFalse($this->actionRequest->isDispatched());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerObjectNameReturnsObjectNameDerivedFromPreviouslySetControllerInformation()
     {
         $mockPackageManager = $this->createMock(PackageManager::class);
@@ -146,9 +135,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('SomePackage\Some\SubPackage\Controller\SomeControllerController', $this->actionRequest->getControllerObjectName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerObjectNameReturnsAnEmptyStringIfTheResolvedControllerDoesNotExist()
     {
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
@@ -216,11 +203,11 @@ final class ActionRequestTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param string $objectName
      * @param array $parts
-     * @dataProvider caseSensitiveObjectNames
      */
+    #[DataProvider('caseSensitiveObjectNames')]
+    #[Test]
     public function setControllerObjectNameSplitsTheGivenObjectNameIntoItsParts($objectName, array $parts)
     {
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
@@ -235,9 +222,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($parts['controllerName'], $this->actionRequest->getControllerName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setControllerObjectNameThrowsExceptionOnUnknownObjectName()
     {
         $this->expectException(UnknownObjectException::class);
@@ -249,12 +234,10 @@ final class ActionRequestTest extends UnitTestCase
         $this->actionRequest->setControllerObjectName('SomeUnknownControllerObjectName');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerNameExtractsTheControllerNameFromTheControllerObjectNameToAssureTheCorrectCase()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn(('Neos\MyPackage\Controller\Foo\BarController'));
 
@@ -262,12 +245,10 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('Foo\Bar', $actionRequest->getControllerName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerNameReturnsTheUnknownCasesControllerNameIfNoControllerObjectNameCouldBeDetermined()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn((''));
 
@@ -275,16 +256,14 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('foo\bar', $actionRequest->getControllerName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerSubpackageKeyExtractsTheSubpackageKeyFromTheControllerObjectNameToAssureTheCorrectCase()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn(('Neos\MyPackage\Some\SubPackage\Controller\Foo\BarController'));
 
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $mockPackageManager */
+        /** @var PackageManager|MockObject $mockPackageManager */
         $mockPackageManager = $this->createMock(PackageManager::class);
         $mockPackageManager->method('getCaseSensitivePackageKey')->with('neos.mypackage')->willReturn(('Neos.MyPackage'));
         $this->inject($actionRequest, 'packageManager', $mockPackageManager);
@@ -294,16 +273,14 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('Some\SubPackage', $actionRequest->getControllerSubpackageKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerSubpackageKeyReturnsNullIfNoSubpackageKeyIsSet()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->method('getControllerObjectName')->willReturn(('Neos\MyPackage\Controller\Foo\BarController'));
 
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $mockPackageManager */
+        /** @var PackageManager|MockObject $mockPackageManager */
         $mockPackageManager = $this->createMock(PackageManager::class);
         $mockPackageManager->method('getCaseSensitivePackageKey')->with('neos.mypackage')->willReturn(('Neos.MyPackage'));
         $this->inject($actionRequest, 'packageManager', $mockPackageManager);
@@ -312,16 +289,14 @@ final class ActionRequestTest extends UnitTestCase
         self::assertNull($actionRequest->getControllerSubpackageKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getControllerSubpackageKeyReturnsTheUnknownCasesPackageKeyIfNoControllerObjectNameCouldBeDetermined()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn((''));
 
-        /** @var PackageManager|\PHPUnit\Framework\MockObject\MockObject $mockPackageManager */
+        /** @var PackageManager|MockObject $mockPackageManager */
         $mockPackageManager = $this->createMock(PackageManager::class);
         $mockPackageManager->method('getCaseSensitivePackageKey')->with('neos.mypackage')->willReturn((false));
         $this->inject($actionRequest, 'packageManager', $mockPackageManager);
@@ -342,22 +317,20 @@ final class ActionRequestTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param mixed $invalidControllerName
-     * @dataProvider invalidControllerNames
      */
+    #[DataProvider('invalidControllerNames')]
+    #[Test]
     public function setControllerNameThrowsExceptionOnInvalidControllerNames($invalidControllerName)
     {
         $this->expectException(InvalidControllerNameException::class);
         $this->actionRequest->setControllerName($invalidControllerName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theActionNameCanBeSetAndRetrieved()
     {
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->onlyMethods(['getControllerObjectName'])->getMock();
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn((''));
 
@@ -376,19 +349,17 @@ final class ActionRequestTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @param mixed $invalidActionName
-     * @dataProvider invalidActionNames
      */
+    #[DataProvider('invalidActionNames')]
+    #[Test]
     public function setControllerActionNameThrowsExceptionOnInvalidActionNames($invalidActionName)
     {
         $this->expectException(InvalidActionNameException::class);
         $this->actionRequest->setControllerActionName($invalidActionName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theActionNamesCaseIsFixedIfItIsAllLowerCaseAndTheControllerObjectNameIsKnown()
     {
         $mockControllerClassName = 'Mock' . md5(uniqid((string)mt_rand(), true));
@@ -405,7 +376,7 @@ final class ActionRequestTest extends UnitTestCase
             ->with('Neos\Flow\MyControllerObjectName')
             ->willReturn((get_class($mockController)));
 
-        /** @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject $actionRequest */
+        /** @var ActionRequest|MockObject $actionRequest */
         $actionRequest = $this->getAccessibleMock(ActionRequest::class, ['getControllerObjectName'], [], '', false);
         $actionRequest->expects($this->once())->method('getControllerObjectName')->willReturn(('Neos\Flow\MyControllerObjectName'));
         $actionRequest->_set('objectManager', $mockObjectManager);
@@ -414,36 +385,28 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('someGreat', $actionRequest->getControllerActionName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aSingleArgumentCanBeSetWithSetArgumentAndRetrievedWithGetArgument()
     {
         $this->actionRequest->setArgument('someArgumentName', 'theValue');
         self::assertEquals('theValue', $this->actionRequest->getArgument('someArgumentName'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setArgumentThrowsAnExceptionOnInvalidArgumentNames()
     {
         $this->expectException(InvalidArgumentNameException::class);
         $this->actionRequest->setArgument('', 'theValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setArgumentDoesNotAllowObjectValuesForRegularArguments()
     {
         $this->expectException(InvalidArgumentTypeException::class);
         $this->actionRequest->setArgument('foo', new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allArgumentsCanBeSetOrRetrievedAtOnce()
     {
         $arguments = [
@@ -455,9 +418,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals($arguments, $this->actionRequest->getArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function internalArgumentsAreHandledSeparately()
     {
         $this->actionRequest->setArgument('__someInternalArgument', 'theValue');
@@ -467,9 +428,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals(['__someInternalArgument' => 'theValue'], $this->actionRequest->getInternalArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function internalArgumentsMayHaveObjectValues()
     {
         $someObject = new \stdClass();
@@ -479,9 +438,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($someObject, $this->actionRequest->getInternalArgument('__someInternalArgument'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pluginArgumentsAreHandledSeparately()
     {
         $this->actionRequest->setArgument('--typo3-flow-foo-viewhelper-paginate', ['@controller' => 'Foo', 'page' => 5]);
@@ -490,9 +447,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals(['typo3-flow-foo-viewhelper-paginate' => ['@controller' => 'Foo', 'page' => 5]], $this->actionRequest->getPluginArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentNamespaceCanBeSpecified()
     {
         self::assertSame('', $this->actionRequest->getArgumentNamespace());
@@ -500,9 +455,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame('someArgumentNamespace', $this->actionRequest->getArgumentNamespace());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theRepresentationFormatCanBeSetAndRetrieved()
     {
         $this->actionRequest->setFormat('html');
@@ -515,9 +468,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('html', $this->actionRequest->getFormat());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cloneResetsTheStatusToNotDispatched()
     {
         $this->actionRequest->setDispatched(true);
@@ -527,9 +478,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertFalse($cloneRequest->isDispatched());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getReferringRequestThrowsAnExceptionIfTheHmacOfTheArgumentsCouldNotBeValid()
     {
         $this->expectException(InvalidHashException::class);
@@ -549,9 +498,7 @@ final class ActionRequestTest extends UnitTestCase
         $this->actionRequest->getReferringRequest();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDispatchedEmitsSignalIfDispatched()
     {
         $mockDispatcher = $this->createMock(Dispatcher::class);
@@ -564,9 +511,7 @@ final class ActionRequestTest extends UnitTestCase
         $this->actionRequest->setDispatched(true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setControllerPackageKeyWithLowercasePackageKeyResolvesCorrectly()
     {
         $mockPackageManager = $this->createMock(PackageManager::class);
@@ -578,9 +523,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertEquals('Acme.Testpackage', $this->actionRequest->getControllerPackageKey());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function internalArgumentsOfActionRequestOverruleThoseOfTheHttpRequest()
     {
         $this->actionRequest->setArguments(['__internalArgument' => 'action request']);
@@ -589,9 +532,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($expectedResult, $this->actionRequest->getInternalArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pluginArgumentsOfActionRequestOverruleThoseOfTheHttpRequest()
     {
         $this->actionRequest->setArguments(['--pluginArgument' => 'action request']);
@@ -600,9 +541,7 @@ final class ActionRequestTest extends UnitTestCase
         self::assertSame($expectedResult, $this->actionRequest->getPluginArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingAnArgumentWithIntegerNameWillCastToString()
     {
         $argumentValue = 'amnesia spray';

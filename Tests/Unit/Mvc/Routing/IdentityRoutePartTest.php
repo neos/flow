@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Mvc\Exception\InfiniteLoopException;
 use Neos\Flow\Mvc\Exception\InvalidUriPatternException;
 use Neos\Flow\Mvc\Routing\IdentityRoutePart;
@@ -35,17 +37,17 @@ final class IdentityRoutePartTest extends UnitTestCase
     protected $identityRoutePart;
 
     /**
-     * @var PersistenceManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var PersistenceManagerInterface|MockObject
      */
     protected $mockPersistenceManager;
 
     /**
-     * @var ClassSchema|\PHPUnit\Framework\MockObject\MockObject
+     * @var ClassSchema|MockObject
      */
     protected $mockClassSchema;
 
     /**
-     * @var ObjectPathMappingRepository|\PHPUnit\Framework\MockObject\MockObject
+     * @var ObjectPathMappingRepository|MockObject
      */
     protected $mockObjectPathMappingRepository;
 
@@ -68,18 +70,14 @@ final class IdentityRoutePartTest extends UnitTestCase
         $this->identityRoutePart->_set('objectPathMappingRepository', $this->mockObjectPathMappingRepository);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUriPatternReturnsTheSpecifiedUriPatternIfItsNotEmpty()
     {
         $this->identityRoutePart->setUriPattern('SomeUriPattern');
         self::assertSame('SomeUriPattern', $this->identityRoutePart->getUriPattern());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUriPatternReturnsAnEmptyStringIfObjectTypeHasNotIdentityPropertiesAndNoPatternWasSpecified()
     {
         $this->mockClassSchema->expects($this->once())->method('getIdentityProperties')->willReturn(([]));
@@ -88,9 +86,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('', $this->identityRoutePart->getUriPattern());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getUriPatternReturnsBasedOnTheIdentityPropertiesOfTheObjectTypeIfNoPatternWasSpecified()
     {
         $this->mockClassSchema->expects($this->once())->method('getIdentityProperties')->willReturn((['property1' => 'string', 'property2' => 'integer', 'property3' => 'DateTime']));
@@ -98,18 +94,14 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('{property1}/{property2}/{property3}', $this->identityRoutePart->getUriPattern());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchValueReturnsFalseIfTheGivenValueIsEmptyOrNull()
     {
         self::assertFalse($this->identityRoutePart->_call('matchValue', ''));
         self::assertFalse($this->identityRoutePart->_call('matchValue', null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchValueReturnsFalseIfNoObjectPathMappingCouldBeFound()
     {
         $this->mockObjectPathMappingRepository->expects($this->once())->method('findOneByObjectTypeUriPatternAndPathSegment')->with('SomeObjectType', 'SomeUriPattern', 'TheRoutePath', false)->willReturn((null));
@@ -118,9 +110,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertFalse($this->identityRoutePart->_call('matchValue', 'TheRoutePath'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchValueSetsTheIdentifierOfTheObjectPathMappingAndReturnsTrueIfAMatchingObjectPathMappingWasFound()
     {
         $mockObjectPathMapping = $this->createMock(ObjectPathMapping::class);
@@ -135,9 +125,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchValueSetsTheRouteValueToTheUrlDecodedPathSegmentIfNoUriPatternIsSpecified()
     {
         $this->mockClassSchema->method('getIdentityProperties')->willReturn(([]));
@@ -154,9 +142,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchValueSetsCaseSensitiveFlagIfLowerCaseIsFalse()
     {
         $this->mockObjectPathMappingRepository->expects($this->once())->method('findOneByObjectTypeUriPatternAndPathSegment')->with('SomeObjectType', 'SomeUriPattern', 'TheRoutePath', true);
@@ -167,9 +153,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         $this->identityRoutePart->_call('matchValue', 'TheRoutePath');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueToMatchReturnsAnEmptyStringIfTheRoutePathIsEmpty()
     {
         self::assertSame('', $this->identityRoutePart->_call('findValueToMatch', null));
@@ -177,9 +161,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('', $this->identityRoutePart->_call('findValueToMatch', '/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueToMatchReturnsAnEmptyStringIfTheSpecifiedSplitStringCantBeFoundInTheRoutePath()
     {
         $this->identityRoutePart->setUriPattern('');
@@ -187,9 +169,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('', $this->identityRoutePart->_call('findValueToMatch', 'The/Complete/RoutPath'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function findValueToMatchReturnsAnEmptyStringIfTheCalculatedUriPatternIsEmpty()
     {
         $this->identityRoutePart->setUriPattern('');
@@ -216,14 +196,14 @@ final class IdentityRoutePartTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider findValueToMatchProvider
      * @param string $routePath
      * @param string $uriPattern
      * @param string $splitString
      * @param string $expectedResult
      * @return void
      */
+    #[DataProvider('findValueToMatchProvider')]
+    #[Test]
     public function findValueToMatchTests($routePath, $uriPattern, $splitString, $expectedResult)
     {
         $this->identityRoutePart->setUriPattern($uriPattern);
@@ -231,9 +211,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame($expectedResult, $this->identityRoutePart->_call('findValueToMatch', $routePath));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueAcceptsIdentityArrays()
     {
         $value = ['__identity' => 'SomeIdentifier'];
@@ -248,9 +226,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('thepathsegment', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueDoesNotAcceptObjectsWithMultiValueIdentifiers()
     {
         $value = new \stdClass();
@@ -264,9 +240,8 @@ final class IdentityRoutePartTest extends UnitTestCase
     /**
      * Makes also sure that identity route parts are encoded via rawurlencode (which encodes spaces to "%20") and not
      * urlencode (which encodes spaces to "+"). According to RFC 3986 that is correct for path segments.
-     *
-     * @test
      */
+    #[Test]
     public function resolveValueSetsTheRouteValueToTheUrlEncodedIdentifierIfNoUriPatternIsSpecified()
     {
         $this->mockClassSchema->method('getIdentityProperties')->willReturn(([]));
@@ -281,9 +256,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertNotSame('Some+Identifier', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueConvertsCaseOfResolvedPathSegmentIfLowerCaseIsTrue()
     {
         $value = ['__identity' => 'SomeIdentifier'];
@@ -299,9 +272,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('thepathsegment', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueKeepsCaseOfResolvedPathSegmentIfLowerCaseIsTrue()
     {
         $value = ['__identity' => 'SomeIdentifier'];
@@ -317,18 +288,14 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('ThePathSegment', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsFalseIfTheGivenValueIsNotOfTheSpecifiedType()
     {
         $this->identityRoutePart->setObjectType('SomeObjectType');
         self::assertFalse($this->identityRoutePart->_call('resolveValue', new \stdClass()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueSetsTheValueToThePathSegmentOfTheObjectPathMappingAndReturnsTrueIfAMatchingObjectPathMappingWasFound()
     {
         $object = new \stdClass();
@@ -343,9 +310,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('thepathsegment', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueCreatesAndStoresANewObjectPathMappingIfNoMatchingObjectPathMappingWasFound()
     {
         $object = new \stdClass();
@@ -370,9 +335,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('the/path/segment', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueAppendsCounterIfNoMatchingObjectPathMappingWasFoundAndCreatedPathSegmentIsNotUnique()
     {
         $object = new \stdClass();
@@ -426,9 +389,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('the/path/segment-2', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueSetsCaseSensitiveFlagIfLowerCaseIsFalse()
     {
         $object = new \stdClass();
@@ -476,9 +437,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('The/Path/Segment-1', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueAppendsCounterIfCreatedPathSegmentIsEmpty()
     {
         $object = new \stdClass();
@@ -503,9 +462,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame('-1', $this->identityRoutePart->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueThrowsInfiniteLoopExceptionIfNoUniquePathSegmentCantBeFound()
     {
         $this->expectException(InfiniteLoopException::class);
@@ -554,13 +511,13 @@ final class IdentityRoutePartTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider createPathSegmentForObjectProvider
      * @param object $object
      * @param string $uriPattern
      * @param string $expectedResult
      * @return void
      */
+    #[DataProvider('createPathSegmentForObjectProvider')]
+    #[Test]
     public function createPathSegmentForObjectTests($object, $uriPattern, $expectedResult)
     {
         $identityRoutePart = $this->getAccessibleMock(IdentityRoutePart::class, []);
@@ -569,9 +526,7 @@ final class IdentityRoutePartTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createPathSegmentForObjectThrowsInvalidUriPatterExceptionIfItSpecifiedPropertiesContainObjects()
     {
         $this->expectException(InvalidUriPatternException::class);

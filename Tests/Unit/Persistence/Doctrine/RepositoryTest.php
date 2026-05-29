@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Neos\Flow\Persistence\Doctrine\Repository;
@@ -25,7 +27,7 @@ use Neos\Flow\Tests\UnitTestCase;
 final class RepositoryTest extends UnitTestCase
 {
     /**
-     * @var EntityManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var EntityManagerInterface|MockObject
      */
     protected $mockEntityManager;
 
@@ -51,10 +53,8 @@ final class RepositoryTest extends UnitTestCase
         yield ['Domain\Repository', 'C' . $idSuffix . 'RepositoryRepository', 'Domain\Model\\' . 'C' . $idSuffix . 'Repository'];
     }
 
-    /**
-     * @test
-     * @dataProvider modelAndRepositoryClassNames
-     */
+    #[DataProvider('modelAndRepositoryClassNames')]
+    #[Test]
     public function constructSetsObjectTypeFromClassName($repositoryNamespace, $repositoryClassName, $modelClassName)
     {
         $mockClassName = $repositoryNamespace . '\\' . $repositoryClassName;

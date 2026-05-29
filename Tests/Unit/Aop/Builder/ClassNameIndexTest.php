@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Aop\Builder;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Aop\Builder\ClassNameIndex;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Aop;
 
@@ -22,42 +23,36 @@ use Neos\Flow\Aop;
  */
 final class ClassNameIndexTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectOfTwoIndicesWorks()
     {
-        $index1 = new Aop\Builder\ClassNameIndex();
+        $index1 = new ClassNameIndex();
         $index1->setClassNames(['\Foo\Bar', '\Foo\Baz']);
-        $index2 = new Aop\Builder\ClassNameIndex();
+        $index2 = new ClassNameIndex();
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $intersectedIndex = $index1->intersect($index2);
 
         self::assertSame(['\Foo\Baz'], $intersectedIndex->getClassNames());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyIntersectWorks()
     {
-        $index1 = new Aop\Builder\ClassNameIndex();
+        $index1 = new ClassNameIndex();
         $index1->setClassNames(['\Foo\Bar', '\Foo\Baz']);
-        $index2 = new Aop\Builder\ClassNameIndex();
+        $index2 = new ClassNameIndex();
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $index1->applyIntersect($index2);
 
         self::assertSame(['\Foo\Baz'], $index1->getClassNames());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unionOfTwoIndicesWorks()
     {
-        $index1 = new Aop\Builder\ClassNameIndex();
+        $index1 = new ClassNameIndex();
         $index1->setClassNames(['\Foo\Bar', '\Foo\Baz']);
-        $index2 = new Aop\Builder\ClassNameIndex();
+        $index2 = new ClassNameIndex();
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $intersectedIndex = $index1->union($index2);
         $intersectedIndex->sort();
@@ -65,14 +60,12 @@ final class ClassNameIndexTest extends UnitTestCase
         self::assertSame(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $intersectedIndex->getClassNames());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyUnionWorks()
     {
-        $index1 = new Aop\Builder\ClassNameIndex();
+        $index1 = new ClassNameIndex();
         $index1->setClassNames(['\Foo\Bar', '\Foo\Baz']);
-        $index2 = new Aop\Builder\ClassNameIndex();
+        $index2 = new ClassNameIndex();
         $index2->setClassNames(['\Foo\Baz', '\Foo\Blubb']);
         $index1->applyUnion($index2);
         $index1->sort();
@@ -80,12 +73,10 @@ final class ClassNameIndexTest extends UnitTestCase
         self::assertSame(['\Foo\Bar', '\Foo\Baz', '\Foo\Blubb'], $index1->getClassNames());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterByPrefixWork()
     {
-        $index1 = new Aop\Builder\ClassNameIndex();
+        $index1 = new ClassNameIndex();
         $index1->setClassNames(['\Foo\Bar', '\Foo\Baz', '\Bar\Baz', '\Foo\Blubb']);
         // We need to call sort manually!
         $index1->sort();

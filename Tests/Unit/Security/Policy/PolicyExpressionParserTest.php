@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Policy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\Exception\InvalidPointcutExpressionException;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodTargetExpressionParser;
 use Neos\Flow\Tests\UnitTestCase;
@@ -23,9 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class PolicyExpressionParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function parseMethodThrowsAnExceptionIfAnotherPrivilegeTargetIsReferencedInAnExpression()
     {
         $this->expectException(InvalidPointcutExpressionException::class);

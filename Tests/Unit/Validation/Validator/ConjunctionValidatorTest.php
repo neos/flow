@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Validation\Exception\NoSuchValidatorException;
 use Neos\Flow\Validation\Validator\ConjunctionValidator;
@@ -25,9 +25,7 @@ use Neos\Error\Messages as Error;
  */
 final class ConjunctionValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function addingValidatorsToAJunctionValidatorWorks()
     {
         $proxyClassName = $this->buildAccessibleProxy(ConjunctionValidator::class);
@@ -38,9 +36,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         self::assertTrue($conjunctionValidator->_get('validators')->contains($mockValidator));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allValidatorsInTheConjunctionAreCalledEvenIfOneReturnsError()
     {
         $validatorConjunction = new ConjunctionValidator([]);
@@ -62,9 +58,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         $validatorConjunction->validate('some subject');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorConjunctionReturnsNoErrorsIfAllJunctionedValidatorsReturnNoErrors()
     {
         $validatorConjunction = new ConjunctionValidator([]);
@@ -80,9 +74,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         self::assertFalse($validatorConjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorConjunctionReturnsErrorsIfOneValidatorReturnsErrors()
     {
         $validatorConjunction = new ConjunctionValidator([]);
@@ -98,9 +90,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         self::assertTrue($validatorConjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removingAValidatorOfTheValidatorConjunctionWorks()
     {
         $validatorConjunction = $this->getAccessibleMock(ConjunctionValidator::class, [], [[]], '', true);
@@ -117,9 +107,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         self::assertTrue($validatorConjunction->_get('validators')->contains($validator2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removingANotExistingValidatorIndexThrowsException()
     {
         $this->expectException(NoSuchValidatorException::class);
@@ -128,9 +116,7 @@ final class ConjunctionValidatorTest extends UnitTestCase
         $validatorConjunction->removeValidator($validator);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function countReturnesTheNumberOfValidatorsContainedInTheConjunction()
     {
         $validatorConjunction = new ConjunctionValidator([]);

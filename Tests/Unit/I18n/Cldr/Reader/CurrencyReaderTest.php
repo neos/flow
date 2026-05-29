@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Cldr\CldrModel;
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\I18n\Cldr\Reader\CurrencyReader;
 use Neos\Flow\Tests\UnitTestCase;
@@ -42,10 +45,10 @@ final class CurrencyReaderTest extends UnitTestCase
             ],
         ];
 
-        $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray'], [['fake/path']]);
+        $mockModel = $this->getAccessibleMock(CldrModel::class, ['getRawArray'], [['fake/path']]);
         $mockModel->expects($this->once())->method('getRawArray')->with('currencyData')->willReturn(($sampleCurrencyFractionsData));
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModel')->with('supplemental/supplementalData')->willReturn(($mockModel));
 
         $mockCache = $this->createMock(VariableFrontend::class);
@@ -70,10 +73,8 @@ final class CurrencyReaderTest extends UnitTestCase
         yield ['EUR', 2, 0];
     }
 
-    /**
-     * @test
-     * @dataProvider fractions
-     */
+    #[DataProvider('fractions')]
+    #[Test]
     public function returnsCorrectFraction($currencyCode, $digits, $rounding)
     {
         $result = $this->reader->getFraction($currencyCode);

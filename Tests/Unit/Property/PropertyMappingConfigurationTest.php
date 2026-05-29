@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Property;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\TypeConverterInterface;
 use Neos\Flow\Tests\UnitTestCase;
@@ -22,9 +25,11 @@ require_once(__DIR__ . '/../Fixtures/ClassWithSetters.php');
 
 /**
  * Testcase for the Property Mapper
- *
- * @covers \Neos\Flow\Property\PropertyMappingConfiguration
  */
+#[CoversClass(\Neos\Flow\Property\PropertyMappingConfiguration::class)]
+#[CoversMethod(\Neos\Flow\Property\PropertyMappingConfiguration::class, 'getTargetPropertyName')]
+#[CoversMethod(\Neos\Flow\Property\PropertyMappingConfiguration::class, 'shouldMap')]
+#[CoversMethod(\Neos\Flow\Property\PropertyMappingConfiguration::class, 'shouldSkip')]
 final class PropertyMappingConfigurationTest extends UnitTestCase
 {
     /**
@@ -40,30 +45,21 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         $this->propertyMappingConfiguration = new PropertyMappingConfiguration();
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::getTargetPropertyName
-     */
+    #[Test]
     public function getTargetPropertyNameShouldReturnTheUnmodifiedPropertyNameWithoutConfiguration()
     {
         self::assertEquals('someSourceProperty', $this->propertyMappingConfiguration->getTargetPropertyName('someSourceProperty'));
         self::assertEquals('someOtherSourceProperty', $this->propertyMappingConfiguration->getTargetPropertyName('someOtherSourceProperty'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
-     */
+    #[Test]
     public function shouldMapReturnsFalseByDefault()
     {
         self::assertFalse($this->propertyMappingConfiguration->shouldMap('someSourceProperty'));
         self::assertFalse($this->propertyMappingConfiguration->shouldMap('someOtherSourceProperty'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
-     */
+    #[Test]
     public function shouldMapReturnsTrueIfConfigured()
     {
         $this->propertyMappingConfiguration->allowAllProperties();
@@ -71,10 +67,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherSourceProperty'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
-     */
+    #[Test]
     public function shouldMapReturnsTrueForAllowedProperties()
     {
         $this->propertyMappingConfiguration->allowProperties('someSourceProperty', 'someOtherProperty');
@@ -82,10 +75,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherProperty'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldMap
-     */
+    #[Test]
     public function shouldMapReturnsFalseForExcludedProperties()
     {
         $this->propertyMappingConfiguration->allowAllPropertiesExcept('someSourceProperty', 'someOtherProperty');
@@ -95,20 +85,14 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertTrue($this->propertyMappingConfiguration->shouldMap('someOtherPropertyWhichHasNotBeenConfigured'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldSkip
-     */
+    #[Test]
     public function shouldSkipReturnsFalseByDefault()
     {
         self::assertFalse($this->propertyMappingConfiguration->shouldSkip('someSourceProperty'));
         self::assertFalse($this->propertyMappingConfiguration->shouldSkip('someOtherSourceProperty'));
     }
 
-    /**
-     * @test
-     * @covers \Neos\Flow\Property\PropertyMappingConfiguration::shouldSkip
-     */
+    #[Test]
     public function shouldSkipReturnsTrueIfConfigured()
     {
         $this->propertyMappingConfiguration->skipProperties('someSourceProperty', 'someOtherSourceProperty');
@@ -116,9 +100,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertTrue($this->propertyMappingConfiguration->shouldSkip('someOtherSourceProperty'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTypeConverterOptionsCanBeRetrievedAgain(): void
     {
         $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
@@ -128,17 +110,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonexistentTypeConverterOptionsReturnNull(): void
     {
         self::assertNull($this->propertyMappingConfiguration->getConfigurationValue('foo', 'bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTypeConverterOptionsShouldOverrideAlreadySetOptions(): void
     {
         $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
@@ -149,9 +127,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertNull($this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setTypeConverterOptionShouldOverrideAlreadySetOptions(): void
     {
         $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
@@ -162,17 +138,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertEquals('v2', $this->propertyMappingConfiguration->getConfigurationValue($mockTypeConverterClass, 'k2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeConverterReturnsNullIfNoTypeConverterSet()
     {
         self::assertNull($this->propertyMappingConfiguration->getTypeConverter());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeConverterReturnsTypeConverterIfItHasBeenSet()
     {
         $mockTypeConverter = $this->createStub(TypeConverterInterface::class);
@@ -191,9 +163,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         return $childConfiguration;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTargetPropertyNameShouldRespectMapping()
     {
         $this->propertyMappingConfiguration->setMapping('k1', 'k1a');
@@ -219,19 +189,15 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider fluentInterfaceMethodsDataProvider
-     */
+    #[DataProvider('fluentInterfaceMethodsDataProvider')]
+    #[Test]
     public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
     {
         $actualResult = call_user_func_array([$this->propertyMappingConfiguration, $methodToTestForFluentInterface], $argumentsForMethod);
         self::assertSame($this->propertyMappingConfiguration, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithGetConfigurationFor()
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
@@ -241,9 +207,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithForProperty()
     {
         // using stdClass so that class_parents() in getTypeConvertersWithParentClasses() is happy
@@ -253,9 +217,7 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
         self::assertSame('v1', $configuration->getConfigurationValue(\stdClass::class, 'k1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forPropertyWithAsteriskAllowsArbitraryPropertyNamesWithShouldMap()
     {
         $this->propertyMappingConfiguration->forProperty('items.*')->setTypeConverterOptions('stdClass', ['k1' => 'v1']);

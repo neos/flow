@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\Authentication\Token\TestingToken;
 use Neos\Flow\Security\Authentication\TokenInterface;
@@ -35,9 +35,7 @@ final class SessionDataContainerTest extends UnitTestCase
         $this->sessionDataContainer = new SessionDataContainer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetSetsDefaultValues(): void
     {
         $mockCsrfProtectionTokens = [
@@ -62,9 +60,7 @@ final class SessionDataContainerTest extends UnitTestCase
         self::assertSame([], $this->sessionDataContainer->getSecurityTokens());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSecurityTokensThrowsExceptionWhenTryingToAddSessionlessTokens(): void
     {
         $mockSecurityTokens = [

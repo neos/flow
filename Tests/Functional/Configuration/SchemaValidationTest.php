@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -79,10 +80,9 @@ final class SchemaValidationTest extends FunctionalTestCase
 
     /**
      * Validate that all the given files are valid schemas
-     *
-     * @test
-     * @dataProvider schemaFilesAreValidDataProvider
      */
+    #[DataProvider('schemaFilesAreValidDataProvider')]
+    #[Test]
     public function schemaFilesAreValid(string $schemaFile): void
     {
         $schema = Yaml::parseFile($schemaFile);

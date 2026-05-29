@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Core;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Core\ClassLoader;
 use Neos\Flow\Package\Package;
@@ -31,17 +32,17 @@ final class ClassLoaderTest extends UnitTestCase
     protected $classLoader;
 
     /**
-     * @var Package|\PHPUnit\Framework\MockObject\MockObject
+     * @var Package|MockObject
      */
     protected $mockPackage1;
 
     /**
-     * @var Package|\PHPUnit\Framework\MockObject\MockObject
+     * @var Package|MockObject
      */
     protected $mockPackage2;
 
     /**
-     * @var Package[]|\PHPUnit\Framework\MockObject\MockObject[]
+     * @var Package[]|MockObject[]
      */
     protected $mockPackages;
 
@@ -98,9 +99,8 @@ final class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from subdirectories.
-     *
-     * @test
      */
+    #[Test]
     public function classesFromSubDirectoriesAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory', 0770, true);
@@ -112,9 +112,8 @@ final class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the class loader loads classes from the functional tests directory
-     *
-     * @test
      */
+    #[Test]
     public function classesFromFunctionalTestsDirectoriesAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Tests/Functional/Essentials', 0770, true);
@@ -127,9 +126,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertTrue(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesFromDeeplyNestedSubDirectoriesAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/SubDirectory/A/B/C/D', 0770, true);
@@ -142,9 +139,8 @@ final class ClassLoaderTest extends UnitTestCase
     /**
      * Checks if the package autoloader loads classes from packages that match a
      * substring of another package (e.g. Media vs. Neos).
-     *
-     * @test
      */
+    #[Test]
     public function classesFromSubMatchingPackagesAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyAppAddon/Classes/Acme/MyAppAddon', 0770, true);
@@ -156,9 +152,8 @@ final class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from subdirectories.
-     *
-     * @test
      */
+    #[Test]
     public function classesWithUnderscoresAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, true);
@@ -170,9 +165,8 @@ final class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from subdirectories with underscores.
-     *
-     * @test
      */
+    #[Test]
     public function namespaceWithUnderscoresAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp/My_Underscore', 0770, true);
@@ -184,9 +178,8 @@ final class ClassLoaderTest extends UnitTestCase
 
     /**
      * Checks if the package autoloader loads classes from subdirectories.
-     *
-     * @test
      */
+    #[Test]
     public function classesWithOnlyUnderscoresAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, true);
@@ -196,9 +189,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertTrue(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesWithLeadingBackslashAreLoaded()
     {
         mkdir('vfs://Test/Packages/Application/Acme.MyApp/Classes/Acme/MyApp', 0770, true);
@@ -208,9 +199,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertTrue(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesFromInactivePackagesAreNotLoaded()
     {
         $this->classLoader = new ClassLoader();
@@ -224,9 +213,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertFalse(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesFromPsr4PackagesAreLoaded()
     {
         $this->mockPackage1 = $this->createMock(Package::class);
@@ -249,9 +236,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertTrue(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesFromOverlayedPsr4PackagesAreLoaded()
     {
         $this->classLoader = new ClassLoader();
@@ -292,9 +277,7 @@ final class ClassLoaderTest extends UnitTestCase
         self::assertTrue(self::$testClassWasLoaded);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesFromOverlayedPsr4PackagesAreOverwritten()
     {
         $this->classLoader = new ClassLoader();

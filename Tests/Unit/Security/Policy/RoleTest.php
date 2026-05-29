@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Security\Policy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Security\Policy\Role;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -35,14 +37,14 @@ final class RoleTest extends UnitTestCase
     }
 
     /**
-     * @dataProvider roleIdentifiersAndPackageKeysAndNames
-     * @test
      * @param string $roleIdentifier
      * @param string $name
      * @param string $packageKey
      * @param string $label
      * @param string $description
      */
+    #[DataProvider('roleIdentifiersAndPackageKeysAndNames')]
+    #[Test]
     public function setNameTolePropertiesWork(string $roleIdentifier, string $name, string $packageKey, string $label, string $description): void
     {
         $role = new Role($roleIdentifier, [], $label, $description);
@@ -58,17 +60,15 @@ final class RoleTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setParentRolesMakesSureThatParentRolesDontContainDuplicates()
     {
-        /** @var Role|\PHPUnit\Framework\MockObject\MockObject $role */
+        /** @var Role|MockObject $role */
         $role = $this->getAccessibleMock(Role::class, [], ['Acme.Demo:Test']);
 
-        /** @var Role|\PHPUnit\Framework\MockObject\MockObject $parentRole1 */
+        /** @var Role|MockObject $parentRole1 */
         $parentRole1 = $this->getAccessibleMock(Role::class, [], ['Acme.Demo:Parent1']);
-        /** @var Role|\PHPUnit\Framework\MockObject\MockObject $parentRole2 */
+        /** @var Role|MockObject $parentRole2 */
         $parentRole2 = $this->getAccessibleMock(Role::class, [], ['Acme.Demo:Parent2']);
 
         $parentRole2->addParentRole($parentRole1);

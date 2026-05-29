@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\ResourceManagement\PersistentResource;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -22,9 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class PersistentResourceTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function setFilenameStoresTheFileExtensionInLowerCase()
     {
         $resource = new PersistentResource();
@@ -33,9 +32,7 @@ final class PersistentResourceTest extends UnitTestCase
         self::assertSame('Something.jpeg', $resource->getFilename());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFilenameSetsTheMediaType()
     {
         $resource = new PersistentResource();
@@ -50,9 +47,7 @@ final class PersistentResourceTest extends UnitTestCase
         self::assertSame('image/jpeg', $resource->getMediaType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFilenameDoesNotAppendFileExtensionIfItIsEmpty()
     {
         $resource = new PersistentResource();
@@ -61,9 +56,7 @@ final class PersistentResourceTest extends UnitTestCase
         self::assertSame('FileWithoutExtension', $resource->getFilename());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMediaTypeReturnsMediaTypeBasedOnFileExtension()
     {
         $resource = new PersistentResource();
@@ -91,10 +84,8 @@ final class PersistentResourceTest extends UnitTestCase
         yield [false];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidSha1Values
-     */
+    #[DataProvider('invalidSha1Values')]
+    #[Test]
     public function setSha1RejectsInvalidValues($invalidValue)
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -103,9 +94,7 @@ final class PersistentResourceTest extends UnitTestCase
         self::assertSame('d0be2dc421be4fcd0172e5afceea3970e2f3d940', $resource->getSha1());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSha1AcceptsUppercaseHashesAndNormalizesThemToLowercase()
     {
         $resource = new PersistentResource();

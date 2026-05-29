@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\ServerRequestAttributes;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\RequestPattern\Ip;
@@ -44,10 +45,8 @@ final class IpTest extends UnitTestCase
         yield ['127.0.0.1', '::127.0.0.1', true];
     }
 
-    /**
-     * @dataProvider validAndInvalidIpPatterns
-     * @test
-     */
+    #[DataProvider('validAndInvalidIpPatterns')]
+    #[Test]
     public function requestMatchingBasicallyWorks($pattern, $ip, $expected)
     {
         $requestMock = $this->createMock(ServerRequestInterface::class);

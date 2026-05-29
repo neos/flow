@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Cli\Command;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Cli\CommandArgumentDefinition;
 use Neos\Flow\Cli;
 use Neos\Flow\Command\CacheCommandController;
 use Neos\Flow\Reflection\MethodReflection;
@@ -42,7 +45,7 @@ final class CommandTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->command = $this->getAccessibleMock(Cli\Command::class, ['getCommandMethodReflection'], [], '', false);
+        $this->command = $this->getAccessibleMock(Command::class, ['getCommandMethodReflection'], [], '', false);
         $this->methodReflection = $this->createMock(MethodReflection::class, [], [__CLASS__, 'dummyMethod']);
         $this->command->method('getCommandMethodReflection')->willReturn($this->methodReflection);
     }
@@ -67,28 +70,22 @@ final class CommandTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider commandIdentifiers
-     */
+    #[DataProvider('commandIdentifiers')]
+    #[Test]
     public function constructRendersACommandIdentifierByTheGivenControllerAndCommandName($controllerClassName, $commandName, $expectedCommandIdentifier): void
     {
-        $command = new Cli\Command($controllerClassName, $commandName);
+        $command = new Command($controllerClassName, $commandName);
         self::assertEquals($expectedCommandIdentifier, $command->getCommandIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasArgumentsReturnsFalseIfCommandExpectsNoArguments(): void
     {
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertFalse($this->command->hasArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hasArgumentsReturnsTrueIfCommandExpectsArguments(): void
     {
         $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
@@ -96,18 +93,14 @@ final class CommandTest extends UnitTestCase
         self::assertTrue($this->command->hasArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentDefinitionsReturnsEmptyArrayIfCommandExpectsNoArguments(): void
     {
         $this->methodReflection->expects($this->atLeastOnce())->method('getParameters')->willReturn(([]));
         self::assertSame([], $this->command->getArgumentDefinitions());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArguments(): void
     {
         $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
@@ -122,16 +115,14 @@ final class CommandTest extends UnitTestCase
         $this->methodReflection->expects(self::atLeastOnce())->method('getTagsValues')->willReturn(['param' => ['@param $argument1 argument1 description', '@param $argument2 argument2 description']]);
 
         $expectedResult = [
-            new Cli\CommandArgumentDefinition('argument1', true, 'argument1 description'),
-            new Cli\CommandArgumentDefinition('argument2', false, 'argument2 description')
+            new CommandArgumentDefinition('argument1', true, 'argument1 description'),
+            new CommandArgumentDefinition('argument2', false, 'argument2 description')
         ];
         $actualResult = $this->command->getArgumentDefinitions();
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getArgumentDefinitionsReturnsArrayOfArgumentDefinitionIfCommandExpectsArgumentsEvenWhenDocBlocksAreMissing(): void
     {
         $parameterReflection = $this->createStub(ParameterReflection::class, [], [[__CLASS__, 'dummyMethod'], 'arg']);
@@ -144,8 +135,8 @@ final class CommandTest extends UnitTestCase
         $this->methodReflection->expects(self::atLeastOnce())->method('getTagsValues')->willReturn([]);
 
         $expectedResult = [
-            new Cli\CommandArgumentDefinition('argument1', true, 'argument1'),
-            new Cli\CommandArgumentDefinition('argument2', false, 'argument2')
+            new CommandArgumentDefinition('argument1', true, 'argument1'),
+            new CommandArgumentDefinition('argument2', false, 'argument2')
         ];
         $actualResult = $this->command->getArgumentDefinitions();
         self::assertEquals($expectedResult, $actualResult);

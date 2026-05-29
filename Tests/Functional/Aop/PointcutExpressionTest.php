@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Aop;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\Aop\Fixtures\PointcutExpressionTestingTarget;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
@@ -22,12 +23,10 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 final class PointcutExpressionTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function settingFilterMatchesIfSpecifiedSettingIsEnabled()
     {
-        $target = new Fixtures\PointcutExpressionTestingTarget();
+        $target = new PointcutExpressionTestingTarget();
         self::assertSame('pointcutExpressionSettingFilterOptionA on', $target->testSettingFilter());
     }
 }

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Http\Client;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -52,9 +52,8 @@ final class InternalRequestEngineTest extends FunctionalTestCase
      * making sure that the tokens match the request pattern of the request.
      *
      * Bug #37377
-     *
-     * @test
      */
+    #[Test]
     public function securityContextContainsTokens()
     {
         $response = $this->browser->request('http://localhost/test/security/restricted');

@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Unit\Aop\Advice;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Aop\JoinPointInterface;
+use Neos\Flow\Tests\Unit\Aop\Advice\Fixtures\SomeClass;
+use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Aop\Advice\AroundAdvice;
+use Neos\Flow\Aop\Advice\AdviceChain;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\SignalSlot;
@@ -25,22 +30,22 @@ use Neos\Flow\Aop;
 final class AroundAdviceTest extends UnitTestCase
 {
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function invokeInvokesTheAdviceIfTheRuntimeEvaluatorReturnsTrue()
     {
-        $mockJoinPoint = $this->createStub(Aop\JoinPointInterface::class);
+        $mockJoinPoint = $this->createStub(JoinPointInterface::class);
 
-        $mockAspect = $this->createMock(Fixtures\SomeClass::class);
+        $mockAspect = $this->createMock(SomeClass::class);
         $mockAspect->expects($this->once())->method('someMethod')->with($mockJoinPoint)->willReturn(('result'));
 
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('get')->with('aspectObjectName')->willReturn(($mockAspect));
 
-        $mockDispatcher = $this->createStub(SignalSlot\Dispatcher::class);
+        $mockDispatcher = $this->createStub(Dispatcher::class);
 
-        $advice = new Aop\Advice\AroundAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (Aop\JoinPointInterface $joinPoint) {
+        $advice = new AroundAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (JoinPointInterface $joinPoint) {
             if ($joinPoint !== null) {
                 return true;
             }
@@ -54,24 +59,24 @@ final class AroundAdviceTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function invokeDoesNotInvokeTheAdviceIfTheRuntimeEvaluatorReturnsFalse()
     {
-        $mockAdviceChain = $this->createMock(Aop\Advice\AdviceChain::class);
+        $mockAdviceChain = $this->createMock(AdviceChain::class);
         $mockAdviceChain->expects($this->once())->method('proceed')->willReturn(('result'));
 
-        $mockJoinPoint = $this->createMock(Aop\JoinPointInterface::class);
+        $mockJoinPoint = $this->createMock(JoinPointInterface::class);
         $mockJoinPoint->method('getAdviceChain')->willReturn(($mockAdviceChain));
 
-        $mockAspect = $this->createMock(Fixtures\SomeClass::class);
+        $mockAspect = $this->createMock(SomeClass::class);
         $mockAspect->expects($this->never())->method('someMethod');
 
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->method('get')->willReturn(($mockAspect));
 
-        $advice = new Aop\Advice\AroundAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (Aop\JoinPointInterface $joinPoint) {
+        $advice = new AroundAdvice('aspectObjectName', 'someMethod', $mockObjectManager, function (JoinPointInterface $joinPoint) {
             if ($joinPoint !== null) {
                 return false;
             }

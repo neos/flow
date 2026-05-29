@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Http;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Core\RequestHandlerInterface;
@@ -38,9 +38,7 @@ final class BaseUriProviderTest extends UnitTestCase
         $this->baseUriProvider = new BaseUriProvider();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfiguredBaseUriOrFallbackToCurrentRequestReturnsConfiguredBaseUriByDefault(): void
     {
         $configuredBaseUri = 'http://some-base.uri/';
@@ -49,9 +47,7 @@ final class BaseUriProviderTest extends UnitTestCase
         self::assertSame($configuredBaseUri, (string)$this->baseUriProvider->getConfiguredBaseUriOrFallbackToCurrentRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfiguredBaseUriOrFallbackToCurrentRequestReturnsBaseUriOfCurrentlyActiveRequestIfNoBaseUriIsConfigured(): void
     {
         $mockBootstrap = $this->createMock(Bootstrap::class);
@@ -67,9 +63,7 @@ final class BaseUriProviderTest extends UnitTestCase
         self::assertSame('http://uri-from-current-request/', (string)$this->baseUriProvider->getConfiguredBaseUriOrFallbackToCurrentRequest());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfiguredBaseUriOrFallbackToCurrentRequestReturnsBaseUriFromFallbackRequestIfNoBaseUriIsConfiguredAndCurrentHttpRequestCantBeDetermined(): void
     {
         $mockBootstrap = $this->createMock(Bootstrap::class);
@@ -85,9 +79,7 @@ final class BaseUriProviderTest extends UnitTestCase
         self::assertSame('https://uri-from-fallback-request/', (string)$this->baseUriProvider->getConfiguredBaseUriOrFallbackToCurrentRequest($mockFallbackRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConfiguredBaseUriOrFallbackToCurrentRequestThrowsExceptionIfNoBaseUriIsConfiguredAndCurrentHttpRequestCantBeDeterminedAndNoFallbackRequestIsSpecified(): void
     {
         $mockBootstrap = $this->createMock(Bootstrap::class);

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Property\PropertyMappingConfiguration;
@@ -51,10 +52,8 @@ final class FloatConverterTest extends FunctionalTestCase
         yield ['en', '10,42358', (float)1042358];
     }
 
-    /**
-     * @test
-     * @dataProvider localeParsingDataProvider
-     */
+    #[DataProvider('localeParsingDataProvider')]
+    #[Test]
     public function convertFromUsingVariousLocalesParsesFloatCorrectly(string $locale, string $source, float $expectedResult): void
     {
         $configuration = new PropertyMappingConfiguration();
@@ -64,9 +63,7 @@ final class FloatConverterTest extends FunctionalTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfFormatIsInvalid(): void
     {
         $configuration = new PropertyMappingConfiguration();
@@ -78,9 +75,7 @@ final class FloatConverterTest extends FunctionalTestCase
         self::assertInstanceOf(FlowError::class, $this->converter->convertFrom('84,00', 'float'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfLocaleIsInvalid(): void
     {
         $this->expectException(InvalidLocaleIdentifierException::class);
@@ -90,9 +85,7 @@ final class FloatConverterTest extends FunctionalTestCase
         $this->converter->convertFrom('84,42', 'float', [], $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesntUseLocaleParserIfNoConfigurationGiven(): void
     {
         self::assertEquals(84, $this->converter->convertFrom('84.000', 'float'));

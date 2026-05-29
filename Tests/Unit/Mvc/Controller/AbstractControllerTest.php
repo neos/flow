@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Cli\Request;
+use Neos\Flow\Cli\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\ServerRequestInterface;
@@ -58,13 +61,11 @@ final class AbstractControllerTest extends UnitTestCase
         $this->mockActionRequest->method('getHttpRequest')->willReturn($mockHttpRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeControllerWillThrowAnExceptionIfTheGivenRequestIsNotSupported(): void
     {
-        $request = new Cli\Request();
-        $response = new Cli\Response();
+        $request = new Request();
+        $response = new Response();
 
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
         try {
@@ -74,9 +75,7 @@ final class AbstractControllerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeControllerInitializesRequestUriBuilderArgumentsAndContext(): void
     {
         $request = ActionRequest::fromHttpRequest(new ServerRequest('GET', new Uri('http://localhost/foo')));
@@ -119,10 +118,8 @@ final class AbstractControllerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider addFlashMessageDataProvider()
-     */
+    #[DataProvider('addFlashMessageDataProvider')]
+    #[Test]
     public function addFlashMessageTests($expectedMessage, $messageBody, $messageTitle = '', $severity = FlowError\Message::SEVERITY_OK, array $messageArguments = [], $messageCode = null): void
     {
         $flashMessageContainer = new FlashMessageContainer();
@@ -136,9 +133,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertEquals([$expectedMessage], $flashMessageContainer->getMessages());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addFlashMessageThrowsExceptionOnInvalidMessageBody(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -152,9 +147,7 @@ final class AbstractControllerTest extends UnitTestCase
         $controller->addFlashMessage(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardSetsControllerAndArgumentsAtTheRequestObjectIfTheyAreSpecified(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -179,9 +172,7 @@ final class AbstractControllerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardResetsControllerArguments(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -205,9 +196,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertFalse($arguments->hasArgument('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardSetsSubpackageKeyIfNeeded(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -228,9 +217,7 @@ final class AbstractControllerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardResetsSubpackageKeyIfNotSetInPackageKey(): void
     {
         $mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -251,9 +238,7 @@ final class AbstractControllerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardConvertsObjectsFoundInArgumentsIntoIdentifiersBeforePassingThemToRequest(): void
     {
         $originalArguments = ['foo' => 'bar', 'bar' => ['someObject' => new \stdClass()]];
@@ -274,9 +259,7 @@ final class AbstractControllerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectRedirectsToTheSpecifiedAction(): void
     {
         $arguments = ['foo' => 'bar'];
@@ -296,9 +279,7 @@ final class AbstractControllerTest extends UnitTestCase
         $controller->_call('redirect', 'show', 'Stuff', 'Super\Duper\Package', $arguments, 0, 303, 'doc');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectUsesRequestFormatAsDefaultAndUnsetsSubPackageKeyIfNecessary(): void
     {
         $arguments = ['foo' => 'bar'];
@@ -319,9 +300,7 @@ final class AbstractControllerTest extends UnitTestCase
         $controller->_call('redirect', 'show', 'Stuff', 'Super', $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectToUriThrowsStopActionException(): void
     {
         $this->expectException(StopActionException::class);
@@ -331,9 +310,7 @@ final class AbstractControllerTest extends UnitTestCase
         $controller->_call('redirectToUri', 'http://some.uri');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectToUriSetsStatus(): void
     {
         /** @var AbstractController $controller */
@@ -348,9 +325,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertSame(303, $this->actionResponse->getStatusCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectToUriSetsRedirectUri(): void
     {
         $uri = 'http://flow.neos.io/awesomeness';
@@ -366,9 +341,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertSame($uri, (string)$this->actionResponse->getRedirectUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function redirectToUriDoesNotSetLocationHeaderIfDelayIsNotZero(): void
     {
         $uri = 'http://flow.neos.io/awesomeness';
@@ -384,9 +357,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertNull($this->actionResponse->getRedirectUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwStatusSetsThrowsStopActionException(): void
     {
         $this->expectException(StopActionException::class);
@@ -396,9 +367,7 @@ final class AbstractControllerTest extends UnitTestCase
         $controller->_call('throwStatus', 404);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwStatusSetsTheSpecifiedStatusHeaderAndStopsTheCurrentAction(): void
     {
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -415,9 +384,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertSame($message, $this->actionResponse->getContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwStatusSetsTheStatusMessageAsContentIfNoFurtherContentIsProvided(): void
     {
         $controller = $this->getAccessibleMock(AbstractController::class, ['processRequest']);
@@ -432,9 +399,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertSame('404 Not Found', $this->actionResponse->getContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapRequestArgumentsToControllerArgumentsDoesJustThat(): void
     {
         $mockPropertyMapper = $this->getMockBuilder(PropertyMapper::class)->disableOriginalConstructor()->onlyMethods(['convert'])->getMock();
@@ -479,9 +444,7 @@ final class AbstractControllerTest extends UnitTestCase
         self::assertEquals('quux', $controllerArguments['baz']->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapRequestArgumentsToControllerArgumentsThrowsExceptionIfRequiredArgumentWasNotSet(): void
     {
         $this->expectException(RequiredArgumentMissingException::class);

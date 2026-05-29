@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\SignalSlot;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\JoinPoint;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\SignalSlot\SignalAspect;
@@ -24,9 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class SignalAspectTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function forwardSignalToDispatcherForwardsTheSignalsMethodArgumentsToTheDispatcher()
     {
         $mockJoinPoint = $this->createMock(JoinPoint::class);

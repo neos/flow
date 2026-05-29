@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Cryptography;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Cache\Backend\TransientMemoryBackend;
 use Neos\Cache\EnvironmentConfiguration;
 use Neos\Cache\Frontend\StringFrontend;
@@ -37,7 +38,7 @@ final class HashServiceTest extends UnitTestCase
     protected $hashService;
 
     /**
-     * @var ObjectManagerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ObjectManagerInterface|MockObject
      */
     protected $mockObjectManager;
 
@@ -73,27 +74,21 @@ final class HashServiceTest extends UnitTestCase
         $this->hashService->injectSettings($this->mockSettings);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateHmacReturnsHashStringIfStringIsGiven()
     {
         $hash = $this->hashService->generateHmac('asdf');
         self::assertTrue(is_string($hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateHmacReturnsHashStringWhichContainsSomeSalt()
     {
         $hash = $this->hashService->generateHmac('asdf');
         self::assertNotEquals(sha1('asdf'), $hash);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateHmacReturnsDifferentHashStringsForDifferentInputStrings()
     {
         $hash1 = $this->hashService->generateHmac('asdf');
@@ -101,18 +96,14 @@ final class HashServiceTest extends UnitTestCase
         self::assertNotEquals($hash1, $hash2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateHmacThrowsExceptionIfNoStringGiven()
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->hashService->generateHmac(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHashCanBeValidatedAgain()
     {
         $string = 'asdf';
@@ -120,9 +111,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertTrue($this->hashService->validateHmac($string, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHashWillNotBeValidatedIfHashHasBeenChanged()
     {
         $string = 'asdf';
@@ -130,9 +119,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertFalse($this->hashService->validateHmac($string, $hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashPasswordWithoutStrategyIdentifierUsesConfiguredDefaultStrategy()
     {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
@@ -156,9 +143,7 @@ final class HashServiceTest extends UnitTestCase
         $this->hashService->validatePassword('myTestPassword', '---hashed-password---');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashPasswordWillIncludeStrategyIdentifierInHashedPassword()
     {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
@@ -169,9 +154,7 @@ final class HashServiceTest extends UnitTestCase
         self::assertEquals('TestStrategy=>---hashed-password---', $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashPasswordThrowsExceptionIfTheGivenHashingStrategyIsNotConfigured()
     {
         $this->expectException(MissingConfigurationException::class);
@@ -179,9 +162,7 @@ final class HashServiceTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function hashPasswordThrowsExceptionIfNoDefaultHashingStrategyIsConfigured()
     {
         $this->expectException(MissingConfigurationException::class);
@@ -198,9 +179,7 @@ final class HashServiceTest extends UnitTestCase
         $this->hashService->hashPassword('myTestPassword');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatePasswordWillUseStrategyIdentifierFromHashedPassword()
     {
         $mockStrategy = $this->createMock(PasswordHashingStrategyInterface::class);
@@ -212,27 +191,21 @@ final class HashServiceTest extends UnitTestCase
         self::assertEquals(true, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatedHashReturnsAHashOf40Characters()
     {
         $hash = $this->hashService->generateHmac('asdf');
         self::assertSame(40, strlen($hash));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendHmacThrowsExceptionIfNoStringGiven()
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->hashService->appendHmac(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendHmacAppendsHmacToGivenString()
     {
         $string = 'This is some arbitrary string ';
@@ -240,45 +213,35 @@ final class HashServiceTest extends UnitTestCase
         self::assertSame($string, substr($hashedString, 0, -40));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfNoStringGiven()
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->hashService->validateAndStripHmac(null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfGivenStringIsTooShort()
     {
         $this->expectException(InvalidArgumentForHashGenerationException::class);
         $this->hashService->validateAndStripHmac('string with less than 40 characters');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfGivenStringHasNoHashAppended()
     {
         $this->expectException(InvalidHashException::class);
         $this->hashService->validateAndStripHmac('string with exactly a length 40 of chars');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacThrowsExceptionIfTheAppendedHashIsInvalid()
     {
         $this->expectException(InvalidHashException::class);
         $this->hashService->validateAndStripHmac('some Stringac43682075d36592d4cb320e69ff0aa515886eab');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateAndStripHmacReturnsTheStringWithoutHmac()
     {
         $string = ' Some arbitrary string with special characters: öäüß!"§$ ';

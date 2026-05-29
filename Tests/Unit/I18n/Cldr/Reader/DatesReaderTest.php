@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Locale;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Cldr\CldrModel;
+use Neos\Flow\I18n\Cldr\CldrRepository;
+use Neos\Flow\I18n\Cldr\Reader\DatesReader;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\I18n;
 use Neos\Flow\Tests\UnitTestCase;
@@ -36,7 +41,7 @@ final class DatesReaderTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->sampleLocale = new I18n\Locale('en');
+        $this->sampleLocale = new Locale('en');
     }
 
     /**
@@ -85,39 +90,35 @@ final class DatesReaderTest extends UnitTestCase
         });
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function formatIsCorrectlyReadFromCldr(): void
     {
-        $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray', 'getElement'], [[]]);
+        $mockModel = $this->getAccessibleMock(CldrModel::class, ['getRawArray', 'getElement'], [[]]);
         $mockModel->expects($this->once())->method('getElement')->with('dates/calendars/calendar[@type="gregorian"]/dateFormats/dateFormatLength[@type="medium"]/dateFormat/pattern')->willReturn(('mockFormatString'));
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
         $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
         /** @var MockObject|I18n\Cldr\Reader\DatesReader $reader */
-        $reader = $this->getAccessibleMock(I18n\Cldr\Reader\DatesReader::class, ['parseFormat']);
+        $reader = $this->getAccessibleMock(DatesReader::class, ['parseFormat']);
         $reader->expects($this->once())->method('parseFormat')->with('mockFormatString')->willReturn((['mockParsedFormat']));
         $reader->injectCldrRepository($mockRepository);
         $reader->injectCache($mockCache);
         $reader->initializeObject();
 
-        $result = $reader->parseFormatFromCldr($this->sampleLocale, I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATE, I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_DEFAULT);
+        $result = $reader->parseFormatFromCldr($this->sampleLocale, DatesReader::FORMAT_TYPE_DATE, DatesReader::FORMAT_LENGTH_DEFAULT);
         self::assertEquals(['mockParsedFormat'], $result);
 
         $reader->shutdownObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dateTimeFormatIsParsedCorrectly(): void
     {
-        $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getElement'], [[]]);
+        $mockModel = $this->getAccessibleMock(CldrModel::class, ['getElement'], [[]]);
         $matcher = self::exactly(3);
         $mockModel->expects(
             $matcher
@@ -136,25 +137,23 @@ final class DatesReaderTest extends UnitTestCase
             }
         });
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->exactly(3))->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
         $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
-        $reader = new I18n\Cldr\Reader\DatesReader();
+        $reader = new DatesReader();
         $reader->injectCldrRepository($mockRepository);
         $reader->injectCache($mockCache);
         $reader->initializeObject();
 
-        $result = $reader->parseFormatFromCldr($this->sampleLocale, I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATETIME, I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_FULL);
+        $result = $reader->parseFormatFromCldr($this->sampleLocale, DatesReader::FORMAT_TYPE_DATETIME, DatesReader::FORMAT_LENGTH_FULL);
         self::assertSame([['foo '], 'h', 'm', 's', [' '], 'd', 'M', 'y', [' bar']], $result);
         $reader->shutdownObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localizedLiteralsAreCorrectlyReadFromCldr(): void
     {
         $getRawArrayCallback = static function () {
@@ -170,16 +169,16 @@ final class DatesReaderTest extends UnitTestCase
             }
         };
 
-        $mockModel = $this->getAccessibleMock(I18n\Cldr\CldrModel::class, ['getRawArray'], [[]]);
+        $mockModel = $this->getAccessibleMock(CldrModel::class, ['getRawArray'], [[]]);
         $mockModel->expects($this->exactly(5))->method('getRawArray')->willReturnCallback($getRawArrayCallback);
 
-        $mockRepository = $this->createMock(I18n\Cldr\CldrRepository::class);
+        $mockRepository = $this->createMock(CldrRepository::class);
         $mockRepository->expects($this->once())->method('getModelForLocale')->with($this->sampleLocale)->willReturn(($mockModel));
 
         $mockCache = $this->createMock(VariableFrontend::class);
         $this->createCacheExpectations($mockCache);
 
-        $reader = new I18n\Cldr\Reader\DatesReader();
+        $reader = new DatesReader();
         $reader->injectCldrRepository($mockRepository);
         $reader->injectCache($mockCache);
         $reader->initializeObject();
@@ -211,13 +210,11 @@ final class DatesReaderTest extends UnitTestCase
         yield ['QQyyLLLLDFEEEEccc', ['QQ', 'yy', 'LLLL', 'D', 'F', 'EEEE', 'ccc']];
     }
 
-    /**
-     * @test
-     * @dataProvider formatStringsAndParsedFormats
-     */
+    #[DataProvider('formatStringsAndParsedFormats')]
+    #[Test]
     public function formatStringsAreParsedCorrectly($format, $expectedResult): void
     {
-        $reader = $this->getAccessibleMock(I18n\Cldr\Reader\DatesReader::class, []);
+        $reader = $this->getAccessibleMock(DatesReader::class, []);
 
         $result = $reader->_call('parseFormat', $format);
         self::assertEquals($expectedResult, $result);

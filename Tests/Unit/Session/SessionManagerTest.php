@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Session;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\RequestHandler;
@@ -87,9 +87,7 @@ final class SessionManagerTest extends UnitTestCase
         $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($this->createMock(Context::class)));
     }
 
-    /**
-     * @test for #1674
-     */
+    #[Test]
     public function garbageCollectionWorksCorrectlyWithInvalidMetadataEntry()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -104,9 +102,7 @@ final class SessionManagerTest extends UnitTestCase
         $this->assertSame(0, $sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionIsOmittedIfInactivityTimeoutIsSetToZero()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -120,9 +116,7 @@ final class SessionManagerTest extends UnitTestCase
         self::assertSame(0, $sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionIsOmittedIfAnotherProcessIsAlreadyRunning()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -143,9 +137,7 @@ final class SessionManagerTest extends UnitTestCase
         self::assertNull($sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionOnlyRemovesTheDefinedMaximumNumberOfSessions()
     {
         $metaDataCache = $this->createCache('Meta');

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\View;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Mvc\View\AbstractView;
 use Neos\Flow\Mvc;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -22,12 +23,10 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class AbstractViewTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function assignAddsValueToInternalVariableCollection()
     {
-        $view = $this->getAccessibleMock(Mvc\View\AbstractView::class, ['setControllerContext', 'render']);
+        $view = $this->getAccessibleMock(AbstractView::class, ['setControllerContext', 'render']);
         $view
             ->assign('foo', 'FooValue')
             ->assign('bar', 'BarValue');
@@ -37,12 +36,10 @@ final class AbstractViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assignCanOverridePreviouslyAssignedValues()
     {
-        $view = $this->getAccessibleMock(Mvc\View\AbstractView::class, ['setControllerContext', 'render']);
+        $view = $this->getAccessibleMock(AbstractView::class, ['setControllerContext', 'render']);
         $view->assign('foo', 'FooValue');
         $view->assign('foo', 'FooValueOverridden');
 
@@ -51,12 +48,10 @@ final class AbstractViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assignMultipleAddsValuesToInternalVariableCollection()
     {
-        $view = $this->getAccessibleMock(Mvc\View\AbstractView::class, ['setControllerContext', 'render']);
+        $view = $this->getAccessibleMock(AbstractView::class, ['setControllerContext', 'render']);
         $view
             ->assignMultiple(['foo' => 'FooValue', 'bar' => 'BarValue'])
             ->assignMultiple(['baz' => 'BazValue']);
@@ -66,12 +61,10 @@ final class AbstractViewTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function assignMultipleCanOverridePreviouslyAssignedValues()
     {
-        $view = $this->getAccessibleMock(Mvc\View\AbstractView::class, ['setControllerContext', 'render']);
+        $view = $this->getAccessibleMock(AbstractView::class, ['setControllerContext', 'render']);
         $view->assign('foo', 'FooValue');
         $view->assignMultiple(['foo' => 'FooValueOverridden', 'bar' => 'BarValue']);
 

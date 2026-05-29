@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -52,7 +52,7 @@ abstract class BaseTestCase extends TestCase
      * @param boolean $cloneArguments
      * @param boolean $callOriginalMethods
      * @param object $proxyTarget
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      * @api
      */
     protected function getAccessibleMock(string $originalClassName, array $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
@@ -100,7 +100,7 @@ abstract class BaseTestCase extends TestCase
      * @param boolean $callAutoload
      * @param array $mockedMethods
      * @param boolean $cloneArguments
-     * @return \PHPUnit\Framework\MockObject\MockObject
+     * @return MockObject
      * @api
      */
     protected function getAccessibleMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)

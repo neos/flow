@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\Log\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -44,10 +45,8 @@ final class LogEnvironmentTest extends FunctionalTestCase
     }
 
 
-    /**
-     * @test
-     * @dataProvider fromMethodNameDataProvider
-     */
+    #[DataProvider('fromMethodNameDataProvider')]
+    #[Test]
     public function fromMethodName(string $method, array $expected): void
     {
         $actual = LogEnvironment::fromMethodName($method);

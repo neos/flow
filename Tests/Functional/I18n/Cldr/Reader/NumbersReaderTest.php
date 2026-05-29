@@ -12,7 +12,9 @@ namespace Neos\Flow\Tests\Functional\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\I18n;
@@ -36,13 +38,11 @@ final class NumbersReaderTest extends FunctionalTestCase
     }
 
 
-    /**
-     * @test
-     * @dataProvider currencyFormatExampleDataProvider
-     */
+    #[DataProvider('currencyFormatExampleDataProvider')]
+    #[Test]
     public function parseFormatFromCldr(string $localeName, array $expected): void
     {
-        $locale = new I18n\Locale($localeName);
+        $locale = new Locale($localeName);
         $actual = $this->numbersReader->parseFormatFromCldr($locale, NumbersReader::FORMAT_TYPE_CURRENCY);
         self::assertEquals($expected, $actual);
     }
@@ -53,12 +53,10 @@ final class NumbersReaderTest extends FunctionalTestCase
         yield ['ar', 'arab'];
     }
 
-    /**
-     * @test
-     * @dataProvider numberSystemDataProvider
-     */
+    #[DataProvider('numberSystemDataProvider')]
+    #[Test]
     public function getDefaultNumberingSystem(string $localeString, string $expected): void
     {
-        self::assertSame($expected, $this->numbersReader->getDefaultNumberingSystem(new I18n\Locale($localeString)));
+        self::assertSame($expected, $this->numbersReader->getDefaultNumberingSystem(new Locale($localeString)));
     }
 }

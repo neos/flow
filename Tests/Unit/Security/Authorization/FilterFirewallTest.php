@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\FilterFirewall;
@@ -33,9 +33,9 @@ use Neos\Flow\Tests\UnitTestCase;
 final class FilterFirewallTest extends UnitTestCase
 {
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function configuredFiltersAreCreatedCorrectlyUsingNewSettingsFormat()
     {
         $resolveRequestPatternClassCallback = function () {
@@ -126,9 +126,7 @@ final class FilterFirewallTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allConfiguredFiltersAreCalled()
     {
         $mockActionRequest = $this->createStub(ActionRequest::class);
@@ -146,9 +144,7 @@ final class FilterFirewallTest extends UnitTestCase
         $firewall->blockIllegalRequests($mockActionRequest);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifRejectAllIsSetAndNoFilterExplicitlyAllowsTheRequestAPermissionDeniedExceptionIsThrown()
     {
         $this->expectException(AccessDeniedException::class);

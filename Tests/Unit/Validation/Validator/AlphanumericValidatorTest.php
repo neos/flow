@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\AlphanumericValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,49 +26,37 @@ final class AlphanumericValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = AlphanumericValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsIfTheGivenStringIsEmpty()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericString()
     {
         self::assertFalse($this->validator->validate('12ssDF34daweidf')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorShouldReturnNoErrorsForAnAlphanumericStringWithUmlauts()
     {
         self::assertFalse($this->validator->validate('12ssDF34daweidfäøüößØLīgaestevimīlojuņščļœøÅ')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorReturnsErrorsForAStringWithSpecialCharacters()
     {
         self::assertTrue($this->validator->validate('adsf%&/$jklsfdö')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function alphanumericValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
         self::assertCount(1, $this->validator->validate('adsf%&/$jklsfdö')->getErrors());

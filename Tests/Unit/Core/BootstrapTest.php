@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Core;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Exception;
 use Neos\Flow\Tests\UnitTestCase;
@@ -39,10 +40,8 @@ final class BootstrapTest extends UnitTestCase
         yield [['neos.flow:core:*', 'neos.flow:cache:*'], 'typo3:core:shell', false];
     }
 
-    /**
-     * @test
-     * @dataProvider commandIdentifiersAndCompiletimeControllerInfo
-     */
+    #[DataProvider('commandIdentifiersAndCompiletimeControllerInfo')]
+    #[Test]
     public function isCompileTimeCommandControllerChecksIfTheGivenCommandIdentifierRefersToACompileTimeController($compiletimeCommandControllerIdentifiers, $givenCommandIdentifier, $expectedResult)
     {
         $bootstrap = new Bootstrap('Testing');
@@ -53,9 +52,7 @@ final class BootstrapTest extends UnitTestCase
         self::assertSame($expectedResult, $bootstrap->isCompiletimeCommand($givenCommandIdentifier));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRequestHandlerThrowsUsefulExceptionIfNoRequestHandlerFound()
     {
         $this->expectException(Exception::class);

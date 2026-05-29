@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Cache\Frontend\StringFrontend;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Mvc\ViewConfigurationManager;
@@ -25,7 +27,7 @@ use Neos\Eel\CompilingEvaluator;
  * Testcase for the MVC ViewConfigurationManager
  *
  */
-final class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
+final class ViewConfigurationManagerTest extends UnitTestCase
 {
     /**
      * @var ViewConfigurationManager
@@ -33,12 +35,12 @@ final class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
     protected $viewConfigurationManager;
 
     /**
-     * @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject
+     * @var ActionRequest|MockObject
      */
     protected $mockActionRequest;
 
     /**
-     * @var ConfigurationManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var ConfigurationManager|MockObject
      */
     protected $mockConfigurationManager;
 
@@ -70,9 +72,7 @@ final class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         $this->mockActionRequest->method('getParentRequest')->willReturn((null));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getViewConfigurationFindsMatchingConfigurationForRequest()
     {
         $matchingConfiguration = [
@@ -93,9 +93,7 @@ final class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         self::assertEquals($calculatedConfiguration, $matchingConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getViewConfigurationUsedFilterConfigurationWithHigherWeight()
     {
         $matchingConfigurationOne = [

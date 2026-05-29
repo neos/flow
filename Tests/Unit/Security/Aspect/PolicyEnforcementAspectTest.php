@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Security\Aspect;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Security\Authorization\Interceptor\PolicyEnforcement;
+use Neos\Flow\Security\Context;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\Advice\AdviceChain;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Security;
@@ -54,14 +56,12 @@ final class PolicyEnforcementAspectTest extends UnitTestCase
     {
         $this->mockJoinPoint = $this->createMock(JoinPointInterface::class);
         $this->mockAdviceChain = $this->createMock(AdviceChain::class);
-        $this->mockPolicyEnforcementInterceptor = $this->createMock(Security\Authorization\Interceptor\PolicyEnforcement::class);
-        $this->mockSecurityContext = $this->createMock(Security\Context::class);
+        $this->mockPolicyEnforcementInterceptor = $this->createMock(PolicyEnforcement::class);
+        $this->mockSecurityContext = $this->createMock(Context::class);
         $this->policyEnforcementAspect = new PolicyEnforcementAspect($this->mockPolicyEnforcementInterceptor, $this->mockSecurityContext);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enforcePolicyPassesTheGivenJoinPointOverToThePolicyEnforcementInterceptor()
     {
         $this->mockJoinPoint->expects($this->once())->method('getAdviceChain')->willReturn(($this->mockAdviceChain));
@@ -70,9 +70,7 @@ final class PolicyEnforcementAspectTest extends UnitTestCase
         $this->policyEnforcementAspect->enforcePolicy($this->mockJoinPoint);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function enforcePolicyCallsThePolicyEnforcementInterceptorCorrectly()
     {
         $this->mockJoinPoint->expects($this->once())->method('getAdviceChain')->willReturn(($this->mockAdviceChain));
@@ -82,9 +80,9 @@ final class PolicyEnforcementAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo adjust when AfterInvocationInterceptor is used again
      */
+    #[Test]
     public function enforcePolicyCallsTheAdviceChainCorrectly()
     {
         $this->mockAdviceChain->expects($this->once())->method('proceed')->with($this->mockJoinPoint);
@@ -94,9 +92,9 @@ final class PolicyEnforcementAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo adjust when AfterInvocationInterceptor is used again
      */
+    #[Test]
     public function enforcePolicyReturnsTheResultOfTheOriginalMethodCorrectly()
     {
         $someResult = 'blub';
@@ -109,9 +107,9 @@ final class PolicyEnforcementAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @todo adjust when AfterInvocationInterceptor is used again
      */
+    #[Test]
     public function enforcePolicyDoesNotInvokeInterceptorIfAuthorizationChecksAreDisabled()
     {
         $this->mockAdviceChain->expects($this->once())->method('proceed')->with($this->mockJoinPoint);

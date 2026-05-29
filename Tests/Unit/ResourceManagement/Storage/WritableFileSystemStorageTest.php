@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement\Storage;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\MockObject\MockObject;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage;
@@ -27,7 +29,7 @@ use Neos\Utility\Files;
 final class WritableFileSystemStorageTest extends UnitTestCase
 {
     /**
-     * @var WritableFileSystemStorage|\PHPUnit\Framework\MockObject\MockObject
+     * @var WritableFileSystemStorage|MockObject
      */
     protected $writableFileSystemStorage;
 
@@ -47,10 +49,8 @@ final class WritableFileSystemStorageTest extends UnitTestCase
         $this->inject($this->writableFileSystemStorage, 'environment', $mockEnvironment);
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function importTemporaryFileFixesPermissionsForTemporaryFile()
     {
         $mockTempFile = vfsStream::newFile('SomeTemporaryFile', 0333)
@@ -59,9 +59,7 @@ final class WritableFileSystemStorageTest extends UnitTestCase
         $this->writableFileSystemStorage->_call('importTemporaryFile', $mockTempFile->url(), 'default');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function importTemporaryFileSkipsFilesThatAlreadyExist()
     {
         $mockTempFile = vfsStream::newFile('SomeTemporaryFile', 0333)

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Property\Exception\InvalidDataTypeException;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\CollectionConverter;
@@ -34,9 +34,7 @@ final class CollectionConverterTest extends UnitTestCase
         $this->converter = new CollectionConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -44,17 +42,13 @@ final class CollectionConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyReturnsElementTypeFromTargetTypeIfGiven()
     {
         self::assertEquals('FooBar', $this->converter->getTypeOfChildProperty('array<FooBar>', '', $this->createStub(PropertyMappingConfigurationInterface::class)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsExceptionForMissingElementType()
     {
         $this->expectException(InvalidDataTypeException::class);

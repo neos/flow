@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Validation\Validator\LabelValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,17 +27,13 @@ final class LabelValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = LabelValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
@@ -73,19 +70,15 @@ final class LabelValidatorTest extends AbstractValidatorTestcase
         yield ['☔☃☕ are funny signs, but we don\'t want them in labels'];
     }
 
-    /**
-     * @test
-     * @dataProvider validLabels
-     */
+    #[DataProvider('validLabels')]
+    #[Test]
     public function labelValidatorReturnsNoErrorForValidLabels($label)
     {
         self::assertFalse($this->validator->validate($label)->hasErrors());
     }
 
-    /**
-     * @test
-     * @dataProvider invalidLabels
-     */
+    #[DataProvider('invalidLabels')]
+    #[Test]
     public function labelValidatorReturnsErrorsForInvalidLabels($label)
     {
         self::assertTrue($this->validator->validate($label)->hasErrors());

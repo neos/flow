@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Mvc\Routing\Dto\RouteLifetime;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -22,18 +23,14 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class RouteLifetimeTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromNegativeIntegerThrowsInvalidArgumentException()
     {
         $this->expectException(\InvalidArgumentException::class);
         RouteLifetime::fromInt(-1);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromIntCreatesANewInstanceWithTheGivenValue()
     {
         $lifetime = RouteLifetime::fromInt(123);
@@ -42,9 +39,7 @@ final class RouteLifetimeTest extends UnitTestCase
         self::assertFalse($lifetime->isInfinite());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createUndefinedCreatesANewInstanceWithNullValue()
     {
         $lifetime = RouteLifetime::createUndefined();
@@ -53,9 +48,7 @@ final class RouteLifetimeTest extends UnitTestCase
         self::assertFalse($lifetime->isInfinite());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createInfiniteCreatesANewInstanceWithZeroValue()
     {
         $lifetime = RouteLifetime::createInfinite();
@@ -78,10 +71,8 @@ final class RouteLifetimeTest extends UnitTestCase
         yield [null, 0, 0];
     }
 
-    /**
-     * @test
-     * @dataProvider mergeReturnsLowerLifetimeOfNonNullValuesDataProvider
-     */
+    #[DataProvider('mergeReturnsLowerLifetimeOfNonNullValuesDataProvider')]
+    #[Test]
     public function mergeReturnsLowerLifetimeOfNonNullValues($valueOne, $valueTwo, $expectation)
     {
         $lifetimeOne = is_int($valueOne) ? RouteLifetime::fromInt($valueOne) : RouteLifetime::createUndefined();

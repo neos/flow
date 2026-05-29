@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Http\Middleware;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Http\Server\RequestHandlerInterface;
 use Neos\Flow\Http\Cookie;
 use Neos\Flow\Http\Middleware\SessionMiddleware;
@@ -71,9 +72,7 @@ final class SessionMiddlewareTest extends UnitTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleCreatesSessionIfNoCookiesAreSet(): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn([]);
@@ -82,12 +81,10 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleCreatesSessionIfNoSessionCookieIsSet(): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn([
@@ -99,12 +96,10 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleCreatesSessionIfSessionCookieIsNull(): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn([
@@ -115,12 +110,10 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleInitializesSessionFromSessionCookieIfItExists(): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn([
@@ -131,7 +124,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame('session_cookie_name', $cookie->getName());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 
     public static function sessionCookieSettingsProvider(): \Iterator
@@ -147,10 +140,8 @@ final class SessionMiddlewareTest extends UnitTestCase
         yield ['sessionCookieSettings' => ['samesite' => 'lax'], 'expectedNewCookieValue' => 'session_cookie_name=session-id; Path=/; HttpOnly; SameSite=lax'];
     }
 
-    /**
-     * @test
-     * @dataProvider sessionCookieSettingsProvider
-     */
+    #[DataProvider('sessionCookieSettingsProvider')]
+    #[Test]
     public function newSessionCookiesTakeSessionCookieSettingsIntoAccount(array $sessionCookieSettings, string $expectedNewCookieValue): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn(['session_cookie_name' => 'session-id']);
@@ -164,7 +155,7 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame($expectedNewCookieValue, (string)$cookie);
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 
     public static function cookieValueDataProvider(): \Iterator
@@ -185,10 +176,8 @@ final class SessionMiddlewareTest extends UnitTestCase
         yield ['sessionCookieValue' => '%C3%BCrl%20encoded', 'expectedNewCookieValue' => 'ürl encoded'];
     }
 
-    /**
-     * @test
-     * @dataProvider cookieValueDataProvider
-     */
+    #[DataProvider('cookieValueDataProvider')]
+    #[Test]
     public function valueFromSessionCookieIsCleanedBeforeANewCookieIsCreated($sessionCookieValue, $expectedNewCookieValue): void
     {
         $this->mockHttpRequest->method('getCookieParams')->willReturn([
@@ -199,6 +188,6 @@ final class SessionMiddlewareTest extends UnitTestCase
             self::assertSame($expectedNewCookieValue, $cookie->getValue());
         });
 
-        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(\Psr\Http\Server\RequestHandlerInterface::class));
+        $this->sessionMiddleware->process($this->mockHttpRequest, $this->createStub(RequestHandlerInterface::class));
     }
 }

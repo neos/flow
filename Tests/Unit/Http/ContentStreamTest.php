@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Http;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\ContentStream;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -22,9 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class ContentStreamTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorThrowsExceptionWhenBeingPassedAnInvalidResource()
     {
         $this->expectException(\InvalidArgumentException::class);

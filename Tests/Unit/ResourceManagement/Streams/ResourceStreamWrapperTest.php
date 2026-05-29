@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Package\Exception\UnknownPackageException;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\ResourceManagement\Exception;
 use Neos\Utility\ObjectAccess;
@@ -35,12 +37,12 @@ final class ResourceStreamWrapperTest extends UnitTestCase
     protected $resourceStreamWrapper;
 
     /**
-     * @var PackageManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var PackageManager|MockObject
      */
     protected $mockPackageManager;
 
     /**
-     * @var ResourceManager|\PHPUnit\Framework\MockObject\MockObject
+     * @var ResourceManager|MockObject
      */
     protected $mockResourceManager;
 
@@ -57,9 +59,7 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         $this->inject($this->resourceStreamWrapper, 'resourceManager', $this->mockResourceManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openThrowsExceptionForInvalidScheme()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -67,9 +67,7 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         $this->resourceStreamWrapper->open('invalid-scheme://foo/bar', 'r', 0, $openedPathAndFilename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openResolvesALowerCaseSha1HashUsingTheResourceManager()
     {
         $sha1Hash = '68ac906495480a3404beee4874ed853a037a7a8f';
@@ -85,9 +83,7 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         self::assertSame($tempFile, ObjectAccess::getProperty($this->resourceStreamWrapper, 'handle', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openResolvesAnUpperCaseSha1HashUsingTheResourceManager()
     {
         $sha1Hash = '68AC906495480A3404BEEE4874ED853A037A7A8F';
@@ -103,9 +99,7 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         self::assertSame($tempFile, ObjectAccess::getProperty($this->resourceStreamWrapper, 'handle', true));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resourceStreamWrapperAllowsStatOfValidResourceLinks()
     {
         $sha1Hash = '68ac906495480a3404beee4874ed853a037a7a8f';
@@ -119,22 +113,18 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         self::assertIsArray($this->resourceStreamWrapper->pathStat('resource://' . $sha1Hash, 0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openThrowsExceptionForNonExistingPackages()
     {
         $this->expectException(Exception::class);
         $packageKey = 'Non.Existing.Package';
-        $this->mockPackageManager->expects($this->once())->method('getPackage')->willThrowException(new \Neos\Flow\Package\Exception\UnknownPackageException('Test exception'));
+        $this->mockPackageManager->expects($this->once())->method('getPackage')->willThrowException(new UnknownPackageException('Test exception'));
 
         $openedPathAndFilename = '';
         $this->resourceStreamWrapper->open('resource://' . $packageKey . '/Some/Path', 'r', 0, $openedPathAndFilename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openResolvesPackageKeysUsingThePackageManager()
     {
         $packageKey = 'Some.Package';
@@ -150,9 +140,7 @@ final class ResourceStreamWrapperTest extends UnitTestCase
         self::assertSame('vfs://Foo/Some/Path', $openedPathAndFilename);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function openResolves40CharacterLongPackageKeysUsingThePackageManager()
     {
         $packageKey = 'Some.PackageKey.Containing.40.Characters';

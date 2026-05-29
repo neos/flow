@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockACommandController;
+use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockBCommandController;
+use Neos\Flow\Cli\CommandController;
+use Neos\Flow\Cli\Command;
 use Neos\Flow\Cli;
 use Neos\Flow\Cli\CommandManager;
 use Neos\Flow\Core\Bootstrap;
@@ -43,18 +47,16 @@ final class CommandManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
-        $this->commandManager = $this->getMockBuilder(Cli\CommandManager::class)->onlyMethods(['getAvailableCommands'])->getMock();
+        $this->commandManager = $this->getMockBuilder(CommandManager::class)->onlyMethods(['getAvailableCommands'])->getMock();
         $this->commandManager->injectBootstrap($this->createMock(Bootstrap::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getAvailableCommandsReturnsAllAvailableCommands(): void
     {
         $commandManager = new CommandManager();
-        $mockCommandControllerClassNames = [Fixtures\Command\MockACommandController::class, Fixtures\Command\MockBCommandController::class];
-        $this->mockReflectionService->expects(self::once())->method('getAllSubClassNamesForClass')->with(Cli\CommandController::class)->willReturn($mockCommandControllerClassNames);
+        $mockCommandControllerClassNames = [MockACommandController::class, MockBCommandController::class];
+        $this->mockReflectionService->expects(self::once())->method('getAllSubClassNamesForClass')->with(CommandController::class)->willReturn($mockCommandControllerClassNames);
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $mockObjectManager->method('getObjectNameByClassName')->willReturnArgument(0);
@@ -67,12 +69,10 @@ final class CommandManagerTest extends UnitTestCase
         self::assertEquals('neos.flow.tests.unit.cli.fixtures:mockb:baz', $commands[2]->getCommandIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierReturnsCommandIfIdentifierIsEqual()
     {
-        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand = $this->createMock(Command::class);
         $mockCommand->expects($this->once())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
         $mockCommands = [$mockCommand];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -80,12 +80,10 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame($mockCommand, $this->commandManager->getCommandByIdentifier('package.key:controller:command'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierWorksCaseInsensitive()
     {
-        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand = $this->createMock(Command::class);
         $mockCommand->expects($this->once())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
         $mockCommands = [$mockCommand];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -93,12 +91,10 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame($mockCommand, $this->commandManager->getCommandByIdentifier('   Package.Key:conTroLler:Command  '));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierAllowsThePackageKeyToOnlyContainTheLastPartOfThePackageNamespaceIfCommandsAreUnambiguous()
     {
-        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand = $this->createMock(Command::class);
         $mockCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('some.package.key:controller:command'));
         $mockCommands = [$mockCommand];
         $this->commandManager->expects($this->atLeastOnce())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -107,13 +103,11 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame($mockCommand, $this->commandManager->getCommandByIdentifier('key:controller:command'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierThrowsExceptionIfNoMatchingCommandWasFound()
     {
         $this->expectException(NoSuchCommandException::class);
-        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand = $this->createMock(Command::class);
         $mockCommand->expects($this->once())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
         $mockCommands = [$mockCommand];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -121,15 +115,13 @@ final class CommandManagerTest extends UnitTestCase
         $this->commandManager->getCommandByIdentifier('package.key:controller:someothercommand');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierThrowsExceptionIfMoreThanOneMatchingCommandWasFound()
     {
         $this->expectException(AmbiguousCommandIdentifierException::class);
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->once())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->once())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller:command'));
         $mockCommands = [$mockCommand1, $mockCommand2];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -137,19 +129,17 @@ final class CommandManagerTest extends UnitTestCase
         $this->commandManager->getCommandByIdentifier('controller:command');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandByIdentifierThrowsExceptionIfOnlyPackageKeyIsSpecifiedAndContainsMoreThanOneCommand()
     {
         $this->expectException(AmbiguousCommandIdentifierException::class);
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command'));
-        $mockCommand3 = $this->createMock(Cli\Command::class);
+        $mockCommand3 = $this->createMock(Command::class);
         $mockCommand3->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand4 = $this->createMock(Cli\Command::class);
+        $mockCommand4 = $this->createMock(Command::class);
         $mockCommand4->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:othercommand'));
         $mockCommands = [$mockCommand1, $mockCommand2, $mockCommand3, $mockCommand4];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -157,14 +147,12 @@ final class CommandManagerTest extends UnitTestCase
         $this->commandManager->getCommandByIdentifier('package.key');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandsByIdentifierReturnsAnEmptyArrayIfNoCommandMatches()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command'));
         $mockCommands = [$mockCommand1, $mockCommand2];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -172,18 +160,16 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame([], $this->commandManager->getCommandsByIdentifier('nonexistingpackage'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandsByIdentifierReturnsAllCommandsOfTheSpecifiedPackage()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command2'));
-        $mockCommand3 = $this->createMock(Cli\Command::class);
+        $mockCommand3 = $this->createMock(Command::class);
         $mockCommand3->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand4 = $this->createMock(Cli\Command::class);
+        $mockCommand4 = $this->createMock(Command::class);
         $mockCommand4->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:othercommand'));
         $mockCommands = [$mockCommand1, $mockCommand2, $mockCommand3, $mockCommand4];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -192,22 +178,20 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame($expectedResult, $this->commandManager->getCommandsByIdentifier('package.key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandsByIdentifierReturnsAllCommandsOfTheSpecifiedPackageIgnoringCase()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command2'));
-        $mockCommand3 = $this->createMock(Cli\Command::class);
+        $mockCommand3 = $this->createMock(Command::class);
         $mockCommand3->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand4 = $this->createMock(Cli\Command::class);
+        $mockCommand4 = $this->createMock(Command::class);
         $mockCommand4->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:othercommand'));
-        $mockCommand5 = $this->createMock(Cli\Command::class);
+        $mockCommand5 = $this->createMock(Command::class);
         $mockCommand5->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('SomeOtherpackage.key:controller:othercommand'));
-        $mockCommand6 = $this->createMock(Cli\Command::class);
+        $mockCommand6 = $this->createMock(Command::class);
         $mockCommand6->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('Some.Otherpackage.key:controller:othercommand'));
         $mockCommands = [$mockCommand1, $mockCommand2, $mockCommand3, $mockCommand4, $mockCommand5, $mockCommand6];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -216,20 +200,18 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame($expectedResult, $this->commandManager->getCommandsByIdentifier('OtherPackage.Key'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandsByIdentifierReturnsAllCommandsMatchingTheSpecifiedController()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command2'));
-        $mockCommand3 = $this->createMock(Cli\Command::class);
+        $mockCommand3 = $this->createMock(Command::class);
         $mockCommand3->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand4 = $this->createMock(Cli\Command::class);
+        $mockCommand4 = $this->createMock(Command::class);
         $mockCommand4->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:othercommand'));
-        $mockCommand5 = $this->createMock(Cli\Command::class);
+        $mockCommand5 = $this->createMock(Command::class);
         $mockCommand5->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('some.otherpackage.key:controller:othercommand'));
         $mockCommands = [$mockCommand1, $mockCommand2, $mockCommand3, $mockCommand4, $mockCommand5];
         $this->commandManager->expects($this->once())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -239,25 +221,21 @@ final class CommandManagerTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShortestIdentifierForCommandAlwaysReturnsShortNameForFlowHelpCommand()
     {
-        $mockHelpCommand = $this->createMock(Cli\Command::class);
+        $mockHelpCommand = $this->createMock(Command::class);
         $mockHelpCommand->expects($this->once())->method('getCommandIdentifier')->willReturn(('neos.flow:help:help'));
         $commandIdentifier = $this->commandManager->getShortestIdentifierForCommand($mockHelpCommand);
         self::assertSame('help', $commandIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShortestIdentifierForCommandReturnsTheCompleteIdentifiersForCustomHelpCommands()
     {
-        $mockFlowHelpCommand = $this->createMock(Cli\Command::class);
+        $mockFlowHelpCommand = $this->createMock(Command::class);
         $mockFlowHelpCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('neos.flow:help:help'));
-        $mockCustomHelpCommand = $this->createMock(Cli\Command::class);
+        $mockCustomHelpCommand = $this->createMock(Command::class);
         $mockCustomHelpCommand->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('custom.package:help:help'));
         $mockCommands = [$mockFlowHelpCommand, $mockCustomHelpCommand];
         $this->commandManager->expects($this->atLeastOnce())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -266,18 +244,16 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame('package:help:help', $commandIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShortestIdentifierForCommandReturnsShortestUnambiguousCommandIdentifiers()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('package.key:controller:command'));
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('otherpackage.key:controller2:command'));
-        $mockCommand3 = $this->createMock(Cli\Command::class);
+        $mockCommand3 = $this->createMock(Command::class);
         $mockCommand3->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('packagekey:controller:command'));
-        $mockCommand4 = $this->createMock(Cli\Command::class);
+        $mockCommand4 = $this->createMock(Command::class);
         $mockCommand4->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn(('packagekey:controller:othercommand'));
         $mockCommands = [$mockCommand1, $mockCommand2, $mockCommand3, $mockCommand4];
         $this->commandManager->expects($this->atLeastOnce())->method('getAvailableCommands')->willReturn(($mockCommands));
@@ -288,14 +264,12 @@ final class CommandManagerTest extends UnitTestCase
         self::assertSame('controller:othercommand', $this->commandManager->getShortestIdentifierForCommand($mockCommand4));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getShortestIdentifierForCommandReturnsCompleteCommandIdentifierForCommandsWithTheSameControllerAndCommandName()
     {
-        $mockCommand1 = $this->createMock(Cli\Command::class);
+        $mockCommand1 = $this->createMock(Command::class);
         $mockCommand1->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn('package.key:controller:command');
-        $mockCommand2 = $this->createMock(Cli\Command::class);
+        $mockCommand2 = $this->createMock(Command::class);
         $mockCommand2->expects($this->atLeastOnce())->method('getCommandIdentifier')->willReturn('otherpackage.key:controller:command');
         $mockCommands = [$mockCommand1, $mockCommand2];
         $this->commandManager->expects($this->atLeastOnce())->method('getAvailableCommands')->willReturn($mockCommands);

@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\RequestPattern\CsrfProtection;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\ActionRequest;
@@ -46,9 +49,7 @@ final class CsrfProtectionTest extends UnitTestCase
         $this->mockActionRequest = $this->createMock(ActionRequest::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfTheTargetActionIsAnnotatedWithSkipCsrfProtection()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -72,25 +73,23 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockPrivilege = $this->createMock(MethodPrivilegeInterface::class);
         $mockPrivilege->expects($this->once())->method('matchesMethod')->with($controllerObjectName, $controllerActionName . 'Action')->willReturn((true));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([$mockPrivilege]));
 
-        $mockSecurityContext = $this->createStub(Security\Context::class);
+        $mockSecurityContext = $this->createStub(Context::class);
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('reflectionService', $mockReflectionService);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfTheTargetActionIsNotMentionedInThePolicy()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -108,24 +107,22 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->expects($this->once())->method('getClassNameByObjectName')->with($controllerObjectName)->willReturn(($controllerObjectName));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([]));
 
-        $mockSecurityContext = $this->createStub(Security\Context::class);
+        $mockSecurityContext = $this->createStub(Context::class);
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsTrueIfTheTargetActionIsMentionedInThePolicyButNoCsrfTokenHasBeenSent()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -151,25 +148,23 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockPrivilege = $this->createMock(MethodPrivilegeInterface::class);
         $mockPrivilege->expects($this->once())->method('matchesMethod')->with($controllerObjectName, $controllerActionName . 'Action')->willReturn((true));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([$mockPrivilege]));
 
-        $mockSecurityContext = $this->createStub(Security\Context::class);
+        $mockSecurityContext = $this->createStub(Context::class);
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('reflectionService', $mockReflectionService);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertTrue($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsTrueIfTheTargetActionIsMentionedInThePolicyButTheCsrfTokenIsInvalid()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -195,27 +190,25 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockPrivilege = $this->createMock(MethodPrivilegeInterface::class);
         $mockPrivilege->expects($this->once())->method('matchesMethod')->with($controllerObjectName, $controllerActionName . 'Action')->willReturn((true));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([$mockPrivilege]));
 
-        $mockSecurityContext = $this->createMock(Security\Context::class);
+        $mockSecurityContext = $this->createMock(Context::class);
         $mockSecurityContext->method('isCsrfProtectionTokenValid')->with('invalidCsrfToken')->willReturn((false));
         $mockSecurityContext->method('hasCsrfProtectionTokens')->willReturn((true));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('reflectionService', $mockReflectionService);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertTrue($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfTheTargetActionIsMentionedInThePolicyAndTheCsrfTokenIsValid()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -241,27 +234,25 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockPrivilege = $this->createMock(MethodPrivilegeInterface::class);
         $mockPrivilege->expects($this->once())->method('matchesMethod')->with($controllerObjectName, $controllerActionName . 'Action')->willReturn((true));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([$mockPrivilege]));
 
-        $mockSecurityContext = $this->createMock(Security\Context::class);
+        $mockSecurityContext = $this->createMock(Context::class);
         $mockSecurityContext->method('isCsrfProtectionTokenValid')->with('validToken')->willReturn((true));
         $mockSecurityContext->method('hasCsrfProtectionTokens')->willReturn((true));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('reflectionService', $mockReflectionService);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfTheCsrfTokenIsPassedThroughAnHttpHeader()
     {
         $controllerObjectName = 'SomeControllerObjectName';
@@ -288,27 +279,25 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockPrivilege = $this->createMock(MethodPrivilegeInterface::class);
         $mockPrivilege->expects($this->once())->method('matchesMethod')->with($controllerObjectName, $controllerActionName . 'Action')->willReturn((true));
 
-        $mockPolicyService = $this->createMock(Security\Policy\PolicyService::class);
+        $mockPolicyService = $this->createMock(PolicyService::class);
         $mockPolicyService->expects($this->once())->method('getAllPrivilegesByType')->willReturn(([$mockPrivilege]));
 
-        $mockSecurityContext = $this->createMock(Security\Context::class);
+        $mockSecurityContext = $this->createMock(Context::class);
         $mockSecurityContext->method('isCsrfProtectionTokenValid')->with('validToken')->willReturn((true));
         $mockSecurityContext->method('hasCsrfProtectionTokens')->willReturn((true));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
         $mockCsrfProtectionPattern->_set('objectManager', $mockObjectManager);
         $mockCsrfProtectionPattern->_set('reflectionService', $mockReflectionService);
         $mockCsrfProtectionPattern->_set('policyService', $mockPolicyService);
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfNobodyIsAuthenticated()
     {
         $httpRequest = new ServerRequest('POST', new Uri('http://localhost'));
@@ -318,31 +307,27 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
         $mockAuthenticationManager->method('isAuthenticated')->willReturn((false));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfRequestMethodIsSafe()
     {
         $httpRequest = new ServerRequest('GET', new Uri('http://localhost'));
 
         $this->mockActionRequest->method('getHttpRequest')->willReturn(($httpRequest));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchRequestReturnsFalseIfAuthorizationChecksAreDisabled()
     {
         $httpRequest = new ServerRequest('POST', new Uri('http://localhost'));
@@ -352,12 +337,12 @@ final class CsrfProtectionTest extends UnitTestCase
         $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
         $mockAuthenticationManager->method('isAuthenticated')->willReturn((true));
 
-        $mockSecurityContext = $this->createMock(Security\Context::class);
+        $mockSecurityContext = $this->createMock(Context::class);
         $mockSecurityContext->expects($this->atLeastOnce())->method('areAuthorizationChecksDisabled')->willReturn((true));
 
-        $mockCsrfProtectionPattern = $this->getAccessibleMock(Security\RequestPattern\CsrfProtection::class, []);
+        $mockCsrfProtectionPattern = $this->getAccessibleMock(CsrfProtection::class, []);
         $mockCsrfProtectionPattern->_set('authenticationManager', $mockAuthenticationManager);
-        $mockCsrfProtectionPattern->_set('logger', $this->createStub(\Psr\Log\LoggerInterface::class));
+        $mockCsrfProtectionPattern->_set('logger', $this->createStub(LoggerInterface::class));
         $mockCsrfProtectionPattern->_set('securityContext', $mockSecurityContext);
 
         self::assertFalse($mockCsrfProtectionPattern->matchRequest($this->mockActionRequest));

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Cli\Request;
 use Neos\Flow\Command\CacheCommandController;
 use Neos\Flow\Tests\UnitTestCase;
@@ -23,9 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class RequestTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getCommandReturnsTheCommandObjectReflectingTheRequestInformation()
     {
         $request = new Request();
@@ -36,9 +34,7 @@ final class RequestTest extends UnitTestCase
         self::assertSame('neos.flow:cache:flush', $command->getCommandIdentifier());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setControllerObjectNameAndSetControllerCommandNameUnsetTheBuiltCommandObject()
     {
         $request = new Request();

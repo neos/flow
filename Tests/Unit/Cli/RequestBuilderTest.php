@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Cli\Command;
+use Neos\Flow\Cli\CommandManager;
+use Neos\Flow\Cli\RequestBuilder;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Command\HelpCommandController;
 use Neos\Flow\Mvc\Exception\InvalidArgumentMixingException;
 use Neos\Flow\Mvc\Exception\NoSuchCommandException;
@@ -51,23 +55,22 @@ final class RequestBuilderTest extends UnitTestCase
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $this->mockObjectManager->method('getObjectNameByClassName')->with('Acme\Test\Command\DefaultCommandController')->willReturn(('Acme\Test\Command\DefaultCommandController'));
 
-        $mockCommand = $this->createMock(Cli\Command::class);
+        $mockCommand = $this->createMock(Command::class);
         $mockCommand->method('getControllerClassName')->willReturn(('Acme\Test\Command\DefaultCommandController'));
         $mockCommand->method('getControllerCommandName')->willReturn(('list'));
 
-        $this->mockCommandManager = $this->createMock(Cli\CommandManager::class);
+        $this->mockCommandManager = $this->createMock(CommandManager::class);
         $this->mockCommandManager->method('getCommandByIdentifier')->with('acme.test:default:list')->willReturn(($mockCommand));
 
-        $this->requestBuilder = new Cli\RequestBuilder();
+        $this->requestBuilder = new RequestBuilder();
         $this->requestBuilder->injectObjectManager($this->mockObjectManager);
         $this->requestBuilder->injectCommandManager($this->mockCommandManager);
     }
 
     /**
      * Checks if a CLI request specifying a package, controller and action name results in the expected request object
-     *
-     * @test
      */
+    #[Test]
     public function cliAccessWithPackageControllerAndActionNameBuildsCorrectRequest(): void
     {
         $this->mockCommandManager->expects($this->once())->method('getCommandMethodParameters')->willReturn(([]));
@@ -77,9 +80,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame('list', $request->getControllerCommandName(), 'The CLI request specifying a package, controller and action name did not return a request object pointing to the expected action.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifCommandCantBeResolvedTheHelpScreenIsShown(): void
     {
         // The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
@@ -87,7 +88,7 @@ final class RequestBuilderTest extends UnitTestCase
         $this->mockObjectManager->getObjectNameByClassName('Acme\Test\Command\DefaultCommandController');
         $this->mockCommandManager->getCommandByIdentifier('acme.test:default:list');
 
-        $mockCommandManager = $this->createMock(Cli\CommandManager::class);
+        $mockCommandManager = $this->createMock(CommandManager::class);
         $mockCommandManager->method('getCommandByIdentifier')->with('test:default:list')->willThrowException(new NoSuchCommandException());
         $this->requestBuilder->injectCommandManager($mockCommandManager);
 
@@ -97,9 +98,8 @@ final class RequestBuilderTest extends UnitTestCase
 
     /**
      * Checks if a CLI request specifying some "console style" (--my-argument=value) arguments results in the expected request object
-     *
-     * @test
      */
+    #[Test]
     public function cliAccessWithPackageControllerActionAndArgumentsBuildsCorrectRequest(): void
     {
         $methodParameters = [
@@ -117,9 +117,8 @@ final class RequestBuilderTest extends UnitTestCase
 
     /**
      * Checks if a CLI request specifying some "console style" (--my-argument =value) arguments with spaces between name and value results in the expected request object
-     *
-     * @test
      */
+    #[Test]
     public function checkIfCliAccesWithPackageControllerActionAndArgumentsToleratesSpaces(): void
     {
         $methodParameters = [
@@ -143,9 +142,8 @@ final class RequestBuilderTest extends UnitTestCase
 
     /**
      * Checks if a CLI request specifying some short "console style" (-c value or -c=value or -c = value) arguments results in the expected request object
-     *
-     * @test
      */
+    #[Test]
     public function CliAccesWithShortArgumentsBuildsCorrectRequest(): void
     {
         $methodParameters = [
@@ -167,9 +165,8 @@ final class RequestBuilderTest extends UnitTestCase
     /**
      * Checks if a CLI request specifying some mixed "console style" (-c or --my-argument -f=value) arguments with and
      * without values results in the expected request object
-     *
-     * @test
      */
+    #[Test]
     public function CliAccesWithArgumentsWithAndWithoutValuesBuildsCorrectRequest(): void
     {
         $methodParameters = [
@@ -216,9 +213,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame('kjk', $request->getArgument('j'), 'The "j" had not the given value.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentWithValueSeparatedByEqualSignBuildsCorrectRequest(): void
     {
         $methodParameters = [
@@ -231,9 +226,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame('value', $request->getArgument('testArgument'), 'The "testArgument" had not the given value.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function insteadOfNamedArgumentsTheArgumentsCanBePassedUnnamedInTheCorrectOrder(): void
     {
         $methodParameters = [
@@ -251,9 +244,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame('secondArgumentValue', $request->getArgument('testArgument2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsAreDetectedAfterOptions(): void
     {
         $methodParameters = [
@@ -271,9 +262,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame('file2', $request->getArgument('argument2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function exceedingArgumentsMayBeSpecified(): void
     {
         $methodParameters = [
@@ -289,9 +278,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame(['exceedingArgument1'], $request->getExceedingArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifNamedArgumentsAreUsedAllRequiredArgumentsMustBeNamed(): void
     {
         $this->expectException(InvalidArgumentMixingException::class);
@@ -304,9 +291,7 @@ final class RequestBuilderTest extends UnitTestCase
         $this->requestBuilder->build('acme.test:default:list --test-argument1 firstArgumentValue secondArgumentValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifUnnamedArgumentsAreUsedAllRequiredArgumentsMustBeUnnamed(): void
     {
         $this->expectException(InvalidArgumentMixingException::class);
@@ -319,9 +304,7 @@ final class RequestBuilderTest extends UnitTestCase
         $this->requestBuilder->build('acme.test:default:list firstArgumentValue --required-argument2 secondArgumentValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanOptionsAreConsideredEvenIfAnUnnamedArgumentFollows(): void
     {
         $methodParameters = [
@@ -337,9 +320,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertEquals($expectedArguments, $request->getArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionsAreNotMappedToCommandArgumentsIfTheyAreUnnamed(): void
     {
         $methodParameters = [
@@ -355,9 +336,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame($expectedArguments, $request->getArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterAllRequiredArgumentsUnnamedParametersAreStoredAsExceedingArguments(): void
     {
         $methodParameters = [
@@ -373,9 +352,7 @@ final class RequestBuilderTest extends UnitTestCase
         self::assertSame($expectedExceedingArguments, $request->getExceedingArguments());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function booleanOptionsCanHaveOnlyCertainValuesIfTheValueIsAssignedWithoutEqualSign(): void
     {
         $methodParameters = [
@@ -413,10 +390,8 @@ final class RequestBuilderTest extends UnitTestCase
         yield ["''", ''];
     }
 
-    /**
-     * @test
-     * @dataProvider quotedValues
-     */
+    #[DataProvider('quotedValues')]
+    #[Test]
     public function quotedArgumentValuesAreCorrectlyParsedWhenPassingTheCommandAsString($quotedArgument, $expectedResult): void
     {
         $methodParameters = [
@@ -455,10 +430,8 @@ final class RequestBuilderTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider arrayCliArgumentValues
-     */
+    #[DataProvider('arrayCliArgumentValues')]
+    #[Test]
     public function arrayArgumentIsParsedCorrectly(string $cliArguments, array $expectedArguments, array $epectedExceedingArguments): void
     {
         $methodParameters = [

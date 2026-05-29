@@ -13,7 +13,14 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Mvc\Routing\Route;
+use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Mvc\Routing\DynamicRoutePartInterface;
+use Neos\Flow\Mvc\Routing\StaticRoutePart;
+use Neos\Flow\Mvc\Routing\IdentityRoutePart;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Neos\Flow\Mvc\Routing\RoutePartInterface;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\Exception\InvalidRoutePartHandlerException;
 use Neos\Flow\Mvc\Exception\InvalidRoutePartValueException;
@@ -67,7 +74,7 @@ final class RouteTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->route = $this->getAccessibleMock(Routing\Route::class, []);
+        $this->route = $this->getAccessibleMock(Route::class, []);
         $this->route->_set('objectManager', $this->mockObjectManager);
 
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
@@ -100,17 +107,14 @@ final class RouteTest extends UnitTestCase
     protected function resolveRouteValues(array $routeValues)
     {
         $baseUri = new Uri('http://localhost/');
-        $resolveContext = new Routing\Dto\ResolveContext($baseUri, $routeValues, false, '', RouteParameters::createEmpty());
+        $resolveContext = new ResolveContext($baseUri, $routeValues, false, '', RouteParameters::createEmpty());
         return $this->route->resolves($resolveContext);
     }
 
     /*                                                                        *
      * Basic functionality (getters, setters, exceptions)                     *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function setNameCorrectlySetsRouteName()
     {
         $this->route->setName('SomeName');
@@ -118,9 +122,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('SomeName', $this->route->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function httpMethodConstraintsCanBeSetAndRetrieved()
     {
         self::assertFalse($this->route->hasHttpMethodConstraints(), 'hasHttpMethodConstraints should be false by default');
@@ -132,9 +134,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->route->hasHttpMethodConstraints(), 'hasHttpMethodConstraints should be false if httpMethods is empty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingUriPatternResetsRoute()
     {
         $this->route->_set('isParsed', true);
@@ -143,9 +143,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->route->_get('isParsed'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routePartHandlerIsInstantiated()
     {
         $this->route->setUriPattern('{key1}/{key2}');
@@ -156,15 +154,13 @@ final class RouteTest extends UnitTestCase
                 ]
             ]
         );
-        $mockRoutePartHandler = $this->createStub(Routing\DynamicRoutePartInterface::class);
+        $mockRoutePartHandler = $this->createStub(DynamicRoutePartInterface::class);
         $this->mockObjectManager->expects($this->once())->method('get')->with('SomeRoutePartHandler')->willReturn($mockRoutePartHandler);
 
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function settingInvalidRoutePartHandlerThrowsException()
     {
         $this->expectException(InvalidRoutePartHandlerException::class);
@@ -172,19 +168,17 @@ final class RouteTest extends UnitTestCase
         $this->route->setRoutePartsConfiguration(
             [
                 'key1' => [
-                    'handler' => Routing\StaticRoutePart::class,
+                    'handler' => StaticRoutePart::class,
                 ]
             ]
         );
-        $mockRoutePartHandler = $this->createStub(Routing\StaticRoutePart::class);
-        $this->mockObjectManager->expects($this->once())->method('get')->with(Routing\StaticRoutePart::class)->willReturn($mockRoutePartHandler);
+        $mockRoutePartHandler = $this->createStub(StaticRoutePart::class);
+        $this->mockObjectManager->expects($this->once())->method('get')->with(StaticRoutePart::class)->willReturn($mockRoutePartHandler);
 
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ifAnObjectTypeIsSpecifiedTheIdentityRoutePartHandlerIsInstantiated()
     {
         $this->route->setUriPattern('{key1}');
@@ -198,13 +192,11 @@ final class RouteTest extends UnitTestCase
 
         $this->route->parse();
         $identityRoutePart = current($this->route->_get('routeParts'));
-        self::assertInstanceOf(Routing\IdentityRoutePart::class, $identityRoutePart);
+        self::assertInstanceOf(IdentityRoutePart::class, $identityRoutePart);
         self::assertSame('SomeObjectType', $identityRoutePart->getObjectType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseSetsUriPatternOfIdentityRoutePartIfSpecified()
     {
         $this->route->setUriPattern('{key1}');
@@ -222,9 +214,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('SomeUriPattern', $identityRoutePart->getUriPattern());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithTrailingSlashThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -232,9 +222,7 @@ final class RouteTest extends UnitTestCase
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithLeadingSlashThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -242,9 +230,7 @@ final class RouteTest extends UnitTestCase
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithSuccessiveDynamicRoutepartsThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -252,9 +238,7 @@ final class RouteTest extends UnitTestCase
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithSuccessiveOptionalSectionsThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -262,9 +246,7 @@ final class RouteTest extends UnitTestCase
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithUnterminatedOptionalSectionsThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -272,9 +254,7 @@ final class RouteTest extends UnitTestCase
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternWithUnopenedOptionalSectionsThrowsException()
     {
         $this->expectException(InvalidUriPatternException::class);
@@ -285,18 +265,13 @@ final class RouteTest extends UnitTestCase
     /*                                                                        *
      * URI matching                                                           *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchEmptyRequestPathIfUriPatternIsNotSet()
     {
         self::assertFalse($this->routeMatchesPath(''), 'Route should not match if no URI Pattern is set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchIfRequestPathIsDifferentFromStaticUriPattern()
     {
         $this->route->setUriPattern('foo/bar');
@@ -304,9 +279,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('bar/foo'), '"foo/bar"-Route should not match "bar/foo"-request.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchIfOneSegmentOfRequestPathIsDifferentFromItsRespectiveStaticUriPatternSegment()
     {
         $this->route->setUriPattern('foo/{bar}');
@@ -314,9 +287,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('bar/someValue'), '"foo/{bar}"-Route should not match "bar/someValue"-request.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesEmptyRequestPathIfUriPatternIsEmpty()
     {
         $this->route->setUriPattern('');
@@ -324,9 +295,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath(''), 'Route should match if URI Pattern and RequestPath are empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesIfRequestPathIsEqualToStaticUriPattern()
     {
         $this->route->setUriPattern('foo/bar');
@@ -334,9 +303,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('foo/bar'), '"foo/bar"-Route should match "foo/bar"-request.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchIfRequestPathIsEqualToStaticUriPatternWithoutSlashes()
     {
         $this->route->setUriPattern('required1/required2');
@@ -344,9 +311,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('required1required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesIfStaticSegmentsMatchAndASegmentExistsForAllDynamicUriPartSegments()
     {
         $this->route->setUriPattern('foo/{bar}');
@@ -354,9 +319,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('foo/someValue'), '"foo/{bar}"-Route should match "foo/someValue"-request.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMatchResultsReturnsCorrectResultsAfterSuccessfulMatch()
     {
         $this->route->setUriPattern('foo/{bar}');
@@ -365,9 +328,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame(['bar' => 'someValue'], $this->route->getMatchResults(), 'Route match results should be set correctly on successful match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticAndDynamicRoutesCanBeMixedInAnyOrder()
     {
         $this->route->setUriPattern('{key1}/foo/{key2}/bar');
@@ -377,9 +338,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame(['key1' => 'value1', 'key2' => 'value2'], $this->route->getMatchResults(), 'Route match results should be set correctly on successful match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternSegmentCanContainTwoDynamicRouteParts()
     {
         $this->route->setUriPattern('user/{firstName}-{lastName}');
@@ -389,9 +348,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame(['firstName' => 'john', 'lastName' => 'doe'], $this->route->getMatchResults(), 'Route match results should be set correctly on successful match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function uriPatternSegmentsCanContainMultipleDynamicRouteParts()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -401,9 +358,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame(['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3', 'key4' => 'value4', '@format' => 'value5'], $this->route->getMatchResults(), 'Route match results should be set correctly on successful match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchIfRoutePartDoesNotMatchAndDefaultValueIsSet()
     {
         $this->route->setUriPattern('{foo}');
@@ -412,9 +367,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath(''), 'Route should not match if required Route Part does not match.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setDefaultsAllowsToSetTheDefaultPackageControllerAndActionName()
     {
         $this->route->setUriPattern('SomePackage');
@@ -433,9 +386,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame($defaults['@action'], $matchResults['@action']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredRoutePartHandlerIsInvokedWhenCallingMatch()
     {
         $this->route->setUriPattern('{key1}/{key2}');
@@ -456,17 +407,17 @@ final class RouteTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider()
      * @param boolean $shouldThrowException
      * @param mixed $routePartValue
      */
+    #[DataProvider('matchesThrowsExceptionIfRoutePartValueContainsObjectsDataProvider')]
+    #[Test]
     public function matchesThrowsExceptionIfRoutePartValueContainsObjects($shouldThrowException, $routePartValue)
     {
         if ($shouldThrowException === true) {
             $this->expectException(InvalidRoutePartValueException::class);
         }
-        $mockRoutePart = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart = $this->createMock(RoutePartInterface::class);
         $mockRoutePart->expects($this->once())->method('match')->with('foo')->willReturn(true);
         $mockRoutePart->method('getName')->willReturn('TestRoutePart');
         $mockRoutePart->expects($this->once())->method('getValue')->willReturn($routePartValue);
@@ -491,22 +442,20 @@ final class RouteTest extends UnitTestCase
         yield [false, [true]];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function matchesRecursivelyMergesMatchResults()
     {
-        $mockRoutePart1 = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart1 = $this->createMock(RoutePartInterface::class);
         $mockRoutePart1->expects($this->once())->method('match')->willReturn(true);
         $mockRoutePart1->expects($this->atLeastOnce())->method('getName')->willReturn('firstLevel.secondLevel.routePart1');
         $mockRoutePart1->expects($this->once())->method('getValue')->willReturn('foo');
 
-        $mockRoutePart2 = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart2 = $this->createMock(RoutePartInterface::class);
         $mockRoutePart2->expects($this->once())->method('match')->willReturn(true);
         $mockRoutePart2->expects($this->atLeastOnce())->method('getName')->willReturn('someOtherRoutePart');
         $mockRoutePart2->expects($this->once())->method('getValue')->willReturn('bar');
 
-        $mockRoutePart3 = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart3 = $this->createMock(RoutePartInterface::class);
         $mockRoutePart3->expects($this->once())->method('match')->willReturn(true);
         $mockRoutePart3->expects($this->atLeastOnce())->method('getName')->willReturn('firstLevel.secondLevel.routePart2');
         $mockRoutePart3->expects($this->once())->method('getValue')->willReturn('baz');
@@ -524,10 +473,7 @@ final class RouteTest extends UnitTestCase
     /*                                                                        *
      * URI matching (optional Route Parts)                                    *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesEmptyRequestPathIfUriPatternContainsOneOptionalStaticRoutePart()
     {
         $this->route->setUriPattern('(optional)');
@@ -535,9 +481,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithAllPartsIfUriPatternContainsOneOptionalAndOneRequiredStaticRoutePart()
     {
         $this->route->setUriPattern('required(optional)');
@@ -545,9 +489,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('requiredoptional'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternContainsOneRequiredAndOneOptionalStaticRoutePart()
     {
         $this->route->setUriPattern('required(optional)');
@@ -555,9 +497,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternContainsOneOptionalAndOneRequiredStaticRoutePart()
     {
         $this->route->setUriPattern('(optional)required');
@@ -565,9 +505,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternContainsTwoOptionalAndOneRequiredStaticRoutePart()
     {
         $this->route->setUriPattern('(optional)required(optional2)');
@@ -575,9 +513,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithAllPartsIfUriPatternContainsTwoOptionalAndOneRequiredStaticRoutePart()
     {
         $this->route->setUriPattern('(optional)required(optional2)');
@@ -585,9 +521,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('optionalrequiredoptional2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeThrowsExceptionIfUriPatternContainsOneOptionalDynamicRoutePartWithoutDefaultValue()
     {
         $this->expectException(InvalidRouteSetupException::class);
@@ -596,9 +530,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesEmptyRequestPathIfUriPatternContainsOneOptionalDynamicRoutePartWithDefaultValue()
     {
         $this->route->setUriPattern('({optional})');
@@ -607,9 +539,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath(''));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchRequestPathContainingOnlySomeOfTheOptionalRouteParts()
     {
         $this->route->setUriPattern('page(.{@format})');
@@ -618,9 +548,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('page.'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathContainingNoneOfTheOptionalRouteParts()
     {
         $this->route->setUriPattern('page(.{@format})');
@@ -629,9 +557,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('page'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathContainingAllOfTheOptionalRouteParts()
     {
         $this->route->setUriPattern('page(.{@format})');
@@ -640,9 +566,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('page.html'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternEndsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required(/optional1/optional2)');
@@ -650,9 +574,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchRequestPathWithRequiredAndOnlyOneOptionalPartsIfUriPatternEndsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required(/optional1/optional2)');
@@ -660,9 +582,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('required/optional1'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchRequestPathWithAllPartsIfUriPatternEndsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required(/optional1/optional2)');
@@ -670,9 +590,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required/optional1/optional2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternContainsTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required1(/optional1/optional2)/required2');
@@ -680,9 +598,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required1/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchRequestPathWithOnlyOneOptionalPartIfUriPatternContainsTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required1/(optional1/optional2/)required2');
@@ -690,9 +606,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('required1/optional1/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithAllPartsIfUriPatternContainsTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('required1/(optional1/optional2/)required2');
@@ -700,9 +614,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required1/optional1/optional2/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithOnlyRequiredPartsIfUriPatternStartsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('(optional1/optional2/)required1/required2');
@@ -710,9 +622,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('required1/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchRequestPathWithOnlyOneOptionalPartIfUriPatternStartsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('(optional1/optional2/)required1/required2');
@@ -720,9 +630,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->routeMatchesPath('optional1/required1/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesRequestPathWithAllPartsIfUriPatternStartsWithTwoSuccessiveOptionalRouteParts()
     {
         $this->route->setUriPattern('(optional1/optional2/)required1/required2');
@@ -730,9 +638,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath('optional1/optional2/required1/required2'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesIfRoutePartDoesNotMatchButIsOptionalAndHasDefault()
     {
         $this->route->setUriPattern('({foo})');
@@ -741,9 +647,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->routeMatchesPath(''), 'Route should match if optional Route Part has a default value.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function defaultValuesAreSetForUriPatternSegmentsWithMultipleOptionalRouteParts()
     {
         $this->route->setUriPattern('{key1}-({key2})/({key3}).({key4}.{@format})');
@@ -760,9 +664,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame(['key1' => 'foo', 'key2' => 'defaultValue2', 'key3' => 'defaultValue3', 'key4' => 'bar', '@format' => 'xml'], $this->route->getMatchResults(), 'Route match results should be set correctly on successful match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotMatchIfRequestMethodIsNotAccepted()
     {
         $this->route->setUriPattern('');
@@ -782,9 +684,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->route->matches(new RouteContext($mockHttpRequest, RouteParameters::createEmpty())), 'Route must not match GET requests if only POST or PUT requests are accepted.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeMatchesIfRequestMethodIsAccepted()
     {
         $this->route->setUriPattern('');
@@ -808,10 +708,7 @@ final class RouteTest extends UnitTestCase
     /*                                                                        *
      * URI resolving                                                          *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function matchingRouteIsProperlyResolved()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -821,9 +718,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/value1-value2/value3.value4.xml', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function byDefaultRouteDoesNotResolveIfUriPatternContainsLessValuesThanAreSpecified()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -833,9 +728,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->resolveRouteValues($this->routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeAlwaysAppendsExceedingInternalArguments()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -846,9 +739,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/value1-value2/value3.value4.xml?__someInternalArgument=someValue', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeAlwaysAppendsExceedingInternalArgumentsRecursively()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -859,9 +750,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/value1-value2/value3.value4.xml?--subRequest%5B__someInternalArgument%5D=someValue', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeDoesNotResolveIfRouteValuesContainAnIdentityForAnArgumentThatIsNotPartOfTheRoute()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -871,9 +760,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->resolveRouteValues($this->routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeAppendsAllAdditionalQueryParametersIfUriPatternContainsLessValuesThanAreSpecifiedIfAppendExceedingArgumentsIsTrue()
     {
         $this->route->setUriPattern('{key1}-{key2}/{key3}.{key4}.{@format}');
@@ -885,9 +772,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/value1-value2/value3.value4.xml?__someInternalArgument=someValue&nonexistingkey=foo', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeCanBeResolvedIfASpecifiedValueIsEqualToItsDefaultValue()
     {
         $this->route->setUriPattern('{key2}');
@@ -897,9 +782,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->resolveRouteValues($this->routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeCanBeResolvedIfAComplexValueIsEqualToItsDefaultValue()
     {
         $this->route->setUriPattern('{key2.key2b}');
@@ -910,9 +793,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/key2bValue', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesAppendsDefaultValuesOfOptionalUriPartsToResolvedUriPathConstraint()
     {
         $this->route->setUriPattern('foo(/{bar}/{baz})');
@@ -925,9 +806,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesLowerCasesResolvedUriPathConstraintByDefault()
     {
         $this->route->setUriPattern('CamelCase/{someKey}');
@@ -937,9 +816,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/camelcase/camelcase', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesKeepsCaseOfResolvedUriIfToLowerCaseIsFalse()
     {
         $this->route->setUriPattern('CamelCase/{someKey}');
@@ -950,9 +827,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/CamelCase/CamelCase', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routeCantBeResolvedIfASpecifiedValueIsNotEqualToItsDefaultValue()
     {
         $this->route->setUriPattern('{key1}');
@@ -962,9 +837,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->resolveRouteValues($this->routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvedUriConstraintsIsEmptyAfterUnsuccessfulResolve()
     {
         $this->route->setUriPattern('{key1}');
@@ -977,9 +850,7 @@ final class RouteTest extends UnitTestCase
         self::assertNull($this->route->getResolvedUriConstraints()->getPathConstraint());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registeredRoutePartHandlerIsInvokedWhenCallingResolve()
     {
         $this->route->setUriPattern('{key1}/{key2}');
@@ -1000,9 +871,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/_resolve_invoked_/value2', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesPassesEmptyRouteParametersToRegisteredRoutePartHandlerByDefault()
     {
         $this->route->setUriPattern('{foo}');
@@ -1026,9 +895,7 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($routePartHandlerWasCalled, 'RoutePart handler was never called');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesPassesRouteParametersFromResolveContextToRegisteredRoutePartHandler()
     {
         $this->route->setUriPattern('{foo}');
@@ -1051,14 +918,12 @@ final class RouteTest extends UnitTestCase
         $this->mockObjectManager->expects($this->once())->method('get')->with(MockRoutePartHandler::class)->willReturn($mockRoutePartHandler);
 
         $baseUri = new Uri('http://localhost/');
-        $resolveContext = new Routing\Dto\ResolveContext($baseUri, $this->routeValues, false, '', $routeParameters);
+        $resolveContext = new ResolveContext($baseUri, $this->routeValues, false, '', $routeParameters);
         $this->route->resolves($resolveContext);
         self::assertTrue($routePartHandlerWasCalled, 'RoutePart handler was never called');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesReturnsFalseIfNotAllRouteValuesCanBeResolved()
     {
         $this->route->setUriPattern('foo');
@@ -1067,9 +932,7 @@ final class RouteTest extends UnitTestCase
         self::assertFalse($this->resolveRouteValues($routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesRespectsQueryStringConstraint()
     {
         $this->route->setUriPattern('{part1}');
@@ -1090,9 +953,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/?some=query%5Bstring%5D', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesAppendsRemainingRouteValuesToResolvedUriPathConstraintIfAppendExceedingArgumentsIsTrue()
     {
         $this->route->setUriPattern('foo');
@@ -1103,9 +964,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/foo?foo=bar&baz%5Bfoo2%5D=bar2', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesMergesRemainingRouteValuesWithQueryStringIfAppendExceedingArgumentsIsTrue()
     {
         $this->route->setUriPattern('{part1}');
@@ -1127,9 +986,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/?some%5Bnested%5D%5Bfoo%5D=ov%C3%A9rridden&some%5Bnested%5D%5Bbaz%5D=f%C3%B4os', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesMergesRemainingRouteValuesWithQueryStringAndResolvedUriIfAppendExceedingArgumentsIsTrue()
     {
         $this->route->setUriPattern('{part1}');
@@ -1151,9 +1008,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('https://neos.io:8080/some/path?some%5Bquery%5D=string&exceeding=argument#some-fragment', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesConvertsDomainObjectsToIdentityArrays()
     {
         $object1 = new \stdClass();
@@ -1175,9 +1030,7 @@ final class RouteTest extends UnitTestCase
         self::assertSame('/?foo=bar&someObject%5B__identity%5D=x&baz%5BsomeOtherObject%5D%5B__identity%5D=y', (string)$this->route->getResolvedUriConstraints()->toUri());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesReturnsTrueIfTargetControllerExists()
     {
         $this->route->setUriPattern('{@package}/{@subpackage}/{@controller}');
@@ -1187,13 +1040,11 @@ final class RouteTest extends UnitTestCase
         self::assertTrue($this->resolveRouteValues($this->routeValues));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesThrowsExceptionIfRoutePartValueIsNoString()
     {
         $this->expectException(InvalidRoutePartValueException::class);
-        $mockRoutePart = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart = $this->createMock(RoutePartInterface::class);
         $mockRoutePart->method('resolve')->willReturn(true);
         $mockRoutePart->method('hasValue')->willReturn(true);
         $mockRoutePart->expects($this->once())->method('getValue')->willReturn(['not a' => 'string']);
@@ -1204,13 +1055,11 @@ final class RouteTest extends UnitTestCase
         $this->resolveRouteValues([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesThrowsExceptionIfRoutePartDefaultValueIsNoString()
     {
         $this->expectException(InvalidRoutePartValueException::class);
-        $mockRoutePart = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart = $this->createMock(RoutePartInterface::class);
         $mockRoutePart->method('resolve')->willReturn(true);
         $mockRoutePart->method('hasValue')->willReturn(false);
         $mockRoutePart->expects($this->once())->method('getDefaultValue')->willReturn(['not a' => 'string']);
@@ -1221,21 +1070,19 @@ final class RouteTest extends UnitTestCase
         $this->resolveRouteValues([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolvesCallsCompareAndRemoveMatchingDefaultValues()
     {
         $defaultValues = ['foo' => 'bar'];
         $routeValues = ['bar' => 'baz'];
 
-        $mockRoutePart = $this->createMock(Routing\RoutePartInterface::class);
+        $mockRoutePart = $this->createMock(RoutePartInterface::class);
         $mockRoutePart->method('resolve')->willReturn(true);
         $mockRoutePart->method('hasValue')->willReturn(false);
         $mockRoutePart->expects($this->once())->method('getDefaultValue')->willReturn('defaultValue');
 
         /** @var Routing\Route|MockObject $route */
-        $route = $this->getAccessibleMock(Routing\Route::class, ['compareAndRemoveMatchingDefaultValues']);
+        $route = $this->getAccessibleMock(Route::class, ['compareAndRemoveMatchingDefaultValues']);
         $route->setAppendExceedingArguments(true);
         $this->inject($route, 'persistenceManager', $this->mockPersistenceManager);
         $route->setUriPattern('foo');
@@ -1245,7 +1092,7 @@ final class RouteTest extends UnitTestCase
 
         $route->expects($this->once())->method('compareAndRemoveMatchingDefaultValues')->with($defaultValues, $routeValues)->willReturn(true);
 
-        $resolveContext = new Routing\Dto\ResolveContext(new Uri('http://localhost'), $routeValues, false, '', RouteParameters::createEmpty());
+        $resolveContext = new ResolveContext(new Uri('http://localhost'), $routeValues, false, '', RouteParameters::createEmpty());
         self::assertTrue($route->resolves($resolveContext));
     }
 
@@ -1319,13 +1166,13 @@ final class RouteTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider compareAndRemoveMatchingDefaultValuesDataProvider()
      * @param array $defaults
      * @param array $routeValues
      * @param array $expectedModifiedRouteValues
      * @param boolean $expectedResult
      */
+    #[DataProvider('compareAndRemoveMatchingDefaultValuesDataProvider')]
+    #[Test]
     public function compareAndRemoveMatchingDefaultValuesTests(array $defaults, array $routeValues, $expectedModifiedRouteValues, $expectedResult)
     {
         $actualResult = $this->route->_callRef('compareAndRemoveMatchingDefaultValues', $defaults, $routeValues);
@@ -1335,9 +1182,7 @@ final class RouteTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseSetsDefaultValueOfRouteParts()
     {
         $this->route->setUriPattern('{key1}');
@@ -1353,16 +1198,14 @@ final class RouteTest extends UnitTestCase
                 'key1' => 'SomeDefaultValue',
             ]
         );
-        $mockRoutePartHandler = $this->createMock(Routing\DynamicRoutePartInterface::class);
+        $mockRoutePartHandler = $this->createMock(DynamicRoutePartInterface::class);
         $mockRoutePartHandler->expects($this->once())->method('setDefaultValue')->with('SomeDefaultValue');
         $this->mockObjectManager->expects($this->once())->method('get')->with('SomeRoutePartHandler')->willReturn($mockRoutePartHandler);
 
         $this->route->parse();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseSetsDefaultValueOfRoutePartsRecursively()
     {
         $this->route->setUriPattern('{foo.bar}');
@@ -1380,7 +1223,7 @@ final class RouteTest extends UnitTestCase
                 ]
             ]
         );
-        $mockRoutePartHandler = $this->createMock(Routing\DynamicRoutePartInterface::class);
+        $mockRoutePartHandler = $this->createMock(DynamicRoutePartInterface::class);
         $mockRoutePartHandler->expects($this->once())->method('setDefaultValue')->with('SomeDefaultValue');
         $this->mockObjectManager->expects($this->once())->method('get')->with('SomeRoutePartHandler')->willReturn($mockRoutePartHandler);
 

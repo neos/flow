@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ObjectManagement\ObjectManager;
 use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
 use Neos\Flow\Security\Exception\NoAuthenticationProviderFoundException;
@@ -24,9 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class AuthenticationProviderResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
         $this->expectException(NoAuthenticationProviderFoundException::class);
@@ -38,9 +36,7 @@ final class AuthenticationProviderResolverTest extends UnitTestCase
         $providerResolver->resolveProviderClass('notExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderReturnsTheCorrectProviderForAShortName()
     {
         $longClassNameForTest = 'Neos\Flow\Security\Authentication\Provider\ValidShortName';
@@ -64,9 +60,7 @@ final class AuthenticationProviderResolverTest extends UnitTestCase
         self::assertEquals($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderReturnsTheCorrectProviderForACompleteClassName()
     {
         $mockObjectManager = $this->createMock(ObjectManager::class);

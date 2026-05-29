@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Egulias\EmailValidator\EmailValidator;
 use Neos\Flow\Validation\Validator\EmailAddressValidator;
 
@@ -41,17 +42,13 @@ final class EmailAddressValidatorTest extends AbstractValidatorTestcase
         return $validator;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
@@ -101,10 +98,8 @@ final class EmailAddressValidatorTest extends AbstractValidatorTestcase
         yield ['test@[2001:db8:85a3:8d3:1319:8a2e:370:7348]'];
     }
 
-    /**
-     * @test
-     * @dataProvider validAddresses
-     */
+    #[DataProvider('validAddresses')]
+    #[Test]
     public function emailAddressValidatorHasNoErrorsForAValidEmailAddress($address)
     {
         self::assertFalse($this->validator->validate($address)->hasErrors());
@@ -158,28 +153,22 @@ final class EmailAddressValidatorTest extends AbstractValidatorTestcase
         yield ['some@one.net '];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidAddresses
-     */
+    #[DataProvider('invalidAddresses')]
+    #[Test]
     public function emailAddressValidatorHasErrorsForAnInvalidEmailAddress($address)
     {
         self::assertTrue($this->validator->validate($address)->hasErrors());
     }
 
-    /**
-     * @test
-     * @dataProvider addressesWithWarnings
-     */
+    #[DataProvider('addressesWithWarnings')]
+    #[Test]
     public function emailAddressValidatorUsingStrictHasErrorsForAnEmailAddressWithWarnings($address)
     {
         $this->validatorOptions(['strict' => true]);
         self::assertTrue($this->validator->validate($address)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function emailValidatorCreatesOneErrorForAnInvalidEmailAddress()
     {
         self::assertCount(1, $this->validator->validate('notAValidMailAddress')->getErrors());

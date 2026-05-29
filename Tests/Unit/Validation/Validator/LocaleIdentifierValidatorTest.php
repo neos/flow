@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\LocaleIdentifierValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,18 +26,14 @@ final class LocaleIdentifierValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = LocaleIdentifierValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localeIdentifierReturnsNoErrorIfLocaleIsEmpty()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localeIdentifierReturnsNoErrorIfLocaleIsValid()
     {
         self::assertFalse($this->validator->validate('de_DE')->hasErrors());
@@ -46,9 +42,7 @@ final class LocaleIdentifierValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate('AR-arab_ae')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function localeIdentifierReturnsErrorIfLocaleIsInvalid()
     {
         self::assertTrue($this->validator->validate('ThisIsOfCourseNoValidLocaleIdentifier')->hasErrors());

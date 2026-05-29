@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\Cookie;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Security\AccountFactory;
@@ -69,9 +69,7 @@ final class CsrfProtectionTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postRequestOnRestrictedActionWithoutCsrfTokenCausesAccessDeniedException()
     {
         $this->markTestIncomplete('Needs to be implemented');

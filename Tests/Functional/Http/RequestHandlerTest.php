@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Http;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Http\RequestHandler;
 use Neos\Flow\Tests\FunctionalTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,9 +29,7 @@ final class RequestHandlerTest extends FunctionalTestCase
      */
     protected static $testablePersistenceEnabled = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function httpRequestIsConvertedToAnActionRequestAndDispatchedToTheRespectiveController(): void
     {
         $foundRoute = false;

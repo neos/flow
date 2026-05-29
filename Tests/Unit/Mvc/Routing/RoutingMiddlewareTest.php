@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Http\ServerRequestAttributes;
@@ -37,17 +38,17 @@ final class RoutingMiddlewareTest extends UnitTestCase
     protected $routingMiddleware;
 
     /**
-     * @var Router|\PHPUnit\Framework\MockObject\MockObject
+     * @var Router|MockObject
      */
     protected $mockRouter;
 
     /**
-     * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RequestHandlerInterface|MockObject
      */
     protected $mockRequestHandler;
 
     /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ServerRequestInterface|MockObject
      */
     protected $mockHttpRequest;
 
@@ -75,9 +76,7 @@ final class RoutingMiddlewareTest extends UnitTestCase
         $this->mockHttpRequest->method('getUri')->willReturn($mockRequestUri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleStoresRouterMatchResultsInTheRequestAttributes()
     {
         $mockMatchResults = ['someRouterMatchResults'];

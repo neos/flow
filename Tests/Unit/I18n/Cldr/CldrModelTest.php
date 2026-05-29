@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Cldr\CldrParser;
+use Neos\Flow\I18n\Cldr\CldrModel;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
@@ -41,7 +43,7 @@ final class CldrModelTest extends UnitTestCase
         $mockCache = $this->createMock(VariableFrontend::class);
         $mockCache->expects($this->once())->method('has')->with(md5('foo;bar;baz'))->willReturn((false));
 
-        $mockCldrParser = $this->createMock(I18n\Cldr\CldrParser::class);
+        $mockCldrParser = $this->createMock(CldrParser::class);
         $matcher = self::exactly(3);
         $mockCldrParser->expects($matcher)->method('getParsedData')->willReturnCallback(function (...$parameters) use ($matcher, $sampleParsedFile1, $sampleParsedFile2, $sampleParsedFile3) {
             if ($matcher->numberOfInvocations() === 1) {
@@ -58,15 +60,13 @@ final class CldrModelTest extends UnitTestCase
             }
         });
 
-        $this->model = new I18n\Cldr\CldrModel($samplePaths);
+        $this->model = new CldrModel($samplePaths);
         $this->model->injectCache($mockCache);
         $this->model->injectParser($mockCldrParser);
         $this->model->initializeObject();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergesMultipleFilesAndResolvesAliasesCorrectly()
     {
         $sampleParsedFilesMerged = require(__DIR__ . '/../Fixtures/MockParsedCldrFilesMerged.php');
@@ -74,9 +74,7 @@ final class CldrModelTest extends UnitTestCase
         self::assertEquals($sampleParsedFilesMerged, $this->model->getRawData('/'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsRawArrayCorrectly()
     {
         $result = $this->model->getRawArray('dates/calendars/calendar[@type="gregorian"]/months/monthContext[@type="format"]/monthWidth[@type="abbreviated"]');
@@ -84,9 +82,7 @@ final class CldrModelTest extends UnitTestCase
         self::assertEquals('jan', $result['month[@type="1"]']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsElementCorrectly()
     {
         $result = $this->model->getElement('localeDisplayNames/localeDisplayPattern/localePattern');
@@ -98,18 +94,15 @@ final class CldrModelTest extends UnitTestCase
 
     /**
      * When the path points to a leaf, getRawArray() should return false.
-     *
-     * @test
      */
+    #[Test]
     public function getRawArrayAlwaysReturnsArrayOrFalse()
     {
         $result = $this->model->getRawArray('localeDisplayNames/localeDisplayPattern/localePattern');
         self::assertEquals(false, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNodeNameCorrectly()
     {
         $sampleNodeString1 = 'calendar';
@@ -119,9 +112,7 @@ final class CldrModelTest extends UnitTestCase
         self::assertEquals('calendar', $this->model->getNodeName($sampleNodeString2));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsAttributeValueCorrectly()
     {
         $sampleNodeString = 'dateFormatLength[@type="medium"][@alt="proposed"]';

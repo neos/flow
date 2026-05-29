@@ -13,6 +13,7 @@ namespace Neos\Flow\Tests\Functional\Security\Policy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
@@ -25,9 +26,7 @@ final class PolicyTest extends FunctionalTestCase
      */
     protected $testableSecurityEnabled = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAuthenticatedUsersHaveTheEverybodyAndAnonymousRole()
     {
         $hasEverybodyRole = false;

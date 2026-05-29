@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\RequestPattern;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Mvc\ActionRequest;
@@ -38,10 +39,8 @@ final class HostTest extends UnitTestCase
         yield ['http://flow.neos.io/', 'www.neos.io', false, 'Assert that different subdomain doesn\'t match.'];
     }
 
-    /**
-     * @dataProvider uriAndHostPatterns
-     * @test
-     */
+    #[DataProvider('uriAndHostPatterns')]
+    #[Test]
     public function requestMatchingBasicallyWorks($uri, $pattern, $expected, $message)
     {
         $httpRequest = new ServerRequest('GET', new Uri($uri));

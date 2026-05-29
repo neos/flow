@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Cryptography;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Cryptography\Algorithms;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -42,10 +43,8 @@ final class AlgorithmsTest extends UnitTestCase
         return $output;
     }
 
-    /**
-     * @test
-     * @dataProvider pbkdf2TestVectors
-     */
+    #[DataProvider('pbkdf2TestVectors')]
+    #[Test]
     public function pbkdf2TestVectorsAreCorrect($password, $salt, $iterationCount, $derivedKeyLength, $output)
     {
         $result = Algorithms::pbkdf2($password, $salt, $iterationCount, $derivedKeyLength, 'sha1');

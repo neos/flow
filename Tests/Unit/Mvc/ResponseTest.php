@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -22,9 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class ResponseTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringReturnsContentOfResponse()
     {
         $response = new ActionResponse();

@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceA;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassB;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassG;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\OuterPrototype;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
@@ -25,53 +30,45 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 final class ObjectManagerTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function ifOnlyOneImplementationExistsGetReturnsTheImplementationByTheSpecifiedInterface()
     {
-        $objectByInterface = $this->objectManager->get(Fixtures\InterfaceA::class);
-        $objectByClassName = $this->objectManager->get(Fixtures\InterfaceAImplementation::class);
+        $objectByInterface = $this->objectManager->get(InterfaceA::class);
+        $objectByClassName = $this->objectManager->get(InterfaceAImplementation::class);
 
-        self::assertInstanceOf(Fixtures\InterfaceAImplementation::class, $objectByInterface);
-        self::assertInstanceOf(Fixtures\InterfaceAImplementation::class, $objectByClassName);
+        self::assertInstanceOf(InterfaceAImplementation::class, $objectByInterface);
+        self::assertInstanceOf(InterfaceAImplementation::class, $objectByClassName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prototypeIsTheDefaultScopeIfNothingElseWasDefined()
     {
-        $instanceA = new Fixtures\PrototypeClassB();
-        $instanceB = new Fixtures\PrototypeClassB();
+        $instanceA = new PrototypeClassB();
+        $instanceB = new PrototypeClassB();
 
         self::assertNotSame($instanceA, $instanceB);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function interfaceObjectsHaveTheScopeDefinedInTheImplementationClassIfNothingElseWasSpecified()
     {
-        $objectByInterface = $this->objectManager->get(Fixtures\InterfaceA::class);
-        $objectByClassName = $this->objectManager->get(Fixtures\InterfaceAImplementation::class);
+        $objectByInterface = $this->objectManager->get(InterfaceA::class);
+        $objectByClassName = $this->objectManager->get(InterfaceAImplementation::class);
 
         self::assertSame($objectByInterface, $objectByClassName);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function shutdownObjectMethodIsCalledAfterRegistrationViaConstructor()
     {
-        $entity = new Fixtures\PrototypeClassG();
+        $entity = new PrototypeClassG();
         $entity->setName('Shutdown');
 
         /**
          * When shutting down the ObjectManager shutdownObject() on Fixtures\TestEntityWithShutdown is called
          * and sets $destructed property to true
          */
-        \Neos\Flow\Core\Bootstrap::$staticObjectManager->shutdown();
+        Bootstrap::$staticObjectManager->shutdown();
 
         self::assertTrue($entity->isDestructed());
     }
@@ -79,8 +76,8 @@ final class ObjectManagerTest extends FunctionalTestCase
     /**
      * ObjectManager has to be shutdown before the ConfigurationManager
      * @see https://github.com/neos/flow-development-collection/issues/2183
-     * @test
      */
+    #[Test]
     public function objectManagerShutdownSlotIsRegisteredBeforeConfigurationManager(): void
     {
         $dispatcher = $this->objectManager->get(Dispatcher::class);
@@ -105,14 +102,12 @@ final class ObjectManagerTest extends FunctionalTestCase
         self::assertSame(ConfigurationManager::class, $last);
     }
     
-    /**
-     * @test
-     */
+    #[Test]
     public function virtualObjectsCanBeInstantiated()
     {
-        /** @var Fixtures\Flow175\OuterPrototype $object1 */
+        /** @var OuterPrototype $object1 */
         $object1 = $this->objectManager->get('Neos.Flow:VirtualObject1');
-        /** @var Fixtures\Flow175\OuterPrototype $object2 */
+        /** @var OuterPrototype $object2 */
         $object2 = $this->objectManager->get('Neos.Flow:VirtualObject2');
 
         self::assertSame('Hello Bastian!', $object1->getInner()->greet('Bastian'));

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\NumberRangeValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -25,25 +25,19 @@ final class NumberRangeValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = NumberRangeValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange()
     {
         $this->validatorOptions(['minimum' => 0, 'maximum' => 1000]);
@@ -51,27 +45,21 @@ final class NumberRangeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(10.5)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsErrorForANumberOutOfRange()
     {
         $this->validatorOptions(['minimum' => 0, 'maximum' => 1000]);
         self::assertTrue($this->validator->validate(1000.1)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsNoErrorForANumberInReversedRange()
     {
         $this->validatorOptions(['minimum' => 1000, 'maximum' => 0]);
         self::assertFalse($this->validator->validate(100)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function numberRangeValidatorReturnsErrorForAString()
     {
         $this->validatorOptions(['minimum' => 0, 'maximum' => 1000]);

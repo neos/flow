@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use Neos\Flow\Reflection\ClassSchema;
 use Neos\Flow\Reflection\Exception\ClassSchemaConstraintViolationException;
 use Neos\Flow\Tests\UnitTestCase;
@@ -26,9 +28,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class ClassSchemaTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function hasPropertyReturnsTrueOnlyForExistingProperties()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -40,9 +40,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertFalse($classSchema->hasProperty('c'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertiesReturnsAddedProperties()
     {
         $expectedProperties = [
@@ -59,9 +57,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertSame($expectedProperties, $classSchema->getProperties());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertyLazyReturnsAttributeForAddedProperties()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -72,9 +68,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue($classSchema->isPropertyLazy('b'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isPropertyTransientReturnsAttributeForAddedProperties()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -85,9 +79,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertTrue($classSchema->isPropertyTransient('b'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function markAsIdentityPropertyRejectsUnknownProperties()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -96,9 +88,7 @@ final class ClassSchemaTest extends UnitTestCase
         $classSchema->markAsIdentityProperty('unknownProperty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function markAsIdentityPropertyRejectsLazyLoadedProperties()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -108,9 +98,7 @@ final class ClassSchemaTest extends UnitTestCase
         $classSchema->markAsIdentityProperty('lazyProperty');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getIdentityPropertiesReturnsNamesAndTypes()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -152,11 +140,9 @@ final class ClassSchemaTest extends UnitTestCase
         yield ['null|array<Neos\Flow\Baz>'];
     }
 
-    /**
-     * @dataProvider validPropertyTypes()
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[DataProvider('validPropertyTypes')]
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function addPropertyAcceptsValidPropertyTypes($propertyType)
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -172,10 +158,8 @@ final class ClassSchemaTest extends UnitTestCase
         yield ['int<Neos\Flow\Baz>'];
     }
 
-    /**
-     * @dataProvider invalidPropertyTypes()
-     * @test
-     */
+    #[DataProvider('invalidPropertyTypes')]
+    #[Test]
     public function addPropertyRejectsInvalidPropertyTypes($propertyType)
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -185,9 +169,8 @@ final class ClassSchemaTest extends UnitTestCase
 
     /**
      * Collections are arrays, ArrayObject and SplObjectStorage
-     *
-     * @test
      */
+    #[Test]
     public function addPropertyStoresElementTypesForCollectionProperties()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -198,9 +181,7 @@ final class ClassSchemaTest extends UnitTestCase
         self::assertEquals('Neos\Flow\Foo', $properties['a']['elementType']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function markAsIdentityPropertyThrowsExceptionForValueObjects()
     {
         $this->expectException(ClassSchemaConstraintViolationException::class);
@@ -209,9 +190,7 @@ final class ClassSchemaTest extends UnitTestCase
         $classSchema->markAsIdentityProperty('foo');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setModelTypeResetsIdentityPropertiesAndAggregateRootForValueObjects()
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -240,10 +219,10 @@ final class ClassSchemaTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider collectionTypes
      * @param string $type
      */
+    #[DataProvider('collectionTypes')]
+    #[Test]
     public function isMultiValuedPropertyReturnsTrueForCollectionTypes($type)
     {
         $classSchema = new ClassSchema('SomeClass');
@@ -263,10 +242,10 @@ final class ClassSchemaTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider nullableTypes
      * @param string $type
      */
+    #[DataProvider('nullableTypes')]
+    #[Test]
     public function correctlyReturnsNullabilityForProperties($type)
     {
         $classSchema = new ClassSchema('SomeClass');

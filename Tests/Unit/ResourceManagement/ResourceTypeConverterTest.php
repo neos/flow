@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\ResourceManagement\Exception;
 use Neos\Flow\ResourceManagement\PersistentResource;
@@ -55,9 +55,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         $this->resourceTypeConverter->_set('resourceManager', $this->mockResourceManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string', 'array', UploadedFileInterface::class], $this->resourceTypeConverter->getSupportedSourceTypes(), 'Source types do not match');
@@ -65,42 +63,32 @@ final class ResourceTypeConverterTest extends UnitTestCase
         self::assertEquals(1, $this->resourceTypeConverter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueIfSourceTypeIsAnArrayWithErrorSet()
     {
         self::assertTrue($this->resourceTypeConverter->canConvertFrom(['error' => \UPLOAD_ERR_OK], PersistentResource::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueIfSourceTypeIsAnArrayWithOriginallySubmittedResourceSet()
     {
         self::assertTrue($this->resourceTypeConverter->canConvertFrom(['originallySubmittedResource' => 'SomeResource'], PersistentResource::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfSourceArrayIsEmpty()
     {
         self::assertNull($this->resourceTypeConverter->convertFrom([], PersistentResource::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfNoFileWasUploaded()
     {
         $source = ['error' => \UPLOAD_ERR_NO_FILE];
         self::assertNull($this->resourceTypeConverter->convertFrom($source, PersistentResource::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsTrueIfSourceIsAnArrayWithDataAndFilename()
     {
         $source = [
@@ -113,18 +101,14 @@ final class ResourceTypeConverterTest extends UnitTestCase
         $this->resourceTypeConverter->convertFrom($source, PersistentResource::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfNoFileWasUploadedAndEmptyHashIsSet()
     {
         $source = ['error' => \UPLOAD_ERR_NO_FILE, 'hash' => ''];
         self::assertNull($this->resourceTypeConverter->convertFrom($source, PersistentResource::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsPreviouslyUploadedResourceIfNoNewFileWasUploaded()
     {
         $source = [
@@ -144,9 +128,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         self::assertSame($expectedResource, $actualResource);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsNullIfSpecifiedResourceCantBeFound()
     {
         $source = [
@@ -164,9 +146,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         self::assertNull($actualResource);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorIfFileUploadFailed()
     {
         $source = [
@@ -177,9 +157,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         self::assertInstanceOf(FlowError\Error::class, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAddsSystemLogEntryIfFileUploadFailedDueToAServerError()
     {
         $source = [
@@ -193,9 +171,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         $this->resourceTypeConverter->convertFrom($source, PersistentResource::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromImportsResourceIfFileUploadSucceeded()
     {
         $source = [
@@ -209,9 +185,7 @@ final class ResourceTypeConverterTest extends UnitTestCase
         self::assertSame($mockResource, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsAnErrorIfTheUploadedFileCantBeImported()
     {
         $this->inject($this->resourceTypeConverter, 'logger', $this->createStub(LoggerInterface::class));

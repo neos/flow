@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Persistence\Aspect;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Persistence\Aspect\PersistenceMagicAspect;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -53,9 +53,9 @@ final class PersistenceMagicAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function cloneObjectMarksTheObjectAsCloned()
     {
         $object = new \stdClass();
@@ -66,9 +66,9 @@ final class PersistenceMagicAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function generateUuidGeneratesUuidAndRegistersProxyAsNewObject()
     {
         $className = 'Class' . md5(uniqid((string)mt_rand(), true));

@@ -13,7 +13,12 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassA;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithLazyDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassB;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassC;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\AnotherClassWithLazyDependencies;
 use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -23,51 +28,45 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 final class LazyDependencyInjectionTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyDependencyIsOnlyInjectedIfMethodOnDependencyIsCalledForTheFirstTime()
     {
-        $this->objectManager->forgetInstance(Fixtures\SingletonClassA::class);
+        $this->objectManager->forgetInstance(SingletonClassA::class);
 
-        $object = $this->objectManager->get(Fixtures\ClassWithLazyDependencies::class);
+        $object = $this->objectManager->get(ClassWithLazyDependencies::class);
         self::assertInstanceOf(DependencyProxy::class, $object->lazyA);
 
         $actualObjectB = $object->lazyA->getObjectB();
         $this->assertNotInstanceOf(DependencyProxy::class, $object->lazyA);
 
-        $objectA = $this->objectManager->get(Fixtures\SingletonClassA::class);
-        $expectedObjectB = $this->objectManager->get(Fixtures\SingletonClassB::class);
+        $objectA = $this->objectManager->get(SingletonClassA::class);
+        $expectedObjectB = $this->objectManager->get(SingletonClassB::class);
         self::assertSame($objectA, $object->lazyA);
         self::assertSame($expectedObjectB, $actualObjectB);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dependencyIsInjectedDirectlyIfLazyIsTurnedOff()
     {
-        $object = $this->objectManager->get(Fixtures\ClassWithLazyDependencies::class);
-        self::assertInstanceOf(Fixtures\SingletonClassC::class, $object->eagerC);
+        $object = $this->objectManager->get(ClassWithLazyDependencies::class);
+        self::assertInstanceOf(SingletonClassC::class, $object->eagerC);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lazyDependencyIsInjectedIntoAllClassesWhichNeedItIfItIsUsedTheFirstTime()
     {
-        $this->objectManager->forgetInstance(Fixtures\SingletonClassA::class);
-        $this->objectManager->forgetInstance(Fixtures\SingletonClassB::class);
+        $this->objectManager->forgetInstance(SingletonClassA::class);
+        $this->objectManager->forgetInstance(SingletonClassB::class);
 
-        $object1 = $this->objectManager->get(Fixtures\ClassWithLazyDependencies::class);
-        $object2 = $this->objectManager->get(Fixtures\AnotherClassWithLazyDependencies::class);
+        $object1 = $this->objectManager->get(ClassWithLazyDependencies::class);
+        $object2 = $this->objectManager->get(AnotherClassWithLazyDependencies::class);
 
         self::assertInstanceOf(DependencyProxy::class, $object1->lazyA);
         self::assertInstanceOf(DependencyProxy::class, $object2->lazyA);
 
         $object2->lazyA->getObjectB();
 
-        $objectA = $this->objectManager->get(Fixtures\SingletonClassA::class);
+        $objectA = $this->objectManager->get(SingletonClassA::class);
         self::assertSame($objectA, $object1->lazyA);
         self::assertSame($objectA, $object2->lazyA);
     }

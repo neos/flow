@@ -12,7 +12,7 @@ namespace Neos\Flow\Tests\Functional\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\I18n\Cldr\Reader\DatesReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -30,9 +30,7 @@ final class DatesReaderTest extends FunctionalTestCase
         $this->datesReader = $this->objectManager->get(DatesReader::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseFormatFromCldrCachesDateTimePatternsForEachLanguageIndependently(): void
     {
         $convertFormatToString = function (array $formatArray) {

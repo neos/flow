@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Parser\DatetimeParser;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Cldr\Reader\DatesReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Validation\Validator\DateTimeValidator;
 use Neos\Flow\I18n;
@@ -38,12 +40,10 @@ final class DateTimeValidatorTest extends AbstractValidatorTestcase
         $sampleLocale = new Locale('en_GB');
         $mockObjectManagerReturnValues[Locale::class] = $sampleLocale;
 
-        $this->mockDatetimeParser = $this->createMock(I18n\Parser\DatetimeParser::class);
+        $this->mockDatetimeParser = $this->createMock(DatetimeParser::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         $this->validatorOptions([]);
@@ -51,9 +51,7 @@ final class DateTimeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         $this->validatorOptions([]);
@@ -61,9 +59,7 @@ final class DateTimeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsOfTypeDateTime()
     {
         $this->validatorOptions([]);
@@ -71,29 +67,25 @@ final class DateTimeValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate(new \DateTime())->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsErrorsOnIncorrectValues()
     {
         $sampleInvalidTime = 'this is not a time string';
 
         $this->mockDatetimeParser->expects($this->once())->method('parseTime', $sampleInvalidTime)->willReturn((false));
-        $this->validatorOptions(['locale' => 'en_GB', 'formatLength' => I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_DEFAULT, 'formatType' => I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_TIME]);
+        $this->validatorOptions(['locale' => 'en_GB', 'formatLength' => DatesReader::FORMAT_LENGTH_DEFAULT, 'formatType' => DatesReader::FORMAT_TYPE_TIME]);
         $this->inject($this->validator, 'datetimeParser', $this->mockDatetimeParser);
 
         self::assertTrue($this->validator->validate($sampleInvalidTime)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsTrueForCorrectValues()
     {
         $sampleValidDateTime = '10.08.2010, 18:00 CEST';
 
         $this->mockDatetimeParser->expects($this->once())->method('parseDateAndTime', $sampleValidDateTime)->willReturn((['parsed datetime']));
-        $this->validatorOptions(['locale' => 'en_GB', 'formatLength' => I18n\Cldr\Reader\DatesReader::FORMAT_LENGTH_FULL, 'formatType' => I18n\Cldr\Reader\DatesReader::FORMAT_TYPE_DATETIME]);
+        $this->validatorOptions(['locale' => 'en_GB', 'formatLength' => DatesReader::FORMAT_LENGTH_FULL, 'formatType' => DatesReader::FORMAT_TYPE_DATETIME]);
         $this->inject($this->validator, 'datetimeParser', $this->mockDatetimeParser);
 
         self::assertFalse($this->validator->validate($sampleValidDateTime)->hasErrors());

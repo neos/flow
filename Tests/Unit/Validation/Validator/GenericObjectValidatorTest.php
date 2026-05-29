@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Error\Messages as Error;
 use Neos\Flow\Validation\Validator\IntegerValidator;
@@ -29,25 +30,19 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = GenericObjectValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull()
     {
         self::assertTrue($this->validator->validate('foo')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorShouldReturnNoErrorsIfTheValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
@@ -83,10 +78,8 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider dataProviderForValidator
-     */
+    #[DataProvider('dataProviderForValidator')]
+    #[Test]
     public function validateChecksAllPropertiesForWhichAPropertyValidatorExists($mockObject, $validationResultForFoo, $validationResultForBar, $errors)
     {
         $validatorForFoo = $this->createMock(ValidatorInterface::class);
@@ -100,9 +93,7 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         self::assertEquals($errors, $this->validator->validate($mockObject)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateCanHandleRecursiveTargetsWithoutEndlessLooping()
     {
         $classNameA = 'B' . md5(uniqid((string)mt_rand(), true));
@@ -122,9 +113,7 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($aValidator->validate($A)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDetectsFailuresInRecursiveTargetsI()
     {
         $classNameA = 'A' . md5(uniqid((string)mt_rand(), true));
@@ -152,9 +141,7 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         self::assertSame(['b.uuid' => [$error]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateDetectsFailuresInRecursiveTargetsII()
     {
         $classNameA = 'A' . md5(uniqid((string)mt_rand(), true));
@@ -183,9 +170,7 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         self::assertSame(['b.uuid' => [$error1], 'uuid' => [$error1]], $aValidator->validate($A)->getFlattenedErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectsAreValidatedOnlyOnce()
     {
         $className = 'A' . md5(uniqid((string)mt_rand(), true));

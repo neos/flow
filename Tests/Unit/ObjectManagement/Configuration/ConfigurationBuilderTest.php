@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\ObjectManagement\Exception\UnknownClassException;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\ObjectManagement\Configuration\Configuration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
@@ -32,9 +33,7 @@ use Neos\Flow\Annotations as Flow;
  */
 final class ConfigurationBuilderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function allBasicOptionsAreSetCorrectly()
     {
         $factoryObjectName = 'ConfigurationBuilderTest' . md5(uniqid((string)mt_rand(), true));
@@ -63,9 +62,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration, 'The manually created and the built object configuration don\'t match.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsOfTypeObjectCanSpecifyAdditionalObjectConfigurationOptions()
     {
         $configurationArray = [];
@@ -83,9 +80,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesOfTypeObjectCanSpecifyAdditionalObjectConfigurationOptions()
     {
         $configurationArray = [];
@@ -103,9 +98,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToPassArraysAsStraightArgumentOrPropertyValues()
     {
         $configurationArray = [];
@@ -121,9 +114,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidOptionResultsInException()
     {
         $this->expectException(InvalidObjectConfigurationException::class);
@@ -132,9 +123,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         $configurationBuilder->_call('parseConfigurationArray', 'TestObject', $configurationArray, __CLASS__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function privatePropertyAnnotatedForInjectionThrowsException()
     {
         $this->expectException(Exception::class);
@@ -162,12 +151,10 @@ final class ConfigurationBuilderTest extends UnitTestCase
         $configurationBuilder->_callRef('autowireProperties', $dummyObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function errorOnGetClassMethodsThrowsException()
     {
-        $this->expectException(Exception\UnknownClassException::class);
+        $this->expectException(UnknownClassException::class);
         $configurationArray = [];
         $configurationArray['properties']['someProperty']['object']['name'] = 'Foo';
         $configurationArray['properties']['someProperty']['object']['className'] = 'foobar';
@@ -178,9 +165,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         $configurationBuilder->_callRef('autowireProperties', $dummyObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseConfigurationArrayBuildsConfigurationPropertyForInjectedSetting()
     {
         $configurationArray = [];
@@ -195,9 +180,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($expectedConfigurationProperty, $builtObjectConfiguration->getProperties()['someProperty']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseConfigurationArrayBuildsConfigurationArgumentForInjectedSetting()
     {
         $configurationArray = [];
@@ -212,9 +195,7 @@ final class ConfigurationBuilderTest extends UnitTestCase
         self::assertEquals($expectedConfigurationArgument, $builtObjectConfiguration->getArguments()[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectsCreatedByFactoryShouldNotFailOnMissingConstructorArguments()
     {
         $configurationArray = [

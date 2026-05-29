@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Validation\Validator\DisjunctionValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
@@ -24,9 +24,7 @@ use Neos\Error\Messages as Error;
  */
 final class DisjunctionValidatorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorsIfOneValidatorReturnsNoError()
     {
         $validatorDisjunction = new DisjunctionValidator([]);
@@ -45,9 +43,7 @@ final class DisjunctionValidatorTest extends UnitTestCase
         self::assertFalse($validatorDisjunction->validate('some subject')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsAllErrorsIfAllValidatorsReturnErrrors()
     {
         $validatorDisjunction = new DisjunctionValidator([]);

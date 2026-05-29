@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Functional\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\PostRepository;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Validation\Validator\UniqueEntityValidator;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
 
@@ -21,7 +25,7 @@ use Neos\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
  * Testcase for the UniqueEntity Validator
  *
  */
-final class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCase
+final class UniqueEntityValidatorTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -29,7 +33,7 @@ final class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCas
     protected static $testablePersistenceEnabled = true;
 
     /**
-     * @var \Neos\Flow\Tests\Functional\Persistence\Fixtures\PostRepository
+     * @var PostRepository
      */
     protected $postRepository;
 
@@ -39,19 +43,17 @@ final class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCas
     protected function setUp(): void
     {
         parent::setUp();
-        if (!$this->persistenceManager instanceof \Neos\Flow\Persistence\Doctrine\PersistenceManager) {
+        if (!$this->persistenceManager instanceof PersistenceManager) {
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
 
-        $this->postRepository = $this->objectManager->get(\Neos\Flow\Tests\Functional\Persistence\Fixtures\PostRepository::class);
+        $this->postRepository = $this->objectManager->get(PostRepository::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorBehavesCorrectlyOnDuplicateEntityWithSingleConfiguredIdentityProperty()
     {
-        $validator = new \Neos\Flow\Validation\Validator\UniqueEntityValidator(['identityProperties' => ['title']]);
+        $validator = new UniqueEntityValidator(['identityProperties' => ['title']]);
         $post = new Post();
         $post->setTitle('The title of the initial post');
         $this->postRepository->add($post);
@@ -67,12 +69,10 @@ final class UniqueEntityValidatorTest extends \Neos\Flow\Tests\FunctionalTestCas
         self::assertTrue($validator->validate($nextPost)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validatorBehavesCorrectlyOnDuplicateEntityWithMultipleAnnotatedIdentityProperties()
     {
-        $validator = new \Neos\Flow\Validation\Validator\UniqueEntityValidator();
+        $validator = new UniqueEntityValidator();
 
         $book = new AnnotatedIdentitiesEntity();
         $book->setTitle('Watership Down');

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing\Dto;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\Routing\Dto\RouteTags;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -29,55 +30,43 @@ final class RouteTagsTest extends UnitTestCase
         yield ['tag' => 'verylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowedverylongtagvaluewithmorethan150charactersshouldnotbeallowed'];
     }
 
-    /**
-     * @test
-     * @dataProvider createFromTagThrowsExceptionForInvalidTagsDataProvider
-     */
+    #[DataProvider('createFromTagThrowsExceptionForInvalidTagsDataProvider')]
+    #[Test]
     public function createFromTagThrowsExceptionForInvalidTags($tag)
     {
         $this->expectException(\InvalidArgumentException::class);
         RouteTags::createFromTag($tag);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromTagCreatesANewInstanceWithTheGivenTag()
     {
         $tags = RouteTags::createFromTag('foo');
         self::assertSame(['foo'], $tags->getTags());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayCreatesAnInstanceWithAllGivenTags()
     {
         $tags = RouteTags::createFromArray(['foo', 'bar', 'baz']);
         self::assertSame(['foo', 'bar', 'baz'], $tags->getTags());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayDoesNotAcceptIntegerValues()
     {
         $this->expectException(\InvalidArgumentException::class);
         RouteTags::createFromArray([123]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromArrayDoesNotAcceptObjectValues()
     {
         $this->expectException(\InvalidArgumentException::class);
         RouteTags::createFromArray([new \stdClass()]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mergeUnifiesTags()
     {
         $tags1 = RouteTags::createEmpty()->withTag('foo')->withTag('bar');
@@ -86,9 +75,7 @@ final class RouteTagsTest extends UnitTestCase
         self::assertSame(['foo', 'bar', 'baz'], $mergedTags->getTags());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withTagReturnsTheSameInstanceIfTheTagAlreadyExists()
     {
         $tags1 = RouteTags::createEmpty()->withTag('foo');
@@ -97,9 +84,7 @@ final class RouteTagsTest extends UnitTestCase
         self::assertSame($tags1, $tags2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withTagReturnsAnInstanceWithTheNewTag()
     {
         $tags1 = RouteTags::createEmpty()->withTag('foo');
@@ -108,9 +93,7 @@ final class RouteTagsTest extends UnitTestCase
         self::assertTrue($tags2->has('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function withTagDoesNotMutateTheInstance()
     {
         $tags1 = RouteTags::createEmpty()->withTag('foo');

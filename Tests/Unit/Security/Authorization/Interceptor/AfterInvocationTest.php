@@ -13,7 +13,10 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Authorization\AfterInvocationManagerInterface;
+use Neos\Flow\Security\Authorization\Interceptor\AfterInvocation;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security;
 
@@ -22,17 +25,15 @@ use Neos\Flow\Security;
  */
 final class AfterInvocationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function invokeReturnsTheResultPreviouslySetBySetResultIfTheMethodIsNotIntercepted()
     {
-        $mockSecurityContext = $this->createStub(Security\Context::class);
-        $mockAfterInvocationManager = $this->createStub(Security\Authorization\AfterInvocationManagerInterface::class);
+        $mockSecurityContext = $this->createStub(Context::class);
+        $mockAfterInvocationManager = $this->createStub(AfterInvocationManagerInterface::class);
 
         $theResult = new \ArrayObject(['some' => 'stuff']);
 
-        $interceptor = new Security\Authorization\Interceptor\AfterInvocation($mockSecurityContext, $mockAfterInvocationManager);
+        $interceptor = new AfterInvocation($mockSecurityContext, $mockAfterInvocationManager);
         $interceptor->setResult($theResult);
         self::assertSame($theResult, $interceptor->invoke());
     }

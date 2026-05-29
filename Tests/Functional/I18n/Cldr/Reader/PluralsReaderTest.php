@@ -12,7 +12,9 @@ namespace Neos\Flow\Tests\Functional\I18n\Cldr\Reader;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Cldr\Reader\PluralsReader;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\I18n;
@@ -58,13 +60,11 @@ final class PluralsReaderTest extends FunctionalTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider quantities
-     */
+    #[DataProvider('quantities')]
+    #[Test]
     public function returnsCorrectPluralForm(string $localeName, array $quantities): void
     {
-        $locale = new I18n\Locale($localeName);
+        $locale = new Locale($localeName);
         foreach ($quantities as [$quantity, $pluralForm]) {
             $result = $this->pluralsReader->getPluralForm($quantity, $locale);
             self::assertEquals($pluralForm, $result);

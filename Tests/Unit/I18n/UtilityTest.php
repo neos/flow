@@ -13,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\I18n;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Utility;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
 
@@ -35,13 +37,11 @@ final class UtilityTest extends UnitTestCase
         yield ['de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4', ['de-DE', 'de', 'en-US', 'en']];
     }
 
-    /**
-     * @test
-     * @dataProvider sampleHttpAcceptLanguageHeaders
-     */
+    #[DataProvider('sampleHttpAcceptLanguageHeaders')]
+    #[Test]
     public function httpAcceptLanguageHeadersAreParsedCorrectly($acceptLanguageHeader, array $expectedResult)
     {
-        $languages = I18n\Utility::parseAcceptLanguageHeader($acceptLanguageHeader);
+        $languages = Utility::parseAcceptLanguageHeader($acceptLanguageHeader);
         self::assertEquals($expectedResult, $languages);
     }
 
@@ -61,13 +61,11 @@ final class UtilityTest extends UnitTestCase
         yield ['foobar.xml.php', false];
     }
 
-    /**
-     * @test
-     * @dataProvider filenamesWithLocale
-     */
+    #[DataProvider('filenamesWithLocale')]
+    #[Test]
     public function localeIdentifiersAreCorrectlyExtractedFromFilename($filename, $expectedResult)
     {
-        $result = I18n\Utility::extractLocaleTagFromFilename($filename);
+        $result = Utility::extractLocaleTagFromFilename($filename);
         self::assertEquals($expectedResult, $result);
     }
 
@@ -87,25 +85,21 @@ final class UtilityTest extends UnitTestCase
         yield ['foobaz', 'baz', 'ending'];
     }
 
-    /**
-     * @test
-     * @dataProvider sampleHaystackStringsAndNeedleStrings
-     */
+    #[DataProvider('sampleHaystackStringsAndNeedleStrings')]
+    #[Test]
     public function stringIsFoundAtBeginningOfAnotherString($haystack, $needle, $comparison)
     {
         $expectedResult = ($comparison === 'beginning' || $comparison === 'both') ? true : false;
-        $result = I18n\Utility::stringBeginsWith($haystack, $needle);
+        $result = Utility::stringBeginsWith($haystack, $needle);
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * @test
-     * @dataProvider sampleHaystackStringsAndNeedleStrings
-     */
+    #[DataProvider('sampleHaystackStringsAndNeedleStrings')]
+    #[Test]
     public function stringIsFoundAtEndingOfAnotherString($haystack, $needle, $comparison)
     {
         $expectedResult = ($comparison === 'ending' || $comparison === 'both') ? true : false;
-        $result = I18n\Utility::stringEndsWith($haystack, $needle);
+        $result = Utility::stringEndsWith($haystack, $needle);
         self::assertEquals($expectedResult, $result);
     }
 }

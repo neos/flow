@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\TypeConverter\ArrayConverter;
 use Neos\Flow\Tests\UnitTestCase;
@@ -34,9 +35,7 @@ final class ArrayConverterTest extends UnitTestCase
         $this->converter = new ArrayConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['array', 'string', PersistentResource::class], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -44,9 +43,7 @@ final class ArrayConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromDoesNotModifyTheSourceArray()
     {
         $sourceArray = ['Foo' => 'Bar', 'Baz'];
@@ -61,10 +58,8 @@ final class ArrayConverterTest extends UnitTestCase
         yield ['[1,2,"foo"]', [1,2, 'foo'], [ArrayConverter::CONFIGURATION_STRING_FORMAT => ArrayConverter::STRING_FORMAT_JSON]];
     }
 
-    /**
-     * @test
-     * @dataProvider stringToArrayDataProvider
-     */
+    #[DataProvider('stringToArrayDataProvider')]
+    #[Test]
     public function canConvertFromStringToArray($source, $expectedResult, $mappingConfiguration)
     {
         // Create a map of arguments to return values.

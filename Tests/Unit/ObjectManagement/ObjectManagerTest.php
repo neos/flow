@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 /*
  * This file is part of the Neos.Flow package.
  *
@@ -38,12 +41,11 @@ final class ObjectManagerTest extends UnitTestCase
     }
 
     /**
-     * @test
-     * @dataProvider factoryGenerationDataProvider
-     *
      * @param int $scope
      * @param int $factoryCalls
      */
+    #[DataProvider('factoryGenerationDataProvider')]
+    #[Test]
     public function getFactoryGeneratedPrototypeObject($scope, $factoryCalls)
     {
         /** @var ObjectManager $objectManager */
@@ -73,9 +75,7 @@ final class ObjectManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticFactoryGeneratedPrototypeObject()
     {
         $objects = [

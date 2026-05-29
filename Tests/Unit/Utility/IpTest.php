@@ -13,14 +13,16 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Utility\Ip;
 
 /**
  * Testcase for the Utility Ip class
  *
  */
-final class IpTest extends \Neos\Flow\Tests\UnitTestCase
+final class IpTest extends UnitTestCase
 {
     /**
      * Data provider with valid and invalid IP ranges
@@ -41,10 +43,8 @@ final class IpTest extends \Neos\Flow\Tests\UnitTestCase
         yield ['127.0.0.1', '::127.0.0.1', true];
     }
 
-    /**
-     * @dataProvider validAndInvalidIpPatterns
-     * @test
-     */
+    #[DataProvider('validAndInvalidIpPatterns')]
+    #[Test]
     public function cidrMatchCorrectlyMatchesIpRanges($range, $ip, $expected)
     {
         self::assertEquals($expected, Ip::cidrMatch($ip, $range));

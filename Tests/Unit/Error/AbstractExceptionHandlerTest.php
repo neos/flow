@@ -13,6 +13,8 @@ namespace Neos\Flow\Tests\Unit\Error;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use Neos\Flow\Error\AbstractExceptionHandler;
 use Neos\Flow\Exception;
 use Neos\Flow\Log\ThrowableStorageInterface;
@@ -25,9 +27,7 @@ use Psr\Log\LoggerInterface;
  */
 final class AbstractExceptionHandlerTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function handleExceptionLogsInformationAboutTheExceptionInTheThrowableStorage()
     {
         $options = [
@@ -53,9 +53,7 @@ final class AbstractExceptionHandlerTest extends UnitTestCase
         $exceptionHandler->handleException($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handleExceptionDoesNotLogInformationAboutTheExceptionInTheSystemLogIfLogExceptionWasTurnedOff()
     {
         $options = [
@@ -80,10 +78,10 @@ final class AbstractExceptionHandlerTest extends UnitTestCase
             ]
         ];
 
-        /** @var Exception|\PHPUnit\Framework\MockObject\MockObject $exception */
+        /** @var Exception|MockObject $exception */
         $exception = new NoMatchingRouteException();
 
-        /** @var ThrowableStorageInterface|\PHPUnit\Framework\MockObject\MockObject $mockThrowableStorage */
+        /** @var ThrowableStorageInterface|MockObject $mockThrowableStorage */
         $mockThrowableStorage = $this->createMock(ThrowableStorageInterface::class);
         $mockThrowableStorage->expects($this->never())->method('logThrowable');
 

@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Monitor;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Cache\Frontend\StringFrontend;
 use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Monitor\FileMonitor;
@@ -50,9 +51,7 @@ final class FileMonitorTest extends UnitTestCase
         vfsStream::setup('testDirectory');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function monitorFileRegistersAFileForMonitoring()
     {
         $monitor = new FileMonitor('Flow_Test');
@@ -60,9 +59,7 @@ final class FileMonitorTest extends UnitTestCase
         self::assertSame([$this->unixStylePathAndFilename], $monitor->getMonitoredFiles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aFileAppearsOnlyOnceInTheListOfMonitoredFiles()
     {
         $monitor = new FileMonitor('Flow_Test');
@@ -71,9 +68,7 @@ final class FileMonitorTest extends UnitTestCase
         self::assertSame([$this->unixStylePathAndFilename], $monitor->getMonitoredFiles());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function monitorDirectoryRegistersAWholeDirectoryForMonitoring()
     {
         $monitor = new FileMonitor('Flow_Test');
@@ -81,9 +76,7 @@ final class FileMonitorTest extends UnitTestCase
         self::assertSame([Files::getNormalizedPath($this->unixStylePath)], $monitor->getMonitoredDirectories());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aDirectoryAppearsOnlyOnceInTheListOfMonitoredDirectories()
     {
         $monitor = new FileMonitor('Flow_Test');
@@ -92,9 +85,7 @@ final class FileMonitorTest extends UnitTestCase
         self::assertSame([Files::getNormalizedPath($this->unixStylePath)], $monitor->getMonitoredDirectories());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesDetectsChangesInMonitoredFiles()
     {
         $mockSystemLogger = $this->createStub(LoggerInterface::class);
@@ -108,9 +99,7 @@ final class FileMonitorTest extends UnitTestCase
         $mockMonitor->detectChanges();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesEmitsFilesHaveChangedSignalIfFilesHaveChanged()
     {
         $mockSystemLogger = $this->createStub(LoggerInterface::class);
@@ -132,12 +121,10 @@ final class FileMonitorTest extends UnitTestCase
         $mockMonitor->detectChanges();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangedFilesFetchesTheStatusOfGivenFilesAndReturnsAListOfChangeFilesAndTheirStatus()
     {
-        $mockStrategy = $this->createMock(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::class);
+        $mockStrategy = $this->createMock(ChangeDetectionStrategyInterface::class);
         $mockStrategy->expects($this->exactly(2))->method('getFileStatus')->willReturnOnConsecutiveCalls(ChangeDetectionStrategyInterface::STATUS_CREATED, ChangeDetectionStrategyInterface::STATUS_UNCHANGED);
 
         $mockMonitor = $this->getAccessibleMock(FileMonitor::class, [], ['Flow_Test'], '', true, true);
@@ -147,9 +134,7 @@ final class FileMonitorTest extends UnitTestCase
         self::assertEquals([__FILE__ . '1' => ChangeDetectionStrategyInterface::STATUS_CREATED], $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesDetectsChangesInFilesOfMonitoredDirectoriesIfPatternIsMatched()
     {
         $testPath = vfsStream::url('testDirectory');
@@ -178,9 +163,7 @@ final class FileMonitorTest extends UnitTestCase
         $fileMonitor->detectChanges();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesDetectsCreatedFilesOfMonitoredDirectoriesOnlyIfPatternIsMatched()
     {
         $testPath = vfsStream::url('testDirectory');
@@ -213,9 +196,7 @@ final class FileMonitorTest extends UnitTestCase
         $fileMonitor->detectChanges();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesDetectsDeletedFilesOfMonitoredDirectoriesIfPatternIsMatched()
     {
         $testPath = vfsStream::url('testDirectory');
@@ -242,9 +223,7 @@ final class FileMonitorTest extends UnitTestCase
         $fileMonitor->detectChanges();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function detectChangesAddsCreatedFilesOfMonitoredDirectoriesToStoredDirectories()
     {
         $testPath = vfsStream::url('testDirectory');
@@ -300,7 +279,7 @@ final class FileMonitorTest extends UnitTestCase
         $mockSystemLogger = $this->createMock(LoggerInterface::class);
         $fileMonitor->injectLogger($mockSystemLogger);
 
-        $mockCache = $this->createMock(Cache\Frontend\StringFrontend::class);
+        $mockCache = $this->createMock(StringFrontend::class);
         $mockCache->expects($this->once())->method('get')->willReturn((json_encode($knownDirectoriesAndFiles)));
         $fileMonitor->injectCache($mockCache);
 

@@ -13,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
 use Neos\Flow\Security\Authentication\AuthenticationTokenResolver;
 use Neos\Flow\Security\Authentication\TokenAndProviderFactory;
@@ -26,9 +26,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class TokenAndProviderFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function noTokensAndProvidersAreBuiltIfTheConfigurationArrayIsEmpty()
     {
         $mockProviderResolver = $this->createStub(AuthenticationProviderResolver::class);
@@ -41,9 +39,7 @@ final class TokenAndProviderFactoryTest extends UnitTestCase
         self::assertSame([], $tokenAndProviderFactory->getTokens(), 'The array of tokens should be empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anExceptionIsThrownIfTheConfiguredProviderDoesNotExist()
     {
         $this->expectException(InvalidAuthenticationProviderException::class);

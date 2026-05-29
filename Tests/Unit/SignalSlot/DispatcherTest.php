@@ -12,7 +12,7 @@ namespace Neos\Flow\Tests\Unit\SignalSlot;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\SignalSlot\Exception\InvalidSlotException;
@@ -24,9 +24,7 @@ use Neos\Flow\Tests\UnitTestCase;
  */
 final class DispatcherTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function connectAllowsForConnectingASlotWithASignal(): void
     {
 
@@ -42,9 +40,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function connectAlsoAcceptsObjectsInPlaceOfTheClassName(): void
     {
         $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
@@ -59,9 +55,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function connectAlsoAcceptsClosuresActingAsASlot(): void
     {
         $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
@@ -77,9 +71,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wireAllowsForConnectingASlotWithASignal(): void
     {
         $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
@@ -94,9 +86,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wireAlsoAcceptsObjectsInPlaceOfTheClassName(): void
     {
         $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
@@ -111,9 +101,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function wireAlsoAcceptsClosuresActingAsASlot(): void
     {
         $mockSignal = $this->getMockBuilder('stdClass')->onlyMethods(['emitSomeSignal'])->getMock();
@@ -129,9 +117,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($expectedSlots, $dispatcher->getSlots(get_class($mockSignal), 'someSignal'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesTheSignalArgumentsToTheSlotMethod(): void
     {
         $arguments = [];
@@ -149,9 +135,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame(['bar', 'quux'], $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesUnnamedSignalArgumentsToTheSlotMethod(): void
     {
         $arguments = [];
@@ -169,9 +153,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame(['bar', 'quux'], $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesTheSignalArgumentsToTheStaticSlotMethod(): void
     {
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
@@ -185,9 +167,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame(['bar', 'quux'], self::$arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesTheSignalArgumentsToTheStaticSlotMethodIfNoObjectmanagerIsAvailable(): void
     {
         $dispatcher = new Dispatcher();
@@ -214,9 +194,7 @@ final class DispatcherTest extends UnitTestCase
         self::$arguments = func_get_args();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchRetrievesSlotInstanceFromTheObjectManagerIfOnlyAClassNameWasSpecified(): void
     {
         $slotClassName = 'Mock_' . md5(uniqid((string)mt_rand(), true));
@@ -235,9 +213,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame($mockSlot->arguments, ['bar', 'quux']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchThrowsAnExceptionIfTheSpecifiedClassOfASlotIsUnknown(): void
     {
         $this->expectException(InvalidSlotException::class);
@@ -250,9 +226,7 @@ final class DispatcherTest extends UnitTestCase
         $dispatcher->dispatch('Foo', 'bar', []);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchThrowsAnExceptionIfTheSpecifiedSlotMethodDoesNotExist(): void
     {
         $this->expectException(InvalidSlotException::class);
@@ -271,9 +245,7 @@ final class DispatcherTest extends UnitTestCase
         $dispatcher->dispatch('Foo', 'bar', ['foo' => 'bar', 'baz' => 'quux']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesArgumentContainingSlotInformationLastIfTheConnectionStatesSo(): void
     {
         $arguments = [];
@@ -291,9 +263,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertSame(['bar', 'quux', 'SignalClassName::methodName'], $arguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function connectWithSignalNameStartingWithEmitShouldNotBeAllowed(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -304,9 +274,7 @@ final class DispatcherTest extends UnitTestCase
         $dispatcher->connect(get_class($mockSignal), 'emitSomeSignal', get_class($mockSlot), 'someSlotMethod', false);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesSignalArgumentsAsReferenceInSignalInformation(): void
     {
         $mockSlot = function (SignalInformation $s) {
@@ -325,9 +293,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertEquals('bar', $referencedArray['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesSignalArgumentsAsReference(): void
     {
         $mockSlot = function (array &$array) {
@@ -346,9 +312,7 @@ final class DispatcherTest extends UnitTestCase
         self::assertEquals('bar', $referencedArray['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dispatchPassesSignalInformationObjectIfWireWasUsed(): void
     {
         $receivedArguments = [];

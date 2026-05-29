@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Unit\Reflection\Fixture\FileWithNoClass;
+use Neos\Flow\Tests\Unit\Reflection\Fixture\ClassWithDifferentNameDifferent;
+use Neos\Flow\Tests\Unit\Reflection\Fixture\ClassWithAliasDependency;
+use Neos\Flow\Tests\Unit\Reflection\Fixture\AliasedClass;
 use Doctrine\Common\Annotations\Reader;
 use Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException;
 use Neos\Flow\Reflection\ReflectionService;
@@ -41,46 +45,36 @@ final class ReflectionServiceTest extends UnitTestCase
         $this->reflectionService->_set('initialized', true);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reflectClassThrowsExceptionForNonExistingClasses()
     {
         $this->expectException(ClassLoadingForReflectionFailedException::class);
         $this->reflectionService->_call('reflectClass', 'Non\Existing\Class');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reflectClassThrowsExceptionForFilesWithNoClass()
     {
         $this->expectException(ClassLoadingForReflectionFailedException::class);
-        $this->reflectionService->_call('reflectClass', Fixture\FileWithNoClass::class);
+        $this->reflectionService->_call('reflectClass', FileWithNoClass::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function reflectClassThrowsExceptionForClassesWithNoMatchingFilename()
     {
         $this->expectException(ClassLoadingForReflectionFailedException::class);
-        $this->reflectionService->_call('reflectClass', Fixture\ClassWithDifferentNameDifferent::class);
+        $this->reflectionService->_call('reflectClass', ClassWithDifferentNameDifferent::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodParametersReturnsCorrectTypeForAliasedClass()
     {
-        $this->reflectionService->_call('reflectClass', Fixture\ClassWithAliasDependency::class);
-        $parameters = $this->reflectionService->getMethodParameters(Fixture\ClassWithAliasDependency::class, 'injectDependency');
-        $this->assertEquals(Fixture\AliasedClass::class, array_pop($parameters)['class']);
+        $this->reflectionService->_call('reflectClass', ClassWithAliasDependency::class);
+        $parameters = $this->reflectionService->getMethodParameters(ClassWithAliasDependency::class, 'injectDependency');
+        $this->assertEquals(AliasedClass::class, array_pop($parameters)['class']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTagIgnoredReturnsTrueForIgnoredTags()
     {
         $settings = ['reflection' => ['ignoredTags' => ['ignored' => true]]];
@@ -89,9 +83,7 @@ final class ReflectionServiceTest extends UnitTestCase
         self::assertTrue($this->reflectionService->_call('isTagIgnored', 'ignored'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTagIgnoredReturnsFalseForTagsThatAreNotIgnored()
     {
         $settings = ['reflection' => ['ignoredTags' => ['notignored' => false]]];
@@ -100,9 +92,7 @@ final class ReflectionServiceTest extends UnitTestCase
         self::assertFalse($this->reflectionService->_call('isTagIgnored', 'notignored'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTagIgnoredReturnsFalseForTagsThatAreNotConfigured()
     {
         $settings = ['reflection' => ['ignoredTags' => ['ignored' => true, 'notignored' => false]]];
@@ -111,9 +101,7 @@ final class ReflectionServiceTest extends UnitTestCase
         self::assertFalse($this->reflectionService->_call('isTagIgnored', 'notconfigured'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isTagIgnoredWorksWithOldConfiguration()
     {
         $settings = ['reflection' => ['ignoredTags' => ['ignored']]];

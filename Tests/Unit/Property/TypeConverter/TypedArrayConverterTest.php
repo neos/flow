@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\TypeConverter\TypedArrayConverter;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -33,9 +34,7 @@ final class TypedArrayConverterTest extends UnitTestCase
         $this->converter = new TypedArrayConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -55,10 +54,8 @@ final class TypedArrayConverterTest extends UnitTestCase
         yield ['targetType' => '\array<\int>', 'expectedResult' => true];
     }
 
-    /**
-     * @test
-     * @dataProvider canConvertFromDataProvider
-     */
+    #[DataProvider('canConvertFromDataProvider')]
+    #[Test]
     public function canConvertFromTests($targetType, $expectedResult)
     {
         $actualResult = $this->converter->canConvertFrom([], $targetType);
@@ -69,9 +66,7 @@ final class TypedArrayConverterTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
         self::assertEquals([], $this->converter->getSourceChildPropertiesToBeConverted(''));

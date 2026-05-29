@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ResourceManagement\ResourceMetaDataInterface;
 use Neos\Flow\Validation\Validator\FileSizeValidator;
 use Psr\Http\Message\UploadedFileInterface;
@@ -120,10 +121,8 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         yield [''];
     }
 
-    /**
-     * @test
-     * @dataProvider emptyItems
-     */
+    #[DataProvider('emptyItems')]
+    #[Test]
     public function validateAcceptsEmptyValue($item)
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
@@ -139,10 +138,8 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         yield [self::createUploadedFileInterfaceMock('1000')];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsWithAllowedSize
-     */
+    #[DataProvider('itemsWithAllowedSize')]
+    #[Test]
     public function validateAcceptsItemsWithAllowedSize($item)
     {
         self::assertFalse($this->validator->validate($item)->hasErrors());
@@ -156,10 +153,8 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         yield [self::createUploadedFileInterfaceMock(PHP_INT_MAX)];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsWithLargerThanAllowedSize
-     */
+    #[DataProvider('itemsWithLargerThanAllowedSize')]
+    #[Test]
     public function validateRejectsItemsWithLargerThanAllowedSize($item)
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());
@@ -173,10 +168,8 @@ final class FileSizeValidatorTest extends AbstractValidatorTestcase
         yield [self::createUploadedFileInterfaceMock('0')];
     }
 
-    /**
-     * @test
-     * @dataProvider itemsWithSmallerThanAllowedSize
-     */
+    #[DataProvider('itemsWithSmallerThanAllowedSize')]
+    #[Test]
     public function validateRejectsItemsWithSmallerThanAllowedSize($item)
     {
         self::assertTrue($this->validator->validate($item)->hasErrors());

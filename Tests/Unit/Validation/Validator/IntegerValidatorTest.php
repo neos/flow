@@ -13,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Validation\Validator\IntegerValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -26,17 +27,13 @@ final class IntegerValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = IntegerValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
@@ -55,10 +52,8 @@ final class IntegerValidatorTest extends AbstractValidatorTestcase
         yield ['-12345'];
     }
 
-    /**
-     * @test
-     * @dataProvider validIntegers
-     */
+    #[DataProvider('validIntegers')]
+    #[Test]
     public function integerValidatorReturnsNoErrorsForAValidInteger($integer)
     {
         self::assertFalse($this->validator->validate($integer)->hasErrors());
@@ -76,18 +71,14 @@ final class IntegerValidatorTest extends AbstractValidatorTestcase
         yield ['12345.987'];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidIntegers
-     */
+    #[DataProvider('invalidIntegers')]
+    #[Test]
     public function integerValidatorReturnsErrorForAnInvalidInteger($invalidInteger)
     {
         self::assertTrue($this->validator->validate($invalidInteger)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function integerValidatorCreatesTheCorrectErrorForAnInvalidSubject()
     {
         self::assertCount(1, $this->validator->validate('not a number')->getErrors());
