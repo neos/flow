@@ -55,7 +55,7 @@ final class JsonViewTest extends UnitTestCase
      * data provider for testTransformValue()
      * @return array
      */
-    public function jsonViewTestData()
+    public static function jsonViewTestData()
     {
         $output = [];
 
@@ -107,12 +107,8 @@ final class JsonViewTest extends UnitTestCase
         $output[] = [$object, $configuration, $expected, 'array of objects should be serialized'];
 
         $properties = ['foo' => 'bar', 'prohibited' => 'xxx'];
-        $nestedObject = $this->createMock(Fixtures\NestedTestObject::class);
-        $nestedObject->method('getName')->willReturn(('name'));
-        $nestedObject->method('getPath')->willReturn(('path'));
-        $nestedObject->method('getProperties')->willReturn(($properties));
-        $nestedObject->expects($this->never())->method('getOther');
-        $object = $nestedObject;
+        // Mock built in the test method (data providers must be static in PHPUnit 11).
+        $object = ['__mock' => NestedTestObject::class, '__properties' => $properties];
         $configuration = [
             '_only' => ['name', 'path', 'properties'],
             '_descend' => [
@@ -152,6 +148,15 @@ final class JsonViewTest extends UnitTestCase
     #[Test]
     public function testTransformValue($object, $configuration, $expected, $description)
     {
+        if (is_array($object) && isset($object['__mock'])) {
+            $mock = $this->createMock($object['__mock']);
+            $mock->method('getName')->willReturn('name');
+            $mock->method('getPath')->willReturn('path');
+            $mock->method('getProperties')->willReturn($object['__properties']);
+            $mock->expects($this->never())->method('getOther');
+            $object = $mock;
+        }
+
         $jsonView = $this->getAccessibleMock(JsonView::class, [], [], '');
 
         $actual = $jsonView->_call('transformValue', $object, $configuration);

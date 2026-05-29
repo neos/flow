@@ -61,35 +61,41 @@ final class FileExtensionValidatorTest extends AbstractValidatorTestcase
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithAllowedExtension(): \Iterator
+    public static function itemsWithAllowedExtension(): \Iterator
     {
-        yield [$this->createResourceMetaDataInterfaceMock('image.jpg')];
-        yield [$this->createResourceMetaDataInterfaceMock('image.jpeg')];
-        yield [$this->createResourceMetaDataInterfaceMock('image.png')];
-        yield [$this->createUploadedFileInterfaceMock('image.jpg')];
-        yield [$this->createUploadedFileInterfaceMock('image.jpeg')];
-        yield [$this->createUploadedFileInterfaceMock('image.png')];
+        yield ['resource', 'image.jpg'];
+        yield ['resource', 'image.jpeg'];
+        yield ['resource', 'image.png'];
+        yield ['uploaded', 'image.jpg'];
+        yield ['uploaded', 'image.jpeg'];
+        yield ['uploaded', 'image.png'];
     }
 
     #[DataProvider('itemsWithAllowedExtension')]
     #[Test]
-    public function validateAcceptsItemsWithAllowedExtension($item)
+    public function validateAcceptsItemsWithAllowedExtension(string $type, string $filename)
     {
+        $item = $type === 'resource'
+            ? $this->createResourceMetaDataInterfaceMock($filename)
+            : $this->createUploadedFileInterfaceMock($filename);
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithDisallowedExtension(): \Iterator
+    public static function itemsWithDisallowedExtension(): \Iterator
     {
-        yield [$this->createResourceMetaDataInterfaceMock('evil.exe')];
-        yield [$this->createResourceMetaDataInterfaceMock('image.tiff')];
-        yield [$this->createUploadedFileInterfaceMock('evil.exe')];
-        yield [$this->createUploadedFileInterfaceMock('image.tiff')];
+        yield ['resource', 'evil.exe'];
+        yield ['resource', 'image.tiff'];
+        yield ['uploaded', 'evil.exe'];
+        yield ['uploaded', 'image.tiff'];
     }
 
     #[DataProvider('itemsWithDisallowedExtension')]
     #[Test]
-    public function validateRejectsItemsWithDisallowedExtension($item)
+    public function validateRejectsItemsWithDisallowedExtension(string $type, string $filename)
     {
+        $item = $type === 'resource'
+            ? $this->createResourceMetaDataInterfaceMock($filename)
+            : $this->createUploadedFileInterfaceMock($filename);
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 }

@@ -128,35 +128,36 @@ final class PropertyMapperTest extends UnitTestCase
      */
     public static function dataProviderForFindTypeConverter(): \Iterator
     {
+        // Mocks are materialized in the test method; leaves are mock-name strings.
         yield ['someStringSource', 'string', [
             'string' => [
                 'string' => [
-                    10 => $this->getMockTypeConverter('string2string,prio10'),
-                    1 => $this->getMockTypeConverter('string2string,prio1')
+                    10 => 'string2string,prio10',
+                    1 => 'string2string,prio1'
                 ]
             ]], 'string2string,prio10'
         ];
         yield [['some' => 'array'], 'string', [
             'array' => [
                 'string' => [
-                    10 => $this->getMockTypeConverter('array2string,prio10'),
-                    1 => $this->getMockTypeConverter('array2string,prio1')
+                    10 => 'array2string,prio10',
+                    1 => 'array2string,prio1'
                 ]
             ]], 'array2string,prio10'
         ];
         yield ['someStringSource', 'bool', [
             'string' => [
                 'boolean' => [
-                    10 => $this->getMockTypeConverter('string2boolean,prio10'),
-                    1 => $this->getMockTypeConverter('string2boolean,prio1')
+                    10 => 'string2boolean,prio10',
+                    1 => 'string2boolean,prio1'
                 ]
             ]], 'string2boolean,prio10'
         ];
         yield ['someStringSource', 'int', [
             'string' => [
                 'integer' => [
-                    10 => $this->getMockTypeConverter('string2integer,prio10'),
-                    1 => $this->getMockTypeConverter('string2integer,prio1')
+                    10 => 'string2integer,prio10',
+                    1 => 'string2integer,prio1'
                 ]
             ]], 'string2integer,prio10'
         ];
@@ -166,6 +167,13 @@ final class PropertyMapperTest extends UnitTestCase
     #[Test]
     public function findTypeConverterShouldReturnHighestPriorityTypeConverterForSimpleType($source, $targetType, $typeConverters, $expectedTypeConverter): void
     {
+        foreach ($typeConverters as $sourceType => $targetTypes) {
+            foreach ($targetTypes as $tType => $priorities) {
+                foreach ($priorities as $prio => $name) {
+                    $typeConverters[$sourceType][$tType][$prio] = $this->getMockTypeConverter($name);
+                }
+            }
+        }
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
         $propertyMapper->_set('typeConverters', $typeConverters);
         $actualTypeConverter = $propertyMapper->_call('findTypeConverter', $source, $targetType, $this->mockConfiguration);
@@ -214,7 +222,7 @@ final class PropertyMapperTest extends UnitTestCase
     /**
      * @return array
      */
-    public function dataProviderForObjectTypeConverters(): array
+    public static function dataProviderForObjectTypeConverters(): array
     {
         $data = [];
 
@@ -238,17 +246,18 @@ final class PropertyMapperTest extends UnitTestCase
 			class ' . $className3 . ' extends ' . $className2 . ' implements ' . $interfaceName3 . ' {}
 		');
 
+        // Mocks are materialized in the test method; leaves are [name, canConvertFrom?] specs.
         // The most specific converter should win
         $data[] = [
             'target' => $className3,
             'expectedConverter' => 'Class3Converter',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter')],
-                $className3 => [0 => $this->getMockTypeConverter('Class3Converter')],
+                $className2 => [0 => ['Class2Converter']],
+                $className3 => [0 => ['Class3Converter']],
 
-                $interfaceName1 => [0 => $this->getMockTypeConverter('Interface1Converter')],
-                $interfaceName2 => [0 => $this->getMockTypeConverter('Interface2Converter')],
-                $interfaceName3 => [0 => $this->getMockTypeConverter('Interface3Converter')],
+                $interfaceName1 => [0 => ['Interface1Converter']],
+                $interfaceName2 => [0 => ['Interface2Converter']],
+                $interfaceName3 => [0 => ['Interface3Converter']],
             ]
         ];
 
@@ -257,12 +266,12 @@ final class PropertyMapperTest extends UnitTestCase
             'target' => $className3,
             'expectedConverter' => 'Class2Converter',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter')],
-                $className3 => [0 => $this->getMockTypeConverter('Class3Converter', false)],
+                $className2 => [0 => ['Class2Converter']],
+                $className3 => [0 => ['Class3Converter', false]],
 
-                $interfaceName1 => [0 => $this->getMockTypeConverter('Interface1Converter')],
-                $interfaceName2 => [0 => $this->getMockTypeConverter('Interface2Converter')],
-                $interfaceName3 => [0 => $this->getMockTypeConverter('Interface3Converter')],
+                $interfaceName1 => [0 => ['Interface1Converter']],
+                $interfaceName2 => [0 => ['Interface2Converter']],
+                $interfaceName3 => [0 => ['Interface3Converter']],
             ]
         ];
 
@@ -271,7 +280,7 @@ final class PropertyMapperTest extends UnitTestCase
             'target' => $className3,
             'expectedConverter' => 'Class2Converter-HighPriority',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter'), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority')]
+                $className2 => [0 => ['Class2Converter'], 10 => ['Class2Converter-HighPriority']]
             ]
         ];
 
@@ -280,11 +289,11 @@ final class PropertyMapperTest extends UnitTestCase
             'target' => $className3,
             'expectedConverter' => 'Interface1Converter',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
+                $className2 => [0 => ['Class2Converter', false], 10 => ['Class2Converter-HighPriority', false]],
 
-                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter')],
-                $interfaceName2 => [1 => $this->getMockTypeConverter('Interface2Converter')],
-                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter')],
+                $interfaceName1 => [4 => ['Interface1Converter']],
+                $interfaceName2 => [1 => ['Interface2Converter']],
+                $interfaceName3 => [2 => ['Interface3Converter']],
             ]
         ];
 
@@ -293,11 +302,11 @@ final class PropertyMapperTest extends UnitTestCase
             'target' => $className3,
             'expectedConverter' => 'Interface1Converter',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
+                $className2 => [0 => ['Class2Converter', false], 10 => ['Class2Converter-HighPriority', false]],
 
-                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter')],
-                $interfaceName2 => [2 => $this->getMockTypeConverter('Interface2Converter')],
-                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter')],
+                $interfaceName1 => [4 => ['Interface1Converter']],
+                $interfaceName2 => [2 => ['Interface2Converter']],
+                $interfaceName3 => [2 => ['Interface3Converter']],
             ],
             'shouldFailWithException' => DuplicateTypeConverterException::class
         ];
@@ -307,12 +316,12 @@ final class PropertyMapperTest extends UnitTestCase
             'target' => $className3,
             'expectedConverter' => 'GenericObjectConverter-HighPriority',
             'typeConverters' => [
-                $className2 => [0 => $this->getMockTypeConverter('Class2Converter', false), 10 => $this->getMockTypeConverter('Class2Converter-HighPriority', false)],
+                $className2 => [0 => ['Class2Converter', false], 10 => ['Class2Converter-HighPriority', false]],
 
-                $interfaceName1 => [4 => $this->getMockTypeConverter('Interface1Converter', false)],
-                $interfaceName2 => [3 => $this->getMockTypeConverter('Interface2Converter', false)],
-                $interfaceName3 => [2 => $this->getMockTypeConverter('Interface3Converter', false)],
-                'object' => [1 => $this->getMockTypeConverter('GenericObjectConverter'), 10 => $this->getMockTypeConverter('GenericObjectConverter-HighPriority')]
+                $interfaceName1 => [4 => ['Interface1Converter', false]],
+                $interfaceName2 => [3 => ['Interface2Converter', false]],
+                $interfaceName3 => [2 => ['Interface3Converter', false]],
+                'object' => [1 => ['GenericObjectConverter'], 10 => ['GenericObjectConverter-HighPriority']]
             ],
         ];
 
@@ -344,16 +353,21 @@ final class PropertyMapperTest extends UnitTestCase
 
     #[DataProvider('dataProviderForObjectTypeConverters')]
     #[Test]
-    public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($targetClass, $expectedTypeConverter, $typeConverters, $shouldFailWithException = false): void
+    public function findTypeConverterShouldReturnConverterForTargetObjectIfItExists($target, $expectedConverter, $typeConverters, $shouldFailWithException = false): void
     {
+        foreach ($typeConverters as $key => $priorities) {
+            foreach ($priorities as $prio => $spec) {
+                $typeConverters[$key][$prio] = $this->getMockTypeConverter($spec[0], $spec[1] ?? true);
+            }
+        }
         $propertyMapper = $this->getAccessibleMock(PropertyMapper::class, []);
         $propertyMapper->_set('typeConverters', ['string' => $typeConverters]);
         try {
-            $actualTypeConverter = $propertyMapper->_call('findTypeConverter', 'someSourceString', $targetClass, $this->mockConfiguration);
+            $actualTypeConverter = $propertyMapper->_call('findTypeConverter', 'someSourceString', $target, $this->mockConfiguration);
             if ($shouldFailWithException) {
                 $this->fail('Expected exception ' . $shouldFailWithException . ' which was not thrown.');
             }
-            self::assertSame($expectedTypeConverter, self::$mockTypeConverterNames[$actualTypeConverter]);
+            self::assertSame($expectedConverter, self::$mockTypeConverterNames[$actualTypeConverter]);
         } catch (\Exception $e) {
             if ($shouldFailWithException === false) {
                 throw $e;

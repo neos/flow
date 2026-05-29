@@ -174,18 +174,16 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     /**
      * @return array Signature: $methodToTestForFluentInterface [, $argumentsForMethod = array() ]
      */
-    public function fluentInterfaceMethodsDataProvider(): array
+    public static function fluentInterfaceMethodsDataProvider(): array
     {
-        $mockTypeConverterClass = get_class($this->createMock(TypeConverterInterface::class));
-
         return [
             ['allowAllProperties'],
             ['allowProperties'],
             ['allowAllPropertiesExcept'],
             ['setMapping', ['k1', 'k1a']],
-            ['setTypeConverterOptions', [$mockTypeConverterClass, ['k1' => 'v1', 'k2' => 'v2']]],
-            ['setTypeConverterOption', [$mockTypeConverterClass, 'k1', 'v3']],
-            ['setTypeConverter', [$this->createStub(TypeConverterInterface::class)]],
+            ['setTypeConverterOptions', ['__mock_class:' . TypeConverterInterface::class, ['k1' => 'v1', 'k2' => 'v2']]],
+            ['setTypeConverterOption', ['__mock_class:' . TypeConverterInterface::class, 'k1', 'v3']],
+            ['setTypeConverter', ['__stub:' . TypeConverterInterface::class]],
         ];
     }
 
@@ -193,6 +191,13 @@ final class PropertyMappingConfigurationTest extends UnitTestCase
     #[Test]
     public function respectiveMethodsProvideFluentInterface($methodToTestForFluentInterface, array $argumentsForMethod = [])
     {
+        foreach ($argumentsForMethod as $i => $arg) {
+            if (is_string($arg) && str_starts_with($arg, '__mock_class:')) {
+                $argumentsForMethod[$i] = get_class($this->createMock(substr($arg, 13)));
+            } elseif (is_string($arg) && str_starts_with($arg, '__stub:')) {
+                $argumentsForMethod[$i] = $this->createStub(substr($arg, 7));
+            }
+        }
         $actualResult = call_user_func_array([$this->propertyMappingConfiguration, $methodToTestForFluentInterface], $argumentsForMethod);
         self::assertSame($this->propertyMappingConfiguration, $actualResult);
     }

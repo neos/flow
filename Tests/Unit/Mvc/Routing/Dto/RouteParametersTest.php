@@ -27,33 +27,39 @@ final class RouteParametersTest extends UnitTestCase
 {
     public static function withParameterThrowsExceptionForInvalidParameterValuesDataProvider(): \Iterator
     {
-        yield ['parameterValue' => new \stdClass()];
-        yield ['parameterValue' => $this->getMockBuilder(RouterInterface::class)->getMock()];
-        yield ['parameterValue' => null];
+        yield 'stdClass' => ['parameterValue' => new \stdClass()];
+        yield 'RouterInterface mock' => ['parameterValue' => '__mock:' . RouterInterface::class];
+        yield 'null' => ['parameterValue' => null];
     }
 
     #[DataProvider('withParameterThrowsExceptionForInvalidParameterValuesDataProvider')]
     #[Test]
     public function withParameterThrowsExceptionForInvalidParameterValues($parameterValue)
     {
+        if (is_string($parameterValue) && str_starts_with($parameterValue, '__mock:')) {
+            $parameterValue = $this->createMock(substr($parameterValue, 7));
+        }
         $this->expectException(\InvalidArgumentException::class);
         RouteParameters::createEmpty()->withParameter('someParameter', $parameterValue);
     }
 
-    public function withParameterAcceptsValidParameterValuesDataProvider(): \Iterator
+    public static function withParameterAcceptsValidParameterValuesDataProvider(): \Iterator
     {
         yield ['parameterValue' => 'string'];
         yield ['parameterValue' => 123];
         yield ['parameterValue' => 123.45];
         yield ['parameterValue' => true];
         yield ['parameterValue' => false];
-        yield ['parameterValue' => $this->createStub(CacheAwareInterface::class)];
+        yield ['parameterValue' => '__stub:' . CacheAwareInterface::class];
     }
 
     #[DataProvider('withParameterAcceptsValidParameterValuesDataProvider')]
     #[Test]
     public function withParameterAcceptsValidParameterValues($parameterValue)
     {
+        if (is_string($parameterValue) && str_starts_with($parameterValue, '__stub:')) {
+            $parameterValue = $this->createStub(substr($parameterValue, 7));
+        }
         RouteParameters::createEmpty()->withParameter('someParameter', $parameterValue);
         $this->addToAssertionCount(1);
     }

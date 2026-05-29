@@ -63,18 +63,21 @@ final class MediaTypeValidatorTest extends AbstractValidatorTestcase
     }
 
 
-    public function itemsWithAllowedMediaType(): \Iterator
+    public static function itemsWithAllowedMediaType(): \Iterator
     {
-        yield [$this->createResourceMetaDataInterfaceMock('image/jpeg')];
-        yield [$this->createResourceMetaDataInterfaceMock('application/csv')];
-        yield [$this->createUploadedFileInterfaceMock('image/jpeg')];
-        yield [$this->createUploadedFileInterfaceMock('application/csv')];
+        yield ['resource', 'image/jpeg'];
+        yield ['resource', 'application/csv'];
+        yield ['uploaded', 'image/jpeg'];
+        yield ['uploaded', 'application/csv'];
     }
 
     #[DataProvider('itemsWithAllowedMediaType')]
     #[Test]
-    public function validateAcceptsItemsWithAllowedMediaType($item): void
+    public function validateAcceptsItemsWithAllowedMediaType(string $type, string $mediaType): void
     {
+        $item = $type === 'resource'
+            ? $this->createResourceMetaDataInterfaceMock($mediaType)
+            : $this->createUploadedFileInterfaceMock($mediaType);
         self::assertFalse($this->validator->validate($item)->hasErrors());
     }
 
@@ -93,31 +96,37 @@ final class MediaTypeValidatorTest extends AbstractValidatorTestcase
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithDisallowedMediaType(): \Iterator
+    public static function itemsWithDisallowedMediaType(): \Iterator
     {
-        yield [$this->createResourceMetaDataInterfaceMock('video/mp4')];
-        yield [$this->createResourceMetaDataInterfaceMock('application/pdf')];
-        yield [$this->createUploadedFileInterfaceMock('video/mp4')];
-        yield [$this->createUploadedFileInterfaceMock('application/pdf')];
+        yield ['resource', 'video/mp4'];
+        yield ['resource', 'application/pdf'];
+        yield ['uploaded', 'video/mp4'];
+        yield ['uploaded', 'application/pdf'];
     }
 
     #[DataProvider('itemsWithDisallowedMediaType')]
     #[Test]
-    public function validateRejectsItemsWithDisallowedMediaType($item): void
+    public function validateRejectsItemsWithDisallowedMediaType(string $type, string $mediaType): void
     {
+        $item = $type === 'resource'
+            ? $this->createResourceMetaDataInterfaceMock($mediaType)
+            : $this->createUploadedFileInterfaceMock($mediaType);
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 
-    public function itemsWithOtherMediaType(): \Iterator
+    public static function itemsWithOtherMediaType(): \Iterator
     {
-        yield [$this->createResourceMetaDataInterfaceMock('text/plain')];
-        yield [$this->createUploadedFileInterfaceMock('text/plain')];
+        yield ['resource', 'text/plain'];
+        yield ['uploaded', 'text/plain'];
     }
 
     #[DataProvider('itemsWithOtherMediaType')]
     #[Test]
-    public function validateRejectsItemsWithOtherMediaType($item): void
+    public function validateRejectsItemsWithOtherMediaType(string $type, string $mediaType): void
     {
+        $item = $type === 'resource'
+            ? $this->createResourceMetaDataInterfaceMock($mediaType)
+            : $this->createUploadedFileInterfaceMock($mediaType);
         self::assertTrue($this->validator->validate($item)->hasErrors());
     }
 }
