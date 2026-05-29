@@ -48,14 +48,11 @@ abstract class BaseTestCase extends TestCase
      * @param string $mockClassName
      * @param boolean $callOriginalConstructor
      * @param boolean $callOriginalClone
-     * @param boolean $callAutoload
      * @param boolean $cloneArguments
-     * @param boolean $callOriginalMethods
-     * @param object $proxyTarget
      * @return MockObject
      * @api
      */
-    protected function getAccessibleMock(string $originalClassName, array $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
+    protected function getAccessibleMock(string $originalClassName, array $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $cloneArguments = false)
     {
         $mockBuilder = $this->getMockBuilder($this->buildAccessibleProxy($originalClassName));
         // PHPUnit 10+ rejects onlyMethods() entries that don't exist on the class. Split
@@ -80,20 +77,8 @@ abstract class BaseTestCase extends TestCase
         if ($callOriginalClone === false) {
             $mockBuilder->disableOriginalClone();
         }
-        if ($callAutoload === false) {
-            $mockBuilder->disableAutoload();
-        }
-        if ($callAutoload === false) {
-            $mockBuilder->enableArgumentCloning();
-        }
         if ($cloneArguments === true) {
             $mockBuilder->enableArgumentCloning();
-        }
-        if ($callOriginalMethods === true) {
-            $mockBuilder->enableProxyingToOriginalMethods();
-        }
-        if ($proxyTarget !== null) {
-            $mockBuilder->setProxyTarget($proxyTarget);
         }
 
         $mockObject = $mockBuilder->getMock();
