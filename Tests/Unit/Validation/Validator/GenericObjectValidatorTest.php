@@ -177,7 +177,7 @@ final class GenericObjectValidatorTest extends AbstractValidatorTestcase
         eval('class ' . $className . '{ public $integer = 1; }');
         $object = new $className();
 
-        $integerValidator = $this->getAccessibleMock(IntegerValidator::class);
+        $integerValidator = $this->getAccessibleMock(IntegerValidator::class, ['validate']);
         $matcher = $this->any();
         $integerValidator->expects($matcher)->method('validate')->with(1)->willReturn((new Error\Result()));
 
