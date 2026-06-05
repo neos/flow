@@ -563,9 +563,6 @@ class ObjectManager implements ObjectManagerInterface
     protected function autowireArguments($configuration, $existingArguments): array
     {
         foreach ($configuration as $index => $argument) {
-            if ($argument[self::KEY_AUTOWIRING_MODE] === 0) {
-                continue;
-            }
             if (isset($existingArguments[$index - 1])) {
                 continue;
             }
