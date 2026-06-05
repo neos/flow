@@ -358,7 +358,7 @@ class CompileTimeObjectManager extends ObjectManager
                     $objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS][$index] = [
                         self::KEY_ARGUMENT_TYPE => $argument->getType(),
                         self::KEY_ARGUMENT_VALUE => $argument->getValue(),
-                        'wm' => $argument->getAutowiring()
+                        self::KEY_AUTOWIRING_MODE => $argument->getAutowiring()
                     ];
                 }
             }

@@ -35,9 +35,8 @@ class ObjectManager implements ObjectManagerInterface
     protected const KEY_SCOPE = 's';
     protected const KEY_FACTORY = 'f';
     protected const KEY_FACTORY_ARGUMENTS = 'fa';
-
     protected const KEY_CONSTRUCTOR_ARGUMENTS = 'ca';
-
+    protected const KEY_AUTOWIRING_MODE = 'wm';
     protected const KEY_ARGUMENT_TYPE = 't';
     protected const KEY_ARGUMENT_VALUE = 'v';
     protected const KEY_CLASS_NAME = 'c';
@@ -564,6 +563,9 @@ class ObjectManager implements ObjectManagerInterface
     protected function autowireArguments($configuration, $existingArguments): array
     {
         foreach ($configuration as $index => $argument) {
+            if ($argument[self::KEY_AUTOWIRING_MODE] === 0) {
+                continue;
+            }
             if (isset($existingArguments[$index - 1])) {
                 continue;
             }
