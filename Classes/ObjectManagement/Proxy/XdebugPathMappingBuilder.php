@@ -52,7 +52,7 @@ class XdebugPathMappingBuilder
      * @param string|null $flowContextName
      * @return void
      */
-    public function buildFromCompiledClasses(array $compiledClasses, ?string $flowContextName = null): void
+    public function buildFromCompiledClasses(array $compiledClasses, string $flowContextName): void
     {
         if ($compiledClasses === []) {
             return;
@@ -90,7 +90,7 @@ class XdebugPathMappingBuilder
         $mappingFileLines[] = '';
 
         Files::createDirectoryRecursively($this->getXdebugMappingFilePath());
-        $mappingFileName = $flowContextName !== null ? sprintf("%s.flow.map", str_replace("/", "_", $flowContextName)) : 'flow.map';
+        $mappingFileName = sprintf("%s.flow.map", str_replace("/", "_", $flowContextName));
         file_put_contents(
             Files::concatenatePaths([$this->getXdebugMappingFilePath(), $mappingFileName]),
             implode("\n", $mappingFileLines)
