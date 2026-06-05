@@ -158,7 +158,7 @@ abstract class AbstractMethodInterceptorBuilder
      */
     protected function buildAdvicesCode(array $groupedAdvices, ?string $methodName, ?string $targetClassName, ?string $declaringClassName, ?string $declaredReturnType): string
     {
-        $advicesCode = $this->buildMethodArgumentsArrayCode($declaringClassName, $methodName, ($methodName === '__construct'));
+        $advicesCode = $this->buildMethodArgumentsArrayCode($declaringClassName, $methodName);
 
         if (isset($groupedAdvices[\Neos\Flow\Aop\Advice\AfterThrowingAdvice::class]) || isset($groupedAdvices[\Neos\Flow\Aop\Advice\AfterAdvice::class])) {
             $advicesCode .= "\n        \$result = NULL;\n        \$afterAdviceInvoked = false;\n        try {\n";

@@ -45,10 +45,12 @@ class CommandManagerTest extends UnitTestCase
     protected function setUp(): void
     {
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
-        $this->commandManager = $this->getMockBuilder(Cli\CommandManager::class)->setMethods(['getAvailableCommands'])->getMock();
-
         $this->mockBootstrap = $this->getMockBuilder(Bootstrap::class)->disableOriginalConstructor()->getMock();
-        $this->commandManager->injectBootstrap($this->mockBootstrap);
+        $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
+        $this->mockObjectManager->method('get')->with([ReflectionService::class])->willReturn($this->mockReflectionService);
+        $this->commandManager = $this->getMockBuilder(Cli\CommandManager::class)->setMethods(['getAvailableCommands'])
+            ->setConstructorArgs([$this->mockBootstrap, $this->mockObjectManager])
+            ->getMock();
     }
 
     /**
@@ -56,13 +58,13 @@ class CommandManagerTest extends UnitTestCase
      */
     public function getAvailableCommandsReturnsAllAvailableCommands(): void
     {
-        $commandManager = new CommandManager();
         $mockCommandControllerClassNames = [Fixtures\Command\MockACommandController::class, Fixtures\Command\MockBCommandController::class];
         $this->mockReflectionService->expects(self::once())->method('getAllSubClassNamesForClass')->with(Cli\CommandController::class)->willReturn($mockCommandControllerClassNames);
         $mockObjectManager = $this->createMock(ObjectManagerInterface::class);
         $mockObjectManager->method('get')->with(ReflectionService::class)->willReturn($this->mockReflectionService);
         $mockObjectManager->method('getObjectNameByClassName')->willReturnArgument(0);
-        $commandManager->injectObjectManager($mockObjectManager);
+        $mockBootstrap = $this->getMockBuilder(Bootstrap::class)->disableOriginalConstructor()->getMock();
+        $commandManager = new CommandManager($mockBootstrap, $mockObjectManager);
 
         $commands = $commandManager->getAvailableCommands();
         self::assertCount(3, $commands);

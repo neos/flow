@@ -91,7 +91,7 @@ class FileMonitor
      * @param string $identifier Name of this specific file monitor - will be used in the signals emitted by this monitor.
      * @api
      */
-    public function __construct($identifier)
+    public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
     }

@@ -69,10 +69,10 @@ class ContentSecurityTest extends FunctionalTestCase
         if (!$this->persistenceManager instanceof PersistenceManager) {
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
-        $this->restrictableEntityDoctrineRepository = new Fixtures\RestrictableEntityDoctrineRepository();
-        $this->testEntityADoctrineRepository = new Fixtures\TestEntityADoctrineRepository();
-        $this->testEntityCDoctrineRepository = new Fixtures\TestEntityCDoctrineRepository();
-        $this->testEntityDDoctrineRepository = new Fixtures\TestEntityDDoctrineRepository();
+        $this->restrictableEntityDoctrineRepository = $this->objectManager->get(Fixtures\RestrictableEntityDoctrineRepository::class);
+        $this->testEntityADoctrineRepository = $this->objectManager->get(Fixtures\TestEntityADoctrineRepository::class);
+        $this->testEntityCDoctrineRepository = $this->objectManager->get(Fixtures\TestEntityCDoctrineRepository::class);
+        $this->testEntityDDoctrineRepository = $this->objectManager->get(Fixtures\TestEntityDDoctrineRepository::class);
         $this->globalObjectTestContext = $this->objectManager->get(Aop\Fixtures\TestContext::class);
     }
 

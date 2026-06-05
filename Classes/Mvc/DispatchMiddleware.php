@@ -25,11 +25,9 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class DispatchMiddleware implements MiddlewareInterface
 {
-    /**
-     * @Flow\Inject(lazy=false)
-     * @var Dispatcher
-     */
-    protected $dispatcher;
+    public function __construct(protected Dispatcher $dispatcher)
+    {
+    }
 
     /**
      * Create an action request from stored route match values and dispatch to that

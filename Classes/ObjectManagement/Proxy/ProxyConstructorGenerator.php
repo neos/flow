@@ -12,6 +12,7 @@ namespace Neos\Flow\ObjectManagement\Proxy;
  */
 
 use Laminas\Code\Generator\DocBlockGenerator;
+use Laminas\Code\Generator\ParameterGenerator;
 use Neos\Flow\ObjectManagement\DependencyInjection\ProxyClassBuilder;
 
 final class ProxyConstructorGenerator extends ProxyMethodGenerator
@@ -56,6 +57,13 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         $docBlock->setWordWrap(false);
         $docBlock->setSourceDirty(false);
         $method->setDocBlock($docBlock);
+
+        # Always include original parameters to support named arguments (issue #3076)
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $parameter = ParameterGenerator::fromReflection($reflectionParameter);
+            $method->setParameter($parameter);
+        }
+
         return $method;
     }
 
@@ -92,7 +100,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
 
     protected function buildAssignMethodArgumentsCode(): string
     {
-        return '$arguments = func_get_args();' . PHP_EOL;
+        return '';
     }
 
     /**
@@ -122,7 +130,7 @@ final class ProxyConstructorGenerator extends ProxyMethodGenerator
         ) {
             return '';
         }
-        return "parent::{$methodName}(...\$arguments);" . PHP_EOL;
+        return "parent::{$methodName}(...func_get_args());" . PHP_EOL;
     }
 
     /**

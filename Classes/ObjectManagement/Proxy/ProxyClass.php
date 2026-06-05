@@ -28,58 +28,58 @@ class ProxyClass
      *
      * @var string
      */
-    protected $namespace = '';
+    protected string $namespace = '';
 
     /**
      * The original class name
      *
      * @var string
      */
-    protected $originalClassName;
+    protected string $originalClassName;
 
     /**
      * Fully qualified class name of the original class
      *
      * @var class-string
      */
-    protected $fullOriginalClassName;
+    protected string $fullOriginalClassName;
 
     /**
-     * @var ProxyConstructorGenerator
+     * @var ProxyConstructorGenerator|null
      */
-    protected $constructor;
+    protected ?ProxyConstructorGenerator $constructor = null;
 
     /**
-     * @var array
+     * @var array<string, ProxyMethodGenerator>
      */
-    protected $methods = [];
+    protected array $methods = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    protected $constants = [];
+    protected array $constants = [];
 
     /**
      * Note: Not using ProxyInterface::class here, since the interface names must have a leading backslash.
      *
-     * @var array
+     * @var array<int, string>
      */
-    protected $interfaces = ['\Neos\Flow\ObjectManagement\Proxy\ProxyInterface'];
+    protected array $interfaces = ['\\' . ProxyInterface::class];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
-    protected $traits = [];
+    protected array $traits = [];
 
     /**
-     * @var array
+     * @var array<string, array{initialValueCode: string|null, visibility: string, docComment: string}>
      */
-    protected $properties = [];
+    protected array $properties = [];
 
     /**
      * @var ReflectionService
      */
-    protected $reflectionService;
+    protected ReflectionService $reflectionService;
 
     /**
      * Creates a new ProxyClass instance.
@@ -165,12 +165,12 @@ class ProxyClass
      * Adds a class property to this proxy class
      *
      * @param string $name Name of the property
-     * @param string $initialValueCode PHP code of the initial value assignment
+     * @param string|null $initialValueCode PHP code of the initial value assignment
      * @param string $visibility
      * @param string $docComment
      * @return void
      */
-    public function addProperty(string $name, string $initialValueCode, string $visibility = 'private', string $docComment = ''): void
+    public function addProperty(string $name, string|null $initialValueCode, string $visibility = 'private', string $docComment = ''): void
     {
         // TODO: Add support for PHP attributes?
         $this->properties[$name] = [
@@ -186,12 +186,21 @@ class ProxyClass
      * Note that the passed interface names must already have a leading backslash,
      * for example "\Neos\Flow\Foo\BarInterface".
      *
-     * @param array $interfaceNames Fully qualified names of the interfaces to introduce
+     * @param array<int, string> $interfaceNames Fully qualified names of the interfaces to introduce
      * @return void
      */
     public function addInterfaces(array $interfaceNames): void
     {
         $this->interfaces = array_merge($this->interfaces, $interfaceNames);
+    }
+
+    /**
+     * Inspect currently added interfaces for this proxy class
+     * @return array|string[]
+     */
+    public function getInterfaces(): array
+    {
+        return $this->interfaces;
     }
 
     /**
@@ -308,7 +317,7 @@ class ProxyClass
             if (!empty($attributes['docComment'])) {
                 $code .= '    ' . $attributes['docComment'] . "\n";
             }
-            $code .= '    ' . $attributes['visibility'] . ' $' . $name . ' = ' . $attributes['initialValueCode'] . ";\n";
+            $code .= '    ' . $attributes['visibility'] . ' $' . $name . ($attributes['initialValueCode'] ? (' = ' . $attributes['initialValueCode']) : '') . ";\n";
         }
         return $code;
     }

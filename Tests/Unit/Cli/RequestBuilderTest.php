@@ -15,9 +15,11 @@ use Neos\Flow\Command\HelpCommandController;
 use Neos\Flow\Mvc\Exception\InvalidArgumentMixingException;
 use Neos\Flow\Mvc\Exception\NoSuchCommandException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Cli;
+use Neos\Flow\Utility\Environment;
 
 /**
  * Testcase for the MVC CLI Request Builder
@@ -67,9 +69,10 @@ class RequestBuilderTest extends UnitTestCase
 
         $this->mockReflectionService = $this->createMock(ReflectionService::class);
 
-        $this->requestBuilder = new Cli\RequestBuilder();
-        $this->requestBuilder->injectObjectManager($this->mockObjectManager);
-        $this->requestBuilder->injectCommandManager($this->mockCommandManager);
+        $mockEnvironment = $this->createMock(Environment::class);
+        $mockPackageManager = $this->createMock(PackageManager::class);
+
+        $this->requestBuilder = new Cli\RequestBuilder($mockEnvironment, $this->mockObjectManager, $mockPackageManager, $this->mockCommandManager);
     }
 
     /**
@@ -91,14 +94,7 @@ class RequestBuilderTest extends UnitTestCase
      */
     public function ifCommandCantBeResolvedTheHelpScreenIsShown()
     {
-        // The following call is only made to satisfy PHPUnit. For some weird reason PHPUnit complains that the
-        // mocked method ("getObjectNameByClassName") does not exist _if the mock object is not used_.
-        $this->mockObjectManager->getObjectNameByClassName('Acme\Test\Command\DefaultCommandController');
-        $this->mockCommandManager->getCommandByIdentifier('acme.test:default:list');
-
-        $mockCommandManager = $this->createMock(Cli\CommandManager::class);
-        $mockCommandManager->expects(self::any())->method('getCommandByIdentifier')->with('test:default:list')->will(self::throwException(new NoSuchCommandException()));
-        $this->requestBuilder->injectCommandManager($mockCommandManager);
+        $this->mockCommandManager->expects(self::any())->method('getCommandByIdentifier')->with('test:default:list')->will(self::throwException(new NoSuchCommandException()));
 
         $request = $this->requestBuilder->build('test:default:list');
         self::assertSame(HelpCommandController::class, $request->getControllerObjectName());

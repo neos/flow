@@ -28,22 +28,12 @@ use Neos\Flow\Configuration\ConfigurationManager;
  */
 class ViewConfigurationManager
 {
-    /**
-     * @var VariableFrontend
-     */
-    protected $cache;
-
-    /**
-     * @Flow\Inject
-     * @var ConfigurationManager
-     */
-    protected $configurationManager;
-
-    /**
-     * @Flow\Inject
-     * @var CompilingEvaluator
-     */
-    protected $eelEvaluator;
+    public function __construct(
+        protected ConfigurationManager $configurationManager,
+        protected CompilingEvaluator $eelEvaluator,
+        protected VariableFrontend $cache
+    ) {
+    }
 
     /**
      * This method walks through the view configuration and applies

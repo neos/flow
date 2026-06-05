@@ -16,6 +16,7 @@ namespace Neos\Flow\ObjectManagement;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument as ObjectConfigurationArgument;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Annotations as Flow;
@@ -34,6 +35,8 @@ class ObjectManager implements ObjectManagerInterface
     protected const KEY_SCOPE = 's';
     protected const KEY_FACTORY = 'f';
     protected const KEY_FACTORY_ARGUMENTS = 'fa';
+    protected const KEY_CONSTRUCTOR_ARGUMENTS = 'ca';
+    protected const KEY_AUTOWIRING_MODE = 'wm';
     protected const KEY_ARGUMENT_TYPE = 't';
     protected const KEY_ARGUMENT_VALUE = 'v';
     protected const KEY_CLASS_NAME = 'c';
@@ -48,14 +51,7 @@ class ObjectManager implements ObjectManagerInterface
     protected ApplicationContext $context;
 
     /**
-     * An array of settings of all packages, indexed by package key
-     *
-     * @var array
-     */
-    protected array $allSettings = [];
-
-    /**
-     * @var array
+     * @var array<string, array<string,mixed>>
      */
     protected array $objects = [];
 
@@ -65,12 +61,12 @@ class ObjectManager implements ObjectManagerInterface
     protected array $dependencyProxies = [];
 
     /**
-     * @var array
+     * @var array<string, bool>
      */
     protected array $classesBeingInstantiated = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected array $cachedLowerCasedObjectNames = [];
 
@@ -105,7 +101,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Sets the objects array
      *
-     * @param array $objects An array of object names and some information about each registered object (scope, lower cased name etc.)
+     * @param array<string, array> $objects An array of object names and some information about each registered object (scope, lower cased name etc.)
      * @return void
      */
     public function setObjects(array $objects): void
@@ -113,18 +109,6 @@ class ObjectManager implements ObjectManagerInterface
         $this->objects = $objects;
         $this->objects[ObjectManagerInterface::class][self::KEY_INSTANCE] = $this;
         $this->objects[get_class($this)][self::KEY_INSTANCE] = $this;
-    }
-
-    /**
-     * Injects the global settings array, indexed by package key.
-     *
-     * @param array $settings The global settings
-     * @return void
-     * @Flow\Autowiring(false)
-     */
-    public function injectAllSettings(array $settings): void
-    {
-        $this->allSettings = $settings;
     }
 
     /**
@@ -225,11 +209,24 @@ class ObjectManager implements ObjectManagerInterface
             throw new Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.' . $hint, 1264589155);
         }
 
+        // by object name
+        if (isset($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS])) {
+            $constructorArguments = $this->autowireArguments($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS], $constructorArguments);
+        }
+
+        // by class name
+        if ($objectName !== $className && isset($this->objects[$className][self::KEY_CONSTRUCTOR_ARGUMENTS])) {
+            $constructorArguments = $this->autowireArguments($this->objects[$className][self::KEY_CONSTRUCTOR_ARGUMENTS], $constructorArguments);
+        }
+
         if (!isset($this->objects[$objectName]) || $this->objects[$objectName][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_PROTOTYPE) {
             return $this->instantiateClass($className, $constructorArguments);
         }
 
-        $this->objects[$objectName][self::KEY_INSTANCE] = $this->instantiateClass($className, []);
+        $this->objects[$objectName][self::KEY_INSTANCE] = $this->instantiateClass($className, $constructorArguments);
+        if ($objectName !== $className && isset($this->objects[$className]) && $this->objects[$className][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_SINGLETON) {
+            $this->objects[$className][self::KEY_INSTANCE] = $this->objects[$objectName][self::KEY_INSTANCE];
+        }
         return $this->objects[$objectName][self::KEY_INSTANCE];
     }
 
@@ -542,7 +539,7 @@ class ObjectManager implements ObjectManagerInterface
      * Speed optimized alternative to ReflectionClass::newInstanceArgs()
      *
      * @param string $className Name of the class to instantiate
-     * @param array $arguments Arguments to pass to the constructor
+     * @param array<mixed> $arguments Arguments to pass to the constructor
      * @return object The object
      * @throws Exception\CannotBuildObjectException
      * @throws \Exception
@@ -553,14 +550,80 @@ class ObjectManager implements ObjectManagerInterface
             throw new Exception\CannotBuildObjectException('Circular dependency detected while trying to instantiate class "' . $className . '".', 1168505928);
         }
 
+        $this->classesBeingInstantiated[$className] = true;
         try {
-            $object = new $className(...$arguments);
-            unset($this->classesBeingInstantiated[$className]);
-            return $object;
+            return new $className(...$arguments);
         } catch (\Exception $exception) {
-            unset($this->classesBeingInstantiated[$className]);
             throw $exception;
+        } finally {
+            unset($this->classesBeingInstantiated[$className]);
         }
+    }
+
+    protected function autowireArguments($configuration, $existingArguments): array
+    {
+        foreach ($configuration as $index => $argument) {
+            if (isset($existingArguments[$index - 1])) {
+                continue;
+            }
+            $existingArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
+        }
+
+        return $existingArguments;
+    }
+
+    protected function getConfiguredArgument(int $argumentType, mixed $argumentValue): mixed
+    {
+        if ($argumentType === ObjectConfigurationArgument::ARGUMENT_TYPES_SETTING) {
+            return $this->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, $argumentValue);
+        }
+
+        if ($argumentType === ObjectConfigurationArgument::ARGUMENT_TYPES_STRAIGHTVALUE) {
+            return $argumentValue;
+        }
+
+        if ($argumentType !== ObjectConfigurationArgument::ARGUMENT_TYPES_OBJECT) {
+            return null;
+        }
+
+        if (!$argumentValue instanceof ObjectConfiguration) {
+            if (str_contains($argumentValue, '.')) {
+                $argumentValue = $this->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, $argumentValue);
+            }
+            $argumentObjectConfiguration = $this->objects[$argumentValue] ?? null;
+            if ($argumentObjectConfiguration === null) {
+                throw new \RuntimeException('broken');
+            }
+            return $this->get($argumentValue);
+        }
+
+        if ($argumentValue->getFactoryObjectName()) {
+            $methodName = $argumentValue->getFactoryMethodName();
+            return $this->get($argumentValue->getFactoryObjectName())->$methodName(...$this->buildMethodArguments($argumentValue->getFactoryArguments()));
+        }
+
+        $argumentValueObjectName = $argumentValue->getObjectName();
+        if ($this->objects[$argumentValueObjectName][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_PROTOTYPE) {
+            return new $argumentValueObjectName(...$this->buildMethodArguments($argumentValue->getArguments()));
+        }
+
+        return $this->get($argumentValueObjectName);
+    }
+
+    /**
+     * @param array<ConfigurationArgument|null> $argumentConfigurations
+     * @return array<mixed> the (auto)wired arguments
+     */
+    protected function buildMethodArguments(array $argumentConfigurations): array
+    {
+        $result = [];
+        foreach ($argumentConfigurations as $argument) {
+            if ($argument === null || $argument->getAutowiring() === 0) {
+                continue;
+            }
+            $result[] = $this->getConfiguredArgument($argument->getType(), $argument->getValue());
+        }
+        return $result;
     }
 
     /**

@@ -47,20 +47,15 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
 
     protected function setUp(): void
     {
-        $this->viewConfigurationManager = new ViewConfigurationManager();
-
         // eel evaluator
         $eelEvaluator = $this->createEvaluator();
-        $this->inject($this->viewConfigurationManager, 'eelEvaluator', $eelEvaluator);
 
         // a dummy configuration manager is prepared
         $this->mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
-        $this->inject($this->viewConfigurationManager, 'configurationManager', $this->mockConfigurationManager);
 
         // caching is deactivated
         $this->mockCache = $this->getMockBuilder(VariableFrontend::class)->disableOriginalConstructor()->getMock();
         $this->mockCache->expects(self::any())->method('get')->will(self::returnValue(false));
-        $this->inject($this->viewConfigurationManager, 'cache', $this->mockCache);
 
         // a dummy request is prepared
         $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
@@ -70,6 +65,8 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         $this->mockActionRequest->expects(self::any())->method('getControllerActionName')->will(self::returnValue('index'));
         $this->mockActionRequest->expects(self::any())->method('getFormat')->will(self::returnValue('html'));
         $this->mockActionRequest->expects(self::any())->method('getParentRequest')->will(self::returnValue(null));
+
+        $this->viewConfigurationManager = new ViewConfigurationManager($this->mockConfigurationManager, $eelEvaluator, $this->mockCache);
     }
 
     /**

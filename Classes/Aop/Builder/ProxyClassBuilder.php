@@ -424,6 +424,7 @@ class ProxyClassBuilder
             PHP);
         }
         $proxyClass->addTraits(['\\' . AdvicesTrait::class]);
+        $proxyClass->addInterfaces(['\\' . Aop\ProxyInterface::class]);
 
         $this->buildMethodsInterceptorCode($targetClassName, $interceptedMethods);
 
@@ -442,6 +443,8 @@ class ProxyClassBuilder
      * @param ClassNameIndex $treatedSubClasses Already treated (sub) classes to avoid duplication
      * @return ClassNameIndex The new collection of already treated classes
      * @throws CannotBuildObjectException
+     * @throws ClassLoadingForReflectionFailedException
+     * @throws InvalidClassException
      * @throws \ReflectionException
      */
     protected function proxySubClassesOfClassToEnsureAdvices(string $className, ClassNameIndex $targetClassNameCandidates, ClassNameIndex $treatedSubClasses): ClassNameIndex

@@ -29,39 +29,17 @@ class CommandManager
     /**
      * @var array<Command>
      */
-    protected $availableCommands = null;
+    protected array $availableCommands = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    protected $shortCommandIdentifiers = null;
+    protected array $shortCommandIdentifiers = [];
 
-    /**
-     * @var Bootstrap
-     */
-    protected $bootstrap;
-
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    /**
-     * @param ObjectManagerInterface $objectManager
-     * @return void
-     */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
-
-    /**
-     * @param Bootstrap $bootstrap
-     * @return void
-     */
-    public function injectBootstrap(Bootstrap $bootstrap)
-    {
-        $this->bootstrap = $bootstrap;
+    public function __construct(
+        private readonly Bootstrap $bootstrap,
+        private readonly ObjectManagerInterface $objectManager
+    ) {
     }
 
     /**
@@ -72,9 +50,7 @@ class CommandManager
      */
     public function getAvailableCommands(): array
     {
-        if ($this->availableCommands === null) {
-            $this->availableCommands = [];
-
+        if ($this->availableCommands === []) {
             foreach (static::getCommandControllerMethodArguments($this->objectManager) as $className => $methods) {
                 foreach (array_keys($methods) as $methodName) {
                     $this->availableCommands[] = new Command($className, substr($methodName, 0, -7));
@@ -165,10 +141,8 @@ class CommandManager
      */
     protected function getShortCommandIdentifiers(): array
     {
-        if ($this->shortCommandIdentifiers === null) {
-            $this->shortCommandIdentifiers = [];
+        if ($this->shortCommandIdentifiers === []) {
             $commandsByCommandName = [];
-            /** @var Command $availableCommand */
             foreach ($this->getAvailableCommands() as $availableCommand) {
                 list($packageKey, $controllerName, $commandName) = explode(':', $availableCommand->getCommandIdentifier());
                 if (!isset($commandsByCommandName[$commandName])) {

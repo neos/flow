@@ -11,6 +11,7 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement;
  * source code.
  */
 
+use Neos\Flow\Configuration\ConfigurationManager;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\Package\Package;
@@ -34,9 +35,8 @@ class CompileTimeObjectManagerTest extends UnitTestCase
     {
         vfsStream::setup('Packages');
         $this->mockPackageManager = $this->getMockBuilder(PackageManager::class)->disableOriginalConstructor()->getMock();
-        $this->compileTimeObjectManager = $this->getAccessibleMock(CompileTimeObjectManager::class, ['dummy'], [], '', false);
-        $this->compileTimeObjectManager->injectLogger($this->createMock(LoggerInterface::class));
-        $configurations = [
+        $mockConfigurationManager = $this->getMockBuilder(ConfigurationManager::class)->disableOriginalConstructor()->getMock();
+        $mockConfigurationManager->method('getConfiguration')->willReturn([
             'Neos' => [
                 'Flow' => [
                     'object' => [
@@ -51,8 +51,10 @@ class CompileTimeObjectManagerTest extends UnitTestCase
                     ]
                 ]
             ]
-        ];
-        $this->compileTimeObjectManager->injectAllSettings($configurations);
+        ]);
+        $this->compileTimeObjectManager = $this->getAccessibleMock(CompileTimeObjectManager::class, ['dummy'], [], '', false);
+        $this->compileTimeObjectManager->injectLogger($this->createMock(LoggerInterface::class));
+        $this->compileTimeObjectManager->injectConfigurationManager($mockConfigurationManager);
     }
 
     /**
