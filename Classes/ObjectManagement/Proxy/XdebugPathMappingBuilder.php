@@ -49,7 +49,7 @@ class XdebugPathMappingBuilder
 
     /**
      * @param array<string, array{path: string, proxyClassIdentifier: string}> $compiledClasses
-     * @param string|null $flowContextName
+     * @param string $flowContextName
      * @return void
      */
     public function buildFromCompiledClasses(array $compiledClasses, string $flowContextName): void
