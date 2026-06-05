@@ -89,7 +89,7 @@ class ProxyClassBuilder
             if ($proxyClass === false) {
                 continue;
             }
-            $this->logger->debug(sprintf('Building dependency injection proxyG:q for "%s"', $className), LogEnvironment::fromMethodName(__METHOD__));
+            $this->logger->debug(sprintf('Building dependency injection proxy for "%s"', $className), LogEnvironment::fromMethodName(__METHOD__));
 
             $injectionCodeWasIntroduced = false;
 

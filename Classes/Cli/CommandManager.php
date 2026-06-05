@@ -27,14 +27,14 @@ use Neos\Flow\Reflection\ReflectionService;
 class CommandManager
 {
     /**
-     * @var array<Command>|null
+     * @var array<Command>
      */
-    protected array|null $availableCommands = null;
+    protected array $availableCommands = [];
 
     /**
-     * @var array|null
+     * @var array<string, string>
      */
-    protected array|null $shortCommandIdentifiers = null;
+    protected array $shortCommandIdentifiers = [];
 
     public function __construct(
         private readonly Bootstrap $bootstrap,
@@ -50,9 +50,7 @@ class CommandManager
      */
     public function getAvailableCommands(): array
     {
-        if ($this->availableCommands === null) {
-            $this->availableCommands = [];
-
+        if ($this->availableCommands === []) {
             foreach (static::getCommandControllerMethodArguments($this->objectManager) as $className => $methods) {
                 foreach (array_keys($methods) as $methodName) {
                     $this->availableCommands[] = new Command($className, substr($methodName, 0, -7));
@@ -143,10 +141,8 @@ class CommandManager
      */
     protected function getShortCommandIdentifiers(): array
     {
-        if ($this->shortCommandIdentifiers === null) {
-            $this->shortCommandIdentifiers = [];
+        if ($this->shortCommandIdentifiers === []) {
             $commandsByCommandName = [];
-            /** @var Command $availableCommand */
             foreach ($this->getAvailableCommands() as $availableCommand) {
                 list($packageKey, $controllerName, $commandName) = explode(':', $availableCommand->getCommandIdentifier());
                 if (!isset($commandsByCommandName[$commandName])) {
