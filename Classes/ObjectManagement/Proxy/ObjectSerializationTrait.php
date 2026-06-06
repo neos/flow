@@ -43,7 +43,6 @@ trait ObjectSerializationTrait
                 'Flow_Aop_Proxy_targetMethodsAndGroupedAdvices',
                 'Flow_Aop_Proxy_groupedAdviceChains',
                 'Flow_Aop_Proxy_methodIsInAdviceMode',
-                'Flow_Persistence_RelatedEntitiesContainer',
                 'Flow_Injected_Properties',
             ])) {
                 continue;
@@ -57,13 +56,11 @@ trait ObjectSerializationTrait
             if (is_array($this->$propertyName) || ($this->$propertyName instanceof \ArrayObject || $this->$propertyName instanceof \SplObjectStorage || $this->$propertyName instanceof Collection)) {
                 if (count($this->$propertyName) > 0) {
                     foreach ($this->$propertyName as $key => $value) {
-                        $entityWasFound = $this->Flow_searchForEntitiesAndStoreIdentifierArray((string)$key, $value, $propertyName);
-                        if ($entityWasFound) {
-                            $propertiesToSerialize[] = 'Flow_Persistence_RelatedEntitiesContainer';
-                        }
+                        $this->Flow_searchForEntitiesAndStoreIdentifierArray((string)$key, $value, $propertyName);
                     }
                 }
             }
+
             if (is_object($this->$propertyName) && !$this->$propertyName instanceof Collection) {
                 if ($this->$propertyName instanceof DoctrineProxy) {
                     $className = get_parent_class($this->$propertyName);
@@ -78,10 +75,7 @@ trait ObjectSerializationTrait
                     }
                 }
                 if ($this->$propertyName instanceof DoctrineProxy || ($this->$propertyName instanceof PersistenceMagicInterface && !Bootstrap::$staticObjectManager->get(PersistenceManagerInterface::class)->isNewObject($this->$propertyName))) {
-                    $entityWasFound = $this->Flow_searchForEntitiesAndStoreIdentifierArray('', $this->$propertyName, $propertyName);
-                    if ($entityWasFound) {
-                        $propertiesToSerialize[] = 'Flow_Persistence_RelatedEntitiesContainer';
-                    }
+                    $this->Flow_searchForEntitiesAndStoreIdentifierArray('', $this->$propertyName, $propertyName);
                     continue;
                 }
                 if ($className !== false &&
@@ -116,7 +110,7 @@ trait ObjectSerializationTrait
             }
         } elseif ($propertyValue instanceof DoctrineProxy || ($propertyValue instanceof PersistenceMagicInterface && !Bootstrap::$staticObjectManager->get(PersistenceManagerInterface::class)->isNewObject($propertyValue))) {
             if (!isset($this->Flow_Persistence_RelatedEntitiesContainer)) {
-                throw new \RuntimeException(sprintf('The class "%s" has an entity reference Flow could not detect, please add a Flow\\Proxy annotation with "forceSerializationCode" set to "true".', $propertyValue::class), 1756936954);
+                throw new \RuntimeException(sprintf('The class "%s" has an entity reference Flow could not detect in property "%s" and path "%s", please add a Flow\\Proxy annotation with "forceSerializationCode" set to "true".', $this::class, $originalPropertyName, $path), 1756936954);
             }
             $this->Flow_Persistence_RelatedEntitiesContainer->appendRelatedEntity($originalPropertyName, $path, $propertyValue);
             /**
@@ -149,7 +143,7 @@ trait ObjectSerializationTrait
             $persistenceManager = Bootstrap::$staticObjectManager->get(PersistenceManagerInterface::class);
             foreach ($this->Flow_Persistence_RelatedEntitiesContainer as $entityInformation) {
                 $entity = $persistenceManager->getObjectByIdentifier($entityInformation['i'], $entityInformation['c'], true);
-                if (isset($entityInformation['p'])) {
+                if ($entityInformation['p'] !== '') {
                     $this->{$entityInformation['n']} = Arrays::setValueByPath($this->{$entityInformation['n']}, $entityInformation['p'], $entity);
                 } else {
                     $this->{$entityInformation['n']} = $entity;
