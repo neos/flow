@@ -116,7 +116,7 @@ trait ObjectSerializationTrait
             }
         } elseif ($propertyValue instanceof DoctrineProxy || ($propertyValue instanceof PersistenceMagicInterface && !Bootstrap::$staticObjectManager->get(PersistenceManagerInterface::class)->isNewObject($propertyValue))) {
             if (!isset($this->Flow_Persistence_RelatedEntitiesContainer)) {
-                throw new \RuntimeException(sprintf('The class "%s" has an entity reference Flow could not detect, please add a Flow\\Proxy annotation with "forceSerializationCode" set to "true".', 1756936954));
+                throw new \RuntimeException(sprintf('The class "%s" has an entity reference Flow could not detect, please add a Flow\\Proxy annotation with "forceSerializationCode" set to "true".', $propertyValue::class), 1756936954);
             }
             $this->Flow_Persistence_RelatedEntitiesContainer->appendRelatedEntity($originalPropertyName, $path, $propertyValue);
             /**
