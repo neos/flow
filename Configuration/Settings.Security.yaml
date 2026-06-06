@@ -100,7 +100,7 @@ Neos:
 
         # A private, unique key used for encryption tasks. Normally 40 characters long and received from a persistent
         # filesystem cache. If set to a non-empty string, the cache is not involved anymore.
-        encryptionKey: null
+        encryptionKey: ''
 
         hashingStrategies:
 
