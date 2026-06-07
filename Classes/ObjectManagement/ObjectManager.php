@@ -209,6 +209,18 @@ class ObjectManager implements ObjectManagerInterface
             throw new Exception\UnknownObjectException('Object "' . $objectName . '" is not registered.' . $hint, 1264589155);
         }
 
+        // Someone might have requested the implementation class directly, in that case we want to reuse that instance when requesting the object.
+        if (
+            $objectName !== $className
+            && isset($this->objects[$className])
+            // this condition is important as otherwise you could run into trouble with virtual objects where the class is not declared singleton
+            && $this->objects[$className][self::KEY_SCOPE] === ObjectConfiguration::SCOPE_SINGLETON
+            && isset($this->objects[$className][self::KEY_INSTANCE])
+        ) {
+            $this->objects[$objectName][self::KEY_INSTANCE] = $this->objects[$className][self::KEY_INSTANCE];
+            return $this->objects[$objectName][self::KEY_INSTANCE];
+        }
+
         // by object name
         if (isset($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS])) {
             $constructorArguments = $this->autowireArguments($this->objects[$objectName][self::KEY_CONSTRUCTOR_ARGUMENTS], $constructorArguments);
@@ -443,6 +455,10 @@ class ObjectManager implements ObjectManagerInterface
     public function forgetInstance($objectName): void
     {
         unset($this->objects[$objectName][self::KEY_INSTANCE]);
+        $className = $this->objects[$objectName][self::KEY_CLASS_NAME] ?? null;
+        if ($className !== null && $className !== $objectName) {
+            unset($this->objects[$objectName][self::KEY_INSTANCE]);
+        }
     }
 
     /**
