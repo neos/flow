@@ -32,6 +32,22 @@ class ObjectManagerTest extends FunctionalTestCase
 
         self::assertInstanceOf(Fixtures\InterfaceAImplementation::class, $objectByInterface);
         self::assertInstanceOf(Fixtures\InterfaceAImplementation::class, $objectByClassName);
+        self::assertSame($objectByClassName, $objectByInterface, sprintf('Instance %d does not equal %d', spl_object_id($objectByClassName), spl_object_id($objectByInterface)));
+    }
+
+    /**
+     * @test
+     */
+    public function requestingTheImplementationAndThenTheInterfaceWorks()
+    {
+        $this->objectManager->forgetInstance(Fixtures\InterfaceAImplementation::class);
+        $this->objectManager->forgetInstance(Fixtures\InterfaceA::class);
+        $objectByClassName = $this->objectManager->get(Fixtures\InterfaceAImplementation::class);
+        $objectByInterface = $this->objectManager->get(Fixtures\InterfaceA::class);
+
+        self::assertInstanceOf(Fixtures\InterfaceA::class, $objectByInterface);
+        self::assertInstanceOf(Fixtures\InterfaceA::class, $objectByClassName);
+        self::assertSame($objectByClassName, $objectByInterface, sprintf('Instance %d does not equal %d', spl_object_id($objectByClassName), spl_object_id($objectByInterface)));
     }
 
     /**

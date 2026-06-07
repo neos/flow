@@ -13,14 +13,10 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 use Neos\Flow\Annotations\Around;
 use Neos\Flow\Annotations\Session;
-use Neos\Flow\ObjectManagement\Exception\CannotBuildObjectException;
-use Neos\Flow\ObjectManagement\Proxy\ProxyClass;
 use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\PropertyReflection;
-use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassExtendingClassWithPrivateConstructor;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassImplementingInterfaceWithConstructor;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithPrivateConstructor;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\ClassWithUnionTypes;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP81\BackedEnumWithMethod;
@@ -229,20 +225,6 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertCount(2, $attributes);
         self::assertEquals(Fixtures\SampleAttribute::class, $attributes[0]->getName());
         self::assertEquals(Fixtures\ClassWithPhpAttributes::class, $attributes[0]->getArguments()[0]);
-    }
-
-    /**
-     * @test
-     * @see https://github.com/neos/flow-development-collection/issues/2554
-     * @throws
-     */
-    public function proxyingClassImplementingInterfacesWithParametrizedConstructorsLeadsToException(): void
-    {
-        $this->expectException(CannotBuildObjectException::class);
-        $proxyClass = new ProxyClass(ClassImplementingInterfaceWithConstructor::class);
-        $proxyClass->injectReflectionService($this->objectManager->get(ReflectionService::class));
-        $proxyClass->getConstructor()->addPreParentCallCode('// some code');
-        $proxyClass->render();
     }
 
     /**

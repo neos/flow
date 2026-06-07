@@ -164,7 +164,7 @@ class ProxyClassBuilder
             $hasCacheEntry = $this->compiler->hasCacheEntryForClass($targetClassName) || $isUnproxied;
             if ($rebuildEverything === true || $hasCacheEntry === false) {
                 $proxyBuildResult = $this->buildProxyClass($targetClassName, $this->aspectContainers);
-                if ($proxyBuildResult === false) {
+                if ($proxyBuildResult === false && get_parent_class($targetClassName) !== false) {
                     // In case the proxy was not built because there was nothing advised,
                     // it might be an advice in the parent, and so we need to try to treat this class.
                     $treatedSubClasses = $this->addBuildMethodsAndAdvicesCodeToClass($targetClassName, $treatedSubClasses);
