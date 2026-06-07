@@ -169,7 +169,9 @@ readonly class ConfigurationParser
             }
 
             if ($objectName === null) {
-                throw new InvalidObjectConfigurationException('Object configuration for argument "' . $argumentName . '" contains neither object name nor factory object or method name in ' . $parentObjectConfiguration->getConfigurationSourceHint(), 1417431742);
+                // This is a weird object configuration, we create a magic virtual object for it, throwing might be stricter,
+                // but this can happen in the real world. So safer for now. Also global Objects.yaml is problematic.
+                $objectName = 'Runtime.Virtual.Object:' . md5(json_encode($objectNameOrConfiguration, JSON_THROW_ON_ERROR));
             }
 
             $objectConfiguration = $this->parseConfigurationArray($objectName, $objectNameOrConfiguration, $parentObjectConfiguration->getConfigurationSourceHint() . ', argument "' . $argumentName . '"');
