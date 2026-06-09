@@ -1061,7 +1061,7 @@ class ReflectionService
         }
 
         /** @phpstan-ignore return.type
-         * (in case of an annotation class name, this is really the annotation instance; The array iss just mixed with arbitrary-string-indexed other objects)
+         * (in case of an annotation class name, this is really the annotation instance; The array is just mixed with arbitrary-string-indexed other objects)
          */
         return $this->classReflectionData[$className][self::DATA_CLASS_PROPERTIES][$propertyName][self::DATA_PROPERTY_ANNOTATIONS][$annotationClassName] ?? [];
     }
@@ -2087,9 +2087,9 @@ class ReflectionService
      * Clean a given type from possibly prefixed backslash
      * @return string
      */
-    protected function cleanTypeName(string $className): string
+    protected function cleanTypeName(string $typeName): string
     {
-        return ltrim($className, '\\');
+        return ltrim($typeName, '\\');
     }
 
     /**

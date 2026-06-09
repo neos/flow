@@ -334,7 +334,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
     public function read($count)
     {
         if ($count < 1) {
-            throw new \Exception('Cannot read less than one byte', 1743964166);
+            throw new \InvalidArgumentException('Cannot read less than one byte', 1743964166);
         }
         return fread($this->handle, $count);
     }
@@ -497,7 +497,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
      *
      * @param string $requestedPath
      * @param boolean $checkForExistence Whether a (non-hash) path should be checked for existence before being returned
-     * @return string|resource|false The full path and filename or false if the file doesn't exist
+     * @return string|resource|false A resource, the full path and filename or false if the file doesn't exist
      * @throws \InvalidArgumentException|ResourceException
      */
     protected function evaluateResourcePath($requestedPath, $checkForExistence = true)

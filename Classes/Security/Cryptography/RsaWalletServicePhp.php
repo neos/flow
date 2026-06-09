@@ -205,7 +205,7 @@ class RsaWalletServicePhp implements RsaWalletServiceInterface
      * Note: You should never decrypt a password with this function. Use checkRSAEncryptedPassword()
      * to check passwords!
      *
-     * @param string $cypher cipher text to decrypt
+     * @param string $cypher cypher text to decrypt
      * @param string $fingerprint The fingerprint to identify the private key (RSA public key fingerprint)
      * @return string The decrypted text
      * @throws InvalidKeyPairIdException If the given fingerprint identifies no valid keypair

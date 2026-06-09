@@ -25,7 +25,7 @@ class PasswordToken extends AbstractToken implements PasswordTokenInterface
 
     /**
      * The password credentials
-     * @var array{password: string,}
+     * @var array{password: string}
      * @Flow\Transient
      */
     protected $credentials = ['password' => ''];

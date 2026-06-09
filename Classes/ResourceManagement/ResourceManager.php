@@ -628,7 +628,7 @@ class ResourceManager
         $openBasedirEnabled = (boolean)ini_get('open_basedir');
         $temporaryTargetPathAndFilename = $uploadInfo['tmp_name'] ?? null;
         if (!is_string($temporaryTargetPathAndFilename)) {
-            throw new \Exception('String tmp_name required', 1743969722);
+            throw new \InvalidArgumentException('Key tmp_name in uploaded file info is required', 1743969722);
         }
         $pathInfo = UnicodeFunctions::pathinfo($uploadInfo['name']);
 
