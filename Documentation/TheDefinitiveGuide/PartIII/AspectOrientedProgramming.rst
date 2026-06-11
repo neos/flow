@@ -169,7 +169,7 @@ Pointcut expression
 	pointcut- and advice declarations.
 
 Target
-	A class or method being adviced by one or more aspects is referred to as a
+	A class or method being advised by one or more aspects is referred to as a
 	target class /-method.
 
 Introduction
@@ -192,7 +192,7 @@ After returning advice
 	exception, the after returning advice is not executed.
 
 After throwing advice
-	An after throwing advice is only executed if the target method throwed an
+	An after throwing advice is only executed if the target method threw an
 	exception. The after throwing advice may fetch the exception type from the
 	join point object.
 
@@ -250,10 +250,10 @@ Manager to fulfill its task.
 Flow uses PHP's reflection capabilities to analyze declarations of aspects,
 pointcuts and advices and implements method interceptors as a dynamic proxy. In
 accordance to the GoF patterns [#]_, the proxy classes act as a placeholders for
-the target object. They are true subclasses of the original and override adviced
+the target object. They are true subclasses of the original and override advised
 methods by implementing an interceptor method. The proxy classes are generated
 automatically by the AOP framework and cached for further use. If a class has
-been adviced by some aspect, the Object Manager will only deliver instances of
+been advised by some aspect, the Object Manager will only deliver instances of
 the proxy class instead of the original.
 
 The approach of storing generated proxy classes in files provides the whole
@@ -344,7 +344,7 @@ the pointcut matches and advices which refer to this pointcut become active.
 Pointcut designators
 --------------------
 
-A pointcut expression always consists of two parts: The poincut designator and
+A pointcut expression always consists of two parts: The pointcut designator and
 its parameter(s). The following designators are supported by Flow:
 
 method()
@@ -720,7 +720,7 @@ advices may read the result of the target method, but can't modify it.
 	/**
 	 * After returning advice
 	 *
-	 * @Flow\AfterReturning("method(public Example\News\FeedAgregator->[import|update].*()) || Example\MyPackage\MyAspect->someOtherPointcut")
+	 * @Flow\AfterReturning("method(public Example\News\FeedAggregator->[import|update].*()) || Example\MyPackage\MyAspect->someOtherPointcut")
 	 */
 	public function myAfterReturningAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint): void
 	{
