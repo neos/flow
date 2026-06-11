@@ -357,7 +357,7 @@ Arguments
 
 The ``ActionRequest`` features a few methods for retrieving and setting arguments. These arguments are the result of merging any
 GET, POST and PUT arguments and even the information about uploaded files. Note that these arguments have already been processed
-by the validation and property mapping layerns and thus are suitable for being used in controller actions. If you, however, need to
+by the validation and property mapping layers and thus are suitable for being used in controller actions. If you, however, need to
 access the raw data, you can access these via the ``getCookieParams()``, ``getQueryParams()``, ``getUploadedFiles()`` and ``getParsedBody()``
 methods of the ``HttpRequest``  respectively.
 

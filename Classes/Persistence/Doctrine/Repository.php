@@ -254,7 +254,7 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
      *  'bar' => \Neos\Flow\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @param array $defaultOrderings The property names to order by by default
+     * @param array $defaultOrderings The property names to order by default
      * @return void
      * @api
      */

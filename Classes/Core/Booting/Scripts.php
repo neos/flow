@@ -101,7 +101,7 @@ class Scripts
 
     /**
      * Register the class loader into the Doctrine AnnotationRegistry so
-     * the DocParser is able to load annation classes from packages.
+     * the DocParser is able to load annotation classes from packages.
      *
      * @param Bootstrap $bootstrap
      * @return void

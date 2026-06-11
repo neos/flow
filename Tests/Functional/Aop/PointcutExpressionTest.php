@@ -14,7 +14,7 @@ namespace Neos\Flow\Tests\Functional\Aop;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
- * Test suite for poincut expression related features
+ * Test suite for pointcut expression related features
  *
  */
 class PointcutExpressionTest extends FunctionalTestCase
