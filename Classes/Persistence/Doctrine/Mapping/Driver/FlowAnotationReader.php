@@ -93,7 +93,8 @@ class FlowAnotationReader implements Reader
      * Gets the annotations applied to a property.
      *
      * @param ReflectionProperty $property The ReflectionProperty of the property from which the annotations should be read.
-     * @return array<object> An array of Annotations.
+     * @return array<int,array<object>> An array of Annotations.
+     * @phpstan-ignore method.childReturnType
      */
     public function getPropertyAnnotations(ReflectionProperty $property)
     {

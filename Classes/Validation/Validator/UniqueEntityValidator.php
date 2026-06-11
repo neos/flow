@@ -16,7 +16,6 @@ use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Reflection\ClassSchema;
 use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
-use Neos\Utility\TypeHandling;
 use Neos\Flow\Validation\Exception\InvalidValidationOptionsException;
 
 /**
@@ -39,7 +38,7 @@ class UniqueEntityValidator extends AbstractValidator
     protected $persistenceManager;
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $supportedOptions = [
         'identityProperties' => [null, 'List of custom identity properties.', 'array']
@@ -60,7 +59,7 @@ class UniqueEntityValidator extends AbstractValidator
             throw new InvalidValidationOptionsException('The value supplied for the UniqueEntityValidator must be an object.', 1358454270);
         }
 
-        $classSchema = $this->reflectionService->getClassSchema(TypeHandling::getTypeForValue($value));
+        $classSchema = $this->reflectionService->getClassSchema($value);
         if ($classSchema === null || $classSchema->getModelType() !== ClassSchema::MODELTYPE_ENTITY) {
             throw new InvalidValidationOptionsException('The object supplied for the UniqueEntityValidator must be an entity.', 1358454284);
         }

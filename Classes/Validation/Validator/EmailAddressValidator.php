@@ -26,7 +26,7 @@ use Neos\Flow\Annotations as Flow;
 class EmailAddressValidator extends AbstractValidator
 {
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $supportedOptions = [
         'strict' => [false, 'Whether to fail validation on RFC warnings', 'bool'],

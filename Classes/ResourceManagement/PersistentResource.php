@@ -330,9 +330,9 @@ class PersistentResource implements ResourceMetaDataInterface, CacheAwareInterfa
             $temporaryPathAndFilename .= '-' . microtime(true);
 
             if (function_exists('posix_getpid')) {
-                $temporaryPathAndFilename .= '-' . str_pad(posix_getpid(), 10);
+                $temporaryPathAndFilename .= '-' . str_pad((string)posix_getpid(), 10);
             } else {
-                $temporaryPathAndFilename .= '-' . (string) getmypid();
+                $temporaryPathAndFilename .= '-' . getmypid();
             }
 
             $temporaryPathAndFilename = trim($temporaryPathAndFilename);
@@ -364,7 +364,9 @@ class PersistentResource implements ResourceMetaDataInterface, CacheAwareInterfa
     {
         if ($this->lifecycleEventsActive) {
             $collection = $this->resourceManager->getCollection($this->collectionName);
-            $collection->getTarget()->publishResource($this, $collection);
+            if ($collection) {
+                $collection->getTarget()->publishResource($this, $collection);
+            }
         }
     }
 

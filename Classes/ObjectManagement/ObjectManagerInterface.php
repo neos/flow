@@ -110,7 +110,7 @@ interface ObjectManagerInterface extends ContainerInterface
      * Returns the implementation class name for the specified object
      *
      * @param string $objectName The object name
-     * @return string The class name corresponding to the given object name or false if no such object is registered
+     * @return class-string|false The class name corresponding to the given object name or false if no such object is registered
      * @api
      */
     public function getClassNameByObjectName($objectName);
@@ -119,7 +119,7 @@ interface ObjectManagerInterface extends ContainerInterface
      * Returns the key of the package the specified object is contained in.
      *
      * @param string $objectName The object name
-     * @return string The package key or false if no such object exists
+     * @return string|false The package key or false if no such object exists
      */
     public function getPackageKeyByObjectName($objectName);
 
