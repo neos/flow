@@ -298,7 +298,7 @@ class ReflectionService
         if (!$this->initialized) {
             $this->initialize();
         }
-        $className = $this->cleanClassName($className);
+        $className = $this->cleanTypeName($className);
         /** @phpstan-ignore booleanAnd.rightAlwaysTrue (not exactly sure why this is needed) */
         return isset($this->classReflectionData[$className]) && is_array($this->classReflectionData[$className]);
     }
@@ -411,7 +411,7 @@ class ReflectionService
         if (!$this->initialized) {
             $this->initialize();
         }
-        $annotationClassName = $this->cleanClassName($annotationClassName);
+        $annotationClassName = $this->cleanTypeName($annotationClassName);
 
         return array_keys($this->annotatedClasses[$annotationClassName] ?? []);
     }
@@ -426,9 +426,9 @@ class ReflectionService
         if (!$this->initialized) {
             $this->initialize();
         }
-        $className = $this->cleanClassName($className);
+        $className = $this->cleanTypeName($className);
 
-        $annotationClassName = $this->cleanClassName($annotationClassName);
+        $annotationClassName = $this->cleanTypeName($annotationClassName);
 
         return isset($this->annotatedClasses[$annotationClassName][$className]);
     }
@@ -448,7 +448,7 @@ class ReflectionService
     {
         $className = $this->prepareClassReflectionForUsage($className);
 
-        $annotationClassName = $annotationClassName === null ? null : $this->cleanClassName($annotationClassName);
+        $annotationClassName = $annotationClassName === null ? null : $this->cleanTypeName($annotationClassName);
         if (!isset($this->classReflectionData[$className][self::DATA_CLASS_ANNOTATIONS])) {
             return [];
         }
@@ -559,7 +559,7 @@ class ReflectionService
      */
     public function isClassUnconfigurable(string $className): bool
     {
-        $className = $this->cleanClassName($className);
+        $className = $this->cleanTypeName($className);
 
         return $this->classReflectionData[$className] === [];
     }
@@ -719,7 +719,7 @@ class ReflectionService
     public function getMethodAnnotations(string $className, string $methodName, string|null $annotationClassName = null): array
     {
         $className = $this->cleanClassName($className);
-        $annotationClassName = $annotationClassName === null ? null : $this->cleanClassName($annotationClassName);
+        $annotationClassName = $annotationClassName === null ? null : $this->cleanTypeName($annotationClassName);
 
         $methodAnnotations = $this->methodAnnotationsRuntimeCache[$className][$methodName] ?? null;
         $annotations = [];
