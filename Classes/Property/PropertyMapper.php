@@ -229,6 +229,9 @@ class PropertyMapper
             return $configuration->getTypeConverter();
         }
 
+        if (!is_string($targetType)) {
+            throw new Exception\InvalidTargetException('The target type was no string, but of type "' . gettype($targetType) . '"', 1297941727);
+        }
         $normalizedTargetType = TypeHandling::normalizeType($targetType);
         $truncatedTargetType = TypeHandling::truncateElementType($normalizedTargetType);
         $converter = null;
@@ -347,7 +350,7 @@ class PropertyMapper
             if (isset($convertersForSource[$implementedInterface])) {
                 foreach ($convertersForSource[$implementedInterface] as $priority => $converter) {
                     if (isset($convertersForInterface[$priority])) {
-                        throw new DuplicateTypeConverterException('There exist at least two converters which handle the conversion to an interface with priority "' . $priority . '". ' . $convertersForInterface[$priority] . ' and ' . $converter, 1297951338);
+                        throw new DuplicateTypeConverterException('There exist at least two converters which handle the conversion to an interface with priority "' . $priority . '". ' . get_debug_type($convertersForInterface[$priority]) . ' and ' . get_debug_type($converter), 1297951338);
                     }
                     $convertersForInterface[$priority] = $converter;
                 }
