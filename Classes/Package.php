@@ -173,7 +173,10 @@ class Package extends BasePackage
         $dispatcher->connect(AuthenticationProviderManager::class, 'successfullyAuthenticated', Context::class, 'refreshRoles');
         $dispatcher->connect(AuthenticationProviderManager::class, 'loggedOut', Context::class, 'refreshTokens');
 
-        $dispatcher->connect(Compiler::class, 'afterCompile', XdebugPathMappingBuilder::class, 'buildFromCompiledClasses');
+        $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
+            $xdebugPathMappingBuilder = $bootstrap->getObjectManager()->get(XdebugPathMappingBuilder::class);
+            $xdebugPathMappingBuilder->buildFromCompiledClasses($compiledClasses, (string) $bootstrap->getContext());
+        });
         $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
             $annotationsCacheFlusher = $bootstrap->getObjectManager()->get(AnnotationsCacheFlusher::class);
             $annotationsCacheFlusher->registerAnnotation(Route::class, ['Flow_Mvc_Routing_Route', 'Flow_Mvc_Routing_Resolve']);
