@@ -103,7 +103,7 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
     public function add($object): void
     {
         if (!($object instanceof $this->objectType)) {
-            throw new IllegalObjectTypeException('The value given to add() was ' . get_class($object) . ' , however the ' . get_class($this) . ' can only store ' . $this->objectType . ' instances.', 1517408062);
+            throw new IllegalObjectTypeException('The value given to add() was ' . get_debug_type($object) . ' , however the ' . get_class($this) . ' can only store ' . $this->objectType . ' instances.', 1517408062);
         }
         $this->entityManager->persist($object);
     }
@@ -119,7 +119,7 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
     public function remove($object): void
     {
         if (!($object instanceof $this->objectType)) {
-            throw new IllegalObjectTypeException('The value given to remove() was ' . get_class($object) . ' , however the ' . get_class($this) . ' can only handle ' . $this->objectType . ' instances.', 1517408067);
+            throw new IllegalObjectTypeException('The value given to remove() was ' . get_debug_type($object) . ' , however the ' . get_class($this) . ' can only handle ' . $this->objectType . ' instances.', 1517408067);
         }
         $this->entityManager->remove($object);
     }
@@ -246,7 +246,7 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
      */
     public function update($object): void
     {
-        if (!($object instanceof $this->objectType)) {
+        if (!$object instanceof $this->objectType) {
             throw new IllegalObjectTypeException('The modified object given to update() was not of the type (' . $this->objectType . ') this repository manages.', 1249479625);
         }
         $this->persistenceManager->update($object);

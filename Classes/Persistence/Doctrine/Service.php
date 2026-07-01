@@ -34,7 +34,6 @@ use Doctrine\Migrations\Metadata\AvailableMigrationsList;
 use Doctrine\Migrations\Metadata\ExecutedMigration;
 use Doctrine\Migrations\Metadata\ExecutedMigrationsList;
 use Doctrine\Migrations\MigratorConfiguration;
-use Doctrine\Migrations\Tools\Console\Exception\InvalidOptionUsage;
 use Doctrine\Migrations\Tools\Console\Exception\VersionAlreadyExists;
 use Doctrine\Migrations\Tools\Console\Exception\VersionDoesNotExist;
 use Doctrine\Migrations\Version\Comparator;
@@ -497,10 +496,8 @@ class Service
             foreach ($availableVersions->getItems() as $availableMigration) {
                 $this->mark($output, $availableMigration->getVersion(), true, $executedMigrations, !$markAsMigrated, $overrideMigrationFolderName);
             }
-        } elseif ($version !== null) {
-            $this->mark($output, new Version($version), false, $executedMigrations, !$markAsMigrated, $overrideMigrationFolderName);
         } else {
-            throw InvalidOptionUsage::new('You must specify the version or use the --all argument.');
+            $this->mark($output, new Version($version), false, $executedMigrations, !$markAsMigrated, $overrideMigrationFolderName);
         }
     }
 

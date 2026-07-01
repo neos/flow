@@ -11,9 +11,6 @@ namespace Neos\Flow\Persistence\Doctrine\Mapping\Driver;
  * source code.
  */
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\IndexedReader;
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\Persistence\Mapping\Driver\MappingDriver as DoctrineMappingDriverInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -171,6 +168,7 @@ class FlowAnnotationDriver implements DoctrineMappingDriverInterface, PointcutFi
          * @var ORM\ClassMetadata<object> $metadata
          */
         try {
+            /** @var \ReflectionClass<object> $class */
             $class = $metadata->getReflectionClass();
             $classSchema = $this->getClassSchema($class->getName());
             $classAnnotations = $this->reader->getClassAnnotations($class);

@@ -38,7 +38,7 @@ class ObjectPathMappingRepository extends Repository
     protected $entityManager;
 
     /**
-     * @var array
+     * @var array<string, 'ASC'|'DESC'>
      */
     protected $defaultOrderings = [
         'objectType' => QueryInterface::ORDER_ASCENDING,

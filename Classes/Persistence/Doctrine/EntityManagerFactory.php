@@ -167,6 +167,7 @@ class EntityManagerFactory
         }
 
         $logger = $sqlLoggerInstance->logger;
+        /** @phpstan-ignore instanceof.alwaysFalse (this may be a proxy) */
         if ($logger instanceof DependencyProxy) {
             $logger = $logger->_activateDependency();
         }

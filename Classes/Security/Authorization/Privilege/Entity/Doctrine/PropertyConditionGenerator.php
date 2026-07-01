@@ -458,7 +458,6 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
                 $subselectConstraint = $subselectQuery->equals($propertyName, $this->operand);
                 break;
             case '!=':
-                /** @phpstan-ignore argument.type */
                 $subselectConstraint = $subselectQuery->logicalNot($subselectQuery->equals($propertyName, $this->operand));
                 break;
             case '<':
@@ -482,7 +481,6 @@ class PropertyConditionGenerator implements SqlGeneratorInterface
             default:
                 throw new \Exception(sprintf('Invalid operator "%s".', $this->operator), 1699025734);
         }
-        /** @var @phpstan-ignore argument.type */
         $subselectQuery->matching($subselectConstraint);
         return $subselectQuery;
     }
