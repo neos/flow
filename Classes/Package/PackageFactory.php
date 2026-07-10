@@ -49,6 +49,9 @@ class PackageFactory
 
         /** dynamic construction {@see GenericPackage::__construct} */
         $package = new $packageClassName($packageKey->value, $composerName, $absolutePackagePath, $autoloadConfiguration);
+        if (!$package instanceof PackageInterface) {
+            throw new Exception\CorruptPackageException(sprintf('The package class of package "%s" does not implement \Neos\Flow\Package\PackageInterface. Check the file "%s".', $packageKey->value, $packageClassInformation['pathAndFilename']), 1427193370);
+        }
         if (!$package instanceof PackageKeyAwareInterface) {
             throw new Exception\CorruptPackageException(sprintf('The package class of package "%s" does not implement \Neos\Flow\Package\PackageKeyAwareInterface. Check the file "%s".', $packageKey->value, $packageClassInformation['pathAndFilename']), 1711665156);
         }
@@ -98,7 +101,7 @@ class PackageFactory
 
         $packageClassContents = file_get_contents($absolutePackageClassPath);
         if (!$packageClassContents) {
-            throw new \Exception('Could not read package class file', 1744142431);
+            throw new Exception\CorruptPackageException(sprintf('Could not read package class file of package "%s"', $packageKey->value), 1744142431);
         }
         $packageClassName = (new PhpAnalyzer($packageClassContents))->extractFullyQualifiedClassName();
         if ($packageClassName === null || !is_subclass_of($packageClassName, PackageInterface::class)) {
