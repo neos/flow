@@ -38,6 +38,11 @@ class CommandManagerTest extends UnitTestCase
     protected $mockBootstrap;
 
     /**
+     * @var ObjectManagerInterface
+     */
+    protected $mockObjectManager;
+
+    /**
      * @var Cli\CommandManager
      */
     protected $commandManager;
