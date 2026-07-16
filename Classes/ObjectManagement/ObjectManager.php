@@ -26,6 +26,18 @@ use Neos\Flow\Security\Context;
 /**
  * Object Manager
  *
+ * @template ObjectRecordInstance of object
+ * @phpstan-type ObjectRecordShape array{
+ *      i?: object,
+ *      l?: string,
+ *      s: int,
+ *      p?: string,
+ *      c?: class-string,
+ *      ca?: array<int, null|array{t:int, v:mixed, wm:int}>,
+ *      f?: array{string, string},
+ *      fa?: array<int, null|array{t:int, v:mixed}>
+ * }
+ *
  * @Flow\Scope("singleton")
  * @Flow\Proxy(false)
  */
@@ -51,22 +63,22 @@ class ObjectManager implements ObjectManagerInterface
     protected ApplicationContext $context;
 
     /**
-     * @var array<string, array<string,mixed>>
+     * @var array<class-string|string, ObjectRecordShape>
      */
     protected array $objects = [];
 
     /**
-     * @var array<DependencyInjection\DependencyProxy>
+     * @var array<DependencyInjection\DependencyProxy<object>>
      */
     protected array $dependencyProxies = [];
 
     /**
-     * @var array<string, bool>
+     * @var array<string,bool>
      */
     protected array $classesBeingInstantiated = [];
 
     /**
-     * @var array<string, string>
+     * @var array<string,string>
      */
     protected array $cachedLowerCasedObjectNames = [];
 
@@ -74,7 +86,7 @@ class ObjectManager implements ObjectManagerInterface
      * A SplObjectStorage containing those objects which need to be shutdown when the container
      * shuts down. Each value of each entry is the respective shutdown method name.
      *
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage<object,mixed>
      */
     protected \SplObjectStorage $shutdownObjects;
 
@@ -82,7 +94,7 @@ class ObjectManager implements ObjectManagerInterface
      * A SplObjectStorage containing only those shutdown objects which have been registered for Flow.
      * These shutdown method will be called after all other shutdown methods have been called.
      *
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage<object,mixed>
      */
     protected \SplObjectStorage $internalShutdownObjects;
 
@@ -101,7 +113,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Sets the objects array
      *
-     * @param array<string, array> $objects An array of object names and some information about each registered object (scope, lower cased name etc.)
+     * @param array<class-string|string, ObjectRecordShape> $objects An array of object names and some information about each registered object (scope, lower cased name etc.)
      * @return void
      */
     public function setObjects(array $objects): void
@@ -322,8 +334,8 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Returns the implementation class name for the specified object
      *
-     * @param string $objectName The object name
-     * @return class-string|false The class name corresponding to the given object name or false if no such object is registered
+     * @param class-string|string $objectName The object name
+     * @return class-string|string|false The class name corresponding to the given object name or false if no such object is registered
      * @api
      */
     public function getClassNameByObjectName($objectName): string|false
@@ -343,7 +355,7 @@ class ObjectManager implements ObjectManagerInterface
      */
     public function getPackageKeyByObjectName($objectName): string|false
     {
-        return (isset($this->objects[$objectName]) ? $this->objects[$objectName][self::KEY_PACKAGE] : false);
+        return (isset($this->objects[$objectName]) ? ($this->objects[$objectName][self::KEY_PACKAGE] ?? false) : false);
     }
 
     /**
@@ -430,9 +442,9 @@ class ObjectManager implements ObjectManagerInterface
      *
      * @param string $hash An md5 hash over the code needed to actually build the dependency instance
      * @param mixed &$propertyReferenceVariable A first variable where the dependency needs to be injected into
-     * @param string $className Name of the class of the dependency which eventually will be instantiated
+     * @param class-string $className Name of the class of the dependency which eventually will be instantiated
      * @param \Closure $builder An anonymous function which creates the instance to be injected
-     * @return DependencyProxy
+     * @return DependencyProxy<object>
      */
     public function createLazyDependency(string $hash, mixed &$propertyReferenceVariable, string $className, \Closure $builder): DependencyProxy
     {
@@ -464,7 +476,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Returns all instances of objects with scope session
      *
-     * @return array
+     * @return array<int,object>
      */
     public function getSessionInstances(): array
     {
@@ -506,7 +518,7 @@ class ObjectManager implements ObjectManagerInterface
      * Returns all current object configurations.
      * For internal use in bootstrap only. Can change anytime.
      *
-     * @return array
+     * @return array<string,ObjectRecordShape>
      */
     public function getAllObjectConfigurations(): array
     {
@@ -526,21 +538,26 @@ class ObjectManager implements ObjectManagerInterface
      */
     protected function buildObjectByFactory(string $objectName): object
     {
-        $factory = $this->objects[$objectName][self::KEY_FACTORY][0] ? $this->get($this->objects[$objectName][self::KEY_FACTORY][0]) : null;
-        $factoryMethodName = $this->objects[$objectName][self::KEY_FACTORY][1];
+        $factoryName = $this->objects[$objectName][self::KEY_FACTORY][0] ?? null;
+        $factory = $factoryName ? $this->get($factoryName) : null;
+        $factoryMethodName = $this->objects[$objectName][self::KEY_FACTORY][1] ?? null;
 
         $factoryMethodArguments = [];
-        foreach ($this->objects[$objectName][self::KEY_FACTORY_ARGUMENTS] as $index => $argumentInformation) {
-            switch ($argumentInformation[self::KEY_ARGUMENT_TYPE]) {
-                case ObjectConfigurationArgument::ARGUMENT_TYPES_SETTING:
-                    $factoryMethodArguments[$index] = $this->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, $argumentInformation[self::KEY_ARGUMENT_VALUE]);
-                    break;
-                case ObjectConfigurationArgument::ARGUMENT_TYPES_STRAIGHTVALUE:
-                    $factoryMethodArguments[$index] = $argumentInformation[self::KEY_ARGUMENT_VALUE];
-                    break;
-                case ObjectConfigurationArgument::ARGUMENT_TYPES_OBJECT:
-                    $factoryMethodArguments[$index] = $this->get($argumentInformation[self::KEY_ARGUMENT_VALUE]);
-                    break;
+        foreach ($this->objects[$objectName][self::KEY_FACTORY_ARGUMENTS] ?? [] as $index => $argumentInformation) {
+            if ($argumentInformation === null) {
+                $factoryMethodArguments[$index] = null;
+            } else {
+                switch ($argumentInformation[self::KEY_ARGUMENT_TYPE]) {
+                    case ObjectConfigurationArgument::ARGUMENT_TYPES_SETTING:
+                        $factoryMethodArguments[$index] = $this->get(ConfigurationManager::class)->getConfiguration(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, $argumentInformation[self::KEY_ARGUMENT_VALUE]);
+                        break;
+                    case ObjectConfigurationArgument::ARGUMENT_TYPES_STRAIGHTVALUE:
+                        $factoryMethodArguments[$index] = $argumentInformation[self::KEY_ARGUMENT_VALUE];
+                        break;
+                    case ObjectConfigurationArgument::ARGUMENT_TYPES_OBJECT:
+                        $factoryMethodArguments[$index] = $this->get($argumentInformation[self::KEY_ARGUMENT_VALUE]);
+                        break;
+                }
             }
         }
 
@@ -548,6 +565,9 @@ class ObjectManager implements ObjectManagerInterface
             return $factory->$factoryMethodName(...$factoryMethodArguments);
         }
 
+        if (!is_callable($factoryMethodName)) {
+            throw new \Exception($factoryMethodName . ' is not callable', 1744233428);
+        }
         return $factoryMethodName(...$factoryMethodArguments);
     }
 
@@ -576,13 +596,25 @@ class ObjectManager implements ObjectManagerInterface
         }
     }
 
+    /**
+     * @param array<int|string,mixed> $configuration
+     * @param array<int|string,mixed> $existingArguments
+     * @return array<int|string,mixed>
+     */
     protected function autowireArguments($configuration, $existingArguments): array
     {
         foreach ($configuration as $index => $argument) {
-            if (isset($existingArguments[$index - 1])) {
-                continue;
+            if (is_int($index)) {
+                if (isset($existingArguments[$index - 1])) {
+                    continue;
+                }
+                $existingArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
+            } elseif (is_string($index)) {
+                if (isset($existingArguments[$index])) {
+                    continue;
+                }
+                $existingArguments[$index] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
             }
-            $existingArguments[$index - 1] = $this->getConfiguredArgument($argument[self::KEY_ARGUMENT_TYPE], $argument[self::KEY_ARGUMENT_VALUE]);
         }
 
         return $existingArguments;
@@ -645,7 +677,7 @@ class ObjectManager implements ObjectManagerInterface
     /**
      * Executes the methods of the provided objects.
      *
-     * @param \SplObjectStorage $shutdownObjects
+     * @param \SplObjectStorage<object,mixed> $shutdownObjects
      * @return void
      */
     protected function callShutdownMethods(\SplObjectStorage $shutdownObjects): void

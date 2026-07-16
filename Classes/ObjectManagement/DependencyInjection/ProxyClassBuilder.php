@@ -51,6 +51,14 @@ class ProxyClassBuilder
      */
     protected array $objectConfigurations = [];
 
+    /**
+     * @param ReflectionService $reflectionService
+     * @param Compiler $compiler
+     * @param LoggerInterface $logger
+     * @param ConfigurationManager $configurationManager
+     * @param CacheManager $cacheManager
+     * @param CompileTimeObjectManager<object> $objectManager
+     */
     public function __construct(
         protected ReflectionService $reflectionService,
         protected Compiler $compiler,
@@ -77,9 +85,9 @@ class ProxyClassBuilder
         $this->objectConfigurations = $this->objectManager->getObjectConfigurations();
 
         foreach ($this->objectConfigurations as $objectName => $objectConfiguration) {
+            /** @var class-string $className */
             $className = $objectConfiguration->getClassName();
-            if ($className === ''
-                || $objectName !== $className
+            if ($objectName !== $className
                 || $this->compiler->hasCacheEntryForClass($className) === true
                 || $this->reflectionService->isClassAbstract($className)
             ) {
@@ -171,10 +179,8 @@ class ProxyClassBuilder
      */
     protected function buildSerializeRelatedEntitiesCode(Configuration $objectConfiguration, bool $forceSerializationCode): string
     {
-        /** @var class-string $className */
         $className = $objectConfiguration->getClassName();
         $forceSerializationCode = $forceSerializationCode === false ? ($this->reflectionService->getClassAnnotation($className, Flow\Proxy::class)?->forceSerializationCode ?? false) : true;
-        /** @var Flow\Scope $scopeAnnotation */
         $scopeAnnotation = $this->reflectionService->getClassAnnotation($className, Flow\Scope::class);
         $transientProperties = $this->reflectionService->getPropertyNamesByAnnotation($className, Flow\Transient::class);
         $injectedProperties = $this->reflectionService->getPropertyNamesByAnnotation($className, Flow\Inject::class);
@@ -502,10 +508,7 @@ class ProxyClassBuilder
     }
 
     /**
-     * FIXME: Not yet completely refactored to new proxy mechanism
-     *
-     * @param array $argumentConfigurations
-     * @return string
+     * @param array<int, ?ConfigurationArgument> $argumentConfigurations
      * @throws InvalidConfigurationTypeException
      */
     protected function buildMethodParametersCode(array $argumentConfigurations): string
@@ -517,7 +520,6 @@ class ProxyClassBuilder
                 $preparedArguments[] = 'NULL';
             } else {
                 $argumentValue = $argument->getValue();
-
                 switch ($argument->getType()) {
                     case ConfigurationArgument::ARGUMENT_TYPES_OBJECT:
                         if ($argumentValue instanceof Configuration) {
@@ -549,7 +551,8 @@ class ProxyClassBuilder
     }
 
     /**
-     * @param class-string $customFactoryObjectName
+     * @param string $customFactoryObjectName
+     * @param array<int, ?ConfigurationArgument> $arguments
      * @throws InvalidConfigurationTypeException
      */
     protected function buildCustomFactoryCall(string $customFactoryObjectName, string $customFactoryMethodName, array $arguments): string
@@ -603,10 +606,7 @@ class ProxyClassBuilder
             }
             $propertyType = $this->reflectionService->getPropertyType($className, $propertyName);
             if ($propertyType === null) {
-                $propertyType = $this->reflectionService->getPropertyTagValues($className, $propertyName, 'var');
-            }
-            if (isset($propertyType[0])) {
-                $propertyType = $propertyType[0];
+                $propertyType = $this->reflectionService->getPropertyTagValues($className, $propertyName, 'var')[0] ?? null;
             }
             if ($propertyType === null) {
                 continue;

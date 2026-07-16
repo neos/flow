@@ -155,7 +155,7 @@ interface ObjectManagerInterface extends ContainerInterface
     /**
      * Returns all instances of objects with scope session
      *
-     * @return array
+     * @return array<int, object>
      */
     public function getSessionInstances();
 

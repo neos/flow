@@ -190,7 +190,7 @@ class Configuration
     /**
      * Sets the class name of a factory which is in charge of instantiating this object
      *
-     * @param class-string $objectName Valid object name of a factory
+     * @param string $objectName Valid object name of a factory
      * @return void
      */
     public function setFactoryObjectName(string $objectName): void
@@ -206,7 +206,7 @@ class Configuration
     /**
      * Returns the class name of the factory for this object, if any
      *
-     * @return class-string The factory class name
+     * @return string The factory class name
      */
     public function getFactoryObjectName(): string
     {
@@ -370,7 +370,7 @@ class Configuration
      * Setter function for injection constructor arguments. If an empty array is passed to this
      * method, all (possibly) defined constructor arguments are removed from the configuration.
      *
-     * @param array<ConfigurationArgument> $arguments
+     * @param array<?ConfigurationArgument> $arguments
      * @throws InvalidConfigurationException
      * @return void
      */
@@ -378,7 +378,9 @@ class Configuration
     {
         $this->arguments = [];
         foreach ($arguments as $argument) {
-            $this->setArgument($argument);
+            if ($argument instanceof ConfigurationArgument) {
+                $this->setArgument($argument);
+            }
         }
     }
 
@@ -396,11 +398,11 @@ class Configuration
     /**
      * Returns a sorted array of constructor arguments indexed by position (starting with "1")
      *
-     * @return array<ConfigurationArgument> A sorted array of ConfigurationArgument objects with the argument position as index
+     * @return array<int, ?ConfigurationArgument> A sorted array of ConfigurationArgument objects with the argument position as index
      */
     public function getArguments(): array
     {
-        if (count($this->arguments) < 1) {
+        if (empty($this->arguments)) {
             return [];
         }
 
@@ -428,7 +430,7 @@ class Configuration
     /**
      * Returns a sorted array of factory method arguments indexed by position (starting with "1")
      *
-     * @return array<ConfigurationArgument> A sorted array of ConfigurationArgument objects with the argument position as index
+     * @return array<int, ?ConfigurationArgument> A sorted array of ConfigurationArgument objects with the argument position as index
      */
     public function getFactoryArguments(): array
     {

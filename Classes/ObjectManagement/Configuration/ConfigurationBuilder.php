@@ -57,8 +57,21 @@ readonly class ConfigurationBuilder
      * into the overall configuration. Finally autowires dependencies of arguments and properties
      * which can be resolved automatically.
      *
-     * @param array<string, array<string>> $availableClassAndInterfaceNamesByPackage An array of available class names, grouped by package key
-     * @param array $rawObjectConfigurationsByPackages An array of package keys and their raw (ie. unparsed) object configurations
+     * @param array<string,array<int,class-string>> $availableClassAndInterfaceNamesByPackage An array of available class names, grouped by package key
+     * @param array<string,array<string,array{
+     *       className?: class-string,
+     *       scope?: string,
+     *       factoryObjectName?: class-string,
+     *       factoryMethodName?: string,
+     *       arguments?: array<mixed>,
+     *       properties?: array<string,array{
+     *           object?: class-string|array{
+     *               factoryObjectName: class-string,
+     *               factoryMethodName?: string,
+     *               arguments?: array<mixed>
+     *           }
+     *       }>,
+     *   }|mixed>> $rawObjectConfigurationsByPackages An array of package keys and their raw (ie. unparsed) object configurations
      * @return array<Configuration> Object configurations
      * @throws ClassLoadingForReflectionFailedException
      * @throws InvalidClassException
@@ -173,9 +186,9 @@ readonly class ConfigurationBuilder
      * Builds a raw configuration array by parsing possible scope and autowiring
      * annotations from the given class or interface.
      *
-     * @param string $className
-     * @param array $rawObjectConfiguration
-     * @return array
+     * @param class-string $className
+     * @param array<string, mixed> $rawObjectConfiguration
+     * @return array<string, mixed>
      */
     protected function enhanceRawConfigurationWithAnnotationOptions($className, array $rawObjectConfiguration): array
     {
@@ -219,6 +232,9 @@ readonly class ConfigurationBuilder
     {
         foreach ($objectConfigurations as $objectConfiguration) {
             foreach ($objectConfiguration->getFactoryArguments() as $index => $argument) {
+                if ($argument === null) {
+                    continue;
+                }
                 if ($argument->getType() !== ConfigurationArgument::ARGUMENT_TYPES_OBJECT) {
                     continue;
                 }
@@ -253,9 +269,12 @@ readonly class ConfigurationBuilder
     {
         foreach ($objectConfigurations as $objectConfiguration) {
             $className = $objectConfiguration->getClassName();
+
+            /** @phpstan-ignore identical.alwaysFalse (sometimes this is an empty string) */
             if ($className === '') {
                 continue;
             }
+
             if ($objectConfiguration->getAutowiring() === Configuration::AUTOWIRING_MODE_OFF) {
                 continue;
             }
@@ -304,7 +323,7 @@ readonly class ConfigurationBuilder
                         $arguments[$index] = new ConfigurationArgument($index, $parameterInformation['class'], ConfigurationArgument::ARGUMENT_TYPES_OBJECT);
                     } elseif ($parameterInformation['allowsNull'] === true) {
                         $arguments[$index] = new ConfigurationArgument($index, null, ConfigurationArgument::ARGUMENT_TYPES_STRAIGHTVALUE, Configuration::AUTOWIRING_MODE_OFF);
-                    } elseif (interface_exists($parameterInformation['class'])) {
+                    } elseif (is_string($parameterInformation['class']) && interface_exists($parameterInformation['class'])) {
                         $debuggingHint = sprintf('No default implementation for the required interface %s was configured, therefore no specific class name could be used for this dependency. ', $parameterInformation['class']);
                     }
                 }
@@ -337,6 +356,7 @@ readonly class ConfigurationBuilder
             $className = $objectConfiguration->getClassName();
             $properties = $objectConfiguration->getProperties();
 
+            /** @phpstan-ignore identical.alwaysFalse (sometimes this is an empty string) */
             if ($className === '') {
                 continue;
             }

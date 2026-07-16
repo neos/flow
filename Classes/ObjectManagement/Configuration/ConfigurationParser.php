@@ -175,9 +175,9 @@ readonly class ConfigurationParser
             }
 
             $objectConfiguration = $this->parseConfigurationArray($objectName, $objectNameOrConfiguration, $parentObjectConfiguration->getConfigurationSourceHint() . ', argument "' . $argumentName . '"');
-            $argument = new ConfigurationArgument($argumentName, $objectConfiguration, ConfigurationArgument::ARGUMENT_TYPES_OBJECT);
+            $argument = new ConfigurationArgument((int)$argumentName, $objectConfiguration, ConfigurationArgument::ARGUMENT_TYPES_OBJECT);
         } else {
-            $argument = new ConfigurationArgument($argumentName, $objectNameOrConfiguration, ConfigurationArgument::ARGUMENT_TYPES_OBJECT);
+            $argument = new ConfigurationArgument((int)$argumentName, $objectNameOrConfiguration, ConfigurationArgument::ARGUMENT_TYPES_OBJECT);
         }
         return $argument;
     }

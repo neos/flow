@@ -37,13 +37,13 @@ class Compiler
     public const ORIGINAL_CLASSNAME_SUFFIX = '_Original';
 
     /**
-     * @var array
+     * @var array<class-string, ProxyClass>
      */
     protected array $proxyClasses = [];
 
     /**
      * Hardcoded list of Flow sub packages which must be immune proxying for security, technical or conceptual reasons.
-     * @var array
+     * @var array<int, string>
      */
     protected array $excludedSubPackages = ['Neos\Flow\Aop', 'Neos\Flow\Cor', 'Neos\Flow\Obj', 'Neos\Flow\Pac', 'Neos\Flow\Ref', 'Neos\Flow\Uti'];
 
@@ -59,12 +59,14 @@ class Compiler
     /**
      * The final map of proxy classes that end up in the cache.
      *
-     * @var array
+     * @var array<string, true>
      */
     protected array $storedProxyClasses = [];
 
     /**
      * Compiler constructor.
+     *
+     * @phpstan-ignore missingType.generics (todo: learn how to do this properly)
      */
     public function __construct(
         public PhpFrontend $classesCache,
@@ -87,7 +89,7 @@ class Compiler
      */
     public function getProxyClass(string $fullClassName): ProxyClass|false
     {
-        if (interface_exists($fullClassName) || (class_exists(BaseTestCase::class) && in_array(BaseTestCase::class, class_parents($fullClassName), true))) {
+        if (interface_exists($fullClassName) || (class_exists(BaseTestCase::class) && in_array(BaseTestCase::class, class_parents($fullClassName) ?: [], true))) {
             return false;
         }
 
@@ -112,7 +114,7 @@ class Compiler
             return false;
         }
         // Annotation classes (like \Neos\Flow\Annotations\Entity) must never be proxied because that would break the Doctrine AnnotationParser
-        if ($classReflection->isFinal() && preg_match('/^\s?\*\s?\@Annotation\s/m', $classReflection->getDocComment()) === 1) {
+        if ($classReflection->isFinal() && preg_match('/^\s?\*\s?\@Annotation\s/m', $classReflection->getDocComment() ?: '') === 1) {
             return false;
         }
 
@@ -128,7 +130,7 @@ class Compiler
      * the proxy class doesn't have to be rebuilt because otherwise the cache would have been flushed by the file
      * monitor or some other mechanism.
      *
-     * @param string $fullClassName Name of the original class
+     * @param class-string $fullClassName Name of the original class
      * @return bool true if a cache entry exists
      */
     public function hasCacheEntryForClass(string $fullClassName): bool
@@ -153,6 +155,9 @@ class Compiler
                 $proxyClassIdentifier = str_replace('\\', '_', $fullOriginalClassName);
                 $class = new \ReflectionClass($fullOriginalClassName);
                 $classPathAndFilename = $class->getFileName();
+                if (is_string($classPathAndFilename) === false) {
+                    continue;
+                }
                 if (isset($this->proxyClasses[$fullOriginalClassName])) {
                     $proxyClassCode = $this->proxyClasses[$fullOriginalClassName]->render();
                     if ($proxyClassCode !== '') {
@@ -210,6 +215,9 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
     protected function cacheOriginalClassFileAndProxyCode(string $className, string $pathAndFilename, string $proxyClassCode): void
     {
         $classCode = file_get_contents($pathAndFilename);
+        if ($classCode === false) {
+            throw new \Exception('Failed to fetch class code ', 1744147125);
+        }
         $classCode = $this->replaceClassName($classCode, $pathAndFilename);
         $classCode = $this->replaceSelfWithStatic($classCode);
         $classCode = $this->makePrivateConstructorPublic($classCode, $pathAndFilename);
@@ -236,13 +244,17 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
      */
     protected function stripOpeningPhpTag(string $classCode): string
     {
-        return preg_replace('/^\s*\\<\\?php(.*\n|.*)/', '$1', $classCode, 1);
+        $result = preg_replace('/^\s*\\<\\?php(.*\n|.*)/', '$1', $classCode, 1);
+        if ($result === null) {
+            throw new \Exception('Invalid PHP code', 1744147081);
+        }
+        return $result;
     }
 
 
     /**
      * Render the source (string) form of a PHP Attribute.
-     * @param \ReflectionAttribute $attribute
+     * @param \ReflectionAttribute<object> $attribute
      * @return string
      */
     public static function renderAttribute(\ReflectionAttribute $attribute): string
@@ -267,7 +279,7 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
     {
         if (is_object($value)) {
             $reflectionClass = new \ReflectionClass($value);
-            if ($reflectionClass->isEnum()) {
+            if ($value instanceof \UnitEnum) {
                 return '\\' . $reflectionClass->getName() . '::' . $value->name;
             } else {
                 $fullyQualifiedName = '\\' . $reflectionClass->getName();
@@ -353,7 +365,7 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
     /**
      * Render an array value as string for an annotation.
      *
-     * @param array $optionValue
+     * @param array<string, mixed> $optionValue
      * @return string
      */
     protected static function renderOptionArrayValueAsString(array $optionValue): string
@@ -410,6 +422,9 @@ return ' . var_export($this->storedProxyClasses, true) . ';';
         return str_replace($classCodeUntilClassName, $classCodeUntilClassNameReplacement, $classCode);
     }
 
+    /**
+     * @param array<int,array{0: int, 1: string, 2: int}|string> $tokens
+     */
     private function getClassNameTokenIndex(array $tokens): ?int
     {
         $classToken = null;
