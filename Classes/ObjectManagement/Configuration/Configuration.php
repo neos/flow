@@ -36,7 +36,7 @@ class Configuration
 
     /**
      * Name of the class the object is based on
-     * @var class-string $className
+     * @var class-string|'' $className
      */
     protected string $className;
 
@@ -109,7 +109,7 @@ class Configuration
      * The constructor
      *
      * @param string $objectName The unique identifier of the object
-     * @param class-string $className Name of the class which provides the functionality of this object
+     * @param class-string|'' $className Name of the class which provides the functionality of this object
      */
     public function __construct(string $objectName, string $className)
     {
@@ -159,7 +159,7 @@ class Configuration
     /**
      * Returns the class name
      *
-     * @return class-string Name of the implementing class of this object
+     * @return class-string|'' Name of the implementing class of this object
      */
     public function getClassName(): string
     {

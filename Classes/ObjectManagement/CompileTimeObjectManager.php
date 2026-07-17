@@ -42,7 +42,7 @@ use Psr\Log\LoggerInterface;
  *     l: string,
  *     s: int,
  *     p: string,
- *     c?: class-string,
+ *     c?: class-string|'',
  *     ca?: array<int, null|array{t:int, v:mixed, wm:int}>,
  *     f?: array{string, string},
  *     fa?: array<int, null|array{t:int, v:mixed}>
@@ -234,7 +234,7 @@ class CompileTimeObjectManager extends ObjectManager
         if (!isset($this->cachedClassNamesByScope[$scope])) {
             foreach ($this->objects as $objectName => $information) {
                 if ($information[self::KEY_SCOPE] === $scope) {
-                    if (isset($information[self::KEY_CLASS_NAME])) {
+                    if (isset($information[self::KEY_CLASS_NAME]) && $information[self::KEY_CLASS_NAME] !== '') {
                         $this->cachedClassNamesByScope[$scope][] = $information[self::KEY_CLASS_NAME];
                     } elseif (is_string($objectName) && class_exists($objectName)) {
                         $this->cachedClassNamesByScope[$scope][] = $objectName;

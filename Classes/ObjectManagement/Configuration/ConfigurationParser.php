@@ -6,6 +6,7 @@ use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;
 use Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException;
 use Neos\Flow\Reflection\Exception\InvalidClassException;
 use Neos\Flow\Reflection\ReflectionService;
+use function GuzzleHttp\json_encode;
 
 /**
  *
@@ -156,15 +157,20 @@ readonly class ConfigurationParser
                 $objectName = $objectNameOrConfiguration['name'];
                 unset($objectNameOrConfiguration['name']);
             } else {
-                $arguments = $this->reflectionService->getMethodParameters($parentObjectConfiguration->getClassName(), '__construct');
-                if (is_numeric($argumentName)) {
-                    foreach ($arguments as $argument) {
-                        if ($argument['position'] === ((int)$argumentName - 1)) {
-                            $objectName = $argument['type'];
-                        }
-                    }
+                $className = $parentObjectConfiguration->getClassName();
+                if ($className === '') {
+                    $objectName = null;
                 } else {
-                    $objectName = $arguments[$argumentName]['type'];
+                    $arguments = $this->reflectionService->getMethodParameters($className, '__construct');
+                    if (is_numeric($argumentName)) {
+                        foreach ($arguments as $argument) {
+                            if ($argument['position'] === ((int)$argumentName - 1)) {
+                                $objectName = $argument['type'];
+                            }
+                        }
+                    } else {
+                        $objectName = $arguments[$argumentName]['type'];
+                    }
                 }
             }
 
@@ -201,14 +207,19 @@ readonly class ConfigurationParser
                 $objectName = $objectNameOrConfiguration['name'];
                 unset($objectNameOrConfiguration['name']);
             } else {
-                $propertyType = $this->reflectionService->getPropertyType($parentObjectConfiguration->getClassName(), $propertyName);
-                $objectName = $propertyType;
-                if ($objectName === null) {
-                    $annotations = $this->reflectionService->getPropertyTagValues($parentObjectConfiguration->getClassName(), $propertyName, 'var');
-                    if (count($annotations) !== 1) {
-                        throw new InvalidObjectConfigurationException(sprintf('Object %s (%s), for property "%s", contains neither object name, nor factory object name, and nor is the property properly @var - annotated.', $parentObjectConfiguration->getClassName(), $parentObjectConfiguration->getConfigurationSourceHint(), $propertyName), 1297097815);
+                $parentClassName = $parentObjectConfiguration->getClassName();
+                if ($parentClassName === '') {
+                    throw new InvalidObjectConfigurationException(sprintf('Object %s (%s), for property "%s", contains neither object name, nor factory object name, and nor is the property properly @var - annotated.', $parentObjectConfiguration->getClassName(), $parentObjectConfiguration->getConfigurationSourceHint(), $propertyName), 1297097815);
+                } else {
+                    $propertyType = $this->reflectionService->getPropertyType($parentClassName, $propertyName);
+                    $objectName = $propertyType;
+                    if ($objectName === null) {
+                        $annotations = $this->reflectionService->getPropertyTagValues($parentClassName, $propertyName, 'var');
+                        if (count($annotations) !== 1) {
+                            throw new InvalidObjectConfigurationException(sprintf('Object %s (%s), for property "%s", contains neither object name, nor factory object name, and nor is the property properly @var - annotated.', $parentObjectConfiguration->getClassName(), $parentObjectConfiguration->getConfigurationSourceHint(), $propertyName), 1297097815);
+                        }
+                        $objectName = $annotations[0];
                     }
-                    $objectName = $annotations[0];
                 }
             }
             $objectConfiguration = $this->parseConfigurationArray($objectName, $objectNameOrConfiguration, $parentObjectConfiguration->getConfigurationSourceHint() . ', property "' . $propertyName . '"');

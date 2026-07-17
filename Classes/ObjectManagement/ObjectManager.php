@@ -32,7 +32,7 @@ use Neos\Flow\Security\Context;
  *      l?: string,
  *      s: int,
  *      p?: string,
- *      c?: class-string,
+ *      c?: class-string|'',
  *      ca?: array<int, null|array{t:int, v:mixed, wm:int}>,
  *      f?: array{string, string},
  *      fa?: array<int, null|array{t:int, v:mixed}>

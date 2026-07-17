@@ -270,7 +270,6 @@ readonly class ConfigurationBuilder
         foreach ($objectConfigurations as $objectConfiguration) {
             $className = $objectConfiguration->getClassName();
 
-            /** @phpstan-ignore identical.alwaysFalse (sometimes this is an empty string) */
             if ($className === '') {
                 continue;
             }
@@ -283,7 +282,6 @@ readonly class ConfigurationBuilder
                 continue;
             }
 
-            $className = $objectConfiguration->getClassName();
             if (!$this->reflectionService->hasMethod($className, '__construct')) {
                 continue;
             }
@@ -356,10 +354,10 @@ readonly class ConfigurationBuilder
             $className = $objectConfiguration->getClassName();
             $properties = $objectConfiguration->getProperties();
 
-            /** @phpstan-ignore identical.alwaysFalse (sometimes this is an empty string) */
             if ($className === '') {
                 continue;
             }
+
             if ($objectConfiguration->getAutowiring() === Configuration::AUTOWIRING_MODE_OFF) {
                 continue;
             }
