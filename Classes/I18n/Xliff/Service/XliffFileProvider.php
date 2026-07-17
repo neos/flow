@@ -162,7 +162,6 @@ class XliffFileProvider
                 $xliffParser = $this->getParser($documentVersion);
                 if ($xliffParser) {
                     $fileData = $xliffParser->getFileDataFromDocument($filePath, $relevantOffset);
-                    /** @phpstan-ignore parameterByRef.type (arrayMergeRecursiveOverrule will not reduce the array shape) */
                     $parsedData = Arrays::arrayMergeRecursiveOverrule($parsedData, $fileData ?: []);
                 }
             }

@@ -169,14 +169,8 @@ class FormatResolver
         if ($foundFormatter === false) {
             if ($this->objectManager->isRegistered($formatterType)) {
                 $possibleClassName = $formatterType;
-                if (!class_exists($possibleClassName)) {
-                    throw new \Exception('Invalid formatter ' . $possibleClassName, 1744413028);
-                }
             } else {
                 $possibleClassName = sprintf('Neos\Flow\I18n\Formatter\%sFormatter', ucfirst($formatterType));
-                if (!class_exists($possibleClassName)) {
-                    throw new \Exception('Invalid formatter ' . $possibleClassName, 1744413028);
-                }
                 if (!$this->objectManager->isRegistered($possibleClassName)) {
                     throw new Exception\UnknownFormatterException('Could not find formatter for "' . $formatterType . '".', 1278057791);
                 }
