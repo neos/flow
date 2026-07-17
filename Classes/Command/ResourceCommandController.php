@@ -306,9 +306,7 @@ class ResourceCommandController extends CommandController
                         $this->persistenceManager->persistAll();
                     }
                     $brokenResourcesCounter = count($brokenResources);
-                    if ($brokenResourcesCounter > 0) {
-                        $this->outputLine('Removed %s resource object(s) from the database.', [$brokenResourcesCounter]);
-                    }
+                    $this->outputLine('Removed %s resource object(s) from the database.', [$brokenResourcesCounter]);
                     if ($brokenAssetCounter > 0) {
                         $this->outputLine('Removed %s asset object(s) from the database.', [$brokenAssetCounter]);
                     }
@@ -319,7 +317,6 @@ class ResourceCommandController extends CommandController
                 case 'n':
                     $this->outputLine('Did not delete any resource objects.');
                     $this->quit(0);
-                    break;
             }
         }
     }
