@@ -106,6 +106,7 @@ class PropertyMapper
      * @return mixed an instance of $targetType
      * @throws Exception
      * @throws SecurityException
+     * @phpstan-assert Result $this->getMessages()
      * @api
      */
     public function convert($source, $targetType, ?PropertyMappingConfigurationInterface $configuration = null)

@@ -24,7 +24,7 @@ class Arguments extends \ArrayObject
 {
     /**
      * Names of the arguments contained by this object
-     * @var array
+     * @var array<mixed>
      */
     protected array $argumentNames = [];
 
@@ -75,7 +75,9 @@ class Arguments extends \ArrayObject
     public function offsetUnset($offset): void
     {
         $translatedOffset = $this->validateArgumentExistence($offset);
-        parent::offsetUnset($translatedOffset);
+        if ($translatedOffset !== false) {
+            parent::offsetUnset($translatedOffset);
+        }
 
         unset($this->argumentNames[$translatedOffset]);
     }
@@ -90,14 +92,17 @@ class Arguments extends \ArrayObject
     public function offsetExists($offset): bool
     {
         $translatedOffset = $this->validateArgumentExistence($offset);
-        return parent::offsetExists($translatedOffset);
+        if ($translatedOffset !== false) {
+            return parent::offsetExists($translatedOffset);
+        }
+        return false;
     }
 
     /**
      * Returns the value at the specified index
      *
      * @param mixed $offset Offset
-     * @return Argument The requested argument object
+     * @return ?Argument The requested argument object
      * @throws NoSuchArgumentException if the argument does not exist
      * @api
      */
@@ -154,7 +159,7 @@ class Arguments extends \ArrayObject
      * Returns an argument specified by name
      *
      * @param string $argumentName Name of the argument to retrieve
-     * @return Argument
+     * @return ?Argument
      * @throws NoSuchArgumentException
      * @api
      */
@@ -179,7 +184,7 @@ class Arguments extends \ArrayObject
     /**
      * Returns the names of all arguments contained in this object
      *
-     * @return array Argument names
+     * @return array<mixed> Argument names
      * @api
      */
     public function getArgumentNames()
@@ -192,7 +197,7 @@ class Arguments extends \ArrayObject
      * value can be set by just calling the setArgumentName() method.
      *
      * @param string $methodName Name of the method
-     * @param array $arguments Method arguments
+     * @param array<mixed> $arguments Method arguments
      * @return void
      * @throws \LogicException
      */
@@ -204,12 +209,12 @@ class Arguments extends \ArrayObject
         $firstLowerCaseArgumentName = $this->validateArgumentExistence(strtolower($methodName[3]) . substr($methodName, 4));
         $firstUpperCaseArgumentName = $this->validateArgumentExistence(ucfirst(substr($methodName, 3)));
 
-        if (in_array($firstLowerCaseArgumentName, $this->getArgumentNames())) {
+        if ($firstLowerCaseArgumentName && in_array($firstLowerCaseArgumentName, $this->getArgumentNames())) {
             $argument = parent::offsetGet($firstLowerCaseArgumentName);
-            $argument->setValue($arguments[0]);
-        } elseif (in_array($firstUpperCaseArgumentName, $this->getArgumentNames())) {
+            $argument?->setValue($arguments[0]);
+        } elseif ($firstUpperCaseArgumentName && in_array($firstUpperCaseArgumentName, $this->getArgumentNames())) {
             $argument = parent::offsetGet($firstUpperCaseArgumentName);
-            $argument->setValue($arguments[0]);
+            $argument?->setValue($arguments[0]);
         }
     }
 

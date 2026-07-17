@@ -24,6 +24,11 @@ use Neos\Flow\Configuration\ConfigurationManager;
  * request out of the Views.yaml into one view configuration used
  * by the ActionController to setup up the view.
  *
+ * @phpstan-type ViewConfigurationShape array{
+ *     requestFilter?: string,
+ *     viewObjectName?: string,
+ *     options?: array<string,mixed>
+ * }
  * @Flow\Scope("singleton")
  */
 class ViewConfigurationManager
@@ -43,7 +48,7 @@ class ViewConfigurationManager
      * an array of options that will be set on the view object.
      *
      * @param ActionRequest $request
-     * @return array
+     * @return ViewConfigurationShape
      */
     public function getViewConfiguration(ActionRequest $request)
     {
@@ -51,6 +56,7 @@ class ViewConfigurationManager
 
         $viewConfiguration = $this->cache->get($cacheIdentifier);
         if ($viewConfiguration === false) {
+            /** @var ViewConfigurationShape $configurations */
             $configurations = $this->configurationManager->getConfiguration('Views');
 
             $requestMatcher = new RequestMatcher($request);
@@ -67,7 +73,7 @@ class ViewConfigurationManager
                     if ($result === false) {
                         continue;
                     }
-                    $weight = $requestMatcher->getWeight() + $order;
+                    $weight = $requestMatcher->getWeight() + (int)$order;
                 }
                 if ($weight > $highestWeight) {
                     $viewConfiguration = $configuration;
