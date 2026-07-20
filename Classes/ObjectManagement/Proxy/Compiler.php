@@ -178,7 +178,7 @@ class Compiler
     /**
      * Signal emitted after the proxy classes have been compiled.
      *
-     * @param array<string, array{path: string, proxyClassIdentifier: string}> $compiledClasses The list of compiled classes with the classname as key and their original file path and cache identifier as value.
+     * @param array<class-string, array{path: string, proxyClassIdentifier: string}> $compiledClasses The list of compiled classes with the classname as key and their original file path and cache identifier as value.
      */
     public function emitAfterCompile(array $compiledClasses): void
     {

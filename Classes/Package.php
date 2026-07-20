@@ -60,8 +60,7 @@ class Package extends BasePackage
 
         if ($context->isTesting()) {
             // TODO: This is technically not necessary as we can register the request handler in the functional bootstrap
-            // A future commit will remove this aftter BuildEssentials is adapted
-            /** @phpstan-ignore-next-line composer doesnt autoload this class */
+            // A future commit will remove this after BuildEssentials is adapted
             $bootstrap->registerRequestHandler(new Tests\FunctionalTestRequestHandler($bootstrap));
         }
 
@@ -151,7 +150,6 @@ class Package extends BasePackage
             }
         });
 
-        /** @phpstan-ignore-next-line composer doesnt autoload this class */
         $dispatcher->connect(Tests\FunctionalTestCase::class, 'functionalTestTearDown', Mvc\Routing\RouterCachingService::class, 'flushCaches');
 
         $dispatcher->connect(Configuration\ConfigurationManager::class, 'configurationManagerReady', function (Configuration\ConfigurationManager $configurationManager) {
@@ -175,6 +173,7 @@ class Package extends BasePackage
 
         $dispatcher->connect(Compiler::class, 'afterCompile', XdebugPathMappingBuilder::class, 'buildFromCompiledClasses');
         $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
+            /** @var array<class-string, array<string, mixed>> $compiledClasses */
             $annotationsCacheFlusher = $bootstrap->getObjectManager()->get(AnnotationsCacheFlusher::class);
             $annotationsCacheFlusher->registerAnnotation(Route::class, ['Flow_Mvc_Routing_Route', 'Flow_Mvc_Routing_Resolve']);
             $annotationsCacheFlusher->flushConfigurationCachesByCompiledClass(array_keys($compiledClasses));
