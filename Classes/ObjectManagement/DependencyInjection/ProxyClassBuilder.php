@@ -633,7 +633,8 @@ class ProxyClassBuilder
                 continue;
             }
 
-            $isEntity = $this->reflectionService->getClassAnnotation($typeInformation['type'], Flow\Entity::class);
+            $isEntity = $this->reflectionService->isClassReflected($typeInformation['type']) &&
+                $this->reflectionService->getClassAnnotation($typeInformation['type'], Flow\Entity::class);
             if (!$isEntity) {
                 continue;
             }
