@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Tests\Functional\I18n;
  * source code.
  */
 
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\FormatResolver;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\I18n;
 
 /**
  * Testcase for the I18N placeholder replacing
@@ -70,7 +71,7 @@ class FormatResolverTest extends FunctionalTestCase
      */
     public function formatResolverWorksCorrectlyForFullyQualifiedFormatterClassNames(): void
     {
-        $actualFormatter = new Fixtures\SampleFormatter;
+        $actualFormatter = new Fixtures\SampleFormatter();
         $locale = new I18n\Locale('de');
         $testResult = $this->formatResolver->resolvePlaceholders(sprintf('{0,%s}', Fixtures\SampleFormatter::class), ['foo'], $locale);
         self::assertEquals($actualFormatter->format('foo', $locale), $testResult);

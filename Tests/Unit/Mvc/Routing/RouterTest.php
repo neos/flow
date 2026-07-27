@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -11,17 +12,17 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
+use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Exception\NoMatchingRouteException;
-use Neos\Flow\Mvc\Routing\Dto\RouteLifetime;
-use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
 use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Dto\RouteLifetime;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\RouteTags;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Mvc\Routing\Router;
 use Neos\Flow\Mvc\Routing\RouterCachingService;
-use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\Routing\Routes;
 use Neos\Flow\Mvc\Routing\RoutesProviderInterface;
 use Neos\Flow\Tests\UnitTestCase;

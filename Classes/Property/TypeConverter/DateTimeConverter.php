@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -64,7 +65,7 @@ class DateTimeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_DATE_FORMAT = 'dateFormat';
+    public const CONFIGURATION_DATE_FORMAT = 'dateFormat';
 
     /**
      * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
@@ -72,7 +73,7 @@ class DateTimeConverter extends AbstractTypeConverter
      *
      * @var string
      */
-    const DEFAULT_DATE_FORMAT = \DateTime::W3C;
+    public const DEFAULT_DATE_FORMAT = \DateTime::W3C;
 
     /**
      * @var array<string>
@@ -220,9 +221,9 @@ class DateTimeConverter extends AbstractTypeConverter
      */
     protected function overrideTime(\DateTimeInterface $date, array $source)
     {
-        $hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
-        $minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
-        $second = isset($source['second']) ? (integer)$source['second'] : 0;
+        $hour = isset($source['hour']) ? (int)$source['hour'] : 0;
+        $minute = isset($source['minute']) ? (int)$source['minute'] : 0;
+        $second = isset($source['second']) ? (int)$source['second'] : 0;
         if ($date instanceof \DateTime || $date instanceof \DateTimeImmutable) {
             $date = $date->setTime($hour, $minute, $second);
         }

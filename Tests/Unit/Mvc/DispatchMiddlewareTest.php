@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -14,8 +15,8 @@ namespace Neos\Flow\Tests\Unit\Mvc;
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Http\ServerRequestAttributes;
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\DispatchMiddleware;
 use Neos\Flow\Mvc\Dispatcher;
+use Neos\Flow\Mvc\DispatchMiddleware;
 use Neos\Flow\Tests\UnitTestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

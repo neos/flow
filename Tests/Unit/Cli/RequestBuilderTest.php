@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -11,6 +12,7 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * source code.
  */
 
+use Neos\Flow\Cli;
 use Neos\Flow\Command\HelpCommandController;
 use Neos\Flow\Mvc\Exception\InvalidArgumentMixingException;
 use Neos\Flow\Mvc\Exception\NoSuchCommandException;
@@ -18,7 +20,6 @@ use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Cli;
 use Neos\Flow\Utility\Environment;
 
 /**

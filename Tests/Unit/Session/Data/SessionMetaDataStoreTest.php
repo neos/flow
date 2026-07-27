@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Session\Data;
 
 /*
@@ -14,8 +15,8 @@ namespace Neos\Flow\Tests\Unit\Session\Data;
 use Neos\Cache\Frontend\StringFrontend;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Session\Data\SessionIdentifier;
-use Neos\Flow\Session\Data\SessionMetaDataStore;
 use Neos\Flow\Session\Data\SessionMetaData;
+use Neos\Flow\Session\Data\SessionMetaDataStore;
 use Neos\Flow\Session\Data\StorageIdentifier;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -84,7 +85,7 @@ class SessionMetaDataStoreTest extends UnitTestCase
         $lastActivityTimestamp = time();
 
         $sessionMetaData = new SessionMetaData($sessionId, $storageId, $lastActivityTimestamp, []);
-        $this->mockCache->expects($this->once())->method('get')->with($sessionId->value)->willReturn(['storageIdentifier'=>$storageId->value, 'tags' => [], 'lastActivityTimestamp' => $lastActivityTimestamp]);
+        $this->mockCache->expects($this->once())->method('get')->with($sessionId->value)->willReturn(['storageIdentifier' => $storageId->value, 'tags' => [], 'lastActivityTimestamp' => $lastActivityTimestamp]);
         $this->assertEquals($sessionMetaData, $this->store->retrieve($sessionId));
     }
 

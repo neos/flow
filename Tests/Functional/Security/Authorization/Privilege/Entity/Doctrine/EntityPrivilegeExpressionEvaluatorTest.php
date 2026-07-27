@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
@@ -12,14 +13,14 @@ namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doc
  */
 
 use Doctrine\ORM\EntityManagerInterface;
+use Neos\Eel;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\ConditionGenerator;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\EntityPrivilegeExpressionEvaluator;
 use Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine\SqlFilter;
+use Neos\Flow\Tests\Functional\Security\Fixtures;
 use Neos\Flow\Tests\Functional\Security\Fixtures\TestEntityC;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Eel;
-use Neos\Flow\Tests\Functional\Security\Fixtures;
 
 class EntityPrivilegeExpressionEvaluatorTest extends FunctionalTestCase
 {

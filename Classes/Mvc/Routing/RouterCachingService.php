@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Routing;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Mvc\Routing;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\CacheAwareInterface;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Helper\RequestInformationHelper;
 use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
 use Neos\Flow\Mvc\Routing\Dto\RouteContext;
@@ -22,8 +23,8 @@ use Neos\Flow\Mvc\Routing\Dto\RouteTags;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Utility\Arrays;
 use Neos\Flow\Validation\Validator\UuidValidator;
+use Neos\Utility\Arrays;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
  * source code.
  */
 
-use Neos\Flow\Http\BaseUriProvider;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Http\BaseUriProvider;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\ResourceManagement\Collection;

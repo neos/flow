@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\I18n\Xliff;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\I18n\Xliff;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
+use Neos\Flow\Tests\UnitTestCase;
 use Psr\Log\LoggerInterface;
 
 /**

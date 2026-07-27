@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
@@ -11,16 +12,16 @@ namespace Neos\Flow\Tests\Unit\Cache;
  * source code.
  */
 
-use Neos\Cache\EnvironmentConfiguration;
-use org\bovigo\vfs\vfsStream;
 use Neos\Cache\Backend\FileBackend;
 use Neos\Cache\Backend\NullBackend;
+use Neos\Cache\EnvironmentConfiguration;
+use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Cache\CacheFactory;
 use Neos\Flow\Cache\CacheManager;
-use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Test case for the Cache Factory

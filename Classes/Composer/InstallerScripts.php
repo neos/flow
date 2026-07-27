@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Composer;
@@ -15,8 +16,8 @@ namespace Neos\Flow\Composer;
 
 use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\DependencyResolver\Operation\UpdateOperation;
-use Composer\Script\Event;
 use Composer\Installer\PackageEvent;
+use Composer\Script\Event;
 use Neos\Flow\Package\PackageManager;
 use Neos\Utility\Files;
 

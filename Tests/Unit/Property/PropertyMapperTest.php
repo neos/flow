@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property;
 
 /*
@@ -346,7 +347,7 @@ class PropertyMapperTest extends UnitTestCase
 
         // If The target type is no string, we expect an exception.
         $data[] = [
-            'target' => new \stdClass,
+            'target' => new \stdClass(),
             'expectedConverter' => '',
             'typeConverters' => [],
             'shouldFailWithException' => InvalidTargetException::class

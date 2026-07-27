@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Validation;
 
 /*
@@ -11,11 +12,11 @@ namespace Neos\Flow\Tests\Functional\Validation;
  * source code.
  */
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
-use Neos\Utility\ObjectAccess;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\SubEntity;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Testcase for the Flow Validation Framework
@@ -49,7 +50,7 @@ class ValidationTest extends FunctionalTestCase
             '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'Entity',
-            '@format' =>'html'
+            '@format' => 'html'
         ]);
     }
 

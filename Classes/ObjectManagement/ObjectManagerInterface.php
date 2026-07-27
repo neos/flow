@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ObjectManagement;
 
 /*
@@ -23,8 +24,8 @@ use Psr\Container\ContainerInterface;
  */
 interface ObjectManagerInterface extends ContainerInterface
 {
-    const INITIALIZATIONCAUSE_CREATED = 1;
-    const INITIALIZATIONCAUSE_RECREATED = 2;
+    public const INITIALIZATIONCAUSE_CREATED = 1;
+    public const INITIALIZATIONCAUSE_RECREATED = 2;
 
     /**
      * Returns the currently set context.

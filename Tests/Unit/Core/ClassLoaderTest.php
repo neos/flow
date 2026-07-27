@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Core;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Core;
  * source code.
  */
 
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Core\ClassLoader;
 use Neos\Flow\Package\Package;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the object class loader

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  */
 
 use Neos\Error\Messages as FlowError;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Mvc\FlashMessage\FlashMessageContainer;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Flash Messages Container

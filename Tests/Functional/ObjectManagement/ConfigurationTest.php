@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * source code.
  */
 
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Tests\FunctionalTestCase;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Functional tests for the Object configuration via Objects.yaml

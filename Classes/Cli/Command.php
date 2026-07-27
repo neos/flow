@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cli;
 
 /*
@@ -194,7 +195,7 @@ class Command
             }
             $required = $commandParameterDefinition['optional'] !== true;
             $commandArgumentDefinitions[] = new CommandArgumentDefinition($commandParameterName, $required, $description);
-            $i ++;
+            $i++;
         }
         return $commandArgumentDefinitions;
     }

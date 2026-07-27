@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -18,9 +19,9 @@ use Neos\Flow\Property\Exception\InvalidDataTypeException;
 use Neos\Flow\Property\Exception\InvalidPropertyMappingConfigurationException;
 use Neos\Flow\Property\Exception\InvalidTargetException;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Utility\Exception\InvalidTypeException;
+use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
 
 /**
@@ -42,12 +43,12 @@ class ObjectConverter extends AbstractTypeConverter
     /**
      * @var integer
      */
-    const CONFIGURATION_TARGET_TYPE = 3;
+    public const CONFIGURATION_TARGET_TYPE = 3;
 
     /**
      * @var integer
      */
-    const CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
+    public const CONFIGURATION_OVERRIDE_TARGET_TYPE_ALLOWED = 4;
 
     /**
      * @var array<string>

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Reflection;
 
 /*
@@ -12,11 +13,11 @@ namespace Neos\Flow\Tests\Functional\Reflection;
  */
 
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\Functional\Persistence;
+use Neos\Flow\Tests\Functional\Reflection;
 use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubEntity;
 use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubSubEntity;
 use Neos\Flow\Tests\Functional\Reflection\Fixtures\Model\SubSubSubEntity;
-use Neos\Flow\Tests\Functional\Persistence;
-use Neos\Flow\Tests\Functional\Reflection;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**

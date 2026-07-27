@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Security\Authentication\Provider;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Tests\Functional\Security\Authentication\Provider;
  * source code.
  */
 
+use Neos\Flow\Security;
 use Neos\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\Security;
 
 /**
  * Testcase for the persisted username and password provider

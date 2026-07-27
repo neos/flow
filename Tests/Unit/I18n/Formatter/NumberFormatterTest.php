@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\I18n\Formatter;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\I18n\Formatter;
  * source code.
  */
 
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\Reader\CurrencyReader;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\I18n;
 
 /**
  * Testcase for the NumberFormatter

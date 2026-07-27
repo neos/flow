@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests;
 
 /*
@@ -11,20 +12,20 @@ namespace Neos\Flow\Tests;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\Bootstrap;
-use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
+use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Mvc\Routing\TestingRoutesProvider;
 use Neos\Flow\Security\Authentication\TokenAndProviderFactory;
 use Neos\Http\Factories\ServerRequestFactory;
 use Neos\Http\Factories\UriFactory;
-use Psr\Http\Message\ServerRequestInterface as HttpRequest;
-use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
-use Neos\Flow\Mvc\Routing\Dto\RouteContext;
-use Neos\Flow\Mvc\Routing\Route;
 use Neos\Utility\Arrays;
 use Neos\Utility\Files;
+use Psr\Http\Message\ServerRequestInterface as HttpRequest;
 
 /**
  * A base test case for functional tests

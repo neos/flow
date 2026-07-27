@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Monitor\ChangeDetectionStrategy;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Monitor\ChangeDetectionStrategy;
  */
 
 use Neos\Cache\Frontend\StringFrontend;
-use Neos\Flow\Monitor\FileMonitor;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Monitor\FileMonitor;
 
 /**
  * A change detection strategy based on modification times

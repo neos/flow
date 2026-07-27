@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\I18n;
  * source code.
  */
 
+use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\I18n;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\PackageManager;
-use org\bovigo\vfs\vfsStream;
-use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\I18n;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the Locale Service class.

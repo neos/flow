@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -13,10 +14,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
-use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
-use PHPUnit\Framework\Assert;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Neos\Error\Messages as FlowError;
+use Neos\Flow\Cli;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Controller\AbstractController;
@@ -26,11 +25,13 @@ use Neos\Flow\Mvc\Exception\ForwardException;
 use Neos\Flow\Mvc\Exception\RequiredArgumentMissingException;
 use Neos\Flow\Mvc\Exception\StopActionException;
 use Neos\Flow\Mvc\FlashMessage\FlashMessageContainer;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Cli;
-use Neos\Error\Messages as FlowError;
+use PHPUnit\Framework\Assert;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Testcase for the MVC Abstract Controller
@@ -289,7 +290,7 @@ class AbstractControllerTest extends UnitTestCase
         $mockUriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->willReturn($mockUriBuilder);
         $mockUriBuilder->expects(self::once())->method('uriFor')->with('show', ['foo' => 'bar'], 'Stuff', 'Super', 'Duper\Package')->willReturn('the_uri');
 
-        $controller = new class extends AbstractController {
+        $controller = new class () extends AbstractController {
             public function processRequest(ActionRequest $request): ResponseInterface
             {
                 $response = new ActionResponse();
@@ -334,7 +335,7 @@ class AbstractControllerTest extends UnitTestCase
         $mockUriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->willReturn($mockUriBuilder);
         $mockUriBuilder->expects(self::once())->method('uriFor')->with('show', ['foo' => 'bar'], 'Stuff', 'Super', null)->willReturn('the_uri');
 
-        $controller = new class extends AbstractController {
+        $controller = new class () extends AbstractController {
             public function processRequest(ActionRequest $request): ResponseInterface
             {
                 $response = new ActionResponse();

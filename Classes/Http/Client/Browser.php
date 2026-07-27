@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Http\Client;
 
 /*
@@ -17,8 +18,8 @@ use Neos\Flow\Http\Headers;
 use Neos\Flow\Http\Helper\RequestInformationHelper;
 use Neos\Flow\Http\Helper\UploadedFilesHelper;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -198,7 +199,7 @@ class Browser implements ClientInterface
      */
     public function setFollowRedirects($flag)
     {
-        $this->followRedirects = (boolean)$flag;
+        $this->followRedirects = (bool)$flag;
     }
 
     /**

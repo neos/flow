@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Cryptography;
 
 /*
@@ -12,9 +13,9 @@ namespace Neos\Flow\Security\Cryptography;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Utility;
-use Neos\Flow\Utility\Algorithms as UtilityAlgorithms;
 use Neos\Flow\Security\Exception as SecurityException;
+use Neos\Flow\Utility\Algorithms as UtilityAlgorithms;
+use Neos\Utility;
 
 /**
  * File based simple encrypted key service
@@ -26,7 +27,7 @@ class FileBasedSimpleKeyService
     /**
      * Pattern a key name must match.
      */
-    const PATTERN_KEYNAME = '/^[a-zA-Z0-9_%\-&]{1,250}$/';
+    public const PATTERN_KEYNAME = '/^[a-zA-Z0-9_%\-&]{1,250}$/';
 
     /**
      * @var string

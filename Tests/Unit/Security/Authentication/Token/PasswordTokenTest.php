@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication\Token;
  */
 
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Security\Authentication\Token\PasswordToken;
+use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use Psr\Http\Message\ServerRequestInterface;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use Neos\Flow\Validation\Validator\TextValidator;
 use Neos\Flow\Validation;
+use Neos\Flow\Validation\Validator\TextValidator;
 
 require_once('AbstractValidatorTestcase.php');
 

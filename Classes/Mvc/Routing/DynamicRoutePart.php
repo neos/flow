@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Routing;
 
 /*
@@ -13,11 +14,11 @@ namespace Neos\Flow\Mvc\Routing;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Routing\Dto\MatchResult;
-use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\ResolveResult;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Utility\ObjectAccess;
 use Neos\Utility\Arrays;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Dynamic Route Part

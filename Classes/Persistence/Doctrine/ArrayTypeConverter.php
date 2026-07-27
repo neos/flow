@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Persistence\Doctrine;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Persistence\Doctrine;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Error;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\Exception\TypeConverterException;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
@@ -27,7 +28,7 @@ class ArrayTypeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_CONVERT_ELEMENTS = 'convertElements';
+    public const CONFIGURATION_CONVERT_ELEMENTS = 'convertElements';
 
     /**
      * @var array<string>

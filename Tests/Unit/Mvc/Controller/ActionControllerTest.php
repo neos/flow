@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -12,10 +13,10 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  */
 
 use GuzzleHttp\Psr7\Response;
+use Neos\Flow\Mvc;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Controller\Arguments;
 use Neos\Flow\Mvc\View\SimpleTemplateView;
-use Neos\Flow\Mvc;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
@@ -153,7 +154,7 @@ class ActionControllerTest extends UnitTestCase
         $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
         $mockRequest->expects(self::any())->method('getHttpRequest')->will(self::returnValue($mockHttpRequest));
 
-        $mockResponse = new Mvc\ActionResponse;
+        $mockResponse = new Mvc\ActionResponse();
 
         $this->actionController->processRequest($mockRequest, $mockResponse);
     }
@@ -193,7 +194,7 @@ class ActionControllerTest extends UnitTestCase
         $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
         $mockRequest->expects(self::any())->method('getHttpRequest')->will(self::returnValue($mockHttpRequest));
 
-        $mockResponse = new Mvc\ActionResponse;
+        $mockResponse = new Mvc\ActionResponse();
 
         $this->actionController->processRequest($mockRequest, $mockResponse);
     }

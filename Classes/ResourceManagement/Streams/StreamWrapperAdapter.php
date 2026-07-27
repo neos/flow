@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement\Streams;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\ResourceManagement\Streams;
  * source code.
  */
 
-use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
 
 /**

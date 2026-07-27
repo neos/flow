@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Aop\Builder;
 
 /*
@@ -116,7 +117,7 @@ abstract class AbstractMethodInterceptorBuilder
                     $argumentsArrayCode .= $methodParameterInfo['byReference'] ? '&' : '';
                     $argumentsArrayCode .= '$' . $methodParameterName . ";\n";
                 }
-                $argumentIndex ++;
+                $argumentIndex++;
             }
             $argumentsArrayCode .= "            ";
         }

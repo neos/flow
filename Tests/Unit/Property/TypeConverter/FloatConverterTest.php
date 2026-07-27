@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
+use Neos\Error\Messages as Error;
 use Neos\Flow\Property\TypeConverter\FloatConverter;
 use Neos\Flow\Property\TypeConverterInterface;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Error\Messages as Error;
 
 /**
  * Testcase for the Float converter

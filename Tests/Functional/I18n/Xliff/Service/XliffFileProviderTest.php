@@ -11,7 +11,6 @@ namespace Neos\Flow\Tests\Functional\I18n\Xliff\Service;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\I18n\Locale;
@@ -19,6 +18,7 @@ use Neos\Flow\I18n\Xliff\Service\XliffFileProvider;
 use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\FunctionalTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcases for the XLIFF file provider

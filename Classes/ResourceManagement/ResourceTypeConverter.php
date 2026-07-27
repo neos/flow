@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement;
 
 /*
@@ -11,16 +12,16 @@ namespace Neos\Flow\ResourceManagement;
  * source code.
  */
 
-use Neos\Flow\Log\Utility\LogEnvironment;
-use Psr\Http\Message\UploadedFileInterface;
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Error as FlowError;
-use Neos\Http\Factories\FlowUploadedFile;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Property\Exception\InvalidPropertyMappingConfigurationException;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\AbstractTypeConverter;
+use Neos\Http\Factories\FlowUploadedFile;
 use Neos\Utility\Files;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -64,12 +65,12 @@ class ResourceTypeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_RESOURCE_LOAD_PATH = 'resourceLoadPath';
+    public const CONFIGURATION_RESOURCE_LOAD_PATH = 'resourceLoadPath';
 
     /**
      * @var integer
      */
-    const CONFIGURATION_IDENTITY_CREATION_ALLOWED = 1;
+    public const CONFIGURATION_IDENTITY_CREATION_ALLOWED = 1;
 
     /**
      * Sets the default resource collection name (see Settings: Neos.Flow.resource.collections) to use for this resource,
@@ -77,7 +78,7 @@ class ResourceTypeConverter extends AbstractTypeConverter
      *
      * @var string
      */
-    const CONFIGURATION_COLLECTION_NAME = 'collectionName';
+    public const CONFIGURATION_COLLECTION_NAME = 'collectionName';
 
     /**
      * @var array<string>

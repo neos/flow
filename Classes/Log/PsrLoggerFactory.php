@@ -1,10 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Log;
 
-use Neos\Flow\Log\Backend\BackendInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Log\Backend\BackendInterface;
 use Neos\Flow\Log\Psr\Logger;
 
 /**

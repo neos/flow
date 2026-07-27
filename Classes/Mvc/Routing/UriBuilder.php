@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Routing;
 
 /*
@@ -189,7 +190,7 @@ class UriBuilder
      */
     public function setCreateAbsoluteUri($createAbsoluteUri)
     {
-        $this->createAbsoluteUri = (boolean)$createAbsoluteUri;
+        $this->createAbsoluteUri = (bool)$createAbsoluteUri;
         return $this;
     }
 
@@ -211,7 +212,7 @@ class UriBuilder
      */
     public function setAddQueryString($addQueryString)
     {
-        $this->addQueryString = (boolean)$addQueryString;
+        $this->addQueryString = (bool)$addQueryString;
         return $this;
     }
 

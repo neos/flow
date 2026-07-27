@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Validation\Validator;
 
 /*
@@ -14,9 +15,9 @@ namespace Neos\Flow\Validation\Validator;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Reflection\ClassSchema;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Validation\Exception\InvalidValidationOptionsException;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Validator for uniqueness of entities.
@@ -88,7 +89,7 @@ class UniqueEntityValidator extends AbstractValidator
 
         $query = $this->persistenceManager->createQueryForType($classSchema->getClassName());
         $constraints = [$query->logicalNot($query->equals($identifierPropertyName, $this->persistenceManager->getIdentifierByObject($value)))];
-        foreach ($identityProperties as  $propertyName) {
+        foreach ($identityProperties as $propertyName) {
             $constraints[] = $query->equals($propertyName, ObjectAccess::getProperty($value, $propertyName));
         }
 

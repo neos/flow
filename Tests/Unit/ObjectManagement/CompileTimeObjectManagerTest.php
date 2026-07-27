@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 /*
@@ -12,11 +13,11 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement;
  */
 
 use Neos\Flow\Configuration\ConfigurationManager;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 use Psr\Log\LoggerInterface;
 
 class CompileTimeObjectManagerTest extends UnitTestCase

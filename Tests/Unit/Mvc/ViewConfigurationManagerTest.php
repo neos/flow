@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -12,11 +13,11 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  */
 
 use Neos\Cache\Frontend\StringFrontend;
-use Neos\Flow\Configuration\ConfigurationManager;
-use Neos\Flow\Mvc\ViewConfigurationManager;
-use Neos\Flow\Mvc\ActionRequest;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Eel\CompilingEvaluator;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ViewConfigurationManager;
 
 /**
  * Testcase for the MVC ViewConfigurationManager

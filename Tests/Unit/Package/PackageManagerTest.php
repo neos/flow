@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Package;
 
 /*
@@ -22,12 +23,12 @@ use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\FlowPackageKey;
 use Neos\Flow\Package\PackageFactory;
 use Neos\Flow\Package\PackageInterface;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Utility\Files;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the default package manager

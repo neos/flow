@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Configuration;
 
 /*
@@ -12,15 +13,15 @@ namespace Neos\Flow\Tests\Unit\Configuration;
  */
 
 use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
+use Neos\Flow\Configuration\Exception\ParseErrorException;
+use Neos\Flow\Configuration\Exception\RecursionException;
 use Neos\Flow\Configuration\Loader\AppendLoader;
 use Neos\Flow\Configuration\Loader\LoaderInterface;
 use Neos\Flow\Configuration\Loader\MergeLoader;
 use Neos\Flow\Configuration\Loader\ObjectsLoader;
 use Neos\Flow\Configuration\Loader\RoutesLoader;
 use Neos\Flow\Configuration\Loader\SettingsLoader;
-use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
-use Neos\Flow\Configuration\Exception\ParseErrorException;
-use Neos\Flow\Configuration\Exception\RecursionException;
 use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Core\Bootstrap;
@@ -1718,7 +1719,7 @@ class ConfigurationManagerTest extends UnitTestCase
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('loadingConfigurationOfCustomConfigurationTypeCallback', 'Testing');
 
-        $customLoader = new class implements LoaderInterface {
+        $customLoader = new class () implements LoaderInterface {
             public function load(array $packages, ApplicationContext $context): array
             {
                 return ['SomeKey' => 'SomeValue'];

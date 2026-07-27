@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\FlashMessage;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Mvc\FlashMessage;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Message;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * This is a container for all Flash Messages.

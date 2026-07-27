@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security;
 
 /*
@@ -21,12 +22,12 @@ use Neos\Flow\Security\Authentication\TokenAndProviderFactoryInterface;
 use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Security\Context;
 use Neos\Flow\Security\Policy;
+use Neos\Flow\Security\Policy\Role;
 use Neos\Flow\Security\RequestPatternInterface;
 use Neos\Flow\Security\SessionDataContainer;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Flow\Session\SessionManagerInterface;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Security\Policy\Role;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -180,8 +181,8 @@ class ContextTest extends UnitTestCase
             $token4,
             $token5
         ]));
-//        $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
-//        $mockAuthenticationManager->expects(self::once())->method('getTokens')->will(self::returnValue([$token1, $token2, $token3, $token4, $token5]));
+        //        $mockAuthenticationManager = $this->createMock(AuthenticationManagerInterface::class);
+        //        $mockAuthenticationManager->expects(self::once())->method('getTokens')->will(self::returnValue([$token1, $token2, $token3, $token4, $token5]));
 
         $mockSession = $this->createMock(SessionInterface::class);
         $mockSessionManager = $this->createMock(SessionManagerInterface::class);
@@ -413,7 +414,7 @@ class ContextTest extends UnitTestCase
         $securityContext->_set('securityLogger', $mockSecurityLogger);
 
         $result = $securityContext->initialize();
-//        $securityContext->_call('initialize');
+        //        $securityContext->_call('initialize');
 
         $expectedMergedTokens = [$token1Clone, $token2Clone, $token3];
         self::assertEquals($expectedMergedTokens, array_values($securityContext->_get('activeTokens')));

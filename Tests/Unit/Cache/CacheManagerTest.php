@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Cache;
 
 /*
@@ -11,15 +12,15 @@ namespace Neos\Flow\Tests\Unit\Cache;
  * source code.
  */
 
-use org\bovigo\vfs\vfsStream;
 use Neos\Cache;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility\Environment;
-use Psr\Log\LoggerInterface;
+use org\bovigo\vfs\vfsStream;
 use Psr\Cache\CacheItemPoolInterface;
+use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
 
 /**

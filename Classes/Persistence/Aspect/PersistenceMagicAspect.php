@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Persistence\Aspect;
 
 /*
@@ -14,9 +15,9 @@ namespace Neos\Flow\Persistence\Aspect;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Utility\Algorithms;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Adds the aspect of persistence magic to relevant objects

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Functional\I18n\Cldr\Reader;
@@ -13,9 +14,9 @@ namespace Neos\Flow\Tests\Functional\I18n\Cldr\Reader;
  * source code.
  */
 
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\I18n;
 
 class NumbersReaderTest extends FunctionalTestCase
 {

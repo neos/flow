@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Package;
 
 /*
@@ -19,8 +20,8 @@ namespace Neos\Flow\Package;
 interface PackageInterface
 {
     /** @deprecated with Flow 9, please use {@see PackageManager::isPackageKeyValid()} instead. */
-    const PATTERN_MATCH_PACKAGEKEY = FlowPackageKey::PATTERN;
-    const DEFAULT_COMPOSER_TYPE = 'neos-package';
+    public const PATTERN_MATCH_PACKAGEKEY = FlowPackageKey::PATTERN;
+    public const DEFAULT_COMPOSER_TYPE = 'neos-package';
 
     /**
      * Returns the array of filenames of the class files

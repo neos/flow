@@ -22,12 +22,12 @@ use Doctrine\ORM\Cache\RegionsConfiguration;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Neos\Cache\Exception\NoSuchCacheException;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Package;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
-use Neos\Flow\Annotations as Flow;
 use Psr\Cache\CacheItemPoolInterface;
 
 /**

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Flow\Session;
 
 /*
@@ -34,14 +36,14 @@ class SessionManager implements SessionManagerInterface
     protected array $remoteSessions = [];
 
     public function __construct(
-        readonly protected SessionMetaDataStore $sessionMetaDataStore,
-        readonly protected SessionKeyValueStore $sessionKeyValueStore,
+        protected readonly SessionMetaDataStore $sessionMetaDataStore,
+        protected readonly SessionKeyValueStore $sessionKeyValueStore,
         #[Flow\InjectConfiguration(path: "session.garbageCollection.probability")]
-        readonly protected float $garbageCollectionProbability,
+        protected readonly float $garbageCollectionProbability,
         #[Flow\InjectConfiguration(path: "session.garbageCollection.maximumPerRun")]
-        readonly protected int $garbageCollectionMaximumPerRun,
+        protected readonly int $garbageCollectionMaximumPerRun,
         #[Flow\InjectConfiguration(path: "session.inactivityTimeout")]
-        readonly protected int $inactivityTimeout,
+        protected readonly int $inactivityTimeout,
     ) {
     }
 

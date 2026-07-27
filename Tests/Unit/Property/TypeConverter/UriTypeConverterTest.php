@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -12,9 +13,9 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  */
 
 use GuzzleHttp\Psr7\Uri;
+use Neos\Error\Messages as FlowError;
 use Neos\Flow\Property\TypeConverter\UriTypeConverter;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Error\Messages as FlowError;
 use Psr\Http\Message\UriInterface;
 
 /**

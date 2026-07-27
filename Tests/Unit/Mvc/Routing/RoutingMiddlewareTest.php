@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -13,8 +14,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Http\ServerRequestAttributes;
-use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Router;
 use Neos\Flow\Mvc\Routing\Routes;
 use Neos\Flow\Mvc\Routing\RoutesProviderInterface;

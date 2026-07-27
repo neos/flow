@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
+use Neos\Error\Messages as Error;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Validation\Validator\DisjunctionValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
-use Neos\Error\Messages as Error;
 
 /**
  * Testcase for the Disjunction Validator

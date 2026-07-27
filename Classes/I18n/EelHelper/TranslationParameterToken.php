@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n\EelHelper;
 
 /*
@@ -11,14 +12,14 @@ namespace Neos\Flow\I18n\EelHelper;
  * source code.
  */
 
+use Neos\Eel\ProtectedContextAwareInterface;
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Exception as FlowException;
 use Neos\Flow\I18n\Exception\IndexOutOfBoundsException;
 use Neos\Flow\I18n\Exception\InvalidFormatPlaceholderException;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Translator;
-use Neos\Flow\Exception as FlowException;
-use Neos\Eel\ProtectedContextAwareInterface;
 
 /**
  * Provides a chainable interface to collect all arguments needed to

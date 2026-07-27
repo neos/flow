@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -62,7 +63,7 @@ class EntityManagerConfigurationTest extends UnitTestCase
         $connection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         /** @var EventManager $eventManager */
         $eventManager = $this->getMockBuilder(EventManager::class)->disableOriginalConstructor()->getMock();
-        $configuration = new \Doctrine\ORM\Configuration;
+        $configuration = new \Doctrine\ORM\Configuration();
 
         $settingsArray = [
             'persistence' => [

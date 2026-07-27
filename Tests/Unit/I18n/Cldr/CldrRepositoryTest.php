@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr;
  * source code.
  */
 
+use Neos\Flow\I18n;
+use Neos\Flow\Tests\UnitTestCase;
 use Neos\Utility\ObjectAccess;
 use org\bovigo\vfs\vfsStream;
-use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\I18n;
 
 /**
  * Testcase for the CldrRepository

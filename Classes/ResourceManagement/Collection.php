@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement;
 
 /*
@@ -12,12 +13,12 @@ namespace Neos\Flow\ResourceManagement;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\ResourceManagement\Exception as ResourceException;
 use Neos\Flow\ResourceManagement\Storage\PackageStorage;
 use Neos\Flow\ResourceManagement\Storage\StorageInterface;
 use Neos\Flow\ResourceManagement\Storage\StorageObject;
 use Neos\Flow\ResourceManagement\Storage\WritableStorageInterface;
 use Neos\Flow\ResourceManagement\Target\TargetInterface;
-use Neos\Flow\ResourceManagement\Exception as ResourceException;
 
 /**
  * A resource collection

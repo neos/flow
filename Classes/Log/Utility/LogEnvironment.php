@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Log\Utility;
@@ -13,11 +14,11 @@ namespace Neos\Flow\Log\Utility;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Package\PackageKeyAwareInterface;
 use Neos\Flow\Package\PackageManager;
-use Neos\Flow\Annotations as Flow;
 
 abstract class LogEnvironment
 {

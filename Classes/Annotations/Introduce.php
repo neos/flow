@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Annotations;
 
 /*
@@ -21,7 +22,7 @@ use Doctrine\Common\Annotations\Annotation\NamedArgumentConstructor;
  * @NamedArgumentConstructor
  * @Target({"CLASS", "PROPERTY"})
  */
-#[\Attribute(\Attribute::TARGET_CLASS|\Attribute::TARGET_PROPERTY|\Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 final class Introduce
 {
     /**

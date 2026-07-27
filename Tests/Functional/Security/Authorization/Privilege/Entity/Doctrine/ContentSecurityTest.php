@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
@@ -14,10 +15,10 @@ namespace Neos\Flow\Tests\Functional\Security\Authorization\Privilege\Entity\Doc
 use Doctrine\Common\Collections\ArrayCollection;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\Functional\Aop;
 use Neos\Flow\Tests\Functional\Security\Fixtures;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\Tests\Functional\Aop;
-use Neos\Flow\Security;
 
 /**
  * Testcase for content security using doctrine persistence

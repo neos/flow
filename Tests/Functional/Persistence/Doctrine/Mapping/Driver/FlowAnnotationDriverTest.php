@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Functional\Persistence\Doctrine\Mapping\Driver;
@@ -20,11 +21,11 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Mapping\MappingException;
 use Doctrine\ORM\Tools\Exception\NotSupported;
 use Doctrine\ORM\Tools\SchemaTool;
+use Neos\Flow\Persistence\Doctrine\Mapping\ClassMetadata;
 use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures;
-use Neos\Flow\Persistence\Doctrine\Mapping\ClassMetadata;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**

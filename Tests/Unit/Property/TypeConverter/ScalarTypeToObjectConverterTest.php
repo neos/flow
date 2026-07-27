@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -15,6 +16,7 @@ require_once(__DIR__ . '/../../Fixtures/ClassWithStringConstructor.php');
 require_once(__DIR__ . '/../../Fixtures/ClassWithIntegerConstructor.php');
 require_once(__DIR__ . '/../../Fixtures/ClassWithBoolConstructor.php');
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Fixtures\ClassWithBoolConstructor;
 use Neos\Flow\Fixtures\ClassWithFloatConstructor;
 use Neos\Flow\Fixtures\ClassWithIntegerConstructor;
@@ -22,7 +24,6 @@ use Neos\Flow\Fixtures\ClassWithStringConstructor;
 use Neos\Flow\Property\TypeConverter\ScalarTypeToObjectConverter;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Annotations as Flow;
 
 /**
  * Test case for the ScalarTypeToObjectConverter

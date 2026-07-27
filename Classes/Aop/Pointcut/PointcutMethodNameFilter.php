@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Aop\Pointcut;
 
 /*
@@ -25,7 +26,7 @@ use Psr\Log\LoggerInterface;
  */
 class PointcutMethodNameFilter implements PointcutFilterInterface
 {
-    const PATTERN_MATCHVISIBILITYMODIFIER = '/^(|public|protected)$/';
+    public const PATTERN_MATCHVISIBILITYMODIFIER = '/^(|public|protected)$/';
 
     /**
      * @var ReflectionService

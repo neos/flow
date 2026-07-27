@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -11,14 +12,14 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Uri;
 use Neos\Cache\CacheAwareInterface;
 use Neos\Cache\Frontend\StringFrontend;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Core\ApplicationContext;
-use GuzzleHttp\Psr7\Uri;
-use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
 use Neos\Flow\Mvc\Routing\Dto\RouteContext;
+use Neos\Flow\Mvc\Routing\Dto\RouteParameters;
 use Neos\Flow\Mvc\Routing\Dto\UriConstraints;
 use Neos\Flow\Mvc\Routing\RouterCachingService;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
  * source code.
  */
 
-use Neos\Flow\Persistence\Doctrine\QueryResult;
 use Neos\Flow\Persistence\Doctrine\Query;
+use Neos\Flow\Persistence\Doctrine\QueryResult;
 use Neos\Flow\Persistence\QueryInterface;
 use Neos\Flow\Tests\UnitTestCase;
 

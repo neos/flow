@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ObjectManagement;
 
 /*
@@ -13,6 +14,7 @@ namespace Neos\Flow\ObjectManagement;
 
 use Neos\Cache\Exception as CacheException;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
@@ -20,7 +22,6 @@ use Neos\Flow\ObjectManagement\Configuration\Configuration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationParser;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty as Property;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;
 use Neos\Flow\ObjectManagement\Exception\UnknownObjectException;
 use Neos\Flow\ObjectManagement\Exception\WrongScopeException;

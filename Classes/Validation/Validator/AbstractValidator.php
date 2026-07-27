@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Validation\Validator;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Validation\Validator;
  * source code.
  */
 
-use Neos\Flow\Validation\Exception\InvalidValidationOptionsException;
 use Neos\Error\Messages\Result as ErrorResult;
 use Neos\Flow\Validation\Error as ValidationError;
+use Neos\Flow\Validation\Exception\InvalidValidationOptionsException;
 
 /**
  * Abstract validator

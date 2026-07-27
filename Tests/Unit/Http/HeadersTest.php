@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Http;
  * source code.
  */
 
-use Neos\Flow\Http\Headers;
 use Neos\Flow\Http\Cookie;
+use Neos\Flow\Http\Headers;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
@@ -69,7 +70,7 @@ class HeadersTest extends UnitTestCase
      */
     public function getAllReturnsAllHeaderFields()
     {
-        $specifiedFields = ['X-Coffee' => 'Arabica', 'Host' =>'myhost.com'];
+        $specifiedFields = ['X-Coffee' => 'Arabica', 'Host' => 'myhost.com'];
         $headers = new Headers($specifiedFields);
 
         $expectedFields = ['X-Coffee' => ['Arabica'], 'Host' => ['myhost.com']];
@@ -121,7 +122,7 @@ class HeadersTest extends UnitTestCase
      */
     public function removeRemovesTheSpecifiedHeader()
     {
-        $specifiedFields = ['X-Coffee' => 'Arabica', 'Host' =>'myhost.com'];
+        $specifiedFields = ['X-Coffee' => 'Arabica', 'Host' => 'myhost.com'];
         $headers = new Headers($specifiedFields);
 
         $headers->remove('X-Coffee');

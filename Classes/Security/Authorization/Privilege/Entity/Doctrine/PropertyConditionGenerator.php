@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine;
 
 /*
@@ -11,20 +12,20 @@ namespace Neos\Flow\Security\Authorization\Privilege\Entity\Doctrine;
  * source code.
  */
 
-use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
-use Doctrine\Persistence\Mapping\ClassMetadata;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
 use Doctrine\ORM\Mapping\QuoteStrategy;
 use Doctrine\ORM\Query\Filter\SQLFilter as DoctrineSqlFilter;
+use Doctrine\Persistence\Mapping\ClassMetadata;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Persistence\Doctrine\Query;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Security\Context;
 use Neos\Flow\Security\Exception\InvalidPolicyException;
 use Neos\Flow\Security\Exception\InvalidQueryRewritingConstraintException;
 use Neos\Flow\Security\Policy\PolicyService;
+use Neos\Utility\ObjectAccess;
 use Neos\Utility\TypeHandling;
 
 /**

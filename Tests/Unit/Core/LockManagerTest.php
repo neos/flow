@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Core;
 
 /*
@@ -11,11 +12,11 @@ namespace Neos\Flow\Tests\Unit\Core;
  * source code.
  */
 
+use Neos\Flow\Core\LockManager;
+use Neos\Flow\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamFile;
-use Neos\Flow\Core\LockManager;
-use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the LockManager

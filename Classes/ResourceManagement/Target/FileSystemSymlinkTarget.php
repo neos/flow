@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement\Target;
 
 /*
@@ -144,7 +145,7 @@ class FileSystemSymlinkTarget extends FileSystemTarget
     protected function setOption($key, $value)
     {
         if ($key === 'relativeSymlinks') {
-            $this->relativeSymlinks = (boolean)$value;
+            $this->relativeSymlinks = (bool)$value;
             return true;
         }
 

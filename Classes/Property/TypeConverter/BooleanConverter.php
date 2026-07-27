@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -58,7 +59,7 @@ class BooleanConverter extends AbstractTypeConverter
         }
 
         if (is_int($source) || is_float(($source))) {
-            return (boolean)$source;
+            return (bool)$source;
         }
 
         return (!empty($source) && !in_array(strtolower($source), ['off', 'n', 'no', 'false']));

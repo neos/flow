@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Error;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Error;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Error\Messages\Error as FlowError;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Error object

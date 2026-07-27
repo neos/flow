@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -11,15 +12,15 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Aop;
 use Neos\Flow\Aop\Pointcut\PointcutExpressionParser;
 use Neos\Flow\Aop\Pointcut\PointcutFilterComposite;
 use Neos\Flow\Log\PsrLoggerFactoryInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Aop;
-use Neos\Flow\Annotations as Flow;
+use Neos\Utility\ObjectAccess;
 use Psr\Log\LoggerInterface;
 
 /**

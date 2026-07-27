@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Storage;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement\Storage;
  * source code.
  */
 
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
 use Neos\Flow\ResourceManagement\Storage\WritableFileSystemStorage;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility\Environment;
 use Neos\Utility\Files;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 
 /**
  * Test case for the WritableFileSystemStorage class

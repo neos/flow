@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Error\Messages as Error;
+use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Flow\Validation\Validator\IntegerValidator;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
 

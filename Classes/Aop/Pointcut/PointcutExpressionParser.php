@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Aop\Pointcut;
 
 /*
@@ -31,10 +32,10 @@ use Neos\Flow\Reflection\ReflectionService;
  */
 class PointcutExpressionParser
 {
-    const PATTERN_SPLITBYOPERATOR = '/\s*(\&\&|\|\|)\s*/';
-    const PATTERN_MATCHPOINTCUTDESIGNATOR = '/^\s*(classAnnotatedWith|class|methodAnnotatedWith|method|within|filter|setting|evaluate)/';
-    const PATTERN_MATCHVISIBILITYMODIFIER = '/^(public|protected) +/';
-    const PATTERN_MATCHRUNTIMEEVALUATIONSDEFINITION = '/(?:
+    public const PATTERN_SPLITBYOPERATOR = '/\s*(\&\&|\|\|)\s*/';
+    public const PATTERN_MATCHPOINTCUTDESIGNATOR = '/^\s*(classAnnotatedWith|class|methodAnnotatedWith|method|within|filter|setting|evaluate)/';
+    public const PATTERN_MATCHVISIBILITYMODIFIER = '/^(public|protected) +/';
+    public const PATTERN_MATCHRUNTIMEEVALUATIONSDEFINITION = '/(?:
 														(?:
 															\s*(   "(?:\\\"|[^"])*"
 																|\(.*?\)
@@ -51,7 +52,7 @@ class PointcutExpressionParser
 														\s*,{0,1}?
 													)+
 												/x';
-    const PATTERN_MATCHRUNTIMEEVALUATIONSVALUELIST = '/(?:
+    public const PATTERN_MATCHRUNTIMEEVALUATIONSVALUELIST = '/(?:
 																	\s*(
 																		"(?:\\\"|[^"])*"
 																		|\'(?:\\\\\'|[^\'])*\'
@@ -60,7 +61,7 @@ class PointcutExpressionParser
 																	\s*,{0,1}?
 																)+
 																/x';
-    const PATTERN_MATCHMETHODNAMEANDARGUMENTS = '/^(?P<MethodName>.*)\((?P<MethodArguments>.*)\)$/';
+    public const PATTERN_MATCHMETHODNAMEANDARGUMENTS = '/^(?P<MethodName>.*)\((?P<MethodArguments>.*)\)$/';
 
     /**
      * @var ProxyClassBuilder

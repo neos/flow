@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
@@ -13,13 +14,13 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
  * source code.
  */
 
-use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
-use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Security;
-use PHPUnit\Framework\MockObject\MockObject;
-use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\ORM\EntityManager;
+use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
+use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Testcase for the Flow annotation driver

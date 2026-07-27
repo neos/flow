@@ -12,6 +12,7 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Routing;
 use Neos\Flow\Mvc\Routing\Route;
 use Neos\Flow\Mvc\Routing\Routes;
@@ -19,7 +20,6 @@ use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
-use Neos\Flow\Annotations as Flow;
 
 /**
  * Testcase for the MVC Web Routing Routes Class

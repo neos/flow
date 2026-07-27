@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Package;
 
 /*
@@ -11,14 +12,14 @@ namespace Neos\Flow\Tests\Unit\Package;
  * source code.
  */
 
+use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Package\Exception\CorruptPackageException;
 use Neos\Flow\Package\Exception\InvalidPackagePathException;
 use Neos\Flow\Package\FlowPackageKey;
-use org\bovigo\vfs\vfsStream;
-use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageFactory;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the package factory

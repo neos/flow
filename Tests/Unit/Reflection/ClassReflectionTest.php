@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -17,8 +18,8 @@ require_once('Fixture/DummyInterface2.php');
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\MethodReflection;
 use Neos\Flow\Reflection\PropertyReflection;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Tests\Reflection\Fixture;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for ClassReflection

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -63,7 +64,7 @@ class AuthenticationTest extends FunctionalTestCase
                 '@subpackage' => 'Tests\Functional\Security\Fixtures',
                 '@controller' => 'Restricted',
                 '@action' => 'public',
-                '@format' =>'html'
+                '@format' => 'html'
             ],
             true
         );

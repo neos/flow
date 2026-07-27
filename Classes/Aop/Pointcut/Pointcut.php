@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Aop\Pointcut;
 
 /*
@@ -25,7 +26,7 @@ use Neos\Flow\Aop\Exception\CircularPointcutReferenceException;
  */
 class Pointcut implements PointcutFilterInterface
 {
-    const MAXIMUM_RECURSIONS = 99;
+    public const MAXIMUM_RECURSIONS = 99;
 
     /**
      * A pointcut expression which configures the pointcut
@@ -93,7 +94,7 @@ class Pointcut implements PointcutFilterInterface
     public function matches($className, $methodName, $methodDeclaringClassName, $pointcutQueryIdentifier): bool
     {
         if ($this->pointcutQueryIdentifier === $pointcutQueryIdentifier) {
-            $this->recursionLevel ++;
+            $this->recursionLevel++;
             if ($this->recursionLevel > self::MAXIMUM_RECURSIONS) {
                 throw new CircularPointcutReferenceException('Circular pointcut reference detected in ' . $this->aspectClassName . '->' . $this->pointcutMethodName . ', too many recursions (Query identifier: ' . $pointcutQueryIdentifier . ').', 1172416172);
             }
