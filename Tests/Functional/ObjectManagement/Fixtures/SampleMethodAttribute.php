@@ -6,9 +6,9 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement\Fixtures;
 class SampleMethodAttribute
 {
     public function __construct(
-        readonly public string $method,
-        readonly public array $options = [],
-        readonly public string $argWithDefault = 'default'
+        public readonly string $method,
+        public readonly array $options = [],
+        public readonly string $argWithDefault = 'default'
     ) {
     }
 }

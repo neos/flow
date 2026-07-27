@@ -422,7 +422,7 @@ class PackageManager
      */
     protected function loadPackageStates(): array
     {
-        return (is_file($this->packageInformationCacheFilePath) ? include $this->packageInformationCacheFilePath  : []);
+        return (is_file($this->packageInformationCacheFilePath) ? include $this->packageInformationCacheFilePath : []);
     }
 
     /**

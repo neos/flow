@@ -52,7 +52,7 @@ class EnvironmentTest extends UnitTestCase
     {
         $environment = new Environment(new ApplicationContext('Testing'));
         $expectedValue = PHP_MAXPATHLEN;
-        if ((integer)$expectedValue <= 0) {
+        if ((int)$expectedValue <= 0) {
             $this->fail('The PHP Constant PHP_MAXPATHLEN is not available on your system! Please file a PHP bug report.');
         }
         self::assertEquals($expectedValue, $environment->getMaximumPathLength());

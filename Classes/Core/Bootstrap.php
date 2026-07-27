@@ -32,8 +32,8 @@ use Neos\Utility\Files;
  */
 class Bootstrap
 {
-    const RUNLEVEL_COMPILETIME = 'Compiletime';
-    const RUNLEVEL_RUNTIME = 'Runtime';
+    public const RUNLEVEL_COMPILETIME = 'Compiletime';
+    public const RUNLEVEL_RUNTIME = 'Runtime';
 
     /**
      * @var ApplicationContext

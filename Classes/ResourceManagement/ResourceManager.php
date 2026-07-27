@@ -36,10 +36,10 @@ class ResourceManager
     /**
      * Names of the default collections for static and persistent resources.
      */
-    const DEFAULT_STATIC_COLLECTION_NAME = 'static';
-    const DEFAULT_PERSISTENT_COLLECTION_NAME = 'persistent';
+    public const DEFAULT_STATIC_COLLECTION_NAME = 'static';
+    public const DEFAULT_PERSISTENT_COLLECTION_NAME = 'persistent';
 
-    const PUBLIC_RESSOURCE_REGEXP = '#^resource://(?<packageKey>[^/]+)/Public/(?<relativePathAndFilename>.*)#';
+    public const PUBLIC_RESSOURCE_REGEXP = '#^resource://(?<packageKey>[^/]+)/Public/(?<relativePathAndFilename>.*)#';
 
     /**
      * @Flow\Inject
@@ -626,7 +626,7 @@ class ResourceManager
      */
     protected function prepareUploadedFileForImport(array $uploadInfo)
     {
-        $openBasedirEnabled = (boolean)ini_get('open_basedir');
+        $openBasedirEnabled = (bool)ini_get('open_basedir');
         $temporaryTargetPathAndFilename = $uploadInfo['tmp_name'] ?? null;
         if (!is_string($temporaryTargetPathAndFilename)) {
             throw new \InvalidArgumentException('Key tmp_name in uploaded file info is required', 1743969722);

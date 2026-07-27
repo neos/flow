@@ -95,8 +95,8 @@ class ObjectManager implements ObjectManagerInterface
     public function __construct(ApplicationContext $context)
     {
         $this->context = $context;
-        $this->shutdownObjects = new \SplObjectStorage;
-        $this->internalShutdownObjects = new \SplObjectStorage;
+        $this->shutdownObjects = new \SplObjectStorage();
+        $this->internalShutdownObjects = new \SplObjectStorage();
     }
 
     /**

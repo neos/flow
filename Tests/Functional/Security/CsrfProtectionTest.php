@@ -66,7 +66,7 @@ class CsrfProtectionTest extends FunctionalTestCase
             '@subpackage' => 'Tests\Functional\Security\Fixtures',
             '@controller' => 'Restricted',
             '@action' => 'public',
-            '@format' =>'html'
+            '@format' => 'html'
             ],
             true
         );

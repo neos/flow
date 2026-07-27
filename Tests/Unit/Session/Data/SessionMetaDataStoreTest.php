@@ -85,7 +85,7 @@ class SessionMetaDataStoreTest extends UnitTestCase
         $lastActivityTimestamp = time();
 
         $sessionMetaData = new SessionMetaData($sessionId, $storageId, $lastActivityTimestamp, []);
-        $this->mockCache->expects($this->once())->method('get')->with($sessionId->value)->willReturn(['storageIdentifier'=>$storageId->value, 'tags' => [], 'lastActivityTimestamp' => $lastActivityTimestamp]);
+        $this->mockCache->expects($this->once())->method('get')->with($sessionId->value)->willReturn(['storageIdentifier' => $storageId->value, 'tags' => [], 'lastActivityTimestamp' => $lastActivityTimestamp]);
         $this->assertEquals($sessionMetaData, $this->store->retrieve($sessionId));
     }
 

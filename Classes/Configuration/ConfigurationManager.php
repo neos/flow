@@ -544,7 +544,7 @@ class ConfigurationManager
             if ($matchGroup['endString'] === "',\n") {
                 $constantUntilEndOfLine = true;
             }
-            $replacement .= ($constantUntilEndOfLine ? ",\n" :  " . '" . $matchGroup['endString']);
+            $replacement .= ($constantUntilEndOfLine ? ",\n" : " . '" . $matchGroup['endString']);
 
             return $replacement;
         }, $phpString);

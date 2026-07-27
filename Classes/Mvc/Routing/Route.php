@@ -35,9 +35,9 @@ use Neos\Utility\ObjectAccess;
  */
 class Route
 {
-    const ROUTEPART_TYPE_STATIC = 'static';
-    const ROUTEPART_TYPE_DYNAMIC = 'dynamic';
-    const PATTERN_EXTRACTROUTEPARTS = '/(?P<optionalStart>\(?)(?P<dynamic>{?)(?P<content>@?[^}{\(\)]+)}?(?P<optionalEnd>\)?)/';
+    public const ROUTEPART_TYPE_STATIC = 'static';
+    public const ROUTEPART_TYPE_DYNAMIC = 'dynamic';
+    public const PATTERN_EXTRACTROUTEPARTS = '/(?P<optionalStart>\(?)(?P<dynamic>{?)(?P<content>@?[^}{\(\)]+)}?(?P<optionalEnd>\)?)/';
 
     /**
      * Route name
@@ -286,7 +286,7 @@ class Route
      */
     public function setLowerCase($lowerCase)
     {
-        $this->lowerCase = (boolean)$lowerCase;
+        $this->lowerCase = (bool)$lowerCase;
     }
 
     /**
@@ -311,7 +311,7 @@ class Route
      */
     public function setAppendExceedingArguments($appendExceedingArguments)
     {
-        $this->appendExceedingArguments = (boolean)$appendExceedingArguments;
+        $this->appendExceedingArguments = (bool)$appendExceedingArguments;
     }
 
     /**

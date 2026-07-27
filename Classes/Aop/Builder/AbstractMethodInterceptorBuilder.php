@@ -117,7 +117,7 @@ abstract class AbstractMethodInterceptorBuilder
                     $argumentsArrayCode .= $methodParameterInfo['byReference'] ? '&' : '';
                     $argumentsArrayCode .= '$' . $methodParameterName . ";\n";
                 }
-                $argumentIndex ++;
+                $argumentIndex++;
             }
             $argumentsArrayCode .= "            ";
         }

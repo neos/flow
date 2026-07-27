@@ -23,7 +23,7 @@ class TestEntityADoctrineRepository extends Repository
     /**
      * @var string
      */
-    const ENTITY_CLASSNAME = TestEntityA::class;
+    public const ENTITY_CLASSNAME = TestEntityA::class;
 
     /**
      * Returns all TestEntityA objects from persistence

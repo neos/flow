@@ -199,7 +199,7 @@ class Browser implements ClientInterface
      */
     public function setFollowRedirects($flag)
     {
-        $this->followRedirects = (boolean)$flag;
+        $this->followRedirects = (bool)$flag;
     }
 
     /**

@@ -28,7 +28,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
     /**
      * @const string
      */
-    const SCHEME = 'resource';
+    public const SCHEME = 'resource';
 
     /**
      * @var resource
@@ -149,7 +149,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
     {
         $resourceUriOrStream = $this->evaluateResourcePath($path, false);
         if (is_string($resourceUriOrStream)) {
-            return mkdir($resourceUriOrStream, $mode, (bool)($options&STREAM_MKDIR_RECURSIVE));
+            return mkdir($resourceUriOrStream, $mode, (bool)($options & STREAM_MKDIR_RECURSIVE));
         }
         return false;
     }

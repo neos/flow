@@ -1719,7 +1719,7 @@ class ConfigurationManagerTest extends UnitTestCase
     {
         $configurationManager = $this->getConfigurationManagerWithFlowPackage('loadingConfigurationOfCustomConfigurationTypeCallback', 'Testing');
 
-        $customLoader = new class implements LoaderInterface {
+        $customLoader = new class () implements LoaderInterface {
             public function load(array $packages, ApplicationContext $context): array
             {
                 return ['SomeKey' => 'SomeValue'];

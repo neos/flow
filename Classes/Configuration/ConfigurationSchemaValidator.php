@@ -135,7 +135,7 @@ class ConfigurationSchemaValidator
         }
 
         if (count($schemaFileInfos) === 0) {
-            throw new Exception\SchemaValidationException('No schema files found for configuration type "' . $configurationType . '"' . ($path !== null ? ' and path "' . $path . '".': '.'), 1364985056);
+            throw new Exception\SchemaValidationException('No schema files found for configuration type "' . $configurationType . '"' . ($path !== null ? ' and path "' . $path . '".' : '.'), 1364985056);
         }
 
         $result = new Result();

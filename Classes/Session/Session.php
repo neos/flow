@@ -143,13 +143,13 @@ class Session implements CookieEnabledInterface
     public function injectSettings(array $settings): void
     {
         $this->sessionCookieName = $settings['session']['name'];
-        $this->sessionCookieLifetime = (integer)$settings['session']['cookie']['lifetime'];
+        $this->sessionCookieLifetime = (int)$settings['session']['cookie']['lifetime'];
         $this->sessionCookieDomain = $settings['session']['cookie']['domain'];
         $this->sessionCookiePath = $settings['session']['cookie']['path'];
-        $this->sessionCookieSecure = (boolean)$settings['session']['cookie']['secure'];
-        $this->sessionCookieHttpOnly = (boolean)$settings['session']['cookie']['httponly'];
+        $this->sessionCookieSecure = (bool)$settings['session']['cookie']['secure'];
+        $this->sessionCookieHttpOnly = (bool)$settings['session']['cookie']['httponly'];
         $this->sessionCookieSameSite = $settings['session']['cookie']['samesite'];
-        $this->inactivityTimeout = (integer)$settings['session']['inactivityTimeout'];
+        $this->inactivityTimeout = (int)$settings['session']['inactivityTimeout'];
     }
 
     public function getSessionCookie(): Cookie

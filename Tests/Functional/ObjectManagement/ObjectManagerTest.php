@@ -118,7 +118,7 @@ class ObjectManagerTest extends FunctionalTestCase
         self::assertSame(ObjectManagerInterface::class, $first);
         self::assertSame(ConfigurationManager::class, $last);
     }
-    
+
     /**
      * @test
      */

@@ -165,7 +165,7 @@ class ArgumentTest extends UnitTestCase
     {
         self::assertSame($this->simpleValueArgument, $this->setupPropertyMapperAndSetValue());
     }
-    
+
     /**
      * @test
      */

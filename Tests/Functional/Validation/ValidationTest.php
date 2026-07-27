@@ -50,7 +50,7 @@ class ValidationTest extends FunctionalTestCase
             '@package' => 'Neos.Flow',
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'Entity',
-            '@format' =>'html'
+            '@format' => 'html'
         ]);
     }
 

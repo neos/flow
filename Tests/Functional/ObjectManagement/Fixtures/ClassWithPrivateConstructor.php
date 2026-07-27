@@ -19,7 +19,7 @@ class ClassWithPrivateConstructor extends AbstractClassWithFactoryMethod
     #[Flow\Inject(lazy: false)]
     public SingletonClassA $dependency;
 
-    private function __construct(public string $constructorArgument, readonly public PrototypeClassA $anotherDependency)
+    private function __construct(public string $constructorArgument, public readonly PrototypeClassA $anotherDependency)
     {
     }
 

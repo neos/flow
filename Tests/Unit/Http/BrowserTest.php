@@ -156,7 +156,7 @@ class BrowserTest extends UnitTestCase
         $wildResponses[3] = new Response(301, ['Location' => 'http://localhost/ahNoPleaseRatherGoThere']);
 
         $requestEngine = $this->createMock(Client\RequestEngineInterface::class);
-        for ($i=0; $i<=3; $i++) {
+        for ($i = 0; $i <= 3; $i++) {
             $requestEngine
                 ->expects(self::exactly(count($wildResponses)))
                 ->method('sendRequest')
@@ -175,7 +175,7 @@ class BrowserTest extends UnitTestCase
         $this->expectException(Client\InfiniteRedirectionException::class);
         $requestEngine = $this->createMock(Client\RequestEngineInterface::class);
         $responses = [];
-        for ($i=0; $i<=10; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
             $responses[] = new Response(301, ['Location' => 'http://localhost/this/willLead/you/knowhere/' . $i]);
         }
         $requestEngine

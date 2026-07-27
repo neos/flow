@@ -32,7 +32,7 @@ class SessionManagementTest extends FunctionalTestCase
                 '@subpackage' => 'Tests\Functional\Session\Fixtures',
                 '@controller' => 'SessionTest',
                 '@action' => 'sessionStart',
-                '@format' =>'html'
+                '@format' => 'html'
             ]
         );
     }

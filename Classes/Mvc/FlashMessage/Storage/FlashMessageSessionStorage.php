@@ -21,7 +21,7 @@ use Psr\Http\Message\ServerRequestInterface as HttpRequestInterface;
 
 class FlashMessageSessionStorage implements FlashMessageStorageInterface
 {
-    const DEFAULT_SESSION_KEY = 'Neos_Flow_FlashMessages';
+    public const DEFAULT_SESSION_KEY = 'Neos_Flow_FlashMessages';
 
     /**
      * @Flow\Inject

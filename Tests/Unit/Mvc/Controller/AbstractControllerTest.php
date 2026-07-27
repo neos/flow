@@ -290,7 +290,7 @@ class AbstractControllerTest extends UnitTestCase
         $mockUriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->willReturn($mockUriBuilder);
         $mockUriBuilder->expects(self::once())->method('uriFor')->with('show', ['foo' => 'bar'], 'Stuff', 'Super', 'Duper\Package')->willReturn('the_uri');
 
-        $controller = new class extends AbstractController {
+        $controller = new class () extends AbstractController {
             public function processRequest(ActionRequest $request): ResponseInterface
             {
                 $response = new ActionResponse();
@@ -335,7 +335,7 @@ class AbstractControllerTest extends UnitTestCase
         $mockUriBuilder->expects(self::once())->method('setCreateAbsoluteUri')->willReturn($mockUriBuilder);
         $mockUriBuilder->expects(self::once())->method('uriFor')->with('show', ['foo' => 'bar'], 'Stuff', 'Super', null)->willReturn('the_uri');
 
-        $controller = new class extends AbstractController {
+        $controller = new class () extends AbstractController {
             public function processRequest(ActionRequest $request): ResponseInterface
             {
                 $response = new ActionResponse();

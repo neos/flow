@@ -154,7 +154,7 @@ class ActionControllerTest extends UnitTestCase
         $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
         $mockRequest->expects(self::any())->method('getHttpRequest')->will(self::returnValue($mockHttpRequest));
 
-        $mockResponse = new Mvc\ActionResponse;
+        $mockResponse = new Mvc\ActionResponse();
 
         $this->actionController->processRequest($mockRequest, $mockResponse);
     }
@@ -194,7 +194,7 @@ class ActionControllerTest extends UnitTestCase
         $mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
         $mockRequest->expects(self::any())->method('getHttpRequest')->will(self::returnValue($mockHttpRequest));
 
-        $mockResponse = new Mvc\ActionResponse;
+        $mockResponse = new Mvc\ActionResponse();
 
         $this->actionController->processRequest($mockRequest, $mockResponse);
     }

@@ -24,5 +24,5 @@ class SuperEntityRepository extends Repository
     /**
      * @var string
      */
-    const ENTITY_CLASSNAME = SuperEntity::class;
+    public const ENTITY_CLASSNAME = SuperEntity::class;
 }

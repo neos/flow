@@ -23,7 +23,7 @@ class RestrictableEntityDoctrineRepository extends Repository
     /**
      * @var string
      */
-    const ENTITY_CLASSNAME = RestrictableEntity::class;
+    public const ENTITY_CLASSNAME = RestrictableEntity::class;
 
     /**
      * Returns all RestrictableEntity objects from persistence

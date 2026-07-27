@@ -71,7 +71,7 @@ class FormatResolverTest extends FunctionalTestCase
      */
     public function formatResolverWorksCorrectlyForFullyQualifiedFormatterClassNames(): void
     {
-        $actualFormatter = new Fixtures\SampleFormatter;
+        $actualFormatter = new Fixtures\SampleFormatter();
         $locale = new I18n\Locale('de');
         $testResult = $this->formatResolver->resolvePlaceholders(sprintf('{0,%s}', Fixtures\SampleFormatter::class), ['foo'], $locale);
         self::assertEquals($actualFormatter->format('foo', $locale), $testResult);

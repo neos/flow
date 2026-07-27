@@ -20,7 +20,7 @@ use Neos\Flow\Annotations as Flow;
  */
 class TranslationHelper implements ProtectedContextAwareInterface
 {
-    const I18N_LABEL_ID_PATTERN = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+:[a-z0-9.]+:.+$/i';
+    public const I18N_LABEL_ID_PATTERN = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+:[a-z0-9.]+:.+$/i';
 
     /**
      * Get the translated value for an id or original label

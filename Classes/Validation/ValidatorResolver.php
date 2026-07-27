@@ -37,7 +37,7 @@ class ValidatorResolver
      * Match validator names and options
      * @var string
      */
-    const PATTERN_MATCH_VALIDATORS = '/
+    public const PATTERN_MATCH_VALIDATORS = '/
 			(?:^|,\s*)
 			(?P<validatorName>[a-z0-9\\\\]+)
 			\s*
@@ -54,7 +54,7 @@ class ValidatorResolver
      * Match validator options (to parse actual options)
      * @var string
      */
-    const PATTERN_MATCH_VALIDATOROPTIONS = '/
+    public const PATTERN_MATCH_VALIDATOROPTIONS = '/
 			\s*
 			(?P<optionName>[a-z0-9]+)
 			\s*=\s*

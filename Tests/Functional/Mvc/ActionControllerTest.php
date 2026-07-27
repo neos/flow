@@ -47,7 +47,7 @@ class ActionControllerTest extends FunctionalTestCase
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'Standard',
             '@action' => 'index',
-            '@format' =>'html'
+            '@format' => 'html'
         ]);
 
         $this->registerRoute('testa', 'test/mvc/actioncontrollertesta(/{@action})', [
@@ -55,7 +55,7 @@ class ActionControllerTest extends FunctionalTestCase
             '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
             '@controller' => 'ActionControllerTestA',
             '@action' => 'first',
-            '@format' =>'html'
+            '@format' => 'html'
         ]);
 
         $this->registerRoute('testb', 'test/mvc/actioncontrollertestb(/{@action})', [

@@ -64,8 +64,8 @@ class BehatHelperCommandController extends CommandController
 
         $rawMethodArguments = $this->request->getExceedingArguments();
         $mappedArguments = [];
-        for ($i = 0; $i < count($rawMethodArguments); $i+=2) {
-            $mappedArguments[] = $this->propertyMapper->convert($rawMethodArguments[$i+1], $rawMethodArguments[$i]);
+        for ($i = 0; $i < count($rawMethodArguments); $i += 2) {
+            $mappedArguments[] = $this->propertyMapper->convert($rawMethodArguments[$i + 1], $rawMethodArguments[$i]);
         }
 
         try {

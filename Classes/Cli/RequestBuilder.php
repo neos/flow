@@ -31,7 +31,7 @@ class RequestBuilder
     /**
      * This is used to parse the command line, when it's passed as a string
      */
-    const ARGUMENT_MATCHING_EXPRESSION = '/     # An argument is either...
+    public const ARGUMENT_MATCHING_EXPRESSION = '/     # An argument is either...
 		\'(?P<SingleQuotes>                     # a single-quoted string
 			(?:\\\\\'|[^\'])*                   # (internally: contains escaped single quotes or everything not being single quotes)
 		)\'

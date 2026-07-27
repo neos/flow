@@ -66,6 +66,6 @@ class IntegerConverter extends AbstractTypeConverter
         if (!is_numeric($source)) {
             return new Error('"%s" is not numeric.', 1332933658, [$source]);
         }
-        return (integer)$source;
+        return (int)$source;
     }
 }

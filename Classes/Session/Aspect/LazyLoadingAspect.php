@@ -37,8 +37,8 @@ class LazyLoadingAspect
     protected array $sessionOriginalInstances = [];
 
     public function __construct(
-        readonly protected ObjectManagerInterface $objectManager,
-        readonly protected SessionManagerInterface $sessionManager,
+        protected readonly ObjectManagerInterface $objectManager,
+        protected readonly SessionManagerInterface $sessionManager,
     ) {
     }
 

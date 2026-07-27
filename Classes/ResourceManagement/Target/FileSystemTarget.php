@@ -473,7 +473,7 @@ class FileSystemTarget implements TargetInterface
                 $this->excludedExtensions = $value;
                 break;
             case 'subdivideHashPathSegment':
-                $this->subdivideHashPathSegment = (boolean)$value;
+                $this->subdivideHashPathSegment = (bool)$value;
                 break;
             default:
                 return false;

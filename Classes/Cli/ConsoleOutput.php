@@ -362,7 +362,7 @@ class ConsoleOutput
     /**
      * @return InputInterface
      */
-    public function getInput():InputInterface
+    public function getInput(): InputInterface
     {
         return $this->input;
     }

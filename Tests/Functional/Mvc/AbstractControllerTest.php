@@ -34,7 +34,7 @@ class AbstractControllerTest extends FunctionalTestCase
                 '@package' => 'Neos.Flow',
                 '@subpackage' => 'Tests\Functional\Mvc\Fixtures',
                 '@controller' => 'AbstractControllerTestA',
-                '@format' =>'html'
+                '@format' => 'html'
             ],
             true
         );

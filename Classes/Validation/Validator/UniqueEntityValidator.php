@@ -89,7 +89,7 @@ class UniqueEntityValidator extends AbstractValidator
 
         $query = $this->persistenceManager->createQueryForType($classSchema->getClassName());
         $constraints = [$query->logicalNot($query->equals($identifierPropertyName, $this->persistenceManager->getIdentifierByObject($value)))];
-        foreach ($identityProperties as  $propertyName) {
+        foreach ($identityProperties as $propertyName) {
             $constraints[] = $query->equals($propertyName, ObjectAccess::getProperty($value, $propertyName));
         }
 

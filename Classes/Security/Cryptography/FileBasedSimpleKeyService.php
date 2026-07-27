@@ -27,7 +27,7 @@ class FileBasedSimpleKeyService
     /**
      * Pattern a key name must match.
      */
-    const PATTERN_KEYNAME = '/^[a-zA-Z0-9_%\-&]{1,250}$/';
+    public const PATTERN_KEYNAME = '/^[a-zA-Z0-9_%\-&]{1,250}$/';
 
     /**
      * @var string

@@ -25,7 +25,7 @@ class SubSubEntityRepository extends Repository
     /**
      * @var string
      */
-    const ENTITY_CLASSNAME = SubSubEntity::class;
+    public const ENTITY_CLASSNAME = SubSubEntity::class;
 
     public function findAll(): QueryResultInterface
     {

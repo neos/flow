@@ -28,7 +28,7 @@ class ArrayTypeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_CONVERT_ELEMENTS = 'convertElements';
+    public const CONFIGURATION_CONVERT_ELEMENTS = 'convertElements';
 
     /**
      * @var array<string>
