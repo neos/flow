@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Session\Data;
 
 /*
@@ -14,8 +15,8 @@ namespace Neos\Flow\Tests\Unit\Session\Data;
 use Neos\Cache\Frontend\StringFrontend;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Session\Data\SessionIdentifier;
-use Neos\Flow\Session\Data\SessionMetaDataStore;
 use Neos\Flow\Session\Data\SessionMetaData;
+use Neos\Flow\Session\Data\SessionMetaDataStore;
 use Neos\Flow\Session\Data\StorageIdentifier;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;

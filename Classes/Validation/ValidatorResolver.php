@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Validation;
 
 /*
@@ -16,13 +17,13 @@ use Neos\Flow\ObjectManagement\Configuration\Configuration;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\PropertyReflection;
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Validation\Validator\AggregateBoundaryValidator;
+use Neos\Flow\Validation\Validator\ConjunctionValidator;
+use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Flow\Validation\Validator\PolyTypeObjectValidatorInterface;
+use Neos\Flow\Validation\Validator\ValidatorInterface;
 use Neos\Utility\Exception\InvalidTypeException;
 use Neos\Utility\TypeHandling;
-use Neos\Flow\Validation\Validator\AggregateBoundaryValidator;
-use Neos\Flow\Validation\Validator\ValidatorInterface;
-use Neos\Flow\Validation\Validator\GenericObjectValidator;
-use Neos\Flow\Validation\Validator\ConjunctionValidator;
 
 /**
  * Validator resolver to automatically find a appropriate validator for a given subject

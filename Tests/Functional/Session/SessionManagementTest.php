@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Session;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Functional\Session;
  * source code.
  */
 
-use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Session;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 class SessionManagementTest extends FunctionalTestCase
 {

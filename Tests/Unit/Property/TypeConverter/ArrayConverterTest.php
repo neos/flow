@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -13,8 +14,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\TypeConverter\ArrayConverter;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\ResourceManagement\PersistentResource;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Array converter

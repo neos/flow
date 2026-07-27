@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Http\Helper;
 
 /*
@@ -11,11 +12,11 @@ namespace Neos\Flow\Http\Helper;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Utils;
 use Neos\Flow\Http\UploadedFile;
 use Neos\Http\Factories\FlowUploadedFile;
 use Neos\Utility\Arrays;
 use Psr\Http\Message\UploadedFileInterface;
-use GuzzleHttp\Psr7\Utils;
 
 /**
  * Helper to re-organize uploaded file data for requests.

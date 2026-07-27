@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Reflection;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Reflection;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for PropertyReflection

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Controller;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Mvc\Controller;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Result;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\ObjectConverter;
-use Neos\Utility\TypeHandling;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
+use Neos\Utility\TypeHandling;
 
 /**
  * A controller argument

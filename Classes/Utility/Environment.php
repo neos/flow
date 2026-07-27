@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Utility;
@@ -16,8 +17,8 @@ namespace Neos\Flow\Utility;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Core\Bootstrap;
-use Neos\Flow\Utility\Exception as UtilityException;
 use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Utility\Exception as UtilityException;
 use Neos\Utility\Exception\FilesException;
 use Neos\Utility\Files;
 

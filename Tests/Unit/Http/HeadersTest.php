@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Http;
  * source code.
  */
 
-use Neos\Flow\Http\Headers;
 use Neos\Flow\Http\Cookie;
+use Neos\Flow\Http\Headers;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Aop\Builder;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Aop\Builder;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Aop;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the ClassNameIndex

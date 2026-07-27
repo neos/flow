@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
  */
 
 use Neos\Flow\Aop\JoinPointInterface;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the policy enforcement interceptor

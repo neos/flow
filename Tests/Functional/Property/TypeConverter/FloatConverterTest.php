@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
  * source code.
  */
 
+use Neos\Error\Messages\Error as FlowError;
 use Neos\Flow\I18n\Exception\InvalidLocaleIdentifierException;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\TypeConverter\FloatConverter;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Error\Messages\Error as FlowError;
 
 /**
  * Testcase for the Float converter

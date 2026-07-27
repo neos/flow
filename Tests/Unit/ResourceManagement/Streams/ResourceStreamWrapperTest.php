@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
 
 /*
@@ -12,14 +13,14 @@ namespace Neos\Flow\Tests\Unit\ResourceManagement\Streams;
  */
 
 use Neos\Flow\Package\FlowPackageInterface;
-use Neos\Flow\ResourceManagement\Exception;
-use Neos\Utility\ObjectAccess;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Package\PackageManager;
+use Neos\Flow\ResourceManagement\Exception;
 use Neos\Flow\ResourceManagement\PersistentResource;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Flow\ResourceManagement\Streams\ResourceStreamWrapper;
 use Neos\Flow\Tests\UnitTestCase;
+use Neos\Utility\ObjectAccess;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Tests for the ResourceStreamWrapper class

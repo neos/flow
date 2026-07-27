@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Session\Aspect;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\Session\Aspect;
  */
 
 use Neos\Flow\Aop\JoinPoint;
-use Neos\Flow\Session\TransientSession;
 use Neos\Flow\Session\Aspect\LoggingAspect;
+use Neos\Flow\Session\TransientSession;
 use Neos\Flow\Tests\UnitTestCase;
 use Psr\Log\LoggerInterface;
 

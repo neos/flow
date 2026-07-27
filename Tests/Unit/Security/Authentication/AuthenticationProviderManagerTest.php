@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
@@ -11,16 +12,16 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication;
  * source code.
  */
 
-use Neos\Flow\Security\Authentication\AuthenticationProviderInterface;
-use Neos\Flow\Security\Authentication\TokenAndProviderFactoryInterface;
-use Neos\Flow\Security\Exception\AuthenticationRequiredException;
-use Neos\Flow\Session\SessionManager;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Authentication\AuthenticationProviderInterface;
 use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
+use Neos\Flow\Security\Authentication\TokenAndProviderFactoryInterface;
 use Neos\Flow\Security\Authentication\TokenInterface;
 use Neos\Flow\Security\Context;
+use Neos\Flow\Security\Exception\AuthenticationRequiredException;
 use Neos\Flow\Session\SessionInterface;
+use Neos\Flow\Session\SessionManager;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Test case for authentication provider manager

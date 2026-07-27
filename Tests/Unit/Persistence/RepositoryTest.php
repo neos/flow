@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Persistence;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Persistence;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Persistence;
+use Neos\Flow\Tests\UnitTestCase;
 
 require_once('Fixture/Repository/NonstandardEntityRepository.php');
 

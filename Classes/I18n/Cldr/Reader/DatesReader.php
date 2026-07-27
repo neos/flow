@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\I18n\Cldr\Reader;
@@ -13,8 +14,8 @@ namespace Neos\Flow\I18n\Cldr\Reader;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Cldr\CldrModel;
 use Neos\Flow\I18n\Cldr\CldrRepository;
 use Neos\Flow\I18n\Locale;

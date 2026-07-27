@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Authorization;
 
 use Neos\Flow\Security\Authorization\Privilege\Parameter\PrivilegeParameterInterface;

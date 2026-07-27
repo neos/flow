@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Package;
 
 /*
@@ -14,9 +15,9 @@ namespace Neos\Flow\Tests\Unit\Package;
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Composer\Exception\MissingPackageManifestException;
 use Neos\Flow\Package\Package;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the package class

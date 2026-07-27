@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Validation\Validator;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Validation\Validator;
  */
 
 use Doctrine\Persistence\Proxy as DoctrineProxy;
-use Neos\Utility\ObjectAccess;
 use Neos\Error\Messages\Result as ErrorResult;
+use Neos\Utility\ObjectAccess;
 
 /**
  * A generic object validator which allows for specifying property validators.

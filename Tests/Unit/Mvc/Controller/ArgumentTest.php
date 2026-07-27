@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
+use Neos\Error\Messages as FlowError;
+use Neos\Flow\Mvc;
 use Neos\Flow\Property\PropertyMapper;
 use Neos\Flow\Property\TypeConverter\PersistentObjectConverter;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Mvc;
 use Neos\Flow\Validation\Validator\ValidatorInterface;
-use Neos\Error\Messages as FlowError;
 
 /**
  * Testcase for the MVC Controller Argument

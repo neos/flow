@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n;
 
 /*
@@ -12,10 +13,10 @@ namespace Neos\Flow\I18n;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n;
+use Neos\Flow\I18n\Formatter\FormatterInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
-use Neos\Flow\I18n\Formatter\FormatterInterface;
-use Neos\Flow\I18n;
 
 /**
  * A class for replacing placeholders in strings with formatted values.

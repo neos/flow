@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -14,9 +15,9 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 require_once(FLOW_PATH_FLOW . 'Tests/Unit/Fixtures/DummyClass.php');
 require_once(FLOW_PATH_FLOW . 'Tests/Unit/Fixtures/SecondDummyClass.php');
 
+use Neos\Flow\Aop;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Aop;
 
 /**
  * Testcase for the Pointcut Class Filter

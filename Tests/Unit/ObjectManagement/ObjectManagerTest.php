@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 /*
@@ -14,11 +15,11 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement;
 require_once(__DIR__ . '/Fixture/BasicClass.php');
 
 use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
 use Neos\Flow\ObjectManagement\ObjectManager;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\BasicClass;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
 
 class ObjectManagerTest extends UnitTestCase
 {

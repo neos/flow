@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Functional\Security;
  * source code.
  */
 
-use Neos\Flow\Http\Cookie;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Http\Cookie;
 use Neos\Flow\Security\AccountFactory;
 use Neos\Flow\Security\AccountRepository;
 use Neos\Flow\Tests\FunctionalTestCase;

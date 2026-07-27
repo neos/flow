@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement\Streams;
 
 /*
@@ -12,12 +13,12 @@ namespace Neos\Flow\ResourceManagement\Streams;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Psr\Http\Message\UriInterface;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\ResourceManagement\Exception as ResourceException;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Utility\Files;
+use Psr\Http\Message\UriInterface;
 
 /**
  * A stream wrapper for resources.

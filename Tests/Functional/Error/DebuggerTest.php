@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Error;
 
 /*
@@ -13,10 +14,10 @@ namespace Neos\Flow\Tests\Functional\Error;
 
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\ApplicationContext;
-use Neos\Utility\ObjectAccess;
-use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Error\Debugger;
+use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\Arrays;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Functional tests for the Debugger

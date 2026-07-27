@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  */
 
 use GuzzleHttp\Psr7\ServerRequest;
-use Neos\Flow\Http\ContentStream;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Http\ContentStream;
 use Neos\Flow\Http\Cookie;
 use Neos\Flow\Mvc\Controller\MvcPropertyMappingConfigurationService;
 use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\StandardController;

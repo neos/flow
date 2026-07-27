@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Session;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Session;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Session;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Transient Session implementation

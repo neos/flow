@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Command;
 
 /*
@@ -11,7 +12,6 @@ namespace Neos\Flow\Command;
  * source code.
  */
 
-use Symfony\Component\Yaml\Yaml;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Configuration\ConfigurationManager;
@@ -19,6 +19,7 @@ use Neos\Flow\Configuration\ConfigurationSchemaValidator;
 use Neos\Flow\Configuration\Exception\SchemaValidationException;
 use Neos\Utility\Arrays;
 use Neos\Utility\SchemaGenerator;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Configuration command controller for the Neos.Flow package

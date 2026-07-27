@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 use Neos\Flow\Configuration\ConfigurationManager;

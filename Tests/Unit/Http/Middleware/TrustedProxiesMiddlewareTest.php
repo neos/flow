@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Http\Middleware;
 
 /*
@@ -11,17 +12,17 @@ namespace Neos\Flow\Tests\Unit\Http\Middleware;
  * source code.
  */
 
-use Neos\Flow\Tests\Unit\Http\Fixtures\SpyRequestHandler;
-use Psr\Http\Server\RequestHandlerInterface;
+use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\Middleware\TrustedProxiesMiddleware;
 use Neos\Flow\Http\ServerRequestAttributes;
-use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Tests\Unit\Http\Fixtures\SpyRequestHandler;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Http\Factories\ServerRequestFactory;
 use Neos\Http\Factories\UriFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Test case for the TrustedProxiesMiddleware

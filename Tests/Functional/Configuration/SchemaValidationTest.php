@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Configuration;
 
 /*
@@ -13,10 +14,10 @@ namespace Neos\Flow\Tests\Functional\Configuration;
 
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
-use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Package\PackageManager;
-use Neos\Utility\SchemaValidator;
+use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\Files;
+use Neos\Utility\SchemaValidator;
 use Symfony\Component\Yaml\Yaml;
 
 /**

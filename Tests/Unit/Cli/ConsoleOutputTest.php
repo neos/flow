@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Cli;
 
 /*
@@ -13,9 +14,9 @@ namespace Neos\Flow\Tests\Unit\Cli;
 
 use Neos\Flow\Cli\ConsoleOutput;
 use Neos\Flow\Tests\UnitTestCase;
+use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Exception\RuntimeException;
 
 /**
  * Test cases for CLI console output helpers

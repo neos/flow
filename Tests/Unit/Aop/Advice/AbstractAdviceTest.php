@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Aop\Advice;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Aop\Advice;
  * source code.
  */
 
-use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\SignalSlot;
 use Neos\Flow\Aop;
+use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\SignalSlot;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Abstract Method Interceptor Builder

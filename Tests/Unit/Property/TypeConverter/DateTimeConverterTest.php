@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * source code.
  */
 
+use Neos\Error\Messages\Error as FlowError;
 use Neos\Flow\Property\Exception\TypeConverterException;
-use Neos\Flow\Property\TypeConverter\DateTimeConverter;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Property\PropertyMappingConfiguration;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
-use Neos\Error\Messages\Error as FlowError;
+use Neos\Flow\Property\TypeConverter\DateTimeConverter;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the DateTime converter

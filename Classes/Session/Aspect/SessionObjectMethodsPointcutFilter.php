@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Neos\Flow\Session\Aspect;
 
 /*
@@ -12,11 +14,11 @@ namespace Neos\Flow\Session\Aspect;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Aop\Builder\ClassNameIndex;
 use Neos\Flow\Aop\Pointcut\PointcutFilterInterface;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
 use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Aop\Pointcut;
 use Neos\Flow\Aop;
+use Neos\Flow\Aop\Pointcut;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the default AOP Pointcut implementation

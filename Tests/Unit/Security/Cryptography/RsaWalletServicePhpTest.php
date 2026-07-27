@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Cryptography;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Security\Cryptography;
  * source code.
  */
 
-use Neos\Flow\Security\Exception\DecryptionNotAllowedException;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Security\Cryptography\RsaWalletServicePhp;
+use Neos\Flow\Security\Exception\DecryptionNotAllowedException;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for for the PHP (OpenSSL) based RSAWalletService

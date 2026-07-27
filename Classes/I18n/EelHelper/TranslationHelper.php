@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n\EelHelper;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\I18n\EelHelper;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Translation helpers for Eel contexts

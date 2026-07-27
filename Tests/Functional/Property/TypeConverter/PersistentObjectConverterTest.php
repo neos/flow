@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 /*
@@ -13,8 +14,8 @@ namespace Neos\Flow\Tests\Functional\Property\TypeConverter;
 
 use Neos\Flow\Property\Exception;
 use Neos\Flow\Property\PropertyMapper;
-use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Flow\Tests\Functional\Property\Fixtures;
+use Neos\Flow\Tests\FunctionalTestCase;
 
 class PersistentObjectConverterTest extends FunctionalTestCase
 {

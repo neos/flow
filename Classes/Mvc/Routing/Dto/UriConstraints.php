@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Routing\Dto;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Mvc\Routing\Dto;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Helper\UriHelper;
 use Psr\Http\Message\UriInterface;
 

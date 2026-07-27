@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\I18n;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Tests\Functional\I18n;
  * source code.
  */
 
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\FormatResolver;
 use Neos\Flow\Tests\FunctionalTestCase;
-use Neos\Flow\I18n;
 
 /**
  * Testcase for the I18N placeholder replacing

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\I18n\Cldr\Reader;
  */
 
 use Neos\Cache\Frontend\VariableFrontend;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\I18n;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the NumbersReader

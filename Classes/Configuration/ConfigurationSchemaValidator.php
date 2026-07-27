@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Configuration;
 
 /*
@@ -11,13 +12,13 @@ namespace Neos\Flow\Configuration;
  * source code.
  */
 
-use Neos\Flow\I18n\Translator;
-use Symfony\Component\Yaml\Yaml;
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Notice;
 use Neos\Error\Messages\Result;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Translator;
 use Neos\Utility\Arrays;
 use Neos\Utility\Files;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * A validator for all configuration entries using Schema

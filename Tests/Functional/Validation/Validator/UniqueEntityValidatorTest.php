@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Functional\Validation\Validator;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Functional\Validation\Validator;
  * source code.
  */
 
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\AnnotatedIdentitiesEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
 
 /**
  * Testcase for the UniqueEntity Validator

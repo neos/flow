@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Monitor;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\Monitor;
  * source code.
  */
 
+use Neos\Cache;
 use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Monitor\FileMonitor;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Utility\Files;
-use Neos\Cache;
+use org\bovigo\vfs\vfsStream;
 use Psr\Log\LoggerInterface;
 
 /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n\Parser;
 
 /*
@@ -12,9 +13,9 @@ namespace Neos\Flow\I18n\Parser;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\Reader\DatesReader;
 use Neos\Flow\I18n\Exception\InvalidArgumentException;
-use Neos\Flow\I18n;
 
 /**
  * Parser for date and time.

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
@@ -14,13 +15,13 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization;
 use Neos\Flow\Aop\JoinPoint;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security;
 use Neos\Flow\Security\Authorization\Privilege\AbstractPrivilege;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Authorization\PrivilegeManager;
 use Neos\Flow\Security\Context;
-use Neos\Flow\Security;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**

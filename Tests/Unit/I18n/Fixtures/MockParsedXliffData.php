@@ -1,4 +1,5 @@
 <?php
+
 return [
     [
         'sourceLocale' => new \Neos\Flow\I18n\Locale('en_US'),

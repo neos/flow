@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Package;
 
 /*
@@ -11,17 +12,17 @@ namespace Neos\Flow\Package;
  * source code.
  */
 
+use Composer\Console\Application as ComposerApplication;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Composer\Exception\InvalidConfigurationException;
 use Neos\Flow\Composer\ComposerUtility;
+use Neos\Flow\Composer\Exception\InvalidConfigurationException;
 use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Package\Exception as PackageException;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\SignalSlot\Exception\InvalidSlotException;
 use Neos\Utility\Exception\FilesException;
 use Neos\Utility\Files;
 use Neos\Utility\OpcodeCacheHelper;
-use Neos\Flow\Package\Exception as PackageException;
-use Composer\Console\Application as ComposerApplication;
 use Symfony\Component\Console\Input\ArrayInput;
 
 /**

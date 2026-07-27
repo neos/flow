@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Package;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Package;
  * source code.
  */
 
-use Neos\Utility\Files;
 use Neos\Flow\Core\Bootstrap;
+use Neos\Utility\Files;
 
 /**
  * A Flow Package

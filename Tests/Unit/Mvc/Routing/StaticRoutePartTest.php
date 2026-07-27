@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Mvc;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the MVC Web Routing StaticRoutePart Class

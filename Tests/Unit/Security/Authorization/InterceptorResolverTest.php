@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization;
  */
 
 use Neos\Flow\ObjectManagement\ObjectManager;
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Security;
+use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the security interceptor resolver

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cache;
 
 /*
@@ -11,23 +12,23 @@ namespace Neos\Flow\Cache;
  * source code.
  */
 
-use Neos\Cache\CacheFactoryInterface;
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Backend\FileBackend;
+use Neos\Cache\CacheFactoryInterface;
 use Neos\Cache\Exception\DuplicateIdentifierException;
 use Neos\Cache\Exception\NoSuchCacheException;
 use Neos\Cache\Frontend\FrontendInterface;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Cache\Psr\Cache\CachePool;
+use Neos\Cache\Psr\SimpleCache\SimpleCache;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Utility\Environment;
-use Neos\Utility\Files;
 use Neos\Flow\Utility\PhpAnalyzer;
-use Neos\Cache\Psr\Cache\CachePool;
-use Neos\Cache\Psr\SimpleCache\SimpleCache;
+use Neos\Utility\Files;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
-use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * The Cache Manager

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc\Controller;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Tests\Unit\Mvc\Controller;
  * source code.
  */
 
-use Neos\Flow\Mvc\Controller\Arguments;
-use Neos\Flow\Mvc\Controller\Argument;
-use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Error\Messages as FlowError;
+use Neos\Flow\Mvc\Controller\Argument;
+use Neos\Flow\Mvc\Controller\Arguments;
+use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**

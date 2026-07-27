@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * source code.
  */
 
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Validation\Validator\CollectionValidator;
 use Neos\Flow\Validation\Validator\GenericObjectValidator;
 use Neos\Flow\Validation\Validator\IntegerValidator;
 use Neos\Flow\Validation\Validator\NumberRangeValidator;
 use Neos\Flow\Validation\ValidatorResolver;
+use Neos\Utility\ObjectAccess;
 
 require_once('AbstractValidatorTestcase.php');
 

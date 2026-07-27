@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Configuration\Source;
 
 /*
@@ -12,9 +13,9 @@ namespace Neos\Flow\Tests\Unit\Configuration\Source;
  */
 
 use Neos\Flow\Configuration\Exception;
-use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Tests\UnitTestCase;
+use org\bovigo\vfs\vfsStream;
 
 /**
  * Testcase for the YAML configuration source
