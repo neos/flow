@@ -316,4 +316,63 @@ class CompilerTest extends UnitTestCase
         $actualClassCode = $this->compiler->_call('replaceClassName', $originalClassCode, $pathAndFilename);
         self::assertSame($expectedClassCode, $actualClassCode);
     }
+
+    public static function finalMethodDeclarationExamples(): array
+    {
+        return [
+            'final public function' => [
+                '    final public function someMethod(): string',
+                '    /*final*/ public function someMethod(): string'
+            ],
+            'public final function' => [
+                '    public final function someMethod(): string',
+                '    public /*final*/ function someMethod(): string'
+            ],
+            'final public static function' => [
+                '    final public static function someMethod(): string',
+                '    /*final*/ public static function someMethod(): string'
+            ],
+            'public static final function' => [
+                '    public static final function someMethod(): string',
+                '    public static /*final*/ function someMethod(): string'
+            ],
+            'final protected static function' => [
+                '    final protected static function someMethod(): string',
+                '    /*final*/ protected static function someMethod(): string'
+            ],
+            'single character method name' => [
+                '    final public function m(): string',
+                '    /*final*/ public function m(): string'
+            ],
+            'method returning by reference' => [
+                '    final public function &someMethod(): string',
+                '    /*final*/ public function &someMethod(): string'
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider finalMethodDeclarationExamples()
+     */
+    public function commentOutFinalKeywordForMethodsHandlesAllModifierCombinations(string $methodDeclaration, string $expectedMethodDeclaration): void
+    {
+        $classCode = "class SomeClass_Original\n{\n" . $methodDeclaration . "\n    {\n    }\n}\n";
+        $proxyClassCode = "class SomeClass extends SomeClass_Original\n{\n" . $methodDeclaration . "\n    {\n    }\n}\n";
+
+        $actualClassCode = $this->compiler->_call('commentOutFinalKeywordForMethods', $classCode, $proxyClassCode);
+        self::assertStringContainsString($expectedMethodDeclaration, $actualClassCode);
+    }
+
+    /**
+     * @test
+     */
+    public function commentOutFinalKeywordForMethodsLeavesMethodsAloneWhichAreNotPartOfTheProxyClass(): void
+    {
+        $classCode = "class SomeClass_Original\n{\n    final public static function someMethod(): string\n    {\n    }\n}\n";
+        $proxyClassCode = "class SomeClass extends SomeClass_Original\n{\n    public function someOtherMethod(): string\n    {\n    }\n}\n";
+
+        $actualClassCode = $this->compiler->_call('commentOutFinalKeywordForMethods', $classCode, $proxyClassCode);
+        self::assertSame($classCode, $actualClassCode);
+    }
 }
