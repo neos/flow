@@ -12,6 +12,7 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * source code.
  */
 
+use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
@@ -58,5 +59,35 @@ class ObjectSerializationTest extends FunctionalTestCase
         self::assertContains('Persistence_Object_Identifier', $propertiesToBeSerialized); # Introduced due to "Entity" annotation
         self::assertContains('someProperty', $propertiesToBeSerialized);
         self::assertContains('protectedProperty', $propertiesToBeSerialized);
+    }
+
+    /**
+     * @test
+     */
+    public function readonlyClassesSurviveASerializationRoundtrip()
+    {
+        $object = new Fixtures\ReadonlyClassWithSerializedState('a name', ['first tag', 'second tag'], 'a temporary value');
+        self::assertInstanceOf(ProxyInterface::class, $object);
+
+        $unserializedObject = unserialize(serialize($object));
+
+        self::assertInstanceOf(Fixtures\ReadonlyClassWithSerializedState::class, $unserializedObject);
+        self::assertSame('a name', $unserializedObject->name);
+        self::assertSame(['first tag', 'second tag'], $unserializedObject->tags);
+    }
+
+    /**
+     * @test
+     */
+    public function transientPropertiesOfReadonlyClassesAreNotSerialized()
+    {
+        $object = new Fixtures\ReadonlyClassWithSerializedState('a name', ['first tag'], 'a temporary value');
+
+        $propertiesToBeSerialized = $object->__sleep();
+
+        self::assertSame(['name', 'tags'], $propertiesToBeSerialized);
+
+        $unserializedObject = unserialize(serialize($object));
+        self::assertFalse(isset($unserializedObject->temporaryValue));
     }
 }
