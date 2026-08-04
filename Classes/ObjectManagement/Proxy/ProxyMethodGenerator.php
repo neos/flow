@@ -223,7 +223,9 @@ class ProxyMethodGenerator extends MethodGenerator
                 if ($addTypeAndDefaultValue) {
                     $parameterOutput[] = $parameter->generate();
                 } else {
-                    $parameterOutput[] = '$' . $parameter->getName();
+                    # A variadic parameter arrives as an array and thus needs to be unpacked again
+                    # when it is passed on to the original method:
+                    $parameterOutput[] = ($parameter->getVariadic() ? '...' : '') . '$' . $parameter->getName();
                 }
             }
             $methodParametersCode .= implode(', ', $parameterOutput);
