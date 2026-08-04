@@ -39,7 +39,7 @@ class SchemaCommandController extends CommandController
     protected $packageManager;
 
     /**
-     * Validate the given configurationfile againt a schema file
+     * Validate the given configuration file against a schema file
      *
      * @param string $configurationFile path to the validated configuration file
      * @param string $schemaFile path to the schema file

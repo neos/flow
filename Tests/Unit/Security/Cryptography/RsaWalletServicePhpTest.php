@@ -17,7 +17,7 @@ use Neos\Flow\Security\Cryptography\RsaWalletServicePhp;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for for the PHP (OpenSSL) based RSAWalletService
+ * Testcase for the PHP (OpenSSL) based RSAWalletService
  *
  * @requires function openssl_pkey_new
  */

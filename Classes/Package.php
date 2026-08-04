@@ -56,7 +56,7 @@ class Package extends BasePackage
         }
 
         if ($context->isTesting()) {
-            /** @phpstan-ignore-next-line composer doesnt autoload this class */
+            /** @phpstan-ignore-next-line composer doesn't autoload this class */
             $bootstrap->registerRequestHandler(new Tests\FunctionalTestRequestHandler($bootstrap));
         }
 
@@ -136,7 +136,7 @@ class Package extends BasePackage
             }
         });
 
-        /** @phpstan-ignore-next-line composer doesnt autoload this class */
+        /** @phpstan-ignore-next-line composer doesn't autoload this class */
         $dispatcher->connect(Tests\FunctionalTestCase::class, 'functionalTestTearDown', Mvc\Routing\RouterCachingService::class, 'flushCaches');
 
         $dispatcher->connect(Configuration\ConfigurationManager::class, 'configurationManagerReady', function (Configuration\ConfigurationManager $configurationManager) {

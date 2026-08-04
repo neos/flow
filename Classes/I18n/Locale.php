@@ -74,7 +74,7 @@ class Locale
     protected $region = null;
 
     /**
-     * The optional variant identifier - one of the registered registered variants according to BCP47
+     * The optional variant identifier - one of the registered variants according to BCP47
      *
      * @var string
      * @see http://rfc.net/bcp47.html

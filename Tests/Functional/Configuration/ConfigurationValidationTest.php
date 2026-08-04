@@ -72,7 +72,7 @@ class ConfigurationValidationTest extends FunctionalTestCase
         parent::setUp();
 
         //
-        // create a mock packageManager that only returns the the packages that contain schema files
+        // create a mock packageManager that only returns the packages that contain schema files
         //
 
         $schemaPackages = [];
