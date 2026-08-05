@@ -224,10 +224,9 @@ PHP 8.0
      - –
      - 9.2
      - Proxy constructors preserve the original parameter list, so instantiation
-       with named arguments works (`#3076
-       <https://github.com/neos/flow-development-collection/issues/3076>`_; a
-       backport to 9.0 is pending in `#3504
-       <https://github.com/neos/flow-development-collection/pull/3504>`_).
+       with named arguments works since Flow 9.2 (`#3076
+       <https://github.com/neos/flow-development-collection/issues/3076>`_).
+       The fix was not backported to older branches.
    * - Attributes on classes and methods
      - Partial
      - Partial
