@@ -30,8 +30,10 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Testcase for Configuration Validation
+ *
+ * Not final: Neos.Neos extends this test case to validate its own configuration.
  */
-final class ConfigurationValidationTest extends FunctionalTestCase
+class ConfigurationValidationTest extends FunctionalTestCase
 {
     protected static array $contextNames = ['Development', 'Production', 'Testing'];
     protected static array $configurationTypes = ['Caches', 'Objects', 'Policy', 'Routes', 'Settings'];
@@ -54,7 +56,7 @@ final class ConfigurationValidationTest extends FunctionalTestCase
         // get all packages and select the ones we want to test
         $temporaryPackageManager = $this->objectManager->get(PackageManager::class);
         foreach ($temporaryPackageManager->getAvailablePackages() as $package) {
-            if (in_array($package->getPackageKey(), self::$configurationPackageKeys, true)) {
+            if (in_array($package->getPackageKey(), static::$configurationPackageKeys, true)) {
                 $configurationPackages[$package->getPackageKey()] = $package;
             }
         }
@@ -108,8 +110,8 @@ final class ConfigurationValidationTest extends FunctionalTestCase
     public static function configurationValidationDataProvider(): array
     {
         $result = [];
-        foreach (self::$contextNames as $contextName) {
-            foreach (self::$configurationTypes as $configurationType) {
+        foreach (static::$contextNames as $contextName) {
+            foreach (static::$configurationTypes as $configurationType) {
                 $result[] = ['contextName' => $contextName, 'configurationType' => $configurationType];
             }
         }

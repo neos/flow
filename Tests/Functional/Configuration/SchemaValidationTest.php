@@ -26,8 +26,9 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Testcase for the Flow Validation Framework
  *
+ * Not final: Neos.Neos extends this test case to validate its own schemas.
  */
-final class SchemaValidationTest extends FunctionalTestCase
+class SchemaValidationTest extends FunctionalTestCase
 {
     protected static array $schemaPackageKeys = ['Neos.Flow', 'Neos.FluidAdaptor', 'Neos.Eel', 'Neos.Kickstart'];
 
@@ -60,7 +61,7 @@ final class SchemaValidationTest extends FunctionalTestCase
         $schemaPackages = [];
         foreach ($activePackages as $package) {
             $packageKey = $package->getPackageKey();
-            if (in_array($packageKey, self::$schemaPackageKeys, true)) {
+            if (in_array($packageKey, static::$schemaPackageKeys, true)) {
                 $schemaPackages[] = $package;
             }
         }
