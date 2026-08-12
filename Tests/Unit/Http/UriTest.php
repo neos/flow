@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Http;
 
 /*
@@ -10,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Http;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -18,13 +22,12 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the URI class
  *
  */
-class UriTest extends UnitTestCase
+final class UriTest extends UnitTestCase
 {
     /**
      * Checks if a complete URI with all parts is transformed into an object correctly.
-     *
-     * @test
      */
+    #[Test]
     public function constructorParsesAFullBlownUriStringCorrectly()
     {
         $uriString = 'http://username:password@subdomain.domain.com:8080/path1/path2/index.php?argument1=value1&argument2=value2&argument3[subargument1]=subvalue1#anchor';
@@ -46,26 +49,23 @@ class UriTest extends UnitTestCase
     /**
      * Uri strings
      */
-    public function uriStrings()
+    public static function uriStrings(): \Iterator
     {
-        return [
-            ['http://flow.neos.io/x'],
-            ['http://flow.neos.io/foo/bar?baz=1&quux=true'],
-            ['https://robert@localhost/arabica/coffee.html'],
-            ['http://127.0.0.1/bar.baz.com/foo.js'],
-            ['http://localhost:8080?foo=bar'],
-            ['http://localhost:443#hashme!x'],
-            ['http://[3b00:f59:1008::212:183:20]'],
-            ['http://[3b00:f59:1008::212:183:20]:443#hashme!x'],
-        ];
+        yield ['http://flow.neos.io/x'];
+        yield ['http://flow.neos.io/foo/bar?baz=1&quux=true'];
+        yield ['https://robert@localhost/arabica/coffee.html'];
+        yield ['http://127.0.0.1/bar.baz.com/foo.js'];
+        yield ['http://localhost:8080?foo=bar'];
+        yield ['http://localhost:443#hashme!x'];
+        yield ['http://[3b00:f59:1008::212:183:20]'];
+        yield ['http://[3b00:f59:1008::212:183:20]:443#hashme!x'];
     }
 
     /**
      * Checks round trips for various URIs
-     *
-     * @dataProvider uriStrings
-     * @test
      */
+    #[DataProvider('uriStrings')]
+    #[Test]
     public function urisCanBeConvertedForthAndBackWithoutLoss(string $uriString)
     {
         $uri = new Uri($uriString);
@@ -74,9 +74,8 @@ class UriTest extends UnitTestCase
 
     /**
      * Checks round trips for various URIs
-     *
-     * @test
      */
+    #[Test]
     public function settingSchemeAndHostOnUriDoesNotConfuseToString()
     {
         $uri = new Uri('/no/scheme/or/host');
@@ -85,9 +84,7 @@ class UriTest extends UnitTestCase
         self::assertSame('http://localhost/no/scheme/or/host', (string)$uri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toStringOmitsStandardPorts()
     {
         $uri = new Uri('http://flow.neos.io');
@@ -99,9 +96,7 @@ class UriTest extends UnitTestCase
         self::assertNull($uri->getPort());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorParsesArgumentsWithSpecialCharactersCorrectly()
     {
         $uriString = 'http://www.neos.io/path1/?argumentäöü1=' . urlencode('valueåø€œ');
@@ -119,57 +114,46 @@ class UriTest extends UnitTestCase
     /**
      * URIs for testing host parsing
      */
-    public function hostTestUris()
+    public static function hostTestUris(): \Iterator
     {
-        return [
-            ['http://www.neos.io/about/project', 'www.neos.io'],
-            ['http://flow.neos.io/foo', 'flow.neos.io'],
-            ['http://[3b00:f59:1008::212:183:20]', '[3b00:f59:1008::212:183:20]'],
-        ];
+        yield ['http://www.neos.io/about/project', 'www.neos.io'];
+        yield ['http://flow.neos.io/foo', 'flow.neos.io'];
+        yield ['http://[3b00:f59:1008::212:183:20]', '[3b00:f59:1008::212:183:20]'];
     }
 
-    /**
-     * @dataProvider hostTestUris
-     * @test
-     */
+    #[DataProvider('hostTestUris')]
+    #[Test]
     public function constructorParsesHostCorrectly(string $uriString, string $expectedHost)
     {
         $uri = new Uri($uriString);
         self::assertSame($expectedHost, $uri->getHost());
     }
 
-    /**
-     * @dataProvider hostTestUris
-     * @test
-     */
+    #[DataProvider('hostTestUris')]
+    #[Test]
     public function settingValidHostPassesRegexCheck(string $uriString, string $plainHost)
     {
         $uri = (new Uri(''))->withHost($plainHost);
         self::assertEquals($plainHost, $uri->getHost());
     }
 
-    public function uriStringTestUris()
+    public static function uriStringTestUris(): \Iterator
     {
-        return [
-            ['http://username:password@subdomain.domain.com:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'],
-            ['http://username:password@[2a00:f48:1008::212:183:10]:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'],
-        ];
+        yield ['http://username:password@subdomain.domain.com:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'];
+        yield ['http://username:password@[2a00:f48:1008::212:183:10]:1234/pathx1/pathx2/index.php?argument1=value1&argument2=value2&argument3%5Bsubargument1%5D=subvalue1#anchorman'];
     }
     /**
      * Checks if a complete URI with all parts is transformed into an object correctly.
-     *
-     * @test
-     * @dataProvider uriStringTestUris
      */
+    #[DataProvider('uriStringTestUris')]
+    #[Test]
     public function stringRepresentationIsCorrect(string $uriString)
     {
         $uri = new Uri($uriString);
         self::assertEquals($uriString, (string)$uri, 'The string representation of the URI is not equal to the original URI string.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructingWithNotAStringThrowsException()
     {
         $error = null;
@@ -177,12 +161,10 @@ class UriTest extends UnitTestCase
             new Uri(['foo']);
         } catch (\Throwable $error) {
         }
-        $this->assertNotEmpty($error);
+        $this->assertInstanceOf(\Throwable::class, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unparsableUriStringThrowsException()
     {
         $this->expectException(\InvalidArgumentException::class);

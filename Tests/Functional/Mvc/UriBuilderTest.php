@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Mvc;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\Functional\Mvc\Fixtures\RoutePartHandler\UriBuilderSetDomainAndPathPrefixRoutePartHandler;
 use Neos\Flow\Tests\Functional\Mvc\Fixtures\RoutePartHandler\UriBuilderSetDomainRoutePartHandler;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -22,13 +25,8 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
  * HINT: The routes used in these tests are defined in the Routes.yaml file in the
  *       Testing context of the Flow package configuration.
  */
-class UriBuilderTest extends FunctionalTestCase
+final class UriBuilderTest extends FunctionalTestCase
 {
-    /**
-     * @var ServerRequestFactoryInterface
-     */
-    protected $serverRequestFactory;
-
     /**
      * Additional setup: Routes
      */
@@ -36,7 +34,7 @@ class UriBuilderTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->serverRequestFactory = $this->objectManager->get(ServerRequestFactoryInterface::class);
+        $serverRequestFactory = $this->objectManager->get(ServerRequestFactoryInterface::class);
     }
 
     private function registerSingleRoute($routePartHandler): void
@@ -68,9 +66,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToDifferentHostTheUrlIsAsExpectedNotContainingDoubleSlashes()
     {
         $this->registerSingleRoute(UriBuilderSetDomainRoutePartHandler::class);
@@ -81,9 +78,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToDifferentHostTheUrlIsAsExpectedNotContainingDoubleSlashes_forceAbsoluteUris()
     {
         $this->registerSingleRoute(UriBuilderSetDomainRoutePartHandler::class);
@@ -94,9 +90,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToSameHostTheUrlIsAsExpectedNotContainingDoubleSlashes()
     {
         $this->registerSingleRoute(UriBuilderSetDomainRoutePartHandler::class);
@@ -107,9 +102,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToSameHostTheUrlIsAsExpectedNotContainingDoubleSlashes_forceAbsoluteUrls()
     {
         $this->registerSingleRoute(UriBuilderSetDomainRoutePartHandler::class);
@@ -121,9 +115,8 @@ class UriBuilderTest extends FunctionalTestCase
     /**
      * Testcase for https://github.com/neos/flow-development-collection/pull/1839 and
      * https://github.com/neos/neos-development-collection/issues/2759
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToRootOfSameHostTheUrlContainsASingleSlash()
     {
         // NOTE: the route part handler here does not really match; as we link to the the route
@@ -139,9 +132,8 @@ class UriBuilderTest extends FunctionalTestCase
     /**
      * Testcase for https://github.com/neos/flow-development-collection/pull/1839 and
      * https://github.com/neos/neos-development-collection/issues/2759
-     *
-     * @test
      */
+    #[Test]
     public function whenLinkingToRootOfSameHostTheUrlContainsASingleSlash_forceAbsoluteUrls()
     {
         // NOTE: the route part handler here does not really match; as we link to the the route
@@ -156,9 +148,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function urlPrefix_whenLinkingToDifferentHostTheUrlIsAsExpectedNotContainingDoubleSlashes()
     {
         $this->registerSingleRoute(UriBuilderSetDomainAndPathPrefixRoutePartHandler::class);
@@ -169,9 +160,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function urlPrefix_whenLinkingToDifferentHostTheUrlIsAsExpectedNotContainingDoubleSlashes_forceAbsoluteUris()
     {
         $this->registerSingleRoute(UriBuilderSetDomainAndPathPrefixRoutePartHandler::class);
@@ -182,9 +172,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function urlPrefix_whenLinkingToSameHostTheUrlIsAsExpectedNotContainingDoubleSlashes()
     {
         $this->registerSingleRoute(UriBuilderSetDomainAndPathPrefixRoutePartHandler::class);
@@ -195,9 +184,8 @@ class UriBuilderTest extends FunctionalTestCase
 
     /**
      * Testcase for https://github.com/neos/flow-development-collection/issues/1803
-     *
-     * @test
      */
+    #[Test]
     public function urlPrefix_whenLinkingToSameHostTheUrlIsAsExpectedNotContainingDoubleSlashes_forceAbsoluteUrls()
     {
         $this->registerSingleRoute(UriBuilderSetDomainAndPathPrefixRoutePartHandler::class);

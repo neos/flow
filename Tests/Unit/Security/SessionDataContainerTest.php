@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Security\Authentication\Token\TestingToken;
 use Neos\Flow\Security\Authentication\TokenInterface;
@@ -20,7 +23,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the SessionDataContainer
  */
-class SessionDataContainerTest extends UnitTestCase
+final class SessionDataContainerTest extends UnitTestCase
 {
     /**
      * @var SessionDataContainer
@@ -32,9 +35,7 @@ class SessionDataContainerTest extends UnitTestCase
         $this->sessionDataContainer = new SessionDataContainer();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetSetsDefaultValues(): void
     {
         $mockCsrfProtectionTokens = [
@@ -44,11 +45,11 @@ class SessionDataContainerTest extends UnitTestCase
         $this->sessionDataContainer->setCsrfProtectionTokens($mockCsrfProtectionTokens);
 
         /** @var ActionRequest $mockRequest */
-        $mockRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
+        $mockRequest = $this->createStub(ActionRequest::class);
         $this->sessionDataContainer->setInterceptedRequest($mockRequest);
 
         $mockSecurityTokens = [
-            'someProvider' => $this->getMockBuilder(TokenInterface::class)->getMock()
+            'someProvider' => $this->createStub(TokenInterface::class)
         ];
         $this->sessionDataContainer->setSecurityTokens($mockSecurityTokens);
 
@@ -59,13 +60,11 @@ class SessionDataContainerTest extends UnitTestCase
         self::assertSame([], $this->sessionDataContainer->getSecurityTokens());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setSecurityTokensThrowsExceptionWhenTryingToAddSessionlessTokens(): void
     {
         $mockSecurityTokens = [
-            'someProvider' => $this->getMockBuilder(TestingToken::class)->getMock()
+            'someProvider' => $this->createStub(TestingToken::class)
         ];
         $this->expectException(\InvalidArgumentException::class);
         $this->sessionDataContainer->setSecurityTokens($mockSecurityTokens);

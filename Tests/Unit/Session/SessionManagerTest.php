@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Session;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Session;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\RequestHandler;
@@ -34,28 +37,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Unit tests for the Flow Session implementation
  */
-class SessionManagerTest extends UnitTestCase
+final class SessionManagerTest extends UnitTestCase
 {
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $httpRequest;
-
-    /**
-     * @var ResponseInterface
-     */
-    protected $httpResponse;
-
-    /**
-     * @var Context|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockSecurityContext;
-
-    /**
-     * @var Bootstrap
-     */
-    protected $mockBootstrap;
-
     /**
      * @var ObjectManagerInterface
      */
@@ -93,25 +76,18 @@ class SessionManagerTest extends UnitTestCase
         vfsStream::setup('Foo');
 
         $serverRequestFactory = new ServerRequestFactory(new UriFactory());
-        $this->httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
-        $this->httpResponse = new Response();
+        $httpRequest = $serverRequestFactory->createServerRequest('GET', new Uri('http://localhost'));
+        $httpResponse = new Response();
 
         $mockRequestHandler = $this->createMock(RequestHandler::class);
-        $mockRequestHandler->expects(self::any())->method('getHttpRequest')->will(self::returnValue($this->httpRequest));
-        $mockRequestHandler->expects(self::any())->method('getHttpResponse')->will(self::returnValue($this->httpResponse));
-
-        $this->mockBootstrap = $this->createMock(Bootstrap::class);
-        $this->mockBootstrap->expects(self::any())->method('getActiveRequestHandler')->will(self::returnValue($mockRequestHandler));
-
-        $this->mockSecurityContext = $this->createMock(Context::class);
+        $mockRequestHandler->method('getHttpRequest')->willReturn(($httpRequest));
+        $mockRequestHandler->method('getHttpResponse')->willReturn(($httpResponse));
 
         $this->mockObjectManager = $this->createMock(ObjectManagerInterface::class);
-        $this->mockObjectManager->expects(self::any())->method('get')->with(Context::class)->will(self::returnValue($this->mockSecurityContext));
+        $this->mockObjectManager->method('get')->with(Context::class)->willReturn(($this->createMock(Context::class)));
     }
 
-    /**
-     * @test for #1674
-     */
+    #[Test]
     public function garbageCollectionWorksCorrectlyWithInvalidMetadataEntry()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -121,14 +97,12 @@ class SessionManagerTest extends UnitTestCase
         $sessionManager = new SessionManager();
         $this->inject($sessionManager, 'metaDataCache', $metaDataCache);
         $this->inject($sessionManager, 'storageCache', $storageCache);
-        $this->inject($sessionManager, 'logger', $this->createMock(LoggerInterface::class));
+        $this->inject($sessionManager, 'logger', $this->createStub(LoggerInterface::class));
 
         $this->assertSame(0, $sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionIsOmittedIfInactivityTimeoutIsSetToZero()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -142,9 +116,7 @@ class SessionManagerTest extends UnitTestCase
         self::assertSame(0, $sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionIsOmittedIfAnotherProcessIsAlreadyRunning()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -165,9 +137,7 @@ class SessionManagerTest extends UnitTestCase
         self::assertNull($sessionManager->collectGarbage());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function garbageCollectionOnlyRemovesTheDefinedMaximumNumberOfSessions()
     {
         $metaDataCache = $this->createCache('Meta');
@@ -180,7 +150,7 @@ class SessionManagerTest extends UnitTestCase
             $this->inject($sessionManager, 'inactivityTimeout', 1000);
             $this->inject($sessionManager, 'garbageCollectionProbability', 0);
             $this->inject($sessionManager, 'garbageCollectionMaximumPerRun', 5);
-            $this->inject($sessionManager, 'logger', $this->createMock(LoggerInterface::class));
+            $this->inject($sessionManager, 'logger', $this->createStub(LoggerInterface::class));
 
             $session = new Session();
             $this->inject($session, 'metaDataCache', $metaDataCache);

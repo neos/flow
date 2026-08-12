@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -10,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 use GuzzleHttp\Psr7\Response;
 use Neos\Flow\Http\ServerRequestAttributes;
 use Neos\Flow\Mvc\ActionRequest;
@@ -24,7 +28,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Test case for the MVC Dispatcher middleware
  */
-class DispatchMiddlewareTest extends UnitTestCase
+final class DispatchMiddlewareTest extends UnitTestCase
 {
     /**
      * @var DispatchMiddleware
@@ -32,24 +36,19 @@ class DispatchMiddlewareTest extends UnitTestCase
     protected $dispatchMiddleware;
 
     /**
-     * @var RequestHandlerInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var RequestHandlerInterface|MockObject
      */
     protected $mockRequestHandler;
 
     /**
-     * @var ServerRequestInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var ServerRequestInterface|MockObject
      */
     protected $mockHttpRequest;
 
     /**
-     * @var Dispatcher|\PHPUnit\Framework\MockObject\MockObject
+     * @var Dispatcher|MockObject
      */
     protected $mockDispatcher;
-
-    /**
-     * @var ActionRequest|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $mockActionRequest;
 
     /**
      * @return void
@@ -58,28 +57,24 @@ class DispatchMiddlewareTest extends UnitTestCase
     {
         $this->dispatchMiddleware = new DispatchMiddleware();
 
-        $this->mockRequestHandler = $this->getMockBuilder(RequestHandlerInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockRequestHandler = $this->createMock(RequestHandlerInterface::class);
         $httpResponse = new Response();
         $this->mockRequestHandler->method('handle')->willReturn($httpResponse);
 
-        $this->mockHttpRequest = $this->getMockBuilder(ServerRequestInterface::class)->disableOriginalConstructor()->getMock();
+        $this->mockHttpRequest = $this->createMock(ServerRequestInterface::class);
         $this->mockHttpRequest->method('withParsedBody')->willReturn($this->mockHttpRequest);
         $this->mockHttpRequest->method('getUploadedFiles')->willReturn([]);
 
-        $this->mockDispatcher = $this->getMockBuilder(Dispatcher::class)->getMock();
+        $this->mockDispatcher = $this->createMock(Dispatcher::class);
         $this->inject($this->dispatchMiddleware, 'dispatcher', $this->mockDispatcher);
-
-        $this->mockActionRequest = $this->getMockBuilder(ActionRequest::class)->disableOriginalConstructor()->getMock();
-        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->mockActionRequest);
+        $this->mockHttpRequest->method('getAttribute')->with(ServerRequestAttributes::ACTION_REQUEST)->willReturn($this->createStub(ActionRequest::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function processDispatchesTheRequest()
     {
         $this->mockHttpRequest->method('getQueryParams')->willReturn([]);
-        $this->mockDispatcher->expects(self::once())->method('dispatch')->with($this->mockActionRequest);
+        $this->mockDispatcher->expects($this->once())->method('dispatch')->with($this->createStub(ActionRequest::class));
 
         $response = $this->dispatchMiddleware->process($this->mockHttpRequest, $this->mockRequestHandler);
         self::assertInstanceOf(ResponseInterface::class, $response);

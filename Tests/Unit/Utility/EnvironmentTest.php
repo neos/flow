@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Utility;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Utility;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\Utility\Environment;
@@ -19,34 +22,28 @@ use Neos\Utility\Files;
 /**
  * Testcase for the Utility Environment class
  */
-class EnvironmentTest extends UnitTestCase
+final class EnvironmentTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathToTemporaryDirectoryReturnsPathWithTrailingSlash()
     {
         $environment = new Environment(new ApplicationContext('Testing'));
         $environment->setTemporaryDirectoryBase(Files::concatenatePaths([sys_get_temp_dir(), 'FlowEnvironmentTest']));
         $path = $environment->getPathToTemporaryDirectory();
-        self::assertEquals('/', substr($path, -1, 1), 'The temporary path did not end with slash.');
+        self::assertSame('/', substr($path, -1, 1), 'The temporary path did not end with slash.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPathToTemporaryDirectoryReturnsAnExistingPath()
     {
         $environment = new Environment(new ApplicationContext('Testing'));
         $environment->setTemporaryDirectoryBase(Files::concatenatePaths([sys_get_temp_dir(), 'FlowEnvironmentTest']));
 
         $path = $environment->getPathToTemporaryDirectory();
-        self::assertTrue(file_exists($path), 'The temporary path does not exist.');
+        self::assertFileExists($path, 'The temporary path does not exist.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMaximumPathLengthReturnsCorrectValue()
     {
         $environment = new Environment(new ApplicationContext('Testing'));
@@ -54,6 +51,6 @@ class EnvironmentTest extends UnitTestCase
         if ((integer)$expectedValue <= 0) {
             $this->fail('The PHP Constant PHP_MAXPATHLEN is not available on your system! Please file a PHP bug report.');
         }
-        self::assertEquals($expectedValue, $environment->getMaximumPathLength());
+        self::assertSame($expectedValue, $environment->getMaximumPathLength());
     }
 }
