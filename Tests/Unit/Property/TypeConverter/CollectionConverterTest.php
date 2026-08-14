@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Property\Exception\InvalidDataTypeException;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Neos\Flow\Property\TypeConverter\CollectionConverter;
@@ -19,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the Collection converter
  */
-class CollectionConverterTest extends UnitTestCase
+final class CollectionConverterTest extends UnitTestCase
 {
     /**
      * @var CollectionConverter
@@ -31,9 +34,7 @@ class CollectionConverterTest extends UnitTestCase
         $this->converter = new CollectionConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -41,20 +42,16 @@ class CollectionConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyReturnsElementTypeFromTargetTypeIfGiven()
     {
-        self::assertEquals('FooBar', $this->converter->getTypeOfChildProperty('array<FooBar>', '', $this->createMock(PropertyMappingConfigurationInterface::class)));
+        self::assertEquals('FooBar', $this->converter->getTypeOfChildProperty('array<FooBar>', '', $this->createStub(PropertyMappingConfigurationInterface::class)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getTypeOfChildPropertyThrowsExceptionForMissingElementType()
     {
         $this->expectException(InvalidDataTypeException::class);
-        $this->converter->getTypeOfChildProperty('array', 'collection', $this->createMock(PropertyMappingConfigurationInterface::class));
+        $this->converter->getTypeOfChildProperty('array', 'collection', $this->createStub(PropertyMappingConfigurationInterface::class));
     }
 }

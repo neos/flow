@@ -18,6 +18,8 @@ use Neos\Flow\Session\Data\SessionMetaData;
 use Neos\Flow\Session\Data\StorageIdentifier;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Unit tests for the Flow SessionDataStore implementation
@@ -38,16 +40,14 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->injectCache($this->mockCache);
     }
 
-    public function hasDataSource(): \Generator
+    public static function hasDataSource(): \Generator
     {
         yield "key1 exists" => ['key1', true];
         yield "key2 does not exist" => ['key2', false];
     }
 
-    /**
-     * @test
-     * @dataProvider hasDataSource
-     */
+    #[DataProvider('hasDataSource')]
+    #[Test]
     public function hasOperationsArePassedToTheCache(string $key, bool $result): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -58,9 +58,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->assertEquals($result, $this->store->has($sessionMetaData->storageIdentifier, $key));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieverOperationsArePassedToTheCacheAndUnserializeData(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -73,9 +71,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->assertEquals($value, $this->store->retrieve($sessionMetaData->storageIdentifier, $key));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function storeOperationsArePassedToTheCacheAndSerializeData(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -88,9 +84,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->store($sessionMetaData->storageIdentifier, $key, $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function removeOperationsArePassedToTheCache(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -101,9 +95,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->remove($sessionMetaData->storageIdentifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterRetrievalWritingTheSameDataIsOmitted(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -120,9 +112,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->store($sessionMetaData->storageIdentifier, $key, $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterStoringWritingTheSameTwiceIsOmitted(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -138,9 +128,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->store($sessionMetaData->storageIdentifier, $key, $value);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterRetrievalWritingDifferentDataIsEffective(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');
@@ -157,9 +145,7 @@ class SessionKeyValueStoreTest extends UnitTestCase
         $this->store->store($sessionMetaData->storageIdentifier, $key, 'otherValue');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function afterRetrievalAndRemovalWritingTheSameDataIsEffective(): void
     {
         $sessionId = SessionIdentifier::createFromString('ZPjPj3A0Opd7JeDoe7rzUQYCoDMcxscb');

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n\Cldr;
 
 /*
@@ -10,7 +13,8 @@ namespace Neos\Flow\Tests\Functional\I18n\Cldr;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\CldrRepository;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -21,7 +25,7 @@ use Neos\Utility\ObjectAccess;
  * Testcase for the I18N CLDR Repository
  *
  */
-class CldrRepositoryTest extends FunctionalTestCase
+final class CldrRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var CldrRepository
@@ -57,12 +61,10 @@ class CldrRepositoryTest extends FunctionalTestCase
         return $reflectedBasePathProperty->getValue($this->cldrRepository);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function modelIsReturnedCorrectlyForLocaleImplicatingChaining()
     {
-        $localeImplementingChaining = new I18n\Locale('de_DE');
+        $localeImplementingChaining = new Locale('de_DE');
 
         $cldrModel = $this->cldrRepository->getModelForLocale($localeImplementingChaining);
 

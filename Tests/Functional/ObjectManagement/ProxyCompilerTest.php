@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -10,7 +13,18 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithDocComments;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithPhpAttributes;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassB;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassE;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassEsub;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassF;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ReadonlyClassWithDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithKeywordsInClassBody;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SampleAttribute;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\ClassWithConstructorProperties;
 use Neos\Flow\Annotations\Around;
 use Neos\Flow\Annotations\Session;
 use Neos\Flow\ObjectManagement\Exception\CannotBuildObjectException;
@@ -32,26 +46,23 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Functional tests for the Proxy Compiler and related features
  */
-class ProxyCompilerTest extends FunctionalTestCase
+final class ProxyCompilerTest extends FunctionalTestCase
 {
     /**
      * Make sure that we are actually testing proxy classes and not the
      * original PHP class.
-     *
-     * @test
      */
+    #[Test]
     public function classWithUnionTypesIsProxied(): void
     {
         $object = new ClassWithUnionTypes();
         self::assertInstanceOf(ProxyInterface::class, $object);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxyClassesStillContainAnnotationsFromItsOriginalClass(): void
     {
-        $class = new ClassReflection(Fixtures\PrototypeClassA::class);
+        $class = new ClassReflection(PrototypeClassA::class);
         $method = $class->getMethod('setSomeProperty');
 
         self::assertTrue($class->implementsInterface(ProxyInterface::class));
@@ -59,57 +70,47 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertTrue($method->isTaggedWith('session'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxyClassesStillContainDocCommentsFromItsOriginalClass(): void
     {
-        $class = new ClassReflection(Fixtures\ClassWithDocComments::class);
+        $class = new ClassReflection(ClassWithDocComments::class);
         $expectedResult = 'This is a example doc comment which should be copied' . chr(10) . 'to the proxy class.';
         $actualResult = $class->getDescription();
 
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedMethodsStillContainReturnAnnotationFromOriginalClass(): void
     {
-        $class = new ClassReflection(Fixtures\PrototypeClassA::class);
+        $class = new ClassReflection(PrototypeClassA::class);
         $method = $class->getMethod('getSingletonA');
 
         self::assertEquals(['SingletonClassA The singleton class A'], $method->getTagValues('return'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedMethodsStillContainParamDocumentationFromOriginalClass(): void
     {
-        $class = new ClassReflection(Fixtures\PrototypeClassA::class);
+        $class = new ClassReflection(PrototypeClassA::class);
         $method = $class->getMethod('setSomeProperty');
 
         self::assertEquals(['string $someProperty The property value'], $method->getTagValues('param'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedMethodsDoContainAnnotationsOnlyOnce(): void
     {
-        $class = new ClassReflection(Fixtures\PrototypeClassA::class);
+        $class = new ClassReflection(PrototypeClassA::class);
         $method = $class->getMethod('setSomeProperty');
 
         self::assertEquals(['autoStart=true'], $method->getTagValues('session'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedMethodsStillContainMethodAttributesFromOriginalClass(): void
     {
-        $class = new ClassReflection(Fixtures\ClassWithPhpAttributes::class);
+        $class = new ClassReflection(ClassWithPhpAttributes::class);
         $actualAttributes = [];
         foreach ($class->getMethod('methodWithAttributes')->getAttributes() as $attribute) {
             $actualAttributes[] = [
@@ -134,12 +135,10 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertEquals($expectedAttributes, $actualAttributes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classesAnnotatedWithProxyDisableAreNotProxied(): void
     {
-        $singletonB = $this->objectManager->get(Fixtures\SingletonClassB::class);
+        $singletonB = $this->objectManager->get(SingletonClassB::class);
         $this->assertNotInstanceOf(ProxyInterface::class, $singletonB);
     }
 
@@ -148,38 +147,35 @@ class ProxyCompilerTest extends FunctionalTestCase
      *
      * PHP Fatal error:  Cannot declare class Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\BackedEnumWithMethod,
      * because the name is already in use in …/Flow_Object_Classes/Neos_Flow_Tests_Functional_ObjectManagement_Fixtures_PHP8_BackedEnumWithMethod.php on line 47
-     *
-     * @test
      */
+    #[Test]
     public function enumsAreNotProxied(): void
     {
         # PHP < 8.1 would fail compiling this test case if we used the syntax BackedEnumWithMethod::ESPRESSO->label()
         $this->assertSame('Espresso', BackedEnumWithMethod::getLabel(BackedEnumWithMethod::ESPRESSO));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setInstanceOfSubClassDoesNotOverrideParentClass(): void
     {
-        $singletonE = $this->objectManager->get(Fixtures\SingletonClassE::class);
-        self::assertEquals(Fixtures\SingletonClassE::class, get_class($singletonE));
+        $singletonE = $this->objectManager->get(SingletonClassE::class);
+        self::assertInstanceOf(SingletonClassE::class, $singletonE);
 
-        $singletonEsub = $this->objectManager->get(Fixtures\SingletonClassEsub::class);
-        self::assertEquals(Fixtures\SingletonClassEsub::class, get_class($singletonEsub));
+        $singletonEsub = $this->objectManager->get(SingletonClassEsub::class);
+        self::assertInstanceOf(SingletonClassEsub::class, $singletonEsub);
 
-        $singletonE2 = $this->objectManager->get(Fixtures\SingletonClassE::class);
-        self::assertEquals(Fixtures\SingletonClassE::class, get_class($singletonE2));
+        $singletonE2 = $this->objectManager->get(SingletonClassE::class);
+        self::assertInstanceOf(SingletonClassE::class, $singletonE2);
         self::assertSame($singletonE, $singletonE2);
     }
 
     /**
-     * @test
      * @noinspection SuspiciousAssignmentsInspection
      */
+    #[Test]
     public function transientPropertiesAreNotSerializedOnSleep(): void
     {
-        $prototypeF = $this->objectManager->get(Fixtures\PrototypeClassF::class);
+        $prototypeF = $this->objectManager->get(PrototypeClassF::class);
         $prototypeF->setTransientProperty('foo');
         $prototypeF->setNonTransientProperty('bar');
 
@@ -187,55 +183,49 @@ class ProxyCompilerTest extends FunctionalTestCase
         $prototypeF = null;
 
         $prototypeF = unserialize($serializedObject);
-        self::assertSame($prototypeF->getNonTransientProperty(), 'bar');
+        self::assertSame('bar', $prototypeF->getNonTransientProperty());
         self::assertNull($prototypeF->getTransientProperty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedFinalClassesAreStillFinal(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\FinalClassWithDependencies::class);
+        $reflectionClass = new ClassReflection(FinalClassWithDependencies::class);
         self::assertTrue($reflectionClass->isFinal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function proxiedReadonlyClassesAreStillReadonly(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\ReadonlyClassWithDependencies::class);
+        $reflectionClass = new ClassReflection(ReadonlyClassWithDependencies::class);
         self::assertTrue($reflectionClass->isReadOnly());
     }
 
     /**
      * @see https://github.com/neos/flow-development-collection/issues/1835
-     * @test
      */
+    #[Test]
     public function classKeywordIsIgnoredInsideClassBody(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\ClassWithKeywordsInClassBody::class);
-        self::assertEquals(Fixtures\ClassWithKeywordsInClassBody::class, $reflectionClass->getNamespaceName() . '\ClassWithKeywordsInClassBody');
+        $reflectionClass = new ClassReflection(ClassWithKeywordsInClassBody::class);
+        self::assertSame(ClassWithKeywordsInClassBody::class, $reflectionClass->getNamespaceName() . '\ClassWithKeywordsInClassBody');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function attributesArePreserved(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\ClassWithPhpAttributes::class);
+        $reflectionClass = new ClassReflection(ClassWithPhpAttributes::class);
         $attributes = $reflectionClass->getAttributes();
         self::assertCount(2, $attributes);
-        self::assertEquals(Fixtures\SampleAttribute::class, $attributes[0]->getName());
-        self::assertEquals(Fixtures\ClassWithPhpAttributes::class, $attributes[0]->getArguments()[0]);
+        self::assertSame(SampleAttribute::class, $attributes[0]->getName());
+        self::assertEquals(ClassWithPhpAttributes::class, $attributes[0]->getArguments()[0]);
     }
 
     /**
-     * @test
      * @see https://github.com/neos/flow-development-collection/issues/2554
      * @throws
      */
+    #[Test]
     public function proxyingClassImplementingInterfacesWithParametrizedConstructorsLeadsToException(): void
     {
         $this->expectException(CannotBuildObjectException::class);
@@ -245,15 +235,13 @@ class ProxyCompilerTest extends FunctionalTestCase
         $proxyClass->render();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function complexPropertyTypesArePreserved(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\PHP8\ClassWithUnionTypes::class);
+        $reflectionClass = new ClassReflection(ClassWithUnionTypes::class);
 
         foreach ($reflectionClass->getProperties() as $property) {
-            assert($property instanceof PropertyReflection);
+            $this->assertInstanceOf(PropertyReflection::class, $property);
             if (
                 $property->getName() !== 'classA' &&
                 $property->getName() !== 'propertyA' &&
@@ -270,12 +258,10 @@ class ProxyCompilerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function complexMethodReturnTypesArePreserved(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\PHP8\ClassWithUnionTypes::class);
+        $reflectionClass = new ClassReflection(ClassWithUnionTypes::class);
         foreach ($reflectionClass->getMethods() as $method) {
             if (str_starts_with($method->getName(), 'get') &&
                 !str_ends_with($method->getName(), 'PropertyA') &&
@@ -291,13 +277,13 @@ class ProxyCompilerTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @throws
      */
+    #[Test]
     public function complexMethodParametersArePreserved(): void
     {
-        $proxyClassReflection = new ClassReflection(Fixtures\PHP8\ClassWithUnionTypes::class);
-        $originalClassReflection = new ClassReflection(get_parent_class(Fixtures\PHP8\ClassWithUnionTypes::class));
+        $proxyClassReflection = new ClassReflection(ClassWithUnionTypes::class);
+        $originalClassReflection = new ClassReflection(get_parent_class(ClassWithUnionTypes::class));
 
         $proxyMethodReflection = $proxyClassReflection->getMethod('setPropertyF');
         $originalMethodReflection = $originalClassReflection->getMethod('setPropertyF');
@@ -308,25 +294,21 @@ class ProxyCompilerTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorPropertiesArePreserved(): void
     {
-        $reflectionClass = new ClassReflection(Fixtures\PHP8\ClassWithConstructorProperties::class);
+        $reflectionClass = new ClassReflection(ClassWithConstructorProperties::class);
         /** @var PropertyReflection $property */
         self::assertTrue($reflectionClass->hasProperty('propertyA'));
         self::assertTrue($reflectionClass->hasProperty('propertyB'));
         self::assertTrue($reflectionClass->hasProperty('propertyC'));
 
-        self::assertEquals('?string', (string)$reflectionClass->getProperty('propertyA')->getType());
-        self::assertEquals('?int', (string)$reflectionClass->getProperty('propertyB')->getType());
-        self::assertEquals('?DateTime', (string)$reflectionClass->getProperty('propertyC')->getType());
+        self::assertSame('?string', (string)$reflectionClass->getProperty('propertyA')->getType());
+        self::assertSame('?int', (string)$reflectionClass->getProperty('propertyB')->getType());
+        self::assertSame('?DateTime', (string)$reflectionClass->getProperty('propertyC')->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classWithPrivateConstructorCanBeProxied(): void
     {
         $anotherDependency = new PrototypeClassA();
@@ -337,9 +319,9 @@ class ProxyCompilerTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @noinspection PhpExpressionResultUnusedInspection
      */
+    #[Test]
     public function privateConstructorOfProxiedClassCannotBeCalledFromOtherContexts(): void
     {
         $this->expectExceptionCode(1686153840);
@@ -347,9 +329,9 @@ class ProxyCompilerTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @noinspection UnnecessaryAssertionInspection
      */
+    #[Test]
     public function privateConstructorOfProxiedClassCanBeCalledFromProxiedSubClass(): void
     {
         $anotherDependency = new PrototypeClassA();
@@ -362,9 +344,9 @@ class ProxyCompilerTest extends FunctionalTestCase
     }
 
     /**
-     * @test
      * @noinspection UnnecessaryAssertionInspection
      */
+    #[Test]
     public function privateConstructorOfProxiedClassCanBeCalledFromAbstractParentClass(): void
     {
         $anotherDependency = new PrototypeClassA();
@@ -376,9 +358,7 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame($anotherDependency, $object->anotherDependency);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function factoryMethodUsingSelfWorksEvenIfClassIsProxied(): void
     {
         $anotherDependency = new PrototypeClassA();
@@ -400,9 +380,7 @@ class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame($expectedSelves, $object->getStringContainingALotOfSelves());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticCompileWillResultInAFrozenReturnValue(): void
     {
         $object = new PrototypeClassK();

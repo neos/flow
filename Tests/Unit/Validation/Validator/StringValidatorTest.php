@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Validation\Validator;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Validation\Validator\StringValidator;
 
 require_once('AbstractValidatorTestcase.php');
@@ -18,48 +21,38 @@ require_once('AbstractValidatorTestcase.php');
  * Testcase for the string length validator
  *
  */
-class StringValidatorTest extends AbstractValidatorTestcase
+final class StringValidatorTest extends AbstractValidatorTestcase
 {
     protected $validatorClassName = StringValidator::class;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsNull()
     {
         self::assertFalse($this->validator->validate(null)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validateReturnsNoErrorIfTheGivenValueIsAnEmptyString()
     {
         self::assertFalse($this->validator->validate('')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldValidateString()
     {
         self::assertFalse($this->validator->validate('Hello World')->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldReturnErrorIfNumberIsGiven()
     {
         self::assertTrue($this->validator->validate(42)->hasErrors());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringValidatorShouldReturnErrorIfObjectWithToStringMethodStringIsGiven()
     {
-        $className = 'TestClass' . md5(uniqid(mt_rand(), true));
+        $className = 'TestClass' . md5(uniqid((string)mt_rand(), true));
 
         eval('
 			class ' . $className . ' {

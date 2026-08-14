@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security\Policy;
 
 /*
@@ -10,21 +13,20 @@ namespace Neos\Flow\Tests\Functional\Security\Policy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Testcase for the security policy behavior
  */
-class PolicyTest extends FunctionalTestCase
+final class PolicyTest extends FunctionalTestCase
 {
     /**
      * @var boolean
      */
     protected $testableSecurityEnabled = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonAuthenticatedUsersHaveTheEverybodyAndAnonymousRole()
     {
         $hasEverybodyRole = false;
@@ -39,7 +41,7 @@ class PolicyTest extends FunctionalTestCase
             }
         }
 
-        self::assertEquals(2, count($this->securityContext->getRoles()));
+        self::assertCount(2, $this->securityContext->getRoles());
 
         self::assertTrue($this->securityContext->hasRole('Neos.Flow:Everybody'), 'Everybody - hasRole()');
         self::assertTrue($hasEverybodyRole, 'Everybody - getRoles()');

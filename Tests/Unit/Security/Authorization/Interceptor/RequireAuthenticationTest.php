@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
 use Neos\Flow\Security\Authorization\Interceptor\RequireAuthentication;
 use Neos\Flow\Tests\UnitTestCase;
@@ -18,16 +21,14 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the authentication required security interceptor
  */
-class RequireAuthenticationTest extends UnitTestCase
+final class RequireAuthenticationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function invokeCallsTheAuthenticationManagerToPerformAuthentication()
     {
         $authenticationManager = $this->createMock(AuthenticationManagerInterface::class);
 
-        $authenticationManager->expects(self::once())->method('authenticate');
+        $authenticationManager->expects($this->once())->method('authenticate');
 
         $interceptor = new RequireAuthentication($authenticationManager);
         $interceptor->invoke();

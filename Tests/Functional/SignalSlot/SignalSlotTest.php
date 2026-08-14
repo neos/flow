@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\SignalSlot;
 
 /*
@@ -10,6 +13,8 @@ namespace Neos\Flow\Tests\Functional\SignalSlot;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\SignalSlot\Fixtures\SubClass;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\Tests\FunctionalTestCase;
 
@@ -17,17 +22,15 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Test suite for Signal Slot
  *
  */
-class SignalSlotTest extends FunctionalTestCase
+final class SignalSlotTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function signalsDeclaredInAbstractClassesAreFunctionalInSubClasses()
     {
-        $subClass = new Fixtures\SubClass();
+        $subClass = new SubClass();
 
         $dispatcher = $this->objectManager->get(Dispatcher::class);
-        $dispatcher->connect(Fixtures\SubClass::class, 'something', $subClass, 'somethingSlot');
+        $dispatcher->connect(SubClass::class, 'something', $subClass, 'somethingSlot');
 
         $subClass->triggerSomethingSignalFromSubClass();
         self::assertTrue($subClass->slotWasCalled, 'from sub class');
@@ -38,30 +41,26 @@ class SignalSlotTest extends FunctionalTestCase
         self::assertTrue($subClass->slotWasCalled, 'from abstract class');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function slotsReceiveArgumentsAsReference()
     {
-        $subClass = new Fixtures\SubClass();
+        $subClass = new SubClass();
 
         $dispatcher = $this->objectManager->get(Dispatcher::class);
-        $dispatcher->connect(Fixtures\SubClass::class, 'signalWithReferenceArgument', $subClass, 'referencedArraySlot');
+        $dispatcher->connect(SubClass::class, 'signalWithReferenceArgument', $subClass, 'referencedArraySlot');
 
         $subClass->triggerSignalWithByReferenceArgument();
         self::assertArrayHasKey('foo', $subClass->referencedArray);
         self::assertEquals('bar', $subClass->referencedArray['foo']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function slotsReceiveArgumentsAsReferenceInSignalInformation()
     {
-        $subClass = new Fixtures\SubClass();
+        $subClass = new SubClass();
 
         $dispatcher = $this->objectManager->get(Dispatcher::class);
-        $dispatcher->wire(Fixtures\SubClass::class, 'signalWithReferenceArgument', $subClass, 'referencedArraySlotWithSignalInformation');
+        $dispatcher->wire(SubClass::class, 'signalWithReferenceArgument', $subClass, 'referencedArraySlotWithSignalInformation');
 
         $subClass->triggerSignalWithByReferenceArgument();
         self::assertArrayHasKey('foo', $subClass->referencedArray);
