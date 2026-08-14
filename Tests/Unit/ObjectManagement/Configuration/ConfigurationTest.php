@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
@@ -10,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\ObjectManagement\Configuration;
@@ -18,7 +23,7 @@ use Neos\Flow\ObjectManagement\Configuration;
 /**
  * Testcase for the object configuration class
  */
-class ConfigurationTest extends UnitTestCase
+final class ConfigurationTest extends UnitTestCase
 {
     /**
      * @var Configuration\Configuration
@@ -36,28 +41,25 @@ class ConfigurationTest extends UnitTestCase
 
     /**
      * Checks if setProperties accepts only valid values
-     *
-     * @test
      */
+    #[Test]
     public function setPropertiesOnlyAcceptsValidValues()
     {
         $this->expectException(InvalidConfigurationException::class);
         $invalidProperties = [
-            'validProperty' => new Configuration\ConfigurationProperty('validProperty', 'simple string'),
+            'validProperty' => new ConfigurationProperty('validProperty', 'simple string'),
             'invalidProperty' => 'foo'
         ];
 
         $this->objectConfiguration->setProperties($invalidProperties);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passingAnEmptyArrayToSetPropertiesRemovesAllExistingproperties()
     {
         $someProperties = [
-            'prop1' => new Configuration\ConfigurationProperty('prop1', 'simple string'),
-            'prop2' => new Configuration\ConfigurationProperty('prop2', 'another string')
+            'prop1' => new ConfigurationProperty('prop1', 'simple string'),
+            'prop2' => new ConfigurationProperty('prop2', 'another string')
         ];
         $this->objectConfiguration->setProperties($someProperties);
         self::assertEquals($someProperties, $this->objectConfiguration->getProperties(), 'The set properties could not be retrieved again.');
@@ -68,28 +70,25 @@ class ConfigurationTest extends UnitTestCase
 
     /**
      * Checks if setArguments accepts only valid values
-     *
-     * @test
      */
+    #[Test]
     public function setArgumentsOnlyAcceptsValidValues()
     {
         $this->expectException(InvalidConfigurationException::class);
         $invalidArguments = [
-            1 => new Configuration\ConfigurationArgument(1, 'simple string'),
+            1 => new ConfigurationArgument(1, 'simple string'),
             2 => 'foo'
         ];
 
         $this->objectConfiguration->setArguments($invalidArguments);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passingAnEmptyArrayToSetArgumentsRemovesAllExistingArguments()
     {
         $someArguments = [
-            1 => new Configuration\ConfigurationArgument(1, 'simple string'),
-            2 => new Configuration\ConfigurationArgument(2, 'another string')
+            1 => new ConfigurationArgument(1, 'simple string'),
+            2 => new ConfigurationArgument(2, 'another string')
         ];
         $this->objectConfiguration->setArguments($someArguments);
         self::assertEquals($someArguments, $this->objectConfiguration->getArguments(), 'The set arguments could not be retrieved again.');
@@ -98,36 +97,28 @@ class ConfigurationTest extends UnitTestCase
         self::assertEquals([], $this->objectConfiguration->getArguments(), 'The constructor arguments have not been cleared.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFactoryObjectNameAcceptsValidClassNames()
     {
         $this->objectConfiguration->setFactoryObjectName(__CLASS__);
         self::assertSame(__CLASS__, $this->objectConfiguration->getFactoryObjectName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFactoryMethodNameAcceptsValidStrings()
     {
         $this->objectConfiguration->setFactoryMethodName('someMethodName');
         self::assertSame('someMethodName', $this->objectConfiguration->getFactoryMethodName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFactoryMethodNameRejectsAnythingElseThanAString()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->objectConfiguration->setFactoryMethodName([]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theDefaultFactoryMethodNameIsCreate()
     {
         $this->objectConfiguration->setFactoryObjectName(__CLASS__);

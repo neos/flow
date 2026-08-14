@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\I18n\Xliff\Service;
 
 /*
@@ -11,6 +13,7 @@ namespace Neos\Flow\Tests\Functional\I18n\Xliff\Service;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
+use PHPUnit\Framework\Attributes\Test;
 use org\bovigo\vfs\vfsStream;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Composer\ComposerUtility;
@@ -23,7 +26,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcases for the XLIFF file provider
  */
-class XliffFileProviderTest extends FunctionalTestCase
+final class XliffFileProviderTest extends FunctionalTestCase
 {
     /**
      * @var XliffFileProvider
@@ -48,12 +51,10 @@ class XliffFileProviderTest extends FunctionalTestCase
 
         ComposerUtility::flushCaches();
 
-        $mockPackageManager = $this->getMockBuilder(PackageManager::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockPackageManager->expects(self::any())
+        $mockPackageManager = $this->createMock(PackageManager::class);
+        $mockPackageManager
             ->method('getFlowPackages')
-            ->will(self::returnValue($packages));
+            ->willReturn(($packages));
         $this->inject($this->fileProvider, 'packageManager', $mockPackageManager);
     }
 
@@ -110,9 +111,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         return new Package($packageKey, $composerName, $packagePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderReturnsUnchangedContentForFileWithoutOverride()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:Unmerged', new Locale('de'));
@@ -126,9 +125,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderMergesOverrideFromLaterLoadedPackageDeclaredByOriginalAndProductName()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:Main', new Locale('de'));
@@ -142,9 +139,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderReturnsLaterLoadedPackageDeclarationByOriginalAndProductNameIfNoOriginalPresent()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:WithoutBase', new Locale('de'));
@@ -158,9 +153,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderDoesNotMergeOverrideFromEarlierLoadedPackageDeclaredByOriginalAndProductName()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.DependentPackage:Main', new Locale('de'));
@@ -174,9 +167,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderMergesTranslationsFromGlobalDataFolder()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:GlobalOverride', new Locale('en'));
@@ -191,9 +182,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderMergesMoreSpecificPackageTranslationsOverGlobalFallbackTranslations()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:GlobalOverride', new Locale('de'));
@@ -208,9 +197,7 @@ class XliffFileProviderTest extends FunctionalTestCase
         ], $fileData['translationUnits']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fileProviderMergesTranslationWithMultipleFileItems()
     {
         $fileData = $this->fileProvider->getMergedFileData('Vendor.BasePackage:MultipleFileItems', new Locale('de'));

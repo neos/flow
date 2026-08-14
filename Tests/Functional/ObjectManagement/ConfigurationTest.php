@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\ObjectManagement;
 
 /*
@@ -10,22 +13,23 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassD;
 use Neos\Utility\ObjectAccess;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
  * Functional tests for the Object configuration via Objects.yaml
  */
-class ConfigurationTest extends FunctionalTestCase
+final class ConfigurationTest extends FunctionalTestCase
 {
     /**
      * See the configuration in Testing/Objects.yaml
-     * @test
      */
+    #[Test]
     public function configuredObjectDWillGetAssignedObjectFWithCorrectlyConfiguredConstructorValue()
     {
-        $instance = $this->objectManager->get(Fixtures\PrototypeClassD::class);
+        $instance = $this->objectManager->get(PrototypeClassD::class);
         /** @var $instanceE Fixtures\PrototypeClassE */
         $instanceE = ObjectAccess::getProperty($instance, 'objectE', true);
         self::assertEquals('The constructor set value', $instanceE->getNullValue());

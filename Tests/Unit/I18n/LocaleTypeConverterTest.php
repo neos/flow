@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n;
 
 /*
@@ -10,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\I18n;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n;
 use Neos\Flow\I18n\LocaleTypeConverter;
 use Neos\Flow\Property\TypeConverterInterface;
@@ -18,10 +23,9 @@ use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the Locale type converter
- *
- * @covers \Neos\Flow\I18n\LocaleTypeConverter<extended>
  */
-class LocaleTypeConverterTest extends UnitTestCase
+#[CoversClass('\Neos\Flow\I18n\LocaleTypeConverter<extended>::class')]
+final class LocaleTypeConverterTest extends UnitTestCase
 {
     /**
      * @var TypeConverterInterface
@@ -33,35 +37,27 @@ class LocaleTypeConverterTest extends UnitTestCase
         $this->converter = new LocaleTypeConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
-        self::assertEquals(I18n\Locale::class, $this->converter->getSupportedTargetType(), 'Target type does not match');
+        self::assertEquals(Locale::class, $this->converter->getSupportedTargetType(), 'Target type does not match');
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromShouldReturnLocale()
     {
-        self::assertInstanceOf(I18n\Locale::class, $this->converter->convertFrom('de', 'irrelevant'));
+        self::assertInstanceOf(Locale::class, $this->converter->convertFrom('de', 'irrelevant'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromShouldReturnTrue()
     {
-        self::assertTrue($this->converter->canConvertFrom('de', I18n\Locale::class));
+        self::assertTrue($this->converter->canConvertFrom('de', Locale::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedShouldReturnEmptyArray()
     {
         self::assertEmpty($this->converter->getSourceChildPropertiesToBeConverted('something'));

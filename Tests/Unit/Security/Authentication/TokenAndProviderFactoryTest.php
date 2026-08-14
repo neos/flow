@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Security\Authentication;
 
 /*
@@ -10,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authentication;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
 use Neos\Flow\Security\Authentication\AuthenticationTokenResolver;
 use Neos\Flow\Security\Authentication\TokenAndProviderFactory;
@@ -21,26 +24,22 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Test for the default token and provider factory
  */
-class TokenAndProviderFactoryTest extends UnitTestCase
+final class TokenAndProviderFactoryTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function noTokensAndProvidersAreBuiltIfTheConfigurationArrayIsEmpty()
     {
-        $mockProviderResolver = $this->getMockBuilder(AuthenticationProviderResolver::class)->disableOriginalConstructor()->getMock();
-        $mockRequestPatternResolver = $this->getMockBuilder(RequestPatternResolver::class)->disableOriginalConstructor()->getMock();
-        $mockTokenResolver = $this->getMockBuilder(AuthenticationTokenResolver::class)->disableOriginalConstructor()->getMock();
+        $mockProviderResolver = $this->createStub(AuthenticationProviderResolver::class);
+        $mockRequestPatternResolver = $this->createStub(RequestPatternResolver::class);
+        $mockTokenResolver = $this->createStub(AuthenticationTokenResolver::class);
 
         $tokenAndProviderFactory = new TokenAndProviderFactory($mockProviderResolver, $mockRequestPatternResolver, $mockTokenResolver);
 
-        self::assertEquals([], $tokenAndProviderFactory->getProviders(), 'The array of providers should be empty.');
-        self::assertEquals([], $tokenAndProviderFactory->getTokens(), 'The array of tokens should be empty.');
+        self::assertSame([], $tokenAndProviderFactory->getProviders(), 'The array of providers should be empty.');
+        self::assertSame([], $tokenAndProviderFactory->getTokens(), 'The array of tokens should be empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anExceptionIsThrownIfTheConfiguredProviderDoesNotExist()
     {
         $this->expectException(InvalidAuthenticationProviderException::class);
@@ -50,9 +49,9 @@ class TokenAndProviderFactoryTest extends UnitTestCase
             ],
         ];
 
-        $mockProviderResolver = $this->getMockBuilder(AuthenticationProviderResolver::class)->disableOriginalConstructor()->getMock();
-        $mockRequestPatternResolver = $this->getMockBuilder(RequestPatternResolver::class)->disableOriginalConstructor()->getMock();
-        $mockTokenResolver = $this->getMockBuilder(AuthenticationTokenResolver::class)->disableOriginalConstructor()->getMock();
+        $mockProviderResolver = $this->createStub(AuthenticationProviderResolver::class);
+        $mockRequestPatternResolver = $this->createStub(RequestPatternResolver::class);
+        $mockTokenResolver = $this->createStub(AuthenticationTokenResolver::class);
 
         $tokenAndProviderFactory = new TokenAndProviderFactory($mockProviderResolver, $mockRequestPatternResolver, $mockTokenResolver);
         $tokenAndProviderFactory->injectSettings(['security' => ['authentication' => ['providers' => $providerConfiguration]]]);

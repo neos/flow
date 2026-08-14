@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
 
 /*
@@ -10,17 +13,16 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Doctrine\ORM\Configuration;
 use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Connection;
 use Neos\Flow\Persistence\Doctrine\EntityManagerConfiguration;
 use Neos\Flow\Tests\UnitTestCase;
 
-class EntityManagerConfigurationTest extends UnitTestCase
+final class EntityManagerConfigurationTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function dqlCustomStringFunctionCanCorrectlyBeAppliedToConfiguration()
     {
         $configuration = $this->buildAndPrepareDqlCustomStringConfiguration();
@@ -29,9 +31,7 @@ class EntityManagerConfigurationTest extends UnitTestCase
         self::assertEquals('Some\Bar\StringClass', $configuration->getCustomStringFunction('BARSTRING'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dqlCustomNumericFunctionCanCorrectlyBeAppliedToConfiguration()
     {
         $configuration = $this->buildAndPrepareDqlCustomStringConfiguration();
@@ -40,9 +40,7 @@ class EntityManagerConfigurationTest extends UnitTestCase
         self::assertEquals('Some\Bar\NumericClass', $configuration->getCustomNumericFunction('BARNUMERIC'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dqlCustomDateTimeFunctionCanCorrectlyBeAppliedToConfiguration()
     {
         $configuration = $this->buildAndPrepareDqlCustomStringConfiguration();
@@ -59,10 +57,10 @@ class EntityManagerConfigurationTest extends UnitTestCase
         /** @var EntityManagerConfiguration $entityManagerConfiguration */
         $entityManagerConfiguration = $this->getAccessibleMock(EntityManagerConfiguration::class, ['applyCacheConfiguration']);
         /** @var Connection $connection */
-        $connection = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
+        $connection = $this->createMock(Connection::class);
         /** @var EventManager $eventManager */
-        $eventManager = $this->getMockBuilder(EventManager::class)->disableOriginalConstructor()->getMock();
-        $configuration = new \Doctrine\ORM\Configuration;
+        $eventManager = $this->createMock(EventManager::class);
+        $configuration = new Configuration;
 
         $settingsArray = [
             'persistence' => [

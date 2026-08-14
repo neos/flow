@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -10,7 +13,9 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\Exception\TypeConverterException;
 use Neos\Flow\Property\TypeConverter\DateTimeConverter;
 use Neos\Flow\Tests\UnitTestCase;
@@ -20,10 +25,9 @@ use Neos\Error\Messages\Error as FlowError;
 
 /**
  * Testcase for the DateTime converter
- *
- * @covers \Neos\Flow\Property\TypeConverter\DateTimeConverter<extended>
  */
-class DateTimeConverterTest extends UnitTestCase
+#[CoversClass('\Neos\Flow\Property\TypeConverter\DateTimeConverter<extended>::class')]
+final class DateTimeConverterTest extends UnitTestCase
 {
     /**
      * @var DateTimeConverter
@@ -35,9 +39,7 @@ class DateTimeConverterTest extends UnitTestCase
         $this->converter = new DateTimeConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['string', 'integer', 'array'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -47,51 +49,38 @@ class DateTimeConverterTest extends UnitTestCase
 
 
     /** String to DateTime testcases  **/
-
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsFalseIfTargetTypeIsNotDateTime()
     {
         self::assertFalse($this->converter->canConvertFrom('Foo', 'SomeOtherType'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueIfSourceTypeIsAString()
     {
         self::assertTrue($this->converter->canConvertFrom('Foo', 'DateTime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueIfSourceTypeIsAnEmptyString()
     {
         self::assertTrue($this->converter->canConvertFrom('', 'DateTime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueITargetTypeIsADateTimeImmutable()
     {
         self::assertTrue($this->converter->canConvertFrom('', \DateTimeImmutable::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfGivenStringCantBeConverted()
     {
         $error = $this->converter->convertFrom('1980-12-13', 'DateTime');
         self::assertInstanceOf(FlowError::class, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsStringWithDefaultDateFormat()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -100,9 +89,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsToDateTimeImmutable()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -110,27 +97,23 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertInstanceOf(\DateTimeImmutable::class, $date);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromUsesDefaultDateFormatIfItIsNotConfigured()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfigurationValue')
             ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-            ->will(self::returnValue(null));
+            ->willReturn((null));
 
         $date = $this->converter->convertFrom($expectedResult, 'DateTime', [], $mockMappingConfiguration);
         $actualResult = $date->format(DateTimeConverter::DEFAULT_DATE_FORMAT);
         self::assertSame($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromEmptyStringReturnsNull()
     {
         $date = $this->converter->convertFrom('', 'DateTime', [], null);
@@ -138,39 +121,37 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromStringTests()
      */
-    public function convertFromStringDataProvider()
+    public static function convertFromStringDataProvider(): \Iterator
     {
-        return [
-            ['1308174051', '', false],
-            ['13-12-1980', 'd.m.Y', false],
-            ['1308174051', 'Y-m-d', false],
-            ['12:13', 'H:i', true],
-            ['13.12.1980', 'd.m.Y', true],
-            ['2005-08-15T15:52:01+00:00', null, true],
-            ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true],
-            ['1308174051', 'U', true],
-        ];
+        yield ['1308174051', '', false];
+        yield ['13-12-1980', 'd.m.Y', false];
+        yield ['1308174051', 'Y-m-d', false];
+        yield ['12:13', 'H:i', true];
+        yield ['13.12.1980', 'd.m.Y', true];
+        yield ['2005-08-15T15:52:01+00:00', null, true];
+        yield ['2005-08-15T15:52:01+0000', \DateTime::ISO8601, true];
+        yield ['1308174051', 'U', true];
     }
 
     /**
      * @param string $source the string to be converted
      * @param string $dateFormat the expected date format
      * @param boolean $isValid true if the conversion is expected to be successful, otherwise false
-     * @test
-     * @dataProvider convertFromStringDataProvider
      */
+    #[DataProvider('convertFromStringDataProvider')]
+    #[Test]
     public function convertFromStringTests($source, $dateFormat, $isValid)
     {
         if ($dateFormat !== null) {
             $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
             $mockMappingConfiguration
-                ->expects(self::atLeastOnce())
+                ->expects($this->atLeastOnce())
                 ->method('getConfigurationValue')
                 ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-                ->will(self::returnValue($dateFormat));
+                ->willReturn(($dateFormat));
         } else {
             $mockMappingConfiguration = null;
         }
@@ -188,23 +169,21 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider(): \Iterator
     {
-        return [
-            ['1308174051'],
-            [1308174051],
-        ];
+        yield ['1308174051'];
+        yield [1308174051];
     }
 
     /**
-     * @test
      * @param $source
-     * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
      */
+    #[DataProvider('convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider')]
+    #[Test]
     public function convertFromIntegerOrDigitStringWithoutConfigurationTests($source)
     {
         $date = $this->converter->convertFrom($source, 'DateTime', [], null);
@@ -213,31 +192,29 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromIntegerOrDigitStringWithoutConfigurationTests()
      * @see convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests()
      */
-    public function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider()
+    public static function convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider(): \Iterator
     {
-        return [
-            ['1308174051'],
-            [1308174051],
-        ];
+        yield ['1308174051'];
+        yield [1308174051];
     }
 
     /**
-     * @test
      * @param $source
-     * @dataProvider convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider
      */
+    #[DataProvider('convertFromIntegerOrDigitStringsWithConfigurationWithoutFormatDataProvider')]
+    #[Test]
     public function convertFromIntegerOrDigitStringWithConfigurationWithoutFormatTests($source)
     {
         $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
         $mockMappingConfiguration
-            ->expects(self::atLeastOnce())
+            ->expects($this->atLeastOnce())
             ->method('getConfigurationValue')
             ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-            ->will(self::returnValue(null));
+            ->willReturn((null));
 
         $date = $this->converter->convertFrom($source, 'DateTime', [], $mockMappingConfiguration);
         self::assertInstanceOf(\DateTime::class, $date);
@@ -245,12 +222,11 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /** Array to DateTime testcases  **/
-
     /**
-     * @test
      * @param $source
-     * @dataProvider convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider
      */
+    #[DataProvider('convertFromIntegerOrDigitStringsWithoutConfigurationDataProvider')]
+    #[Test]
     public function convertFromIntegerOrDigitStringInArrayWithoutConfigurationTests($source)
     {
         $date = $this->converter->convertFrom(['date' => $source], 'DateTime', [], null);
@@ -258,35 +234,27 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame((string)$source, $date->format('U'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromReturnsTrueIfSourceTypeIsAnArray()
     {
         self::assertTrue($this->converter->canConvertFrom([], 'DateTime'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromReturnsErrorIfGivenArrayCantBeConverted()
     {
         $error = $this->converter->convertFrom(['date' => '1980-12-13'], 'DateTime');
         self::assertInstanceOf(FlowError::class, $error);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfGivenArrayDoesNotSpecifyTheDate()
     {
         $this->expectException(TypeConverterException::class);
         $this->converter->convertFrom(['hour' => '12', 'minute' => '30'], 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsArrayWithDefaultDateFormat()
     {
         $expectedResult = '1980-12-13T20:15:07+01:23';
@@ -296,34 +264,28 @@ class DateTimeConverterTest extends UnitTestCase
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified
      */
-    public function invalidDatePartKeyValuesDataProvider()
+    public static function invalidDatePartKeyValuesDataProvider(): \Iterator
     {
-        return [
-            [['day' => '13.0', 'month' => '10', 'year' => '2010']],
-            [['day' => '13', 'month' => '10.0', 'year' => '2010']],
-            [['day' => '13', 'month' => '10', 'year' => '2010.0']],
-            [['day' => '-13', 'month' => '10', 'year' => '2010']],
-            [['day' => '13', 'month' => '-10', 'year' => '2010']],
-            [['day' => '13', 'month' => '10', 'year' => '-2010']],
-        ];
+        yield [['day' => '13.0', 'month' => '10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10.0', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10', 'year' => '2010.0']];
+        yield [['day' => '-13', 'month' => '10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '-10', 'year' => '2010']];
+        yield [['day' => '13', 'month' => '10', 'year' => '-2010']];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidDatePartKeyValuesDataProvider
-     */
+    #[DataProvider('invalidDatePartKeyValuesDataProvider')]
+    #[Test]
     public function convertFromThrowsExceptionIfDatePartKeysHaveInvalidValuesSpecified($source)
     {
         $this->expectException(TypeConverterException::class);
         $this->converter->convertFrom($source, 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromProperlyConvertsArrayWithDateAsArray()
     {
         $source = ['day' => '13', 'month' => '10', 'year' => '2010'];
@@ -339,9 +301,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('2010-10-13', $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTime()
     {
         $source = [
@@ -358,9 +318,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('59', $date->format('s'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTimeForImmutableTargetType()
     {
         $source = [
@@ -377,9 +335,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('59', $date->format('s'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTimezone()
     {
         $source = [
@@ -395,9 +351,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('Atlantic/Reykjavik', $date->getTimezone()->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromAllowsToOverrideTheTimezoneForImmutableTargetType()
     {
         $source = [
@@ -413,9 +367,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('Atlantic/Reykjavik', $date->getTimezone()->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromThrowsExceptionIfSpecifiedTimezoneIsInvalid()
     {
         $this->expectException(TypeConverterException::class);
@@ -427,59 +379,53 @@ class DateTimeConverterTest extends UnitTestCase
         $this->converter->convertFrom($source, 'DateTime');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromArrayThrowsExceptionForEmptyArray()
     {
         $this->expectException(TypeConverterException::class);
         $this->converter->convertFrom([], 'DateTime', [], null);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromArrayReturnsNullForEmptyDate()
     {
         self::assertNull($this->converter->convertFrom(['date' => ''], 'DateTime', [], null));
     }
 
     /**
-     * @return array
+     * @return \Iterator<(int | string), mixed>
      * @see convertFromArrayTests()
      */
-    public function convertFromArrayDataProvider()
+    public static function convertFromArrayDataProvider(): \Iterator
     {
-        return [
-            [['date' => '2005-08-15T15:52:01+01:00'], true],
-            [['date' => '1308174051', 'dateFormat' => ''], true],
-            [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false],
-            [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false],
-            [['date' => '12:13', 'dateFormat' => 'H:i'], true],
-            [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true],
-            [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true],
-            [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true],
-            [['date' => '1308174051', 'dateFormat' => 'U'], true],
-            [['date' => 1308174051, 'dateFormat' => 'U'], true],
-        ];
+        yield [['date' => '2005-08-15T15:52:01+01:00'], true];
+        yield [['date' => '1308174051', 'dateFormat' => ''], true];
+        yield [['date' => '13-12-1980', 'dateFormat' => 'd.m.Y'], false];
+        yield [['date' => '1308174051', 'dateFormat' => 'Y-m-d'], false];
+        yield [['date' => '12:13', 'dateFormat' => 'H:i'], true];
+        yield [['date' => '13.12.1980', 'dateFormat' => 'd.m.Y'], true];
+        yield [['date' => '2005-08-15T15:52:01+00:00', 'dateFormat' => ''], true];
+        yield [['date' => '2005-08-15T15:52:01+0000', 'dateFormat' => \DateTime::ISO8601], true];
+        yield [['date' => '1308174051', 'dateFormat' => 'U'], true];
+        yield [['date' => 1308174051, 'dateFormat' => 'U'], true];
     }
 
     /**
      * @param array $source the array to be converted
      * @param boolean $isValid true if the conversion is expected to be successful, otherwise false
-     * @test
-     * @dataProvider convertFromArrayDataProvider
      */
+    #[DataProvider('convertFromArrayDataProvider')]
+    #[Test]
     public function convertFromArrayTests(array $source, $isValid)
     {
         $dateFormat = isset($source['dateFormat']) && strlen($source['dateFormat']) > 0 ? $source['dateFormat'] : null;
         if ($dateFormat !== null) {
             $mockMappingConfiguration = $this->createMock(PropertyMappingConfigurationInterface::class);
             $mockMappingConfiguration
-                ->expects(self::atLeastOnce())
+                ->expects($this->atLeastOnce())
                 ->method('getConfigurationValue')
                 ->with(DateTimeConverter::class, DateTimeConverter::CONFIGURATION_DATE_FORMAT)
-                ->will(self::returnValue($dateFormat));
+                ->willReturn(($dateFormat));
         } else {
             $mockMappingConfiguration = null;
         }
@@ -502,12 +448,10 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame($dateAsString, $date->format($dateFormat));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertFromSupportsDateTimeSubClasses()
     {
-        $className = 'DateTimeSubClass' . md5(uniqid(mt_rand(), true));
+        $className = 'DateTimeSubClass' . md5(uniqid((string)mt_rand(), true));
         eval('
         class ' . $className . ' extends \\DateTime {
             public static function createFromFormat(string $format, string $datetime, ?DateTimeZone $timezone = null): DateTime|false {
@@ -522,9 +466,7 @@ class DateTimeConverterTest extends UnitTestCase
         self::assertSame('Bar', $date->foo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canConvertFromJsonSerializedDateTime()
     {
         $sourceDate = new \DateTime('2005-08-15T15:52:01+00:00');

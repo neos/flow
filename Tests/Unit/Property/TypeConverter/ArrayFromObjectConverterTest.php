@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
 
 /*
@@ -10,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\Property\TypeConverter;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Property\TypeConverter\ArrayFromObjectConverter;
 use Neos\Flow\Tests\UnitTestCase;
 
@@ -18,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
  * Testcase for the ArrayFromObject converter
  *
  */
-class ArrayFromObjectConverterTest extends UnitTestCase
+final class ArrayFromObjectConverterTest extends UnitTestCase
 {
     /**
      * @var ArrayFromObjectConverter
@@ -30,9 +34,7 @@ class ArrayFromObjectConverterTest extends UnitTestCase
         $this->converter = new ArrayFromObjectConverter();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function checkMetadata()
     {
         self::assertEquals(['object'], $this->converter->getSupportedSourceTypes(), 'Source types do not match');
@@ -40,9 +42,7 @@ class ArrayFromObjectConverterTest extends UnitTestCase
         self::assertEquals(1, $this->converter->getPriority(), 'Priority does not match');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getSourceChildPropertiesToBeConvertedReturnsSubObjectsArray()
     {
         $source = new \stdClass();
@@ -51,19 +51,15 @@ class ArrayFromObjectConverterTest extends UnitTestCase
         self::assertEquals(['second' => new \stdClass()], $this->converter->getSourceChildPropertiesToBeConverted($source));
     }
 
-    public function objectToArrayDataProvider()
+    public static function objectToArrayDataProvider(): \Iterator
     {
-        return [
-            [['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'], ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass']],
-            [['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz']], ['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass'], '__type' => 'stdClass']],
-            [new \stdClass(), ['__type' => 'stdClass']]
-        ];
+        yield [['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz'], ['foo' => 'Foo', 'bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass']];
+        yield [['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz']], ['foo' => 'Foo', 'bar' => ['bar' => 'Bar', 'baz' => 'Baz', '__type' => 'stdClass'], '__type' => 'stdClass']];
+        yield [new \stdClass(), ['__type' => 'stdClass']];
     }
 
-    /**
-     * @test
-     * @dataProvider objectToArrayDataProvider
-     */
+    #[DataProvider('objectToArrayDataProvider')]
+    #[Test]
     public function canConvertFromObjectToArray($source, $expectedResult)
     {
         if (is_array($source)) {
