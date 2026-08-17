@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Configuration\Source;
 
 /*
@@ -11,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Configuration\Source;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Configuration\Exception;
 use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Tests\UnitTestCase;
@@ -21,7 +23,7 @@ use org\bovigo\vfs\vfsStream;
  * Testcase for the YAML configuration source
  *
  */
-class YamlSourceTest extends UnitTestCase
+final class YamlSourceTest extends UnitTestCase
 {
     /**
      * Sets up this test case
@@ -32,19 +34,15 @@ class YamlSourceTest extends UnitTestCase
         vfsStream::setup('testDirectory');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyArrayOnNonExistingFile()
     {
         $configurationSource = new YamlSource();
         $configuration = $configurationSource->load('/ThisFileDoesNotExist');
-        self::assertEquals([], $configuration, 'No empty array was returned.');
+        self::assertSame([], $configuration, 'No empty array was returned.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function optionSetInTheConfigurationFileReallyEndsUpInTheArray()
     {
         $pathAndFilename = __DIR__ . '/../Fixture/YAMLConfigurationFile';
@@ -53,9 +51,7 @@ class YamlSourceTest extends UnitTestCase
         self::assertTrue($configuration['configurationFileHasBeenLoaded'], 'The option has not been set by the fixture.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveWritesArrayToGivenFileAsYAML()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -69,12 +65,10 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, $mockConfiguration);
 
         $yaml = 'configurationFileHasBeenLoaded: true' . chr(10) . 'foo:' . chr(10) . '  bar: Baz' . chr(10);
-        self::assertStringContainsString($yaml, file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
+        self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveKeepsQuotedKey()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -88,12 +82,10 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, $mockConfiguration);
 
         $yaml = 'configurationFileHasBeenLoaded: true' . chr(10) . 'foo:' . chr(10) . '  \'Foo.Bar:Baz\': \'a quoted key\'' . chr(10);
-        self::assertStringContainsString($yaml, file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
+        self::assertStringContainsString($yaml, (string) file_get_contents($pathAndFilename . '.yaml'), 'Configuration was not written to the file as expected.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function saveDoesNotOverwriteExistingHeaderCommentsIfFileExists()
     {
         $pathAndFilename = vfsStream::url('testDirectory') . '/YAMLConfiguration';
@@ -104,13 +96,11 @@ class YamlSourceTest extends UnitTestCase
         $configurationSource->save($pathAndFilename, ['configurationFileHasBeenLoaded' => true]);
 
         $yaml = file_get_contents($pathAndFilename . '.yaml');
-        self::assertStringContainsString('# This comment should stay' . chr(10) . chr(10), $yaml, 'Header comment was removed from file.');
-        self::assertStringNotContainsString('Test: foo', $yaml);
+        self::assertStringContainsString('# This comment should stay' . chr(10) . chr(10), (string) $yaml, 'Header comment was removed from file.');
+        self::assertStringNotContainsString('Test: foo', (string) $yaml);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function yamlFileIsParsedToArray()
     {
         $expectedConfiguration = [
@@ -130,9 +120,7 @@ class YamlSourceTest extends UnitTestCase
         self::assertSame($expectedConfiguration, $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function splitConfigurationFilesAreMergedAsExpected()
     {
         $expectedConfiguration = [
@@ -153,9 +141,7 @@ class YamlSourceTest extends UnitTestCase
         self::assertSame($expectedConfiguration, $configuration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function configurationFileWithYmlExtensionResultsInException()
     {
         $this->expectException(Exception::class);

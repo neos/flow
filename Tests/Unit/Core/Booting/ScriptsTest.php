@@ -11,7 +11,7 @@ namespace Neos\Flow\Tests\Unit\Core\Booting;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\Booting\Scripts;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Package\PackageManager;
@@ -47,11 +47,9 @@ class ScriptsMock extends Scripts
 /**
  * Testcase for the initialization scripts
  */
-class ScriptsTest extends UnitTestCase
+final class ScriptsTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function subProcessCommandEvaluatesIniFileUsageSettingCorrectly()
     {
         $settings = ['core' => [
@@ -79,9 +77,7 @@ class ScriptsTest extends UnitTestCase
         self::assertStringNotContainsString(' -c ', $actual, $message);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function subProcessCommandEvaluatesSubRequestIniEntriesCorrectly()
     {
         $settings = ['core' => [
@@ -95,19 +91,17 @@ class ScriptsTest extends UnitTestCase
         self::assertStringContainsString(sprintf(' -d %s ', escapeshellarg('someFlagSettingWithoutValue')), $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function initializeConfigurationInjectsSettingsToPackageManager()
     {
-        $mockSignalSlotDispatcher = $this->createMock(Dispatcher::class);
+        $mockSignalSlotDispatcher = $this->createStub(Dispatcher::class);
         $mockPackageManager = $this->createMock(PackageManager::class, ['injectSettings'], [], '', false, true);
 
         $bootstrap = new Bootstrap('Testing');
         $bootstrap->setEarlyInstance(Dispatcher::class, $mockSignalSlotDispatcher);
         $bootstrap->setEarlyInstance(PackageManager::class, $mockPackageManager);
 
-        $mockPackageManager->expects(self::once())->method('injectSettings');
+        $mockPackageManager->expects($this->once())->method('injectSettings');
 
         Scripts::initializeConfiguration($bootstrap);
     }

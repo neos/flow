@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Persistence\Aspect;
 
 /*
@@ -11,7 +13,7 @@ namespace Neos\Flow\Tests\Unit\Persistence\Aspect;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\Persistence\Aspect\PersistenceMagicAspect;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
@@ -20,7 +22,7 @@ use Neos\Flow\Tests\UnitTestCase;
 /**
  * Testcase for the PersistenceMagicAspect
  */
-class PersistenceMagicAspectTest extends UnitTestCase
+final class PersistenceMagicAspectTest extends UnitTestCase
 {
     /**
      * @var PersistenceMagicAspect
@@ -42,7 +44,7 @@ class PersistenceMagicAspectTest extends UnitTestCase
      */
     protected function setUp(): void
     {
-        $this->persistenceMagicAspect = $this->getAccessibleMock(PersistenceMagicAspect::class, ['dummy'], []);
+        $this->persistenceMagicAspect = $this->getAccessibleMock(PersistenceMagicAspect::class, [], []);
 
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->persistenceMagicAspect->_set('persistenceManager', $this->mockPersistenceManager);
@@ -51,19 +53,19 @@ class PersistenceMagicAspectTest extends UnitTestCase
     }
 
     /**
-     * @test
      * @return void
      */
+    #[Test]
     public function generateUuidGeneratesUuidAndRegistersProxyAsNewObject()
     {
-        $className = 'Class' . md5(uniqid(mt_rand(), true));
+        $className = 'Class' . md5(uniqid((string)mt_rand(), true));
         eval('class ' . $className . ' implements \Neos\Flow\Persistence\Aspect\PersistenceMagicInterface { public $Persistence_Object_Identifier = NULL; }');
         $object = new $className();
 
-        $this->mockJoinPoint->expects(self::atLeastOnce())->method('getProxy')->will(self::returnValue($object));
-        $this->mockPersistenceManager->expects(self::atLeastOnce())->method('registerNewObject')->with($object);
+        $this->mockJoinPoint->expects($this->atLeastOnce())->method('getProxy')->willReturn(($object));
+        $this->mockPersistenceManager->expects($this->atLeastOnce())->method('registerNewObject')->with($object);
         $this->persistenceMagicAspect->generateUuid($this->mockJoinPoint);
 
-        self::assertEquals(36, strlen($object->Persistence_Object_Identifier));
+        self::assertSame(36, strlen($object->Persistence_Object_Identifier));
     }
 }

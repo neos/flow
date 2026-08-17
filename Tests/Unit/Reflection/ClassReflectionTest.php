@@ -1,6 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Reflection;
+
+use Neos\Flow\Reflection\ClassReflection;
+use Neos\Flow\Reflection\MethodReflection;
+use Neos\Flow\Reflection\PropertyReflection;
+use Neos\Flow\Tests\Reflection\Fixture;
+use Neos\Flow\Tests\Reflection\Fixture\DummyInterface1;
+use Neos\Flow\Tests\Reflection\Fixture\DummyInterface2;
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the Neos.Flow package.
@@ -15,16 +26,10 @@ namespace Neos\Flow\Tests\Unit\Reflection;
 require_once('Fixture/DummyInterface1.php');
 require_once('Fixture/DummyInterface2.php');
 
-use Neos\Flow\Reflection\ClassReflection;
-use Neos\Flow\Reflection\MethodReflection;
-use Neos\Flow\Reflection\PropertyReflection;
-use Neos\Flow\Tests\Reflection\Fixture;
-use Neos\Flow\Tests\UnitTestCase;
-
 /**
  * Testcase for ClassReflection
  */
-class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface1, Fixture\DummyInterface2
+final class ClassReflectionTest extends UnitTestCase implements DummyInterface1, DummyInterface2
 {
     /**
      * @var mixed
@@ -36,9 +41,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
      */
     protected static $someStaticProperty = 'statix';
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertiesReturnsFlowsPropertyReflection()
     {
         $class = new ClassReflection(__CLASS__);
@@ -48,9 +51,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         self::assertInstanceOf(PropertyReflection::class, array_pop($properties), 'The returned properties are not of type \Neos\Flow\Reflection\PropertyReflection.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getPropertyReturnsFlowsPropertyReflection()
     {
         $class = new ClassReflection(__CLASS__);
@@ -58,9 +59,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         self::assertEquals('someProperty', $class->getProperty('someProperty')->getName(), 'The returned property seems not to be the right one.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodsReturnsFlowsMethodReflection()
     {
         $class = new ClassReflection(__CLASS__);
@@ -70,9 +69,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodsReturnsArrayWithNumericIndex()
     {
         $class = new ClassReflection(__CLASS__);
@@ -82,9 +79,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getMethodReturnsFlowsMethodReflection()
     {
         $class = new ClassReflection(__CLASS__);
@@ -92,9 +87,7 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         self::assertInstanceOf(MethodReflection::class, $method, 'The returned method is not of type \Neos\Flow\Reflection\MethodReflection.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getConstructorReturnsFlowsMethodReflection()
     {
         $class = new ClassReflection(__CLASS__);
@@ -102,21 +95,15 @@ class ClassReflectionTest extends UnitTestCase implements Fixture\DummyInterface
         self::assertInstanceOf(MethodReflection::class, $constructor, 'The returned method is not of type \Neos\Flow\Reflection\MethodReflection.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getInterfacesReturnsFlowsClassReflection()
     {
         $class = new ClassReflection(__CLASS__);
         $interfaces = $class->getInterfaces();
-        foreach ($interfaces as $interface) {
-            self::assertInstanceOf(ClassReflection::class, $interface);
-        }
+        self::assertContainsOnlyInstancesOf(ClassReflection::class, $interfaces);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getParentClassReturnsFlowsClassReflection()
     {
         $class = new ClassReflection(__CLASS__);

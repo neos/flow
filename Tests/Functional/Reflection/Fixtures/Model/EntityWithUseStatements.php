@@ -37,7 +37,7 @@ class EntityWithUseStatements
     protected $propertyFromOtherNamespace;
 
     /**
-     * @param Fixtures\Model\SubEntity $parameter
+     * @param SubEntity $parameter
      * @return void
      */
     public function fullyQualifiedClassName(SubEntity $parameter)

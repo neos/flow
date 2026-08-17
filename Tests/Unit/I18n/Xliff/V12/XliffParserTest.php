@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\I18n\Xliff\V12;
 
 /*
@@ -11,49 +13,44 @@ namespace Neos\Flow\Tests\Unit\I18n\Xliff\V12;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
-use Neos\Flow\I18n;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\I18n\Xliff\V12\XliffParser;
+use Neos\Flow\I18n\Xliff\Exception\InvalidXliffDataException;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the XliffParser
  */
-class XliffParserTest extends UnitTestCase
+final class XliffParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesXliffFileCorrectly()
     {
         $mockFilenamePath = __DIR__ . '/../../Fixtures/MockXliffData.xlf';
         $mockParsedData = require(__DIR__ . '/../../Fixtures/MockParsedXliffData.php');
 
-        $parser = new I18n\Xliff\V12\XliffParser();
+        $parser = new XliffParser();
         $result = $parser->getParsedData($mockFilenamePath);
         self::assertEquals($mockParsedData, $result);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingIdInSingularTransUnitCausesException()
     {
-        $this->expectException(I18n\Xliff\Exception\InvalidXliffDataException::class);
+        $this->expectException(InvalidXliffDataException::class);
         $mockFilenamePath = __DIR__ . '/../../Fixtures/MockInvalidXliffData.xlf';
 
-        $parser = new I18n\Xliff\V12\XliffParser();
+        $parser = new XliffParser();
         $parser->getParsedData($mockFilenamePath);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function missingIdInPluralTransUnitCausesException()
     {
-        $this->expectException(I18n\Xliff\Exception\InvalidXliffDataException::class);
+        $this->expectException(InvalidXliffDataException::class);
         $mockFilenamePath = __DIR__ . '/../../Fixtures/MockInvalidPluralXliffData.xlf';
 
-        $parser = new I18n\Xliff\V12\XliffParser();
+        $parser = new XliffParser();
         $parser->getParsedData($mockFilenamePath);
     }
 }

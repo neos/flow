@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Mvc\Routing;
 
 /*
@@ -11,17 +13,17 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
 use Neos\Flow\Mvc\Routing\Dto\ResolveResult;
 use Neos\Flow\Mvc\Routing\DynamicRoutePart;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Tests\Unit\Mvc\Routing\Fixtures\UriArgumentObjectWithToString;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the MVC Web Routing DynamicRoutePart Class
  */
-class DynamicRoutePartTest extends UnitTestCase
+final class DynamicRoutePartTest extends UnitTestCase
 {
     /**
      * @var DynamicRoutePart
@@ -35,7 +37,7 @@ class DynamicRoutePartTest extends UnitTestCase
 
     protected function setUp(): void
     {
-        $this->dynamicRoutPart = $this->getAccessibleMock(DynamicRoutePart::class, ['dummy']);
+        $this->dynamicRoutPart = $this->getAccessibleMock(DynamicRoutePart::class, []);
 
         $this->mockPersistenceManager = $this->createMock(PersistenceManagerInterface::class);
         $this->dynamicRoutPart->_set('persistenceManager', $this->mockPersistenceManager);
@@ -44,10 +46,7 @@ class DynamicRoutePartTest extends UnitTestCase
     /*                                                                        *
      * URI matching                                                           *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotMatchIfRequestPathIsNullOrEmpty()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -59,9 +58,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if $routePath is empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotMatchEmptyRequestPathEvenIfDefaultValueIsSet()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -71,9 +68,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if $routePath is empty.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotMatchIfNameIsNotSet()
     {
         $routePath = 'foo';
@@ -81,10 +76,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if name is not set.');
     }
 
-
-    /**
-     * @test
-     */
+    #[Test]
     public function valueMatchesFirstRequestPathSegmentAfterSuccessfulMatch()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -97,9 +89,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('firstSegment', $matchResult->getMatchedValue(), 'value of Dynamic Route Part should be equal to first request path segment after successful match.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueIsUrlDecodedAfterSuccessfulMatch()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -112,9 +102,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('some \ special öäüß', $matchResult->getMatchedValue(), 'value of Dynamic Route Part should be equal to first request path segment after successful match.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routePathIsShortenedByOneSegmentAfterSuccessfulMatch()
     {
         $this->dynamicRoutPart->setName('bar');
@@ -126,9 +114,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertSame('/foo/test', $routePath, 'Dynamic Route Part should shorten request path by one segment on successful match.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRouteDoesNotMatchRequestPathWithMoreThanOneSegmentIfSplitStringIsNotSet()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -138,9 +124,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if request Path has more than one segment and no split string is set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRouteDoesNotMatchRequestPathWithMoreThanOneSegmentIfSplitStringIsNotFound()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -151,9 +135,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if request Path has more than one segment and does not contain split string.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRouteMatchesRequestPathWithOnlyOneSegmentIfSplitStringIsNotSet()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -164,9 +146,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('bar', $matchResult->getMatchedValue(), 'Dynamic Route Part should match if request Path has only one segment and no split string is set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRouteMatchesRequestPathWithOnlyOneSegmentIfSplitStringIsNotFound()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -178,9 +158,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('bar', $matchResult->getMatchedValue(), 'Dynamic Route Part should match if request Path has only one segment and does not contain split string.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotMatchIfSplitStringIsAtFirstPosition()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -191,9 +169,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->match($routePath), 'Dynamic Route Part should not match if split string is first character of current request path.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartMatchesIfSplitStringContainsMultipleCharactersThatAreFoundInRequestPath()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -206,10 +182,7 @@ class DynamicRoutePartTest extends UnitTestCase
     /*                                                                        *
      * URI resolving                                                          *
      *                                                                        */
-
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotResolveIfNameIsNotSet()
     {
         $routeValues = ['foo' => 'bar'];
@@ -217,9 +190,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues), 'Dynamic Route Part should not resolve if name is not set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartResolvesSimpleValueArray()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -232,9 +203,8 @@ class DynamicRoutePartTest extends UnitTestCase
     /**
      * Makes sure that dynamic route parts are encoded via rawurlencode (which encodes spaces to "%20") and not
      * urlencode (which encodes spaces to "+"). According to RFC 3986 that is correct for path segments.
-     *
-     * @test
      */
+    #[Test]
     public function dynamicRoutePartRawUrlEncodesValues()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -244,9 +214,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('some%20%5c%20special%20%c3%b6%c3%a4%c3%bc%c3%9f', $resolveResult->getResolvedValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotResolveEmptyArray()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -255,9 +223,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues), 'Dynamic Route Part should not resolve an empty $routeValues-array.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotResolveEmptyArrayEvenIfDefaultValueIsSet()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -267,9 +233,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues), 'Dynamic Route Part should not resolve an empty $routeValues-array even if default Value is set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartLowerCasesValueWhenCallingResolveByDefault()
     {
         $this->dynamicRoutPart->setName('Foo');
@@ -279,9 +243,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('bar', $resolveResult->getResolvedValue(), 'By default Dynamic Route Part should lowercase route values.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicRoutePartDoesNotChangeCaseOfValueIfLowerCaseIsFale()
     {
         $this->dynamicRoutPart->setName('Foo');
@@ -292,9 +254,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertEquals('Bar', $resolveResult->getResolvedValue(), 'Dynamic Route Part should not change the case of the value if lowerCase is false.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveReturnsFalseIfNoCorrespondingValueIsGiven()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -303,9 +263,7 @@ class DynamicRoutePartTest extends UnitTestCase
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues), 'Dynamic Route Part should not resolve if no element with the same name exists in $routeValues and no default value is set.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveUnsetsCurrentRouteValueOnSuccessfulResolve()
     {
         $this->dynamicRoutPart->setName('foo');
@@ -313,12 +271,10 @@ class DynamicRoutePartTest extends UnitTestCase
 
         $resolveResult = $this->dynamicRoutPart->resolve($routeValues);
         self::assertNotFalse($resolveResult);
-        self::assertEquals(['differentString' => 'value2'], $routeValues, 'Dynamic Route Part should unset matching element from $routeValues on successful resolve.');
+        self::assertSame(['differentString' => 'value2'], $routeValues, 'Dynamic Route Part should unset matching element from $routeValues on successful resolve.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveRecursivelyUnsetsCurrentRouteValueOnSuccessfulResolve()
     {
         $this->dynamicRoutPart->setName('foo.bar.baz');
@@ -326,90 +282,75 @@ class DynamicRoutePartTest extends UnitTestCase
 
         $resolveResult = $this->dynamicRoutPart->resolve($routeValues);
         self::assertNotFalse($resolveResult);
-        self::assertEquals(['foo' => ['bar' => ['otherKey' => 'should stay']], 'differentString' => 'value2'], $routeValues);
+        self::assertSame(['foo' => ['bar' => ['otherKey' => 'should stay']], 'differentString' => 'value2'], $routeValues);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveDoesNotChangeRouteValuesOnUnsuccessfulResolve()
     {
         $this->dynamicRoutPart->setName('foo');
         $routeValues = ['differentString' => 'bar'];
 
         self::assertFalse($this->dynamicRoutPart->resolve($routeValues));
-        self::assertEquals(['differentString' => 'bar'], $routeValues, 'Dynamic Route Part should not change $routeValues on unsuccessful resolve.');
+        self::assertSame(['differentString' => 'bar'], $routeValues, 'Dynamic Route Part should not change $routeValues on unsuccessful resolve.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsMatchResultsAndSetTheValueToTheLowerCasedIdentifierIfTheValueToBeResolvedIsAnObject()
     {
         $object = new \stdClass();
-        $this->mockPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue('TheIdentifier'));
+        $this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn(('TheIdentifier'));
         /** @var ResolveResult $resolveResult */
         $resolveResult = $this->dynamicRoutPart->_call('resolveValue', $object);
         self::assertSame('theidentifier', $resolveResult->getResolvedValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsMatchResultsAndSetTheValueToTheCorrectlyCasedIdentifierIfTheValueToBeResolvedIsAnObjectAndLowerCaseIsFalse()
     {
         $object = new \stdClass();
-        $this->mockPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue('TheIdentifier'));
+        $this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn(('TheIdentifier'));
         $this->dynamicRoutPart->setLowerCase(false);
         /** @var ResolveResult $resolveResult */
         $resolveResult = $this->dynamicRoutPart->_call('resolveValue', $object);
         self::assertSame('TheIdentifier', $resolveResult->getResolvedValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsMatchResultsIfTheValueToBeResolvedIsAnObjectWithANumericIdentifier()
     {
         $object = new \stdClass();
-        $this->mockPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue(123));
+        $this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn((123));
         self::assertNotFalse($this->dynamicRoutPart->_call('resolveValue', $object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsFalseIfTheValueToBeResolvedIsAnObjectWithAMultiValueIdentifier()
     {
         $object = new \stdClass();
-        $this->mockPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue(['foo' => 'Foo', 'bar' => 'Bar']));
+        $this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn((['foo' => 'Foo', 'bar' => 'Bar']));
         self::assertFalse($this->dynamicRoutPart->_call('resolveValue', $object));
     }
 
     /**
      * Objects that are unknown to the persistence manager cannot be resolved by the standard DynamicRoutePart handler.
-     *
-     * @test
      */
+    #[Test]
     public function resolveValueReturnsFalseIfTheValueToBeResolvedIsAnObjectThatIsUnknownToThePersistenceManager()
     {
         $object = new \stdClass();
-        $this->mockPersistenceManager->expects(self::once())->method('getIdentifierByObject')->with($object)->will(self::returnValue(null));
+        $this->mockPersistenceManager->expects($this->once())->method('getIdentifierByObject')->with($object)->willReturn((null));
         self::assertFalse($this->dynamicRoutPart->_call('resolveValue', $object));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveValueReturnsToStringValueOfObjectNotAvailableFromPersistenceManager()
     {
         $resolveResult = $this->dynamicRoutPart->_call('resolveValue', new UriArgumentObjectWithToString());
         self::assertSame('string%20to%20identify%20object', $resolveResult->getResolvedValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routePartValueIsNullAfterUnsuccessfulResolve()
     {
         $this->dynamicRoutPart->setName('foo');

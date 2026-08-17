@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -11,7 +13,7 @@ namespace Neos\Flow\Tests\Functional\Security;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Account;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -20,7 +22,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  * Testcase for the account factory
  *
  */
-class AccountTest extends FunctionalTestCase
+final class AccountTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -39,27 +41,21 @@ class AccountTest extends FunctionalTestCase
         $this->account = $this->objectManager->get(Account::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function freshAccountIsActive()
     {
         $this->account->setExpirationDate(null);
         self::assertTrue($this->account->isActive());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function expiredAccountIsInActive()
     {
         $this->account->setExpirationDate((new \DateTime("now"))->sub(new \DateInterval("PT1H")));
         self::assertFalse($this->account->isActive());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notYetExpiredAccountIsInActive()
     {
         $this->account->setExpirationDate((new \DateTime("now"))->add(new \DateInterval("PT1H")));

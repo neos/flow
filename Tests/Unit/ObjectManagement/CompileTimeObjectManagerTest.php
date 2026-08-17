@@ -18,6 +18,7 @@ use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 
 class CompileTimeObjectManagerTest extends UnitTestCase
@@ -58,9 +59,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         $this->compileTimeObjectManager->injectConfigurationManager($mockConfigurationManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flowPackageClassesAreNotFilteredFromObjectManagementByDefault()
     {
         $packagePath = 'vfs://Packages/Vendor.TestPackage/';
@@ -76,9 +75,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertArrayHasKey('Vendor.TestPackage', $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesAreFilteredFromObjectManagementByDefault()
     {
         $packagePath = 'vfs://Packages/NonFlow.TestPackage/';
@@ -93,9 +90,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertCount(1, $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesCanBeIncludedInObjectManagementByConfiguration()
     {
         $packagePath = 'vfs://Packages/NonFlow.IncludeAllClasses/';
@@ -111,9 +106,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertArrayHasKey('NonFlow.IncludeAllClasses', $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonFlowPackageClassesExcludedAndIncludedWillNotBeIncluded()
     {
         $packagePath = 'vfs://Packages/NonFlow.IncludeAndExclude/';
@@ -128,9 +121,7 @@ class CompileTimeObjectManagerTest extends UnitTestCase
         self::assertCount(1, $objectManagementEnabledClasses);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function flowPackageClassesForNonMatchingIncludesAreRemoved()
     {
         $packagePath = 'vfs://Packages/Vendor.AnotherPackage/';

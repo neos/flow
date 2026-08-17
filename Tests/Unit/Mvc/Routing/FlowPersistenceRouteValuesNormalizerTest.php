@@ -9,6 +9,7 @@ use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\Test;
 
 class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
 {
@@ -29,9 +30,7 @@ class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
         $this->flowPersistenceRouteValuesNormalizer = new FlowPersistenceRouteValuesNormalizer($this->persistenceManager);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function normalizeObjectsConvertsAnObject()
     {
         $someObject = new \stdClass();
@@ -43,9 +42,7 @@ class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
     }
 
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectToIdentityArrayThrowsExceptionIfIdentityForTheGivenObjectCantBeDetermined()
     {
         $this->expectException(UnknownObjectException::class);
@@ -55,15 +52,21 @@ class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
         $this->flowPersistenceRouteValuesNormalizer->normalizeObjects([$someObject]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectsToIdentityArraysRecursivelyConvertsObjects()
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $this->persistenceManager->expects(self::exactly(2))->method('getIdentifierByObject')
-            ->withConsecutive([$object1], [$object2])->willReturnOnConsecutiveCalls('identifier1', 'identifier2');
+        $matcher = self::exactly(2);
+        $this->persistenceManager->expects($matcher)->method('getIdentifierByObject')
+            ->willReturnCallback(function ($object) use ($matcher, $object1, $object2) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    self::assertSame($object1, $object);
+                    return 'identifier1';
+                }
+                self::assertSame($object2, $object);
+                return 'identifier2';
+            });
 
         $originalArray = ['foo' => 'bar', 'object1' => $object1, 'baz' => ['object2' => $object2]];
         $expectedResult = ['foo' => 'bar', 'object1' => ['__identity' => 'identifier1'], 'baz' => ['object2' => ['__identity' => 'identifier2']]];
@@ -72,15 +75,21 @@ class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function convertObjectsToIdentityArraysConvertsObjectsInIterators()
     {
         $object1 = new \stdClass();
         $object2 = new \stdClass();
-        $this->persistenceManager->expects(self::exactly(2))->method('getIdentifierByObject')
-            ->withConsecutive([$object1], [$object2])->willReturnOnConsecutiveCalls('identifier1', 'identifier2');
+        $matcher = self::exactly(2);
+        $this->persistenceManager->expects($matcher)->method('getIdentifierByObject')
+            ->willReturnCallback(function ($object) use ($matcher, $object1, $object2) {
+                if ($matcher->numberOfInvocations() === 1) {
+                    self::assertSame($object1, $object);
+                    return 'identifier1';
+                }
+                self::assertSame($object2, $object);
+                return 'identifier2';
+            });
 
         $originalArray = ['foo' => 'bar', 'object1' => $object1, 'baz' => new \ArrayObject(['object2' => $object2])];
         $expectedResult = ['foo' => 'bar', 'object1' => ['__identity' => 'identifier1'], 'baz' => ['object2' => ['__identity' => 'identifier2']]];

@@ -13,7 +13,11 @@ namespace Neos\Flow\Tests\Functional\Persistence\Doctrine;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEmbeddable;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestValueObject;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures;
 use Neos\Flow\Tests\FunctionalTestCase;
@@ -21,7 +25,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 /**
  * Testcase for persisting cloned related entities
  */
-class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
+final class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
 {
     /**
      * @var bool
@@ -42,17 +46,15 @@ class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
         if (!$this->persistenceManager instanceof PersistenceManager) {
             static::markTestSkipped('Doctrine persistence is not enabled');
         }
-        $this->testEntityRepository = $this->objectManager->get(Fixtures\TestEntityRepository::class);
+        $this->testEntityRepository = $this->objectManager->get(TestEntityRepository::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function relatedEntitiesCanBePersistedWhenFetchedAsDoctrineProxy(): void
     {
-        $entity = new Fixtures\TestEntity();
+        $entity = new TestEntity();
         $entity->setName('Andi');
-        $relatedEntity = new Fixtures\TestEntity();
+        $relatedEntity = new TestEntity();
         $relatedEntity->setName('Robert');
         $entity->setRelatedEntity($relatedEntity);
 
@@ -71,21 +73,19 @@ class PersistClonedRelatedEntitiesTest extends FunctionalTestCase
 
         $clonedEntityIdentifier = $this->persistenceManager->getIdentifierByObject($clonedRelatedEntity);
         $clonedLoadedEntity = $this->testEntityRepository->findByIdentifier($clonedEntityIdentifier);
-        self::assertInstanceOf(Fixtures\TestEntity::class, $clonedLoadedEntity);
+        self::assertInstanceOf(TestEntity::class, $clonedLoadedEntity);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function embeddablesInsideClonedProxiedEntitiesAreCorrectlyLoaded(): void
     {
-        $entity = new Fixtures\TestEntity();
+        $entity = new TestEntity();
         $entity->setName('Andi');
-        $relatedEntity = new Fixtures\TestEntity();
+        $relatedEntity = new TestEntity();
         $relatedEntity->setName('Robert');
-        $embedded = new Fixtures\TestEmbeddable('Foo');
+        $embedded = new TestEmbeddable('Foo');
         $relatedEntity->setEmbedded($embedded);
-        $valueObject = new Fixtures\TestValueObject('Bar');
+        $valueObject = new TestValueObject('Bar');
         $relatedEntity->setRelatedValueObject($valueObject);
         $entity->setRelatedEntity($relatedEntity);
 

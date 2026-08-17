@@ -11,13 +11,13 @@ namespace Neos\Flow\Tests\Functional\Persistence\FixturesPHP8;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\Annotations\Scope;
 use Neos\Flow\Persistence\Doctrine\Repository;
 
 /**
  * A repository for posts
  */
-#[\Neos\Flow\Annotations\Scope('singleton')]
+#[Scope('singleton')]
 class PostRepository extends Repository
 {
     /**

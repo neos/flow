@@ -17,15 +17,14 @@ use Neos\Flow\Security\Authentication\AuthenticationProviderResolver;
 use Neos\Flow\Security\Authentication\Provider\TestingProvider;
 use Neos\Flow\Security\Exception\NoAuthenticationProviderFoundException;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the security interceptor resolver
  */
 class AuthenticationProviderResolverTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderObjectNameThrowsAnExceptionIfNoProviderIsAvailable()
     {
         $this->expectException(NoAuthenticationProviderFoundException::class);
@@ -37,9 +36,7 @@ class AuthenticationProviderResolverTest extends UnitTestCase
         $providerResolver->resolveProviderClass('notExistingClass');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderReturnsTheCorrectProviderForAShortName()
     {
         $longClassNameForTest = TestingProvider::class;
@@ -63,9 +60,7 @@ class AuthenticationProviderResolverTest extends UnitTestCase
         self::assertEquals($longClassNameForTest, $providerClass, 'The wrong classname has been resolved');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resolveProviderReturnsTheCorrectProviderForACompleteClassName()
     {
         $mockObjectManager = $this->getMockBuilder(ObjectManager::class)->disableOriginalConstructor()->getMock();

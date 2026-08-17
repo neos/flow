@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
@@ -11,7 +13,8 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\ObjectManagement\Exception\UnknownClassException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationParser;
@@ -25,11 +28,9 @@ use Psr\Log\LoggerInterface;
  * Testcase for the object configuration builder
  *
  */
-class ConfigurationBuilderTest extends UnitTestCase
+final class ConfigurationBuilderTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function privatePropertyAnnotatedForInjectionThrowsException()
     {
         $this->expectException(Exception::class);
@@ -41,12 +42,10 @@ class ConfigurationBuilderTest extends UnitTestCase
         $configurationBuilder->buildObjectConfigurations(['Neos.Flow.Testing' => [__CLASS__]], ['Neos.Flow.Testing' => [__CLASS__ => $configurationArray]]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function errorOnGetClassMethodsThrowsException()
     {
-        $this->expectException(Exception\UnknownClassException::class);
+        $this->expectException(UnknownClassException::class);
         $configurationArray = [];
         $configurationArray['properties']['someProperty']['object']['name'] = 'Foo';
         $configurationArray['properties']['someProperty']['object']['className'] = 'foobar';
@@ -55,9 +54,7 @@ class ConfigurationBuilderTest extends UnitTestCase
         $configurationBuilder->buildObjectConfigurations(['Neos.Flow.Testing' => ['Foo']], ['Neos.Flow.Testing' => [__CLASS__ => $configurationArray]]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function objectsCreatedByFactoryShouldNotFailOnMissingConstructorArguments()
     {
         $configurationArray = [

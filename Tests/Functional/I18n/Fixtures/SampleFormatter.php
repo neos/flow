@@ -11,7 +11,7 @@ namespace Neos\Flow\Tests\Functional\I18n\Fixtures;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Flow\I18n\Locale;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n;
 use Neos\Flow\I18n\Formatter\FormatterInterface;
@@ -27,7 +27,7 @@ class SampleFormatter implements FormatterInterface
      * @param array $styleProperties
      * @return string
      */
-    public function format($value, I18n\Locale $locale, array $styleProperties = [])
+    public function format($value, Locale $locale, array $styleProperties = [])
     {
         return $value . '+Formatted42';
     }
