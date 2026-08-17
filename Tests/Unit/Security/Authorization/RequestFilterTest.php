@@ -14,7 +14,6 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Security;
 use Neos\Flow\Security\Authorization\InterceptorInterface;
 use Neos\Flow\Security\Authorization\RequestFilter;
 use Neos\Flow\Security\RequestPatternInterface;

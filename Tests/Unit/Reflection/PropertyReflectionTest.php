@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Reflection;
 use Neos\Flow\Reflection\Exception;
 use Neos\Flow\Reflection\PropertyReflection;
 use Neos\Flow\Tests\UnitTestCase;

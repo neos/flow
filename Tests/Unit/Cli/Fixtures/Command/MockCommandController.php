@@ -11,8 +11,8 @@ namespace Neos\Flow\Tests\Unit\Cli\Fixtures\Command;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Cli\Command;
 use Neos\Flow\Cli;
+use Neos\Flow\Cli\Command;
 
 /**
  * A mock CLI Command

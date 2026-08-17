@@ -13,10 +13,6 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use GuzzleHttp\Psr7\Uri;
-use Neos\Flow\Configuration\ConfigurationManager;
-use Neos\Flow\Mvc\ActionRequest;
-use Neos\Flow\Mvc\Exception\InvalidRouteSetupException;
 use Neos\Flow\Mvc\Exception\NoMatchingRouteException;
 use Neos\Flow\Mvc\Routing\Dto\ResolveContext;
 use Neos\Flow\Mvc\Routing\Dto\RouteContext;

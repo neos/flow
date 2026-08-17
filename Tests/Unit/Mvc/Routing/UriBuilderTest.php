@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Mvc\Routing;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Http;
 use Neos\Flow\Http\BaseUriProvider;
 use Neos\Flow\Mvc;
 use Neos\Flow\Mvc\ActionRequest;
@@ -22,7 +21,6 @@ use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
 use Neos\Flow\Mvc\Routing\RouterInterface;
 use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Tests\UnitTestCase;
-use Neos\Flow\Utility;
 use Neos\Flow\Utility\Environment;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;

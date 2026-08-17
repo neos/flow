@@ -14,7 +14,6 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization\Interceptor;
  * source code.
  */
 use Neos\Flow\Aop\JoinPointInterface;
-use Neos\Flow\Security;
 use Neos\Flow\Security\Authentication\AuthenticationManagerInterface;
 use Neos\Flow\Security\Authorization\Interceptor\PolicyEnforcement;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;

@@ -178,18 +178,18 @@ final class PersistentObjectConverterTest extends UnitTestCase
         $this->mockReflectionService
             ->expects($matcher)
             ->method('getMethodParameters')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->numberOfInvocations() === 1) {
-                $this->assertSame('TheTargetType', $parameters[0]);
-                $this->assertSame('__construct', $parameters[1]);
-            }
-            if ($matcher->numberOfInvocations() === 2) {
-                $this->assertSame('TheTargetType', $parameters[0]);
-                $this->assertSame('setVirtualPropertyName', $parameters[1]);
-            }
-            return [
-                ['type' => 'TheTypeOfSubObject']
-            ];
-        });
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('TheTargetType', $parameters[0]);
+                    $this->assertSame('__construct', $parameters[1]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('TheTargetType', $parameters[0]);
+                    $this->assertSame('setVirtualPropertyName', $parameters[1]);
+                }
+                return [
+                    ['type' => 'TheTypeOfSubObject']
+                ];
+            });
         $configuration = $this->buildConfiguration([]);
         self::assertEquals('TheTypeOfSubObject', $this->converter->getTypeOfChildProperty('TheTargetType', 'virtualPropertyName', $configuration));
     }

@@ -13,15 +13,15 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\ObjectManagement\Exception\UnknownClassException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationBuilder;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationParser;
 use Neos\Flow\ObjectManagement\Exception;
+use Neos\Flow\ObjectManagement\Exception\UnknownClassException;
 use Neos\Flow\ObjectManagement\Exception\UnresolvedDependenciesException;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 
 /**

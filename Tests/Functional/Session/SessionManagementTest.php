@@ -13,12 +13,12 @@ namespace Neos\Flow\Tests\Functional\Session;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
+use Neos\Flow\Session;
 use Neos\Flow\Session\SessionInterface;
 use Neos\Flow\Session\SessionManagerInterface;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use Neos\Flow\Session;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 
 final class SessionManagementTest extends FunctionalTestCase
 {

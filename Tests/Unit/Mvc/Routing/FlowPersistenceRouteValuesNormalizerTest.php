@@ -8,8 +8,8 @@ use Neos\Flow\Mvc\Routing\FlowPersistenceRouteValuesNormalizer;
 use Neos\Flow\Persistence\Exception\UnknownObjectException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Tests\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class FlowPersistenceRouteValuesNormalizerTest extends UnitTestCase
 {

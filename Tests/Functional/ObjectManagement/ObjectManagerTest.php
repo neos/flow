@@ -13,17 +13,17 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceA;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassB;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassG;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\OuterPrototype;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\SignalSlot\Dispatcher;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\OuterPrototype;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceA;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\InterfaceAImplementation;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassB;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassG;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Functional tests for the Object Manager features
@@ -115,7 +115,7 @@ final class ObjectManagerTest extends FunctionalTestCase
         self::assertSame(ObjectManagerInterface::class, $first);
         self::assertSame(ConfigurationManager::class, $last);
     }
-    
+
     #[Test]
     public function virtualObjectsCanBeInstantiated()
     {

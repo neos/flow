@@ -13,14 +13,14 @@ namespace Neos\Flow\Tests\Functional\Validation;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
-use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\SubEntity;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\ObjectAccess;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Flow Validation Framework

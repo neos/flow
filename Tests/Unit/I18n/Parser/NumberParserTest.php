@@ -13,13 +13,13 @@ namespace Neos\Flow\Tests\Unit\I18n\Parser;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
+use Neos\Flow\I18n\Locale;
+use Neos\Flow\I18n\Parser\NumberParser;
+use Neos\Flow\Tests\UnitTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\I18n\Parser\NumberParser;
-use Neos\Flow\I18n;
-use Neos\Flow\Tests\UnitTestCase;
 
 /**
  * Testcase for the NumberParser

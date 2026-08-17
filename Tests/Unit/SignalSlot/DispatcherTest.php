@@ -13,12 +13,12 @@ namespace Neos\Flow\Tests\Unit\SignalSlot;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\SignalSlot\Exception\InvalidSlotException;
 use Neos\Flow\SignalSlot\SignalInformation;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Signal Dispatcher Class

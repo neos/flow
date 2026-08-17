@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Persistence;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Persistence;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;

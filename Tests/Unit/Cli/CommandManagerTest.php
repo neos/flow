@@ -13,19 +13,19 @@ namespace Neos\Flow\Tests\Unit\Cli;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockACommandController;
-use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockBCommandController;
-use Neos\Flow\Cli\CommandController;
-use Neos\Flow\Cli\Command;
 use Neos\Flow\Cli;
+use Neos\Flow\Cli\Command;
+use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Cli\CommandManager;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Mvc\Exception\AmbiguousCommandIdentifierException;
 use Neos\Flow\Mvc\Exception\NoSuchCommandException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockACommandController;
+use Neos\Flow\Tests\Unit\Cli\Fixtures\Command\MockBCommandController;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 require_once('Fixtures/Command/MockCommandController.php');
 

@@ -13,11 +13,11 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Aop\Pointcut\PointcutMethodAnnotatedWithFilter;
 use Neos\Flow\Aop\Builder\ClassNameIndex;
+use Neos\Flow\Aop\Pointcut\PointcutMethodAnnotatedWithFilter;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Pointcut Method-Annotated-With Filter

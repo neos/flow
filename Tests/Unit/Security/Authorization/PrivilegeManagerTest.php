@@ -14,9 +14,7 @@ namespace Neos\Flow\Tests\Unit\Security\Authorization;
  * source code.
  */
 use Neos\Flow\Aop\JoinPoint;
-use Neos\Flow\Aop\JoinPointInterface;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
-use Neos\Flow\Security;
 use Neos\Flow\Security\Authorization\Privilege\AbstractPrivilege;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
 use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeSubject;

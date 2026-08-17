@@ -13,16 +13,15 @@ namespace Neos\Flow\Tests\Unit\Persistence\Doctrine\Mapping\Driver;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Security\Policy\Role;
-use Neos\Flow\Security\Account;
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Test;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\EntityManager;
 use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
-use Neos\Flow\Security;
+use Neos\Flow\Security\Account;
+use Neos\Flow\Security\Policy\Role;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**

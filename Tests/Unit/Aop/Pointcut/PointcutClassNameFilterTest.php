@@ -17,11 +17,11 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
 require_once(FLOW_PATH_FLOW . 'Tests/Unit/Fixtures/DummyClass.php');
 require_once(FLOW_PATH_FLOW . 'Tests/Unit/Fixtures/SecondDummyClass.php');
 
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Aop\Pointcut\PointcutClassNameFilter;
 use Neos\Flow\Aop\Builder\ClassNameIndex;
+use Neos\Flow\Aop\Pointcut\PointcutClassNameFilter;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Pointcut Class Filter

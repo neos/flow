@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Validation;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Annotations;
 use Neos\Flow\Annotations\IgnoreValidation;
 use Neos\Flow\Annotations\Validate;
 use Neos\Flow\Mvc\Controller\ActionController;

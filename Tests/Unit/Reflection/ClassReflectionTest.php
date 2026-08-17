@@ -7,7 +7,6 @@ namespace Neos\Flow\Tests\Unit\Reflection;
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\MethodReflection;
 use Neos\Flow\Reflection\PropertyReflection;
-use Neos\Flow\Tests\Reflection\Fixture;
 use Neos\Flow\Tests\Reflection\Fixture\DummyInterface1;
 use Neos\Flow\Tests\Reflection\Fixture\DummyInterface2;
 use Neos\Flow\Tests\UnitTestCase;

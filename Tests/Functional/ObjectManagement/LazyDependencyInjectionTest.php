@@ -13,14 +13,14 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassA;
+use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\AnotherClassWithLazyDependencies;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithLazyDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassA;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassB;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassC;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\AnotherClassWithLazyDependencies;
-use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Functional tests for the Lazy Dependency Injection features

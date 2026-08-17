@@ -15,7 +15,6 @@ namespace Neos\Flow\Tests\Functional\Reflection\Fixtures\Model;
 use Doctrine\ORM\Mapping as ORM;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures as PF;
-use Neos\Flow\Tests\Functional\Reflection\Fixtures;
 
 /**
  * A model fixture which is used for testing the class schema building

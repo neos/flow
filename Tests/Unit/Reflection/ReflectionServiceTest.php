@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Reflection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Doctrine\Common\Annotations\Reader;
 use Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\Unit\Reflection\Fixture\AliasedClass;

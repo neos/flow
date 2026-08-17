@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Aop\Pointcut;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Aop;
 use Neos\Flow\Aop\Builder\ClassNameIndex;
 use Neos\Flow\Aop\Pointcut;
 use Neos\Flow\Aop\Pointcut\PointcutClassNameFilter;

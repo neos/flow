@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\I18n;
 use Neos\Flow\I18n\Cldr\Reader\DatesReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\Parser\DatetimeParser;

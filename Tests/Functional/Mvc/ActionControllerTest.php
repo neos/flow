@@ -13,8 +13,6 @@ namespace Neos\Flow\Tests\Functional\Mvc;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\ContentStream;
@@ -24,6 +22,8 @@ use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\StandardController;
 use Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\TestObjectArgument;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
 final class ActionControllerTest extends FunctionalTestCase

@@ -13,8 +13,6 @@ namespace Neos\Flow\Tests\Unit\Configuration;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Configuration\Exception\ParseErrorException;
@@ -33,6 +31,8 @@ use Neos\Flow\Package\Package;
 use Neos\Flow\Tests\Unit\Aop\Advice\Fixtures\SomeClass;
 use Neos\Flow\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -1309,7 +1309,7 @@ final class ConfigurationManagerTest extends UnitTestCase
 
         $configurationManager = $this->getAccessibleConfigurationManager();
 
-        $configurationManager->registerConfigurationType(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, new class implements LoaderInterface {
+        $configurationManager->registerConfigurationType(ConfigurationManager::CONFIGURATION_TYPE_SETTINGS, new class () implements LoaderInterface {
             public function load(array $packages, ApplicationContext $context): array
             {
                 return [];

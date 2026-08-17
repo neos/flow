@@ -13,9 +13,6 @@ namespace Neos\Flow\Tests\Unit\Http\Middleware;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\BackupGlobals;
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\Middleware\TrustedProxiesMiddleware;
 use Neos\Flow\Http\ServerRequestAttributes;
@@ -23,6 +20,9 @@ use Neos\Flow\Tests\Unit\Http\Fixtures\SpyRequestHandler;
 use Neos\Flow\Tests\UnitTestCase;
 use Neos\Http\Factories\ServerRequestFactory;
 use Neos\Http\Factories\UriFactory;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestFactoryInterface;

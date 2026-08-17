@@ -13,31 +13,31 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithDocComments;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithPhpAttributes;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassB;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassE;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassEsub;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassF;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ReadonlyClassWithDependencies;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithKeywordsInClassBody;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SampleAttribute;
-use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\ClassWithConstructorProperties;
 use Neos\Flow\Annotations\Around;
 use Neos\Flow\Annotations\Session;
 use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
 use Neos\Flow\Reflection\ClassReflection;
 use Neos\Flow\Reflection\PropertyReflection;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassExtendingClassWithPrivateConstructor;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithDocComments;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithKeywordsInClassBody;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithPhpAttributes;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithPrivateConstructor;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\ClassWithConstructorProperties;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP8\ClassWithUnionTypes;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP81\BackedEnumWithMethod;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassA;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassF;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassK;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ReadonlyClassWithDependencies;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SampleAttribute;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SampleMethodAttribute;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassB;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassE;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\SingletonClassEsub;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Functional tests for the Proxy Compiler and related features

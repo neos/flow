@@ -108,14 +108,14 @@ final class FormatResolverTest extends UnitTestCase
         $matcher = $this->exactly(2);
         $mockObjectManager->expects($matcher)
             ->method('isRegistered')->willReturnCallback(function (...$parameters) use ($matcher) {
-            if ($matcher->numberOfInvocations() === 1) {
-                $this->assertSame('foo', $parameters[0]);
-            }
-            if ($matcher->numberOfInvocations() === 2) {
-                $this->assertSame('Neos\Flow\I18n\Formatter\FooFormatter', $parameters[0]);
-            }
-            return false;
-        });
+                if ($matcher->numberOfInvocations() === 1) {
+                    $this->assertSame('foo', $parameters[0]);
+                }
+                if ($matcher->numberOfInvocations() === 2) {
+                    $this->assertSame('Neos\Flow\I18n\Formatter\FooFormatter', $parameters[0]);
+                }
+                return false;
+            });
 
         $formatResolver = new FormatResolver();
         $formatResolver->injectObjectManager($mockObjectManager);

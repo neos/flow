@@ -13,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Validation\Validator;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use Neos\Flow\Validation;
 use Neos\Flow\Validation\Error;
 use Neos\Flow\Validation\Validator\UuidValidator;
 use PHPUnit\Framework\Attributes\Test;

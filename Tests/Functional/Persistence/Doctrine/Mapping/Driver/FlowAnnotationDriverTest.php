@@ -13,15 +13,6 @@ namespace Neos\Flow\Tests\Functional\Persistence\Doctrine\Mapping\Driver;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\Comment;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\UnproxiedTestEntity;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\AbstractEntity;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\CompositeKeyTestEntity;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\EntityWithIndexedRelation;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\OneToOneEntity;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures\OneToOneEntity2;
 use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
@@ -33,8 +24,16 @@ use Neos\Flow\Persistence\Doctrine\Mapping\ClassMetadata;
 use Neos\Flow\Persistence\Doctrine\Mapping\Driver\FlowAnnotationDriver;
 use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClass04;
-use Neos\Flow\Tests\Functional\Persistence\Fixtures;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\AbstractEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\Comment;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\CompositeKeyTestEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\EntityWithIndexedRelation;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\OneToOneEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\OneToOneEntity2;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\Post;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\UnproxiedTestEntity;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for ORM annotation driver

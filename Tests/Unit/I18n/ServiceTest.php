@@ -14,7 +14,6 @@ namespace Neos\Flow\Tests\Unit\I18n;
  * source code.
  */
 use Neos\Cache\Frontend\VariableFrontend;
-use Neos\Flow\I18n;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\I18n\LocaleCollection;
 use Neos\Flow\I18n\Service;

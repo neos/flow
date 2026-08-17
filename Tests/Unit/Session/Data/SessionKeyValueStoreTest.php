@@ -18,9 +18,9 @@ use Neos\Flow\Session\Data\SessionKeyValueStore;
 use Neos\Flow\Session\Data\SessionMetaData;
 use Neos\Flow\Session\Data\StorageIdentifier;
 use Neos\Flow\Tests\UnitTestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * Unit tests for the Flow SessionDataStore implementation
