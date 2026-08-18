@@ -3,7 +3,7 @@
 Flow TypeConverter Reference
 ============================
 
-This reference was automatically generated from code on 2026-08-03
+This reference was automatically generated from code on 2026-08-18
 
 
 .. _`Flow TypeConverter Reference: ArrayConverter`:
@@ -14,7 +14,7 @@ ArrayConverter
 Converter which transforms various types to arrays.
 
 * If the source is an array, it is returned unchanged.
-* If the source is a string, is is converted depending on CONFIGURATION_STRING_FORMAT,
+* If the source is a string, it is converted depending on CONFIGURATION_STRING_FORMAT,
   which can be STRING_FORMAT_CSV or STRING_FORMAT_JSON. For CSV the delimiter can be
   set via CONFIGURATION_STRING_DELIMITER.
 * If the source is a PersistentResource object, it is converted to an array. The actual resource
