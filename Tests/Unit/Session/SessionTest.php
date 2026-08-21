@@ -905,7 +905,7 @@ final class SessionTest extends UnitTestCase
 
         $session->resume();
         self::assertTrue($session->isStarted());
-        self::assertTrue($metaDataCache->has($sessionIdentifier1), 'session 1 meta entry doesnt exist');
+        self::assertTrue($metaDataCache->has($sessionIdentifier1), 'session 1 meta entry doesn\'t exist');
         $session->close();
 
         $sessionInfo1 = $metaDataCache->get($sessionIdentifier1);
