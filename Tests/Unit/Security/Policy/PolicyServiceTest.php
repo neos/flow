@@ -25,7 +25,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Testcase for for the PolicyService
+ * Testcase for the PolicyService
  */
 final class PolicyServiceTest extends UnitTestCase
 {
