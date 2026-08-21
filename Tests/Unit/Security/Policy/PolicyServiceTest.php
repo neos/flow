@@ -25,7 +25,7 @@ use Neos\Flow\Security\Policy\Role;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for for the PolicyService
+ * Testcase for the PolicyService
  */
 final class PolicyServiceTest extends UnitTestCase
 {

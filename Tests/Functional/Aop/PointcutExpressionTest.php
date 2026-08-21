@@ -18,7 +18,7 @@ use Neos\Flow\Tests\Functional\Aop\Fixtures\PointcutExpressionTestingTarget;
 use Neos\Flow\Tests\FunctionalTestCase;
 
 /**
- * Test suite for poincut expression related features
+ * Test suite for pointcut expression related features
  *
  */
 final class PointcutExpressionTest extends FunctionalTestCase

@@ -20,7 +20,7 @@ use Neos\Flow\Security\Policy\Role;
 use Neos\Flow\Tests\UnitTestCase;
 
 /**
- * Testcase for for Neos\Flow\Security\Policy\Role
+ * Testcase for Neos\Flow\Security\Policy\Role
  */
 final class RoleTest extends UnitTestCase
 {
