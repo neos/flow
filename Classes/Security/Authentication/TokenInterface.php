@@ -58,7 +58,7 @@ interface TokenInterface
     /**
      * Returns true if this token is currently authenticated
      *
-     * @return boolean true if this this token is currently authenticated
+     * @return boolean true if this token is currently authenticated
      */
     public function isAuthenticated();
 

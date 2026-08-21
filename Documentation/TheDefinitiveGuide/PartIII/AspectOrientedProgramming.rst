@@ -192,7 +192,7 @@ After returning advice
 	exception, the after returning advice is not executed.
 
 After throwing advice
-	An after throwing advice is only executed if the target method throwed an
+	An after throwing advice is only executed if the target method threw an
 	exception. The after throwing advice may fetch the exception type from the
 	join point object.
 
@@ -344,7 +344,7 @@ the pointcut matches and advices which refer to this pointcut become active.
 Pointcut designators
 --------------------
 
-A pointcut expression always consists of two parts: The poincut designator and
+A pointcut expression always consists of two parts: The pointcut designator and
 its parameter(s). The following designators are supported by Flow:
 
 method()
@@ -720,7 +720,7 @@ advices may read the result of the target method, but can't modify it.
 	/**
 	 * After returning advice
 	 *
-	 * @Flow\AfterReturning("method(public Example\News\FeedAgregator->[import|update].*()) || Example\MyPackage\MyAspect->someOtherPointcut")
+	 * @Flow\AfterReturning("method(public Example\News\FeedAggregator->[import|update].*()) || Example\MyPackage\MyAspect->someOtherPointcut")
 	 */
 	public function myAfterReturningAdvice(\Neos\Flow\AOP\JoinPointInterface $joinPoint): void
 	{
