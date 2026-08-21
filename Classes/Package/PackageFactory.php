@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Package;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Package;
  */
 
 use Neos\Flow\Composer\ComposerUtility;
-use Neos\Utility\Files;
 use Neos\Flow\Utility\PhpAnalyzer;
+use Neos\Utility\Files;
 
 /**
  * Class for building Packages

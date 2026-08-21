@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Command;
 
 /*
@@ -13,8 +14,8 @@ namespace Neos\Flow\Command;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception as DBALException;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Mvc\Exception\StopActionException;

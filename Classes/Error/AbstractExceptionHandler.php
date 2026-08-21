@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Error;
 
 /*
@@ -233,7 +234,7 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface
                 }
             }
             if (isset($renderingGroupSettings['matchingStatusCodes'])) {
-                $statusCode = $exception instanceof FlowException ? $exception->getStatusCode(): 500;
+                $statusCode = $exception instanceof FlowException ? $exception->getStatusCode() : 500;
                 if (in_array($statusCode, $renderingGroupSettings['matchingStatusCodes'])) {
                     return $renderingGroupName;
                 }

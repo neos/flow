@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Command;
 
 /*
@@ -19,12 +20,12 @@ use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Mvc\Controller\AbstractController;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
+use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Cryptography\RsaWalletServicePhp;
 use Neos\Flow\Security\Exception as SecurityException;
 use Neos\Flow\Security\Exception\NoSuchRoleException;
 use Neos\Flow\Security\Policy\PolicyService;
-use Neos\Flow\Security\Authorization\Privilege\Method\MethodPrivilegeInterface;
-use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
 use Neos\Flow\Security\Policy\Role;
 use Neos\Utility\Arrays;
 

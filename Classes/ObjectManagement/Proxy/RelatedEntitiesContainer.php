@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ObjectManagement\Proxy;
 
 use Doctrine\Persistence\Proxy as DoctrineProxy;

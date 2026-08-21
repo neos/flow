@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cli;
 
 /*
@@ -12,11 +13,11 @@ namespace Neos\Flow\Cli;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Cli\Exception\StopCommandException;
 use Neos\Flow\Mvc\Controller\Argument;
 use Neos\Flow\Mvc\Controller\Arguments;
 use Neos\Flow\Mvc\Exception\InvalidArgumentTypeException;
 use Neos\Flow\Mvc\Exception\NoSuchCommandException;
-use Neos\Flow\Cli\Exception\StopCommandException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 
 /**

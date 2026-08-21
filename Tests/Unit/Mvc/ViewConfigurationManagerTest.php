@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\Mvc;
 
 /*
@@ -12,11 +13,12 @@ namespace Neos\Flow\Tests\Unit\Mvc;
  */
 
 use Neos\Cache\Frontend\StringFrontend;
-use Neos\Flow\Configuration\ConfigurationManager;
-use Neos\Flow\Mvc\ViewConfigurationManager;
-use Neos\Flow\Mvc\ActionRequest;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Eel\CompilingEvaluator;
+use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Mvc\ActionRequest;
+use Neos\Flow\Mvc\ViewConfigurationManager;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the MVC ViewConfigurationManager
@@ -44,7 +46,6 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
      */
     protected $mockCache;
 
-
     protected function setUp(): void
     {
         // eel evaluator
@@ -69,9 +70,7 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         $this->viewConfigurationManager = new ViewConfigurationManager($this->mockConfigurationManager, $eelEvaluator, $this->mockCache);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getViewConfigurationFindsMatchingConfigurationForRequest()
     {
         $matchingConfiguration = [
@@ -92,9 +91,7 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
         self::assertEquals($calculatedConfiguration, $matchingConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getViewConfigurationUsedFilterConfigurationWithHigherWeight()
     {
         $matchingConfigurationOne = [
@@ -125,7 +122,7 @@ class ViewConfigurationManagerTest extends \Neos\Flow\Tests\UnitTestCase
      */
     protected function createEvaluator()
     {
-        $stringFrontendMock = $this->getMockBuilder(StringFrontend::class)->setMethods([])->disableOriginalConstructor()->getMock();
+        $stringFrontendMock = $this->createMock(StringFrontend::class);
         $stringFrontendMock->expects(self::any())->method('get')->willReturn(false);
 
         $evaluator = new CompilingEvaluator();

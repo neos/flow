@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 /*
@@ -11,8 +12,9 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
  * source code.
  */
 
-use Neos\Flow\Tests\UnitTestCase;
 use Neos\Flow\ObjectManagement\Configuration;
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the object configuration class
@@ -33,9 +35,7 @@ class ConfigurationTest extends UnitTestCase
         $this->objectConfiguration = new Configuration\Configuration('Neos\Foo\Bar', 'Neos\Foo\Bar');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passingAnEmptyArrayToSetPropertiesRemovesAllExistingproperties()
     {
         $someProperties = [
@@ -49,9 +49,7 @@ class ConfigurationTest extends UnitTestCase
         self::assertEquals([], $this->objectConfiguration->getProperties(), 'The properties have not been cleared.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function passingAnEmptyArrayToSetArgumentsRemovesAllExistingArguments()
     {
         $someArguments = [
@@ -65,27 +63,21 @@ class ConfigurationTest extends UnitTestCase
         self::assertEquals([], $this->objectConfiguration->getArguments(), 'The constructor arguments have not been cleared.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFactoryObjectNameAcceptsValidClassNames()
     {
         $this->objectConfiguration->setFactoryObjectName(__CLASS__);
         self::assertSame(__CLASS__, $this->objectConfiguration->getFactoryObjectName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFactoryMethodNameAcceptsValidStrings()
     {
         $this->objectConfiguration->setFactoryMethodName('someMethodName');
         self::assertSame('someMethodName', $this->objectConfiguration->getFactoryMethodName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theDefaultFactoryMethodNameIsCreate()
     {
         $this->objectConfiguration->setFactoryObjectName(__CLASS__);

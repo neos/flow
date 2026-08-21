@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Configuration;
 
 /*
@@ -11,13 +12,13 @@ namespace Neos\Flow\Configuration;
  * source code.
  */
 
-use Neos\Flow\I18n\Translator;
-use Symfony\Component\Yaml\Yaml;
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Notice;
 use Neos\Error\Messages\Result;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Translator;
 use Neos\Utility\Arrays;
 use Neos\Utility\Files;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * A validator for all configuration entries using Schema
@@ -134,7 +135,7 @@ class ConfigurationSchemaValidator
         }
 
         if (count($schemaFileInfos) === 0) {
-            throw new Exception\SchemaValidationException('No schema files found for configuration type "' . $configurationType . '"' . ($path !== null ? ' and path "' . $path . '".': '.'), 1364985056);
+            throw new Exception\SchemaValidationException('No schema files found for configuration type "' . $configurationType . '"' . ($path !== null ? ' and path "' . $path . '".' : '.'), 1364985056);
         }
 
         $result = new Result();

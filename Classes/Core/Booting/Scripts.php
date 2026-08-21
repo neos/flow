@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Core\Booting;
 
 /*
@@ -19,12 +20,12 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cache\CacheFactory;
 use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Configuration\ConfigurationManager;
+use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Configuration\Loader\MergeLoader;
 use Neos\Flow\Configuration\Loader\ObjectsLoader;
 use Neos\Flow\Configuration\Loader\PolicyLoader;
 use Neos\Flow\Configuration\Loader\RoutesLoader;
 use Neos\Flow\Configuration\Loader\SettingsLoader;
-use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Core\ClassLoader;
@@ -34,6 +35,7 @@ use Neos\Flow\Error\Debugger;
 use Neos\Flow\Error\ErrorHandler;
 use Neos\Flow\Error\ExceptionHandlerInterface;
 use Neos\Flow\Error\ProductionExceptionHandler;
+use Neos\Flow\Exception as FlowException;
 use Neos\Flow\Http\Helper\RequestInformationHelper;
 use Neos\Flow\Http\HttpRequestHandlerInterface;
 use Neos\Flow\Log\PsrLoggerFactoryInterface;
@@ -54,7 +56,6 @@ use Neos\Flow\SignalSlot\Dispatcher;
 use Neos\Flow\Utility\Environment;
 use Neos\Utility\Files;
 use Neos\Utility\OpcodeCacheHelper;
-use Neos\Flow\Exception as FlowException;
 
 /**
  * Initialization scripts for modules of the Flow package
@@ -361,9 +362,7 @@ class Scripts
 
         $errorHandler = new ErrorHandler();
         $errorHandler->setExceptionalErrors($settings['error']['errorHandler']['exceptionalErrors']);
-        $exceptionHandler = class_exists($settings['error']['exceptionHandler']['className'])
-            ? new $settings['error']['exceptionHandler']['className']
-            : new ProductionExceptionHandler();
+        $exceptionHandler = class_exists($settings['error']['exceptionHandler']['className']) ? new $settings['error']['exceptionHandler']['className']() : new ProductionExceptionHandler();
 
         if (is_callable([$exceptionHandler, 'injectLogger'])) {
             $exceptionHandler->injectLogger($bootstrap->getEarlyInstance(PsrLoggerFactoryInterface::class)->get('systemLogger'));

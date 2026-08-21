@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property;
 
 /*
@@ -11,16 +12,16 @@ namespace Neos\Flow\Property;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Error\Messages\Error;
 use Neos\Error\Messages\Result;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Property\Exception as PropertyException;
 use Neos\Flow\Property\Exception\DuplicateTypeConverterException;
 use Neos\Flow\Reflection\ReflectionService;
-use Neos\Utility\TypeHandling;
 use Neos\Flow\Security\Exception as SecurityException;
-use Neos\Flow\Property\Exception as PropertyException;
+use Neos\Utility\TypeHandling;
 
 /**
  * The Property Mapper transforms simple types (arrays, strings, integers, floats, booleans) to objects or other simple types.

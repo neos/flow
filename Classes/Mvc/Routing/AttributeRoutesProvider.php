@@ -14,12 +14,12 @@ declare(strict_types=1);
 
 namespace Neos\Flow\Mvc\Routing;
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Controller\ActionController;
 use Neos\Flow\Mvc\Exception\InvalidActionNameException;
 use Neos\Flow\Mvc\Routing\Exception\InvalidControllerException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
-use Neos\Flow\Annotations as Flow;
 use Neos\Utility\Arrays;
 
 /**

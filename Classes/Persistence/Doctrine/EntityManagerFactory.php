@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Persistence\Doctrine;
 
 /*
@@ -12,8 +13,8 @@ namespace Neos\Flow\Persistence\Doctrine;
  */
 
 use Doctrine\Common\EventManager;
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\ConnectionException;
 use Doctrine\DBAL\Logging\Middleware;
 use Doctrine\ORM\Configuration;

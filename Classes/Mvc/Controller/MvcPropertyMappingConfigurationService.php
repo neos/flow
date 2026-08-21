@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Controller;
 
 /*
@@ -58,7 +59,7 @@ class MvcPropertyMappingConfigurationService
         $formFieldArray = [];
         foreach ($formFieldNames as $formField) {
             $formFieldParts = explode('[', $formField);
-            $currentPosition =& $formFieldArray;
+            $currentPosition = & $formFieldArray;
             $formFieldPartsCount = count($formFieldParts);
             for ($i = 0; $i < $formFieldPartsCount; $i++) {
                 $formFieldPart = $formFieldParts[$i];
@@ -86,7 +87,7 @@ class MvcPropertyMappingConfigurationService
                     if (!isset($currentPosition[$formFieldPart])) {
                         $currentPosition[$formFieldPart] = [];
                     }
-                    $currentPosition =& $currentPosition[$formFieldPart];
+                    $currentPosition = & $currentPosition[$formFieldPart];
                 }
             }
         }

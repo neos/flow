@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -11,11 +12,11 @@ namespace Neos\Flow\Property\TypeConverter;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Error;
+use Neos\Flow\Annotations as Flow;
+use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\I18n\Locale;
 use Neos\Flow\Property\Exception\InvalidPropertyMappingConfigurationException;
-use Neos\Flow\I18n\Cldr\Reader\NumbersReader;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 
 /**

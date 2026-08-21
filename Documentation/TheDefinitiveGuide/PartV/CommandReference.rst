@@ -19,7 +19,7 @@ commands that may be available, use::
 
   ./flow help
 
-The following reference was automatically generated from code on 2026-05-20
+The following reference was automatically generated from code on 2026-08-17
 
 
 .. _`Flow Command Reference: NEOS.FLOW`:

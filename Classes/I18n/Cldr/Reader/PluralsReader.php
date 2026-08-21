@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\I18n\Cldr\Reader;
@@ -13,8 +14,8 @@ namespace Neos\Flow\I18n\Cldr\Reader;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\I18n\Cldr\CldrRepository;
 use Neos\Flow\I18n\Cldr\Reader\Exception\InvalidPluralRuleException;
 use Neos\Flow\I18n\Locale;
@@ -41,17 +42,17 @@ class PluralsReader
      *
      * @todo improve the regexp pattern
      */
-    const PATTERN_MATCH_SUBRULE = '/(n|nmod)([0-9]+)?(is|isnot|in|notin|within|notwithin)([0-9]+)(?:\.\.([0-9]+))?(and|or)?/';
+    public const PATTERN_MATCH_SUBRULE = '/(n|nmod)([0-9]+)?(is|isnot|in|notin|within|notwithin)([0-9]+)(?:\.\.([0-9]+))?(and|or)?/';
 
     /**
      * Constants for every plural rule form defined in CLDR.
      */
-    const RULE_ZERO = 'zero';
-    const RULE_ONE = 'one';
-    const RULE_TWO = 'two';
-    const RULE_FEW = 'few';
-    const RULE_MANY = 'many';
-    const RULE_OTHER = 'other';
+    public const RULE_ZERO = 'zero';
+    public const RULE_ONE = 'one';
+    public const RULE_TWO = 'two';
+    public const RULE_FEW = 'few';
+    public const RULE_MANY = 'many';
+    public const RULE_OTHER = 'other';
 
     /**
      * @var CldrRepository

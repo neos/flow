@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Authentication\Token;
 
 /*
@@ -180,7 +181,7 @@ abstract class AbstractToken implements TokenInterface
      */
     public function getAccount()
     {
-        return $this->isAuthenticated() ? $this->account: null;
+        return $this->isAuthenticated() ? $this->account : null;
     }
 
     /**

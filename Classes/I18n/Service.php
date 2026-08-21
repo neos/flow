@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\I18n;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Utility\Files;

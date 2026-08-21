@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Command;
 
 /*
@@ -18,8 +19,8 @@ use Neos\Flow\Cli\CommandController;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Mvc\Exception\AmbiguousCommandIdentifierException;
 use Neos\Flow\Mvc\Exception\CommandException;
-use Neos\Flow\Package\PackageManager;
 use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\Package\PackageManager;
 
 /**
  * A Command Controller which provides help for available commands

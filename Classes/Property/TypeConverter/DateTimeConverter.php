@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -64,7 +65,7 @@ class DateTimeConverter extends AbstractTypeConverter
     /**
      * @var string
      */
-    const CONFIGURATION_DATE_FORMAT = 'dateFormat';
+    public const CONFIGURATION_DATE_FORMAT = 'dateFormat';
 
     /**
      * The default date format is "YYYY-MM-DDT##:##:##+##:##", for example "2005-08-15T15:52:01+00:00"
@@ -72,7 +73,7 @@ class DateTimeConverter extends AbstractTypeConverter
      *
      * @var string
      */
-    const DEFAULT_DATE_FORMAT = \DateTime::W3C;
+    public const DEFAULT_DATE_FORMAT = \DateTime::W3C;
 
     /**
      * @var array<string>
@@ -92,7 +93,7 @@ class DateTimeConverter extends AbstractTypeConverter
     /**
      * If conversion is possible.
      *
-     * @param string|int|array<mixed> $source
+     * @param mixed|array<mixed> $source
      * @param string $targetType
      * @return boolean
      */
@@ -101,8 +102,13 @@ class DateTimeConverter extends AbstractTypeConverter
         if (!is_callable([$targetType, 'createFromFormat'])) {
             return false;
         }
-
-        return true;
+        if (is_array($source)) {
+            return true;
+        }
+        if (is_integer($source)) {
+            return true;
+        }
+        return is_string($source);
     }
 
     /**
@@ -166,7 +172,7 @@ class DateTimeConverter extends AbstractTypeConverter
         if ($date === false) {
             return new Error('The date "%s" was not recognized (for format "%s").', 1307719788, [$dateAsString, $dateFormat]);
         }
-        if (isset($source['hour'], $source['minute'], $source['second'])) {
+        if (isset($source['hour'], $source['minute'], $source['second']) && is_array($source)) {
             $date = $this->overrideTime($date, $source);
         }
         return $date;
@@ -215,10 +221,12 @@ class DateTimeConverter extends AbstractTypeConverter
      */
     protected function overrideTime(\DateTimeInterface $date, array $source)
     {
-        $hour = isset($source['hour']) ? (integer)$source['hour'] : 0;
-        $minute = isset($source['minute']) ? (integer)$source['minute'] : 0;
-        $second = isset($source['second']) ? (integer)$source['second'] : 0;
-        if (is_callable([$date, 'setTime'])) {
+        $hour = isset($source['hour']) ? (int)$source['hour'] : 0;
+        $minute = isset($source['minute']) ? (int)$source['minute'] : 0;
+        $second = isset($source['second']) ? (int)$source['second'] : 0;
+        if ($date instanceof \DateTime) {
+            $date = $date->setTime($hour, $minute, $second);
+        } elseif ($date instanceof \DateTimeImmutable) {
             $date = $date->setTime($hour, $minute, $second);
         }
         return $date;

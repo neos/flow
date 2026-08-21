@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cache;
 
 /*
@@ -12,23 +13,23 @@ namespace Neos\Flow\Cache;
  */
 
 use Neos\Cache\Backend\BackendInterface;
-use Neos\Cache\CacheFactoryInterface;
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Backend\FileBackend;
+use Neos\Cache\CacheFactoryInterface;
 use Neos\Cache\Exception\DuplicateIdentifierException;
 use Neos\Cache\Exception\NoSuchCacheException;
 use Neos\Cache\Frontend\FrontendInterface;
 use Neos\Cache\Frontend\VariableFrontend;
+use Neos\Cache\Psr\Cache\CachePool;
+use Neos\Cache\Psr\SimpleCache\SimpleCache;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Utility\Environment;
-use Neos\Utility\Files;
 use Neos\Flow\Utility\PhpAnalyzer;
-use Neos\Cache\Psr\Cache\CachePool;
-use Neos\Cache\Psr\SimpleCache\SimpleCache;
+use Neos\Utility\Files;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
-use Psr\Cache\CacheItemPoolInterface;
 
 /**
  * The Cache Manager
@@ -155,6 +156,9 @@ class CacheManager
     public function setCacheConfigurations(array $cacheConfigurations): void
     {
         foreach ($cacheConfigurations as $identifier => $configuration) {
+            if (!is_array($configuration)) {
+                throw new \InvalidArgumentException('The cache configuration for cache "' . $identifier . '" was not an array as expected.', 1231259656);
+            }
             $this->cacheConfigurations[$identifier] = $configuration;
         }
     }

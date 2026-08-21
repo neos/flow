@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Http\Client;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Http\Client;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Message;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http;
 use Neos\Flow\Http\InvalidArgumentException;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestInterface;
-use GuzzleHttp\Psr7\Message;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * A Request Engine which uses cURL in order to send requests to external

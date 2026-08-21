@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Persistence\Doctrine;
 
 /*
@@ -268,8 +269,8 @@ abstract class Repository extends EntityRepository implements RepositoryInterfac
     public function __call($method, $arguments)
     {
         $query = $this->createQuery();
-        $caseSensitive = isset($arguments[1]) ? (boolean)$arguments[1] : true;
-        $cacheResult = isset($arguments[2]) ? (boolean)$arguments[2] : false;
+        $caseSensitive = isset($arguments[1]) ? (bool)$arguments[1] : true;
+        $cacheResult = isset($arguments[2]) ? (bool)$arguments[2] : false;
 
         if (isset($method[10]) && strpos($method, 'findOneBy') === 0) {
             $propertyName = lcfirst(substr($method, 9));

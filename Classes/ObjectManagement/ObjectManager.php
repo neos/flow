@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\ObjectManagement;
@@ -13,13 +14,13 @@ namespace Neos\Flow\ObjectManagement;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
+use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
 use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument as ObjectConfigurationArgument;
-use Neos\Flow\Core\ApplicationContext;
-use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Security\Context;
 
@@ -106,8 +107,8 @@ class ObjectManager implements ObjectManagerInterface
     public function __construct(ApplicationContext $context)
     {
         $this->context = $context;
-        $this->shutdownObjects = new \SplObjectStorage;
-        $this->internalShutdownObjects = new \SplObjectStorage;
+        $this->shutdownObjects = new \SplObjectStorage();
+        $this->internalShutdownObjects = new \SplObjectStorage();
     }
 
     /**

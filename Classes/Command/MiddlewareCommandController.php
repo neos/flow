@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Command;
 
 /*
@@ -37,7 +38,7 @@ final class MiddlewareCommandController extends CommandController
         $index = 0;
         foreach ($orderedChainConfiguration->toArray() as $middlewareName => $middlewareConfiguration) {
             $rows[] = [
-                '#' => ++ $index,
+                '#' => ++$index,
                 'name' => $middlewareName,
                 'className' => $middlewareConfiguration['middleware'],
             ];

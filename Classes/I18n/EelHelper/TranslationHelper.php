@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n\EelHelper;
 
 /*
@@ -11,15 +12,15 @@ namespace Neos\Flow\I18n\EelHelper;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Eel\ProtectedContextAwareInterface;
+use Neos\Flow\Annotations as Flow;
 
 /**
  * Translation helpers for Eel contexts
  */
 class TranslationHelper implements ProtectedContextAwareInterface
 {
-    const I18N_LABEL_ID_PATTERN = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+:[a-z0-9.]+:.+$/i';
+    public const I18N_LABEL_ID_PATTERN = '/^[a-z0-9]+\.(?:[a-z0-9][\.a-z0-9]*)+:[a-z0-9.]+:.+$/i';
 
     /**
      * Get the translated value for an id or original label

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\FlashMessage\Storage;
 
 /*
@@ -18,12 +19,12 @@ use Neos\Error\Messages\Warning;
 use Neos\Flow\Http\Cookie;
 use Neos\Flow\Mvc\FlashMessage\FlashMessageContainer;
 use Neos\Flow\Mvc\FlashMessage\FlashMessageStorageInterface;
-use Psr\Http\Message\ServerRequestInterface as HttpRequestInterface;
 use Psr\Http\Message\ResponseInterface as HttpResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as HttpRequestInterface;
 
 class FlashMessageCookieStorage implements FlashMessageStorageInterface
 {
-    const DEFAULT_COOKIE_NAME = 'Neos_Flow_FlashMessages';
+    public const DEFAULT_COOKIE_NAME = 'Neos_Flow_FlashMessages';
 
     /**
      * @var array<mixed>

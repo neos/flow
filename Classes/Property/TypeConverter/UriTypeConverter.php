@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -11,9 +12,9 @@ namespace Neos\Flow\Property\TypeConverter;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
-use Neos\Error\Messages\Error;
 use GuzzleHttp\Psr7\Uri;
+use Neos\Error\Messages\Error;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 use Psr\Http\Message\UriInterface;
 

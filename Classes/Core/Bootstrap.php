@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Core;
 
 /*
@@ -12,9 +13,9 @@ namespace Neos\Flow\Core;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Core\Booting\Step;
-use Neos\Flow\Core\Booting\Sequence;
 use Neos\Flow\Core\Booting\Scripts;
+use Neos\Flow\Core\Booting\Sequence;
+use Neos\Flow\Core\Booting\Step;
 use Neos\Flow\Exception as FlowException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\SignalSlot\Dispatcher;
@@ -31,8 +32,8 @@ use Neos\Utility\Files;
  */
 class Bootstrap
 {
-    const RUNLEVEL_COMPILETIME = 'Compiletime';
-    const RUNLEVEL_RUNTIME = 'Runtime';
+    public const RUNLEVEL_COMPILETIME = 'Compiletime';
+    public const RUNLEVEL_RUNTIME = 'Runtime';
 
     /**
      * @var ApplicationContext

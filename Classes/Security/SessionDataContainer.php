@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security;
 
 use Neos\Flow\Annotations as Flow;

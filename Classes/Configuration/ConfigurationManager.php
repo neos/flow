@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Configuration;
@@ -14,6 +15,8 @@ namespace Neos\Flow\Configuration;
  */
 
 use Neos\Flow\Annotations as Flow;
+use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
+use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Configuration\Loader\AppendLoader;
 use Neos\Flow\Configuration\Loader\LoaderInterface;
 use Neos\Flow\Configuration\Loader\MergeLoader;
@@ -21,8 +24,6 @@ use Neos\Flow\Configuration\Loader\ObjectsLoader;
 use Neos\Flow\Configuration\Loader\PolicyLoader;
 use Neos\Flow\Configuration\Loader\RoutesLoader;
 use Neos\Flow\Configuration\Loader\SettingsLoader;
-use Neos\Flow\Configuration\Exception\InvalidConfigurationException;
-use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\Configuration\Source\YamlSource;
 use Neos\Flow\Core\ApplicationContext;
 use Neos\Flow\Package\FlowPackageInterface;
@@ -162,6 +163,12 @@ class ConfigurationManager
      * @var array<string,mixed>
      */
     protected $unprocessedConfiguration = [];
+
+    /**
+     * @var YamlSource
+     * @internal only used in tests
+     */
+    protected $configurationSource;
 
     /**
      * Constructs the configuration manager
@@ -541,7 +548,7 @@ class ConfigurationManager
             if ($matchGroup['endString'] === "',\n") {
                 $constantUntilEndOfLine = true;
             }
-            $replacement .= ($constantUntilEndOfLine ? ",\n" :  " . '" . $matchGroup['endString']);
+            $replacement .= ($constantUntilEndOfLine ? ",\n" : " . '" . $matchGroup['endString']);
 
             return $replacement;
         }, $phpString);

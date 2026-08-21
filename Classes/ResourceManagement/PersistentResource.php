@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement;
 
 /*
@@ -12,13 +13,13 @@ namespace Neos\Flow\ResourceManagement;
  */
 
 use Doctrine\ORM\Mapping as ORM;
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\CacheAwareInterface;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\ResourceManagement\Exception as ResourceException;
 use Neos\Flow\Utility\Environment;
 use Neos\Utility;
 use Neos\Utility\Unicode\Functions as UnicodeFunctions;
-use Neos\Flow\ResourceManagement\Exception as ResourceException;
 
 /**
  * Model representing a persistable resource

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Security\Policy;
@@ -19,10 +20,10 @@ use Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\Privilege\Parameter\PrivilegeParameterDefinition;
 use Neos\Flow\Security\Authorization\Privilege\Parameter\PrivilegeParameterInterface;
-use Neos\Flow\Security\Authorization\Privilege\PrivilegeTarget;
-use Neos\Flow\Security\Exception\NoSuchRoleException;
-use Neos\Flow\Security\Exception as SecurityException;
 use Neos\Flow\Security\Authorization\Privilege\PrivilegeInterface;
+use Neos\Flow\Security\Authorization\Privilege\PrivilegeTarget;
+use Neos\Flow\Security\Exception as SecurityException;
+use Neos\Flow\Security\Exception\NoSuchRoleException;
 
 /**
  * The policy service reads the policy configuration. The security advice asks

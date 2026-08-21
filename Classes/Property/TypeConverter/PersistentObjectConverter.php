@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -45,22 +46,22 @@ class PersistentObjectConverter extends ObjectConverter
     /**
      * @var string
      */
-    const PATTERN_MATCH_UUID = '/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/';
+    public const PATTERN_MATCH_UUID = '/([a-f0-9]){8}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){4}-([a-f0-9]){12}/';
 
     /**
      * @var integer
      */
-    const CONFIGURATION_MODIFICATION_ALLOWED = 1;
+    public const CONFIGURATION_MODIFICATION_ALLOWED = 1;
 
     /**
      * @var integer
      */
-    const CONFIGURATION_CREATION_ALLOWED = 2;
+    public const CONFIGURATION_CREATION_ALLOWED = 2;
 
     /**
      * @var integer
      */
-    const CONFIGURATION_IDENTITY_CREATION_ALLOWED = 5;
+    public const CONFIGURATION_IDENTITY_CREATION_ALLOWED = 5;
 
     /**
      * @var array<string>

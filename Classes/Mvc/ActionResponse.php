@@ -1,15 +1,16 @@
 <?php
+
 namespace Neos\Flow\Mvc;
 
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Utils;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\Cookie;
 use Neos\Flow\Mvc\Controller\AbstractController;
 use Neos\Flow\Mvc\Controller\ControllerContext;
 use Psr\Http\Message\ResponseInterface;
-use Neos\Flow\Annotations as Flow;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-use GuzzleHttp\Psr7\Response;
 
 /**
  * The legacy MVC response object.

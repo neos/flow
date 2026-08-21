@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Utility;
@@ -13,9 +14,9 @@ namespace Neos\Flow\Utility;
  * source code.
  */
 
+use Neos\Flow\Annotations as Flow;
 use Neos\Utility\Unicode\Functions;
 use Ramsey\Uuid\Uuid;
-use Neos\Flow\Annotations as Flow;
 
 /**
  * A utility class for various algorithms.

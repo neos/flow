@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement\Streams;
 
 /*
@@ -12,12 +13,12 @@ namespace Neos\Flow\ResourceManagement\Streams;
  */
 
 use Neos\Flow\Annotations as Flow;
-use Psr\Http\Message\UriInterface;
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\PackageManager;
 use Neos\Flow\ResourceManagement\Exception as ResourceException;
 use Neos\Flow\ResourceManagement\ResourceManager;
 use Neos\Utility\Files;
+use Psr\Http\Message\UriInterface;
 
 /**
  * A stream wrapper for resources.
@@ -27,7 +28,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
     /**
      * @const string
      */
-    const SCHEME = 'resource';
+    public const SCHEME = 'resource';
 
     /**
      * @var resource
@@ -148,7 +149,7 @@ class ResourceStreamWrapper implements StreamWrapperInterface
     {
         $resourceUriOrStream = $this->evaluateResourcePath($path, false);
         if (is_string($resourceUriOrStream)) {
-            return mkdir($resourceUriOrStream, $mode, (bool)($options&STREAM_MKDIR_RECURSIVE));
+            return mkdir($resourceUriOrStream, $mode, (bool)($options & STREAM_MKDIR_RECURSIVE));
         }
         return false;
     }

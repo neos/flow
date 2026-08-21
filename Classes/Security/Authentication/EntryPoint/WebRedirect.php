@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Authentication\EntryPoint;
 
 /*
@@ -11,6 +12,7 @@ namespace Neos\Flow\Security\Authentication\EntryPoint;
  * source code.
  */
 
+use GuzzleHttp\Psr7\Utils;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Http\BaseUriProvider;
 use Neos\Flow\Mvc\ActionRequest;
@@ -18,7 +20,6 @@ use Neos\Flow\Mvc\Routing\UriBuilder;
 use Neos\Flow\Security\Exception\MissingConfigurationException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use GuzzleHttp\Psr7\Utils;
 
 /**
  * An authentication entry point, that redirects to another webpage.

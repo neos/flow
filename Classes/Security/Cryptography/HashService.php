@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Cryptography;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Security\Cryptography;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Exception\InvalidArgumentForHashGenerationException;
 use Neos\Flow\Security\Exception\InvalidHashException;
@@ -63,6 +64,9 @@ class HashService
     public function injectSettings(array $settings)
     {
         $this->strategySettings = $settings['security']['cryptography']['hashingStrategies'];
+        if (!empty($settings['security']['cryptography']['encryptionKey'])) {
+            $this->encryptionKey = $settings['security']['cryptography']['encryptionKey'];
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Security\Authentication;
 
 /*
@@ -14,9 +15,9 @@ namespace Neos\Flow\Security\Authentication;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Security\Authentication\Token\SessionlessTokenInterface;
 use Neos\Flow\Security\Context;
-use Neos\Flow\Security\Exception\NoTokensAuthenticatedException;
-use Neos\Flow\Security\Exception\AuthenticationRequiredException;
 use Neos\Flow\Security\Exception;
+use Neos\Flow\Security\Exception\AuthenticationRequiredException;
+use Neos\Flow\Security\Exception\NoTokensAuthenticatedException;
 use Neos\Flow\Session\Exception\SessionNotStartedException;
 use Neos\Flow\Session\SessionManagerInterface;
 

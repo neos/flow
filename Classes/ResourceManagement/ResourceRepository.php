@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\ResourceManagement;
 
 /*
@@ -14,8 +15,8 @@ namespace Neos\Flow\ResourceManagement;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use Neos\Flow\Annotations as Flow;
-use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Persistence\Exception\IllegalObjectTypeException;
+use Neos\Flow\Persistence\PersistenceManagerInterface;
 use Neos\Flow\Persistence\QueryResultInterface;
 use Neos\Flow\Persistence\Repository;
 
@@ -33,7 +34,7 @@ class ResourceRepository extends Repository
     /**
      * @var string
      */
-    const ENTITY_CLASSNAME = PersistentResource::class;
+    public const ENTITY_CLASSNAME = PersistentResource::class;
 
     /**
      * @Flow\Inject

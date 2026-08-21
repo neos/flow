@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Composer;
 
 /*
@@ -13,8 +14,8 @@ namespace Neos\Flow\Composer;
 
 use Neos\Flow\Package\FlowPackageInterface;
 use Neos\Flow\Package\FlowPackageKey;
-use Neos\Utility\ObjectAccess;
 use Neos\Utility\Files;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Utility to access composer information like composer manifests (composer.json) and the lock file.

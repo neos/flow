@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Monitor;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Monitor;
  * source code.
  */
 
-use Neos\Flow\Cache\CacheManager;
 use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\Cache\CacheManager;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\Log\PsrLoggerFactoryInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;

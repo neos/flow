@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Configuration\Source;
 
 /*
@@ -11,12 +12,12 @@ namespace Neos\Flow\Configuration\Source;
  * source code.
  */
 
-use Symfony\Component\Yaml\Yaml;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Configuration\Exception\ParseErrorException;
 use Neos\Flow\Error\Exception;
 use Neos\Utility\Arrays;
 use Symfony\Component\Yaml\Exception\ParseException as YamlParseException;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Configuration source based on YAML files

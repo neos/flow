@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\I18n;
 
 /*
@@ -23,7 +24,7 @@ class Utility
     /**
      * A pattern which matches HTTP Accept-Language Headers
      */
-    const PATTERN_MATCH_ACCEPTLANGUAGE = '/([a-z]{1,8}(-[a-z]{1,8})?|\*)(;q=(1|0(\.[0-9]+)?))?/i';
+    public const PATTERN_MATCH_ACCEPTLANGUAGE = '/([a-z]{1,8}(-[a-z]{1,8})?|\*)(;q=(1|0(\.[0-9]+)?))?/i';
 
     /**
      * Parses Accept-Language header and returns array of locale tags (like:

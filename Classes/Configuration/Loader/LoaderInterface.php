@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Neos\Flow\Configuration\Loader;
@@ -28,5 +29,5 @@ interface LoaderInterface
      * @param ApplicationContext $context
      * @return array<mixed> The Configuration array for the current configurationType
      */
-    public function load(array $packages, ApplicationContext $context) : array;
+    public function load(array $packages, ApplicationContext $context): array;
 }

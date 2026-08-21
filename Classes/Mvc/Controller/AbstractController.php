@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Controller;
 
 /*
@@ -12,30 +13,30 @@ namespace Neos\Flow\Mvc\Controller;
  */
 
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\Psr7\Utils;
 use Neos\Error\Messages as Error;
 use Neos\Flow\Annotations as Flow;
-use GuzzleHttp\Psr7\Uri;
-use Neos\Flow\Mvc\Exception\InvalidActionNameException;
-use Neos\Flow\Mvc\Exception\InvalidArgumentNameException;
-use Neos\Flow\Mvc\Exception\InvalidArgumentTypeException;
-use Neos\Flow\Mvc\Exception\InvalidControllerNameException;
-use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
-use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
-use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
-use Neos\Flow\Persistence\Exception\UnknownObjectException;
-use Neos\Flow\Property\Exception;
-use Psr\Http\Message\UriInterface;
 use Neos\Flow\Http\Helper\MediaTypeHelper;
 use Neos\Flow\Http\Helper\ResponseInformationHelper;
 use Neos\Flow\Mvc\ActionRequest;
 use Neos\Flow\Mvc\ActionResponse;
 use Neos\Flow\Mvc\Exception\ForwardException;
+use Neos\Flow\Mvc\Exception\InvalidActionNameException;
+use Neos\Flow\Mvc\Exception\InvalidArgumentNameException;
+use Neos\Flow\Mvc\Exception\InvalidArgumentTypeException;
+use Neos\Flow\Mvc\Exception\InvalidControllerNameException;
+use Neos\Flow\Mvc\Exception\NoSuchArgumentException;
 use Neos\Flow\Mvc\Exception\RequiredArgumentMissingException;
 use Neos\Flow\Mvc\Exception\StopActionException;
+use Neos\Flow\Mvc\Routing\Exception\MissingActionNameException;
+use Neos\Flow\Mvc\Routing\RouteValuesNormalizerInterface;
 use Neos\Flow\Mvc\Routing\UriBuilder;
+use Neos\Flow\Persistence\Exception\UnknownObjectException;
+use Neos\Flow\Property\Exception;
 use Neos\Flow\Validation\ValidatorResolver;
 use Neos\Utility\MediaTypes;
+use Psr\Http\Message\UriInterface;
 
 /**
  * An abstract base class for HTTP based controllers

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cli;
 
 use Neos\Flow\Annotations as Flow;

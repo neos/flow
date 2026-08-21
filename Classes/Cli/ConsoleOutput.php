@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Cli;
 
 /*
@@ -13,14 +14,14 @@ namespace Neos\Flow\Cli;
 
 use Neos\Flow\Annotations as Flow;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\ConsoleOutput as SymfonyConsoleOutput;
 use Symfony\Component\Console\Input\StringInput as SymfonyStringInput;
+use Symfony\Component\Console\Output\ConsoleOutput as SymfonyConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -361,7 +362,7 @@ class ConsoleOutput
     /**
      * @return InputInterface
      */
-    public function getInput():InputInterface
+    public function getInput(): InputInterface
     {
         return $this->input;
     }

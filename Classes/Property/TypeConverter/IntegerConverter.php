@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Property\TypeConverter;
 
 /*
@@ -11,8 +12,8 @@ namespace Neos\Flow\Property\TypeConverter;
  * source code.
  */
 
-use Neos\Flow\Annotations as Flow;
 use Neos\Error\Messages\Error;
+use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Property\PropertyMappingConfigurationInterface;
 
 /**
@@ -65,6 +66,6 @@ class IntegerConverter extends AbstractTypeConverter
         if (!is_numeric($source)) {
             return new Error('"%s" is not numeric.', 1332933658, [$source]);
         }
-        return (integer)$source;
+        return (int)$source;
     }
 }

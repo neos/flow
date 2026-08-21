@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\Configuration;
 
 use Neos\Flow\Configuration\ConfigurationManager;
@@ -9,15 +10,14 @@ use Neos\Flow\ObjectManagement\Configuration\ConfigurationProperty;
 use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the object configuration parser
  */
 class ConfigurationParserTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function allBasicOptionsAreSetCorrectly()
     {
         $factoryObjectName = 'ConfigurationBuilderTest' . md5(uniqid(mt_rand(), true));
@@ -47,9 +47,7 @@ class ConfigurationParserTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function argumentsOfTypeObjectCanSpecifyAdditionalObjectConfigurationOptions()
     {
         $configurationArray = [];
@@ -68,9 +66,7 @@ class ConfigurationParserTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesOfTypeObjectCanSpecifyAdditionalObjectConfigurationOptions()
     {
         $configurationArray = [];
@@ -89,9 +85,7 @@ class ConfigurationParserTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function itIsPossibleToPassArraysAsStraightArgumentOrPropertyValues()
     {
         $configurationArray = [];
@@ -108,9 +102,7 @@ class ConfigurationParserTest extends UnitTestCase
         self::assertEquals($objectConfiguration, $builtObjectConfiguration);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidOptionResultsInException()
     {
         $this->expectException(InvalidObjectConfigurationException::class);
@@ -120,9 +112,7 @@ class ConfigurationParserTest extends UnitTestCase
         $configurationParser->parseConfigurationArray('TestObject', $configurationArray, __CLASS__);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseConfigurationArrayBuildsConfigurationArgumentForInjectedSetting()
     {
         $configurationArray = [];
@@ -136,9 +126,7 @@ class ConfigurationParserTest extends UnitTestCase
         self::assertEquals($expectedConfigurationArgument, $builtObjectConfiguration->getArguments()[1]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseConfigurationArrayBuildsConfigurationPropertyForInjectedSetting()
     {
         $configurationArray = [];

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc;
 
 /*
@@ -11,10 +12,10 @@ namespace Neos\Flow\Mvc;
  * source code.
  */
 
+use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Eel\CompilingEvaluator;
 use Neos\Eel\Context;
 use Neos\Flow\Annotations as Flow;
-use Neos\Cache\Frontend\VariableFrontend;
 use Neos\Flow\Configuration\ConfigurationManager;
 
 /**

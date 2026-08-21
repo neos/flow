@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Persistence;
 
 /*
@@ -213,8 +214,8 @@ abstract class Repository implements RepositoryInterface
     public function __call($method, $arguments)
     {
         $query = $this->createQuery();
-        $caseSensitive = !isset($arguments[1]) || (boolean)$arguments[1];
-        $cacheResult = isset($arguments[2]) && (boolean)$arguments[2];
+        $caseSensitive = !isset($arguments[1]) || (bool)$arguments[1];
+        $cacheResult = isset($arguments[2]) && (bool)$arguments[2];
 
         if (isset($method[10]) && str_starts_with($method, 'findOneBy')) {
             $propertyName = lcfirst(substr($method, 9));

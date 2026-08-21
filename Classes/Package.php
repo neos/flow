@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow;
 
 /*
@@ -171,7 +172,10 @@ class Package extends BasePackage
         $dispatcher->connect(AuthenticationProviderManager::class, 'successfullyAuthenticated', Context::class, 'refreshRoles');
         $dispatcher->connect(AuthenticationProviderManager::class, 'loggedOut', Context::class, 'refreshTokens');
 
-        $dispatcher->connect(Compiler::class, 'afterCompile', XdebugPathMappingBuilder::class, 'buildFromCompiledClasses');
+        $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
+            $xdebugPathMappingBuilder = $bootstrap->getObjectManager()->get(XdebugPathMappingBuilder::class);
+            $xdebugPathMappingBuilder->buildFromCompiledClasses($compiledClasses, (string) $bootstrap->getContext());
+        });
         $dispatcher->connect(Compiler::class, 'afterCompile', function (array $compiledClasses) use ($bootstrap) {
             /** @var array<class-string, array<string, mixed>> $compiledClasses */
             $annotationsCacheFlusher = $bootstrap->getObjectManager()->get(AnnotationsCacheFlusher::class);

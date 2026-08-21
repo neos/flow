@@ -1,12 +1,14 @@
 <?php
+
 namespace Neos\Flow\ObjectManagement\Configuration;
+
+use function GuzzleHttp\json_encode;
 
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\ObjectManagement\Exception\InvalidObjectConfigurationException;
 use Neos\Flow\Reflection\Exception\ClassLoadingForReflectionFailedException;
 use Neos\Flow\Reflection\Exception\InvalidClassException;
 use Neos\Flow\Reflection\ReflectionService;
-use function GuzzleHttp\json_encode;
 
 /**
  *

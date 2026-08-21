@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Log\ThrowableStorage;
 
 use Neos\Flow\Annotations as Flow;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc\Routing;
 
 /*
@@ -15,8 +16,8 @@ use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Mvc\Exception\InfiniteLoopException;
 use Neos\Flow\Mvc\Exception\InvalidUriPatternException;
 use Neos\Flow\Persistence\PersistenceManagerInterface;
-use Neos\Utility\ObjectAccess;
 use Neos\Flow\Reflection\ReflectionService;
+use Neos\Utility\ObjectAccess;
 
 /**
  * Identity Route Part

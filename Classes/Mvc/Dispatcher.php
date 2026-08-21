@@ -1,4 +1,5 @@
 <?php
+
 namespace Neos\Flow\Mvc;
 
 /*
@@ -17,9 +18,9 @@ use Neos\Flow\Log\PsrLoggerFactoryInterface;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\Mvc\Controller\ControllerInterface;
 use Neos\Flow\Mvc\Controller\Exception\InvalidControllerException;
+use Neos\Flow\Mvc\Exception\ForwardException;
 use Neos\Flow\Mvc\Exception\InfiniteLoopException;
 use Neos\Flow\Mvc\Exception\StopActionException;
-use Neos\Flow\Mvc\Exception\ForwardException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Security\Authorization\FirewallInterface;
 use Neos\Flow\Security\Context;
