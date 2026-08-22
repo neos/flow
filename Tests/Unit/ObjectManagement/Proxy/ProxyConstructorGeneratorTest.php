@@ -118,7 +118,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
      * @test
      * @dataProvider classesWithNonPublicConstructorsDataProvider
      */
-    public function theProxyConstructorIsAlwaysPublic(string $className): void
+    public function theProxyConstructorIsAlwaysPublic(string $className, string $expectedVisibilityString): void
     {
         self::assertSame(ProxyConstructorGenerator::VISIBILITY_PUBLIC, $this->createProxyConstructorFor($className)->getVisibility());
     }
