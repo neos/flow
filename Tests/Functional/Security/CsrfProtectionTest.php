@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Security;
 
 /*
@@ -17,6 +19,7 @@ use Neos\Flow\Http\Cookie;
 use Neos\Flow\Security\AccountFactory;
 use Neos\Flow\Security\AccountRepository;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestFactoryInterface;
 
 /**
@@ -24,17 +27,12 @@ use Psr\Http\Message\ServerRequestFactoryInterface;
  *
  * Note that some other parts of this mechanism are tested in a unit testcase.
  */
-class CsrfProtectionTest extends FunctionalTestCase
+final class CsrfProtectionTest extends FunctionalTestCase
 {
     /**
      * @var boolean
      */
     protected $testableSecurityEnabled = true;
-
-    /**
-     * @var Fixtures\Controller\RestrictedController
-     */
-    protected $restrictedController;
 
     /**
      * @return void
@@ -72,9 +70,7 @@ class CsrfProtectionTest extends FunctionalTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postRequestOnRestrictedActionWithoutCsrfTokenCausesAccessDeniedException()
     {
         $this->markTestIncomplete('Needs to be implemented');

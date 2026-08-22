@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Functional\Validation;
 
 /*
@@ -15,14 +17,16 @@ use Neos\Flow\Persistence\Doctrine\PersistenceManager;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\SubEntity;
 use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntity;
+use Neos\Flow\Tests\Functional\Persistence\Fixtures\TestEntityRepository;
 use Neos\Flow\Tests\FunctionalTestCase;
 use Neos\Utility\ObjectAccess;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Flow Validation Framework
  *
  */
-class ValidationTest extends FunctionalTestCase
+final class ValidationTest extends FunctionalTestCase
 {
     /**
      * @var boolean
@@ -44,7 +48,7 @@ class ValidationTest extends FunctionalTestCase
             $this->markTestSkipped('Doctrine persistence is not enabled');
         }
 
-        $this->testEntityRepository = $this->objectManager->get(Fixtures\TestEntityRepository::class);
+        $this->testEntityRepository = $this->objectManager->get(TestEntityRepository::class);
 
         $this->registerRoute('post', 'test/validation/entity/{@action}', [
             '@package' => 'Neos.Flow',
@@ -56,9 +60,8 @@ class ValidationTest extends FunctionalTestCase
 
     /**
      * The ValidationResolver has a 1st level cache. This test ensures that this cache is flushed between two requests.
-     *
-     * @test
      */
+    #[Test]
     public function validationIsEnforcedOnSuccessiveRequests()
     {
         $entity = new TestEntity();
@@ -77,9 +80,7 @@ class ValidationTest extends FunctionalTestCase
         self::assertSame('An error occurred while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\EntityController->updateAction().' . PHP_EOL . 'Error for entity.name:  This field must contain at least 3 characters.' . PHP_EOL, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationIsEnforcedForChildObjects()
     {
         $entity = new TestEntity();
@@ -102,9 +103,7 @@ class ValidationTest extends FunctionalTestCase
         self::assertSame('An error occurred while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\EntityController->updateAction().' . PHP_EOL . 'Error for entity.subEntities.0.content:  This property is required.' . PHP_EOL, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationIsEnforcedForParentObject()
     {
         $entity = new TestEntity();
@@ -137,9 +136,7 @@ class ValidationTest extends FunctionalTestCase
         self::assertSame('An error occurred while trying to call Neos\Flow\Tests\Functional\Mvc\Fixtures\Controller\EntityController->updateAction().' . PHP_EOL . 'Error for entity.name:  This field must contain at least 3 characters.' . PHP_EOL, $response->getBody()->getContents());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validationIsStoppedAtAggregateBoundaries()
     {
         $relatedEntity = new TestEntity();

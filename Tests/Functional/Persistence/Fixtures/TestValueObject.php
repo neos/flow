@@ -30,9 +30,6 @@ class TestValueObject
      */
     protected $value;
 
-    /**
-     * @param string $value The string value of this value object
-     */
     public function __construct($value)
     {
         $this->value = $value;

@@ -19,6 +19,7 @@ use Neos\Flow\Mvc\Routing\Routes;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\Reflection\ReflectionService;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -46,9 +47,7 @@ class AttributeRoutesProviderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noAnnotationsYieldEmptyRoutes(): void
     {
         $this->mockReflectionService->expects($this->once())
@@ -60,9 +59,7 @@ class AttributeRoutesProviderTest extends UnitTestCase
         $this->assertEquals(Routes::empty(), $routes);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function routesFromAnnotationAreCreatedWhenClassNamesMatch(): void
     {
         $exampleFqnControllerName = 'Vendor\\Example\\Controller\\ExampleController';
@@ -133,9 +130,7 @@ class AttributeRoutesProviderTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsOutsideClassNamesAreIgnored(): void
     {
         $controllerclassName = 'Neos\Flow\Mvc\Controller\StandardController';

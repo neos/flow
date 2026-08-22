@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement\DependencyInjection;
 
 /*
@@ -11,15 +13,13 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\DependencyInjection;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
 use Neos\Flow\ObjectManagement\DependencyInjection\DependencyProxy;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
-class DependencyProxyTest extends UnitTestCase
+final class DependencyProxyTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function getClassNameReturnsTheNameOfTheProxiedDependencyClass()
     {
         $proxy = new DependencyProxy('SomeClass', function () {

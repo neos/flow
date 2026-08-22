@@ -101,7 +101,7 @@ class TargetClass01 implements SayHelloInterface
      * @param Fixtures\Name $name
      * @return string
      */
-    public function greetObject(Fixtures\Name $name)
+    public function greetObject(Name $name)
     {
         return 'Hello, ' . $name;
     }
@@ -133,7 +133,7 @@ class TargetClass01 implements SayHelloInterface
      * @param Fixtures\Name $name
      * @return void
      */
-    public function setCurrentName(?Fixtures\Name $name = null)
+    public function setCurrentName(?Name $name = null)
     {
         $this->currentName = $name;
     }

@@ -1,6 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\ObjectManagement;
+
+use Neos\Flow\Core\ApplicationContext;
+use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
+use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
+use Neos\Flow\ObjectManagement\ObjectManager;
+use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\BasicClass;
+use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /*
  * This file is part of the Neos.Flow package.
@@ -14,46 +25,36 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement;
 
 require_once(__DIR__ . '/Fixture/BasicClass.php');
 
-use Neos\Flow\Core\ApplicationContext;
-use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
-use Neos\Flow\ObjectManagement\Configuration\ConfigurationArgument;
-use Neos\Flow\ObjectManagement\ObjectManager;
-use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\BasicClass;
-use Neos\Flow\Tests\UnitTestCase;
-
-class ObjectManagerTest extends UnitTestCase
+final class ObjectManagerTest extends UnitTestCase
 {
-    public function factoryGenerationDataProvider()
+    public static function factoryGenerationDataProvider(): \Iterator
     {
-        return [
-            'generatePrototype' => [
-                'scope' => ObjectConfiguration::SCOPE_PROTOTYPE,
-                'factoryCalls' => 2
-            ],
-            'generateSingleton' => [
-                'scope' => ObjectConfiguration::SCOPE_SINGLETON,
-                'factoryCalls' => 1
-            ]
+        yield 'generatePrototype' => [
+            'scope' => ObjectConfiguration::SCOPE_PROTOTYPE,
+            'factoryCalls' => 2
+        ];
+        yield 'generateSingleton' => [
+            'scope' => ObjectConfiguration::SCOPE_SINGLETON,
+            'factoryCalls' => 1
         ];
     }
 
     /**
-     * @test
-     * @dataProvider factoryGenerationDataProvider
-     *
      * @param int $scope
      * @param int $factoryCalls
      */
+    #[DataProvider('factoryGenerationDataProvider')]
+    #[Test]
     public function getFactoryGeneratedPrototypeObject($scope, $factoryCalls)
     {
         /** @var ObjectManager $objectManager */
         $objectManager = $this->getMockBuilder(ObjectManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['buildObjectByFactory'])->getMock();
-        $objectManager->expects(self::exactly($factoryCalls))
-            ->method('buildObjectByFactory')->will(self::returnCallBack(function () {
+            ->onlyMethods(['buildObjectByFactory'])->getMock();
+        $objectManager->expects($this->exactly($factoryCalls))
+            ->method('buildObjectByFactory')->willReturnCallback(function () {
                 return new BasicClass();
-            }));
+            });
 
         $objects = [
             BasicClass::class => [
@@ -73,9 +74,7 @@ class ObjectManagerTest extends UnitTestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticFactoryGeneratedPrototypeObject()
     {
         $objects = [
@@ -88,12 +87,12 @@ class ObjectManagerTest extends UnitTestCase
             ]
         ];
 
-        $context = $this->getMockBuilder(ApplicationContext::class)->disableOriginalConstructor()->getMock();
+        $context = $this->createStub(ApplicationContext::class);
         $objectManager = new ObjectManager($context);
         $objectManager->setObjects($objects);
 
         $instance = $objectManager->get(BasicClass::class);
         self::assertInstanceOf(BasicClass::class, $instance);
-        self::assertSame($instance->getSomeProperty(), 'Foo');
+        self::assertSame('Foo', $instance->getSomeProperty());
     }
 }

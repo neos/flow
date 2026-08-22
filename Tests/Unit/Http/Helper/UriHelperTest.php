@@ -15,10 +15,11 @@ namespace Neos\Flow\Tests\Unit\Http\Helper;
 use GuzzleHttp\Psr7\Uri;
 use Neos\Flow\Http\Helper\UriHelper;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class UriHelperTest extends UnitTestCase
 {
-    /** @test */
+    #[Test]
     public function specificationWithoutQueryParametersDontModifyTheUri()
     {
         self::assertEquals(
@@ -27,7 +28,7 @@ class UriHelperTest extends UnitTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function queryParametersAddedToUriWithoutQueryParameters()
     {
         self::assertEquals(
@@ -36,7 +37,7 @@ class UriHelperTest extends UnitTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function nestedQueryParametersAreMergedCorrectly()
     {
         self::assertEquals(
@@ -53,7 +54,7 @@ class UriHelperTest extends UnitTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function additionalQueryParametersAreEncoded()
     {
         self::assertEquals(

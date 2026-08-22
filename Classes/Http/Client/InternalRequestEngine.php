@@ -130,7 +130,7 @@ class InternalRequestEngine implements RequestEngineInterface
             throw new Http\Exception('The browser\'s internal request engine has only been designed for use within functional tests.', 1335523749);
         }
 
-        /** @phpstan-ignore-next-line composer doesnt autoload this class */
+        /** @phpstan-ignore-next-line composer doesn't autoload this class */
         $requestHandler->setHttpRequest($httpRequest);
         $this->securityContext->clearContext();
         $this->validatorResolver->reset();
@@ -142,7 +142,7 @@ class InternalRequestEngine implements RequestEngineInterface
          */
         $middlewaresChain = $objectManager->get(Http\Middleware\MiddlewaresChain::class);
         $middlewaresChain->onStep(function (ServerRequestInterface $request) use ($requestHandler) {
-            /** @phpstan-ignore-next-line composer doesnt autoload this class */
+            /** @phpstan-ignore-next-line composer doesn't autoload this class */
             $requestHandler->setHttpRequest($request);
         });
 

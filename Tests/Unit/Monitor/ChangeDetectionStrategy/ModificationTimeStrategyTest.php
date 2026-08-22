@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Monitor\ChangeDetectionStrategy;
 
 /*
@@ -11,15 +13,19 @@ namespace Neos\Flow\Tests\Unit\Monitor\ChangeDetectionStrategy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use Neos\Cache\Frontend\StringFrontend;
+use Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface;
+use Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy;
+use Neos\Flow\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the Modification Time Change Detection Strategy
  *
  */
-class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
+final class ModificationTimeStrategyTest extends UnitTestCase
 {
     /**
      * @var \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy
@@ -27,36 +33,25 @@ class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
     protected $strategy;
 
     /**
-     * @var \Neos\Cache\Frontend\StringFrontend
-     */
-    protected $cache;
-
-    /**
      */
     protected function setUp(): void
     {
         vfsStream::setup('testDirectory');
 
-        $this->cache = $this->getMockBuilder(\Neos\Cache\Frontend\StringFrontend::class)->disableOriginalConstructor()->getMock();
-
-        $this->strategy = new \Neos\Flow\Monitor\ChangeDetectionStrategy\ModificationTimeStrategy();
-        $this->strategy->injectCache($this->cache);
+        $this->strategy = new ModificationTimeStrategy();
+        $this->strategy->injectCache($this->createStub(StringFrontend::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileStatusReturnsStatusUnchangedIfFileDoesNotExistAndDidNotExistEarlier()
     {
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
 
         $status = $this->strategy->getFileStatus($fileUrl);
-        self::assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
+        self::assertSame(ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileStatusReturnsStatusUnchangedIfFileExistedAndTheModificationTimeDidNotChange()
     {
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
@@ -66,24 +61,20 @@ class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
         clearstatcache();
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        self::assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
+        self::assertSame(ChangeDetectionStrategyInterface::STATUS_UNCHANGED, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileStatusDetectsANewlyCreatedFile()
     {
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
         file_put_contents($fileUrl, 'test data');
 
         $status = $this->strategy->getFileStatus($fileUrl);
-        self::assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CREATED, $status);
+        self::assertSame(ChangeDetectionStrategyInterface::STATUS_CREATED, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileStatusDetectsADeletedFile()
     {
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
@@ -93,12 +84,10 @@ class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
         unlink($fileUrl);
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        self::assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_DELETED, $status);
+        self::assertSame(ChangeDetectionStrategyInterface::STATUS_DELETED, $status);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getFileStatusReturnsStatusChangedIfTheFileExistedEarlierButTheModificationTimeHasChangedSinceThen()
     {
         $fileUrl = vfsStream::url('testDirectory') . '/test.txt';
@@ -109,6 +98,6 @@ class ModificationTimeStrategyTest extends \Neos\Flow\Tests\UnitTestCase
         clearstatcache();
         $status = $this->strategy->getFileStatus($fileUrl);
 
-        self::assertSame(\Neos\Flow\Monitor\ChangeDetectionStrategy\ChangeDetectionStrategyInterface::STATUS_CHANGED, $status);
+        self::assertSame(ChangeDetectionStrategyInterface::STATUS_CHANGED, $status);
     }
 }

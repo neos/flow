@@ -11,10 +11,10 @@ namespace Neos\Flow\Tests;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
 use GuzzleHttp\Psr7\ServerRequest;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Core\Bootstrap;
+use Neos\Flow\Http\HttpRequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -34,7 +34,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * @Flow\Proxy(false)
  * @Flow\Scope("singleton")
  */
-class FunctionalTestRequestHandler implements \Neos\Flow\Http\HttpRequestHandlerInterface
+class FunctionalTestRequestHandler implements HttpRequestHandlerInterface
 {
     /**
      * @var \Neos\Flow\Core\Bootstrap

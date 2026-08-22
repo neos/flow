@@ -13,6 +13,7 @@ namespace Neos\Flow\Tests\Functional\ObjectManagement;
  */
 
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test for Issue #3493: Classes with entity properties should get serialization code
@@ -21,9 +22,7 @@ class ProxySerializationTest extends FunctionalTestCase
 {
     protected static $testablePersistenceEnabled = true;
 
-    /**
-     * @test
-     */
+    #[Test]
     public function classWithEntityPropertyCanBeSerialized(): void
     {
         $entity = new Fixtures\SimpleEntity('Test Entity');

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Neos\Flow\Tests\Unit\Package;
 
 /*
@@ -11,7 +13,6 @@ namespace Neos\Flow\Tests\Unit\Package;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
 use Neos\Flow\Composer\ComposerUtility;
 use Neos\Flow\Package\Exception\CorruptPackageException;
 use Neos\Flow\Package\Exception\InvalidPackagePathException;
@@ -20,11 +21,12 @@ use Neos\Flow\Package\Package;
 use Neos\Flow\Package\PackageFactory;
 use Neos\Flow\Tests\UnitTestCase;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Testcase for the package factory
  */
-class PackageFactoryTest extends UnitTestCase
+final class PackageFactoryTest extends UnitTestCase
 {
     /**
      * @var PackageFactory
@@ -41,18 +43,14 @@ class PackageFactoryTest extends UnitTestCase
         $this->packageFactory = new PackageFactory();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionWhenSpecifyingANonExistingPackagePath()
     {
         $this->expectException(InvalidPackagePathException::class);
         $this->packageFactory->create('vfs://Packages/', 'Some/Non/Existing/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionIfCustomPackageFileCantBeAnalyzed()
     {
         $this->expectException(CorruptPackageException::class);
@@ -65,9 +63,7 @@ class PackageFactoryTest extends UnitTestCase
         $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createThrowsExceptionIfCustomPackageDoesNotImplementPackageInterface()
     {
         $this->expectException(CorruptPackageException::class);
@@ -82,9 +78,7 @@ class PackageFactoryTest extends UnitTestCase
         $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsInstanceOfCustomPackageIfItExists()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';
@@ -96,12 +90,10 @@ class PackageFactoryTest extends UnitTestCase
         require($packageFilePath);
 
         $package = $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package');
-        self::assertSame('Neos\Flow\Fixtures\CustomPackage2', get_class($package));
+        self::assertInstanceOf('Neos\Flow\Fixtures\CustomPackage2', $package);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createTakesAutoloaderTypeIntoAccountWhenLoadingCustomPackage()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';
@@ -115,12 +107,10 @@ class PackageFactoryTest extends UnitTestCase
         require($packageFilePath);
 
         $package = $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package', $composerManifest['autoload']);
-        self::assertSame('Neos\Flow\Fixtures\CustomPackage3', get_class($package));
+        self::assertInstanceOf('Neos\Flow\Fixtures\CustomPackage3', $package);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createReturnsAnInstanceOfTheDefaultPackageIfNoCustomPackageExists()
     {
         $packagePath = 'vfs://Packages/Some/Path/Some.Package/';
@@ -128,6 +118,6 @@ class PackageFactoryTest extends UnitTestCase
         file_put_contents($packagePath . 'composer.json', '{"name": "some/package", "type": "neos-test"}');
 
         $package = $this->packageFactory->create('vfs://Packages/', 'Some/Path/Some.Package/', FlowPackageKey::fromString('Some.Package'), 'some/package');
-        self::assertSame(Package::class, get_class($package));
+        self::assertInstanceOf(Package::class, $package);
     }
 }
