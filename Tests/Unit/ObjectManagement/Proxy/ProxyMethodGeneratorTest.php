@@ -153,7 +153,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringContainsString('return $result;', $bodyCode);
     }
 
-    public function voidAndNeverReturnTypesDataProvider(): array
+    public static function voidAndNeverReturnTypesDataProvider(): array
     {
         return [
             'void' => ['methodName' => 'voidMethod'],

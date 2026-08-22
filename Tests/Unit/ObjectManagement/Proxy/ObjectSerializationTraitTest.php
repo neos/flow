@@ -160,7 +160,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertContains('Flow_Persistence_RelatedEntitiesContainer', $this->subject->serializeRelatedEntities());
     }
 
-    public function nonSerializableScopesDataProvider(): array
+    public static function nonSerializableScopesDataProvider(): array
     {
         return [
             'singleton' => ['scope' => Configuration::SCOPE_SINGLETON],

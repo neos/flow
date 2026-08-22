@@ -106,7 +106,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertSame(ProxyConstructorGenerator::VISIBILITY_PROTECTED, $this->createProxyConstructorFor(ClassWithProtectedConstructor::class)->getOriginalVisibility());
     }
 
-    public function classesWithNonPublicConstructorsDataProvider(): array
+    public static function classesWithNonPublicConstructorsDataProvider(): array
     {
         return [
             'private' => ['className' => ClassWithPrivateConstructor::class, 'expectedVisibilityString' => 'private'],
