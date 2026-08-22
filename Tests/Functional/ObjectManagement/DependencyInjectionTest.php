@@ -21,6 +21,7 @@ use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithInjectedConfig
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\ClassWithNonNamespacedDependencies;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\FinalClassWithDependencies;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\Flow175\ClassWithTransitivePrototypeDependency;
+use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PHP81\ClassWithNonPromotedReadonlyProperties;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassA;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassAishInterface;
 use Neos\Flow\Tests\Functional\ObjectManagement\Fixtures\PrototypeClassDsub;
@@ -375,5 +376,43 @@ final class DependencyInjectionTest extends FunctionalTestCase
 
         self::assertInstanceOf(Fixtures\SingletonClassA::class, $singleton->getSingletonA());
         self::assertNull($singleton->getOptionalValue());
+    }
+
+    /**
+     * Readonly properties which are not promoted constructor properties are assigned in the
+     * constructor body of the original class – the proxy constructor must not interfere with that.
+     *
+     * @test
+     */
+    public function nonPromotedReadonlyPropertiesAreSetWhenAProxiedObjectIsCreated(): void
+    {
+        $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class);
+
+        self::assertInstanceOf(ProxyInterface::class, $object);
+        self::assertSame('the default label', $object->label);
+        self::assertSame(84, $object->getNumber());
+        self::assertInstanceOf(SingletonClassA::class, $object->getSingletonA());
+    }
+
+    /**
+     * @test
+     */
+    public function nonPromotedReadonlyPropertiesRespectConstructorArguments(): void
+    {
+        $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class, 'a custom label', 21);
+
+        self::assertSame('a custom label', $object->label);
+        self::assertSame(42, $object->getNumber());
+    }
+
+    /**
+     * @test
+     */
+    public function nonPromotedReadonlyPropertiesOfProxiedObjectsCannotBeModified(): void
+    {
+        $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class);
+
+        $this->expectException(\Error::class);
+        $object->label = 'a new label';
     }
 }
