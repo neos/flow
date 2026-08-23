@@ -11,13 +11,13 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Laminas\Code\Reflection\MethodReflection;
 use Neos\Flow\ObjectManagement\Proxy\ProxyMethodGenerator;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithVariousMethods;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithVoidAndNeverMethods;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test cases for the Proxy Method Generator
@@ -425,4 +425,5 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         $proxyMethod->setReturnType($returnType);
         $proxyMethod->setFullOriginalClassName(ClassWithVoidAndNeverMethods::class);
         return $proxyMethod;
-    }}
+    }
+}

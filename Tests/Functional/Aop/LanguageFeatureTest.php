@@ -11,7 +11,6 @@ namespace Neos\Flow\Tests\Functional\Aop;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\ProxyInterface as AopProxyInterface;
 use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\CountableAndLabelableFixture;
@@ -25,6 +24,7 @@ use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithGeneratorMethods;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithIntersectionTypes;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\TargetClassWithToStringMethod;
 use Neos\Flow\Tests\FunctionalTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test suite for advices on methods which use more recent PHP language features

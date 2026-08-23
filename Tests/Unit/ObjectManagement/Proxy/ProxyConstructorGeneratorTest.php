@@ -11,8 +11,6 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Laminas\Code\Reflection\MethodReflection;
 use Neos\Flow\ObjectManagement\DependencyInjection\ProxyClassBuilder;
 use Neos\Flow\ObjectManagement\Proxy\Compiler;
@@ -22,6 +20,8 @@ use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithPrivateConstructor;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithProtectedConstructor;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithPublicConstructor;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Test cases for the Proxy Constructor Generator
