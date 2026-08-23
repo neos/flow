@@ -14,12 +14,11 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
 use Neos\Flow\ObjectManagement\Proxy\ProxyMethodGenerator;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithVoidAndNeverMethods;
 use Neos\Flow\Tests\UnitTestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 class ProxyMethodGeneratorTest extends UnitTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithReturnStatementIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomething', 'string');
@@ -30,9 +29,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringContainsString('return parent::doSomething();', $bodyCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutReturnStatementForVoidMethodsIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomethingWithoutReturningAnything', 'void');
@@ -41,9 +38,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n    parent::doSomethingWithoutReturningAnything();\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutReturnStatementForNeverMethodsIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('failForSure', 'never');
@@ -52,9 +47,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n    parent::failForSure();\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutAssignmentForVoidMethodsIfPreAndPostParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomethingWithoutReturningAnything', 'void');
