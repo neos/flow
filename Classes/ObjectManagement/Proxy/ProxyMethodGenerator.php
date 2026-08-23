@@ -175,8 +175,12 @@ class ProxyMethodGenerator extends MethodGenerator
             if (!$returnTypeIsVoidOrNever) {
                 $code .= "return \$result;\n";
             }
-        } elseif (!$returnTypeIsVoidOrNever && $callParentMethodCode !== '') {
-            $code .= 'return ' . $callParentMethodCode . ";\n";
+        } elseif ($callParentMethodCode !== '') {
+            if ($returnTypeIsVoidOrNever) {
+                $code .= '    ' . $callParentMethodCode;
+            } else {
+                $code .= 'return ' . $callParentMethodCode . ";\n";
+            }
         }
         return $code;
     }
