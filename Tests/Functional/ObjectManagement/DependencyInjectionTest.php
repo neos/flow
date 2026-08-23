@@ -381,9 +381,8 @@ final class DependencyInjectionTest extends FunctionalTestCase
     /**
      * Readonly properties which are not promoted constructor properties are assigned in the
      * constructor body of the original class – the proxy constructor must not interfere with that.
-     *
-     * @test
      */
+    #[Test]
     public function nonPromotedReadonlyPropertiesAreSetWhenAProxiedObjectIsCreated(): void
     {
         $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class);
@@ -394,9 +393,7 @@ final class DependencyInjectionTest extends FunctionalTestCase
         self::assertInstanceOf(SingletonClassA::class, $object->getSingletonA());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonPromotedReadonlyPropertiesRespectConstructorArguments(): void
     {
         $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class, 'a custom label', 21);
@@ -405,9 +402,7 @@ final class DependencyInjectionTest extends FunctionalTestCase
         self::assertSame(42, $object->getNumber());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonPromotedReadonlyPropertiesOfProxiedObjectsCannotBeModified(): void
     {
         $object = $this->objectManager->get(ClassWithNonPromotedReadonlyProperties::class);

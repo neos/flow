@@ -63,9 +63,7 @@ final class ObjectSerializationTest extends FunctionalTestCase
         self::assertContains('protectedProperty', $propertiesToBeSerialized);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function readonlyClassesSurviveASerializationRoundtrip()
     {
         $object = new Fixtures\ReadonlyClassWithSerializedState('a name', ['first tag', 'second tag'], 'a temporary value');
@@ -78,9 +76,7 @@ final class ObjectSerializationTest extends FunctionalTestCase
         self::assertSame(['first tag', 'second tag'], $unserializedObject->tags);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transientPropertiesOfReadonlyClassesAreNotSerialized()
     {
         $object = new Fixtures\ReadonlyClassWithSerializedState('a name', ['first tag'], 'a temporary value');

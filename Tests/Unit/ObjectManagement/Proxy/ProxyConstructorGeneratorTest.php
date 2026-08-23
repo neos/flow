@@ -11,7 +11,8 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Laminas\Code\Reflection\MethodReflection;
 use Neos\Flow\ObjectManagement\DependencyInjection\ProxyClassBuilder;
 use Neos\Flow\ObjectManagement\Proxy\Compiler;
@@ -35,9 +36,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         return ProxyConstructorGenerator::fromReflection(new MethodReflection($className, '__construct'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionAlwaysCopiesTheOriginalParameters(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -52,9 +51,8 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
     /**
      * Constructor property promotion must not be repeated in the proxy constructor, because
      * the promoted properties are already declared by the original class.
-     *
-     * @test
      */
+    #[Test]
     public function promotedParametersOfTheOriginalConstructorAreRenderedAsPlainParameters(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -67,18 +65,14 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('protected int $number', $code);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionAlwaysCreatesAMethodNamedConstruct(): void
     {
         self::assertSame('__construct', $this->createProxyConstructorFor(ClassWithPublicConstructor::class)->getName());
         self::assertSame('__construct', (new ProxyConstructorGenerator('someOtherName'))->getName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionRemembersTheOriginalClassName(): void
     {
         self::assertSame(
@@ -87,18 +81,14 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionCopiesTheFinalFlag(): void
     {
         self::assertTrue($this->createProxyConstructorFor(ClassWithProtectedConstructor::class)->isFinal());
         self::assertFalse($this->createProxyConstructorFor(ClassWithPublicConstructor::class)->isFinal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theOriginalVisibilityIsOnlyRememberedForNonPublicConstructors(): void
     {
         self::assertNull($this->createProxyConstructorFor(ClassWithPublicConstructor::class)->getOriginalVisibility());
@@ -114,19 +104,15 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider classesWithNonPublicConstructorsDataProvider
-     */
+    #[DataProvider('classesWithNonPublicConstructorsDataProvider')]
+    #[Test]
     public function theProxyConstructorIsAlwaysPublic(string $className, string $expectedVisibilityString): void
     {
         self::assertSame(ProxyConstructorGenerator::VISIBILITY_PUBLIC, $this->createProxyConstructorFor($className)->getVisibility());
     }
 
-    /**
-     * @test
-     * @dataProvider classesWithNonPublicConstructorsDataProvider
-     */
+    #[DataProvider('classesWithNonPublicConstructorsDataProvider')]
+    #[Test]
     public function visibilityEnforcementCodeIsRenderedForNonPublicConstructors(string $className, string $expectedVisibilityString): void
     {
         $proxyConstructor = $this->createProxyConstructorFor($className);
@@ -141,9 +127,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertLessThan(strpos($bodyCode, '$foo = 1;'), strpos($bodyCode, '$backtrace = debug_backtrace'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noVisibilityEnforcementCodeIsRenderedForPublicConstructors(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -152,9 +136,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('debug_backtrace', $proxyConstructor->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theParentConstructorIsCalledWithAllOriginalArguments(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -163,9 +145,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringContainsString('parent::__construct(...func_get_args());', $proxyConstructor->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preAndPostParentCallCodeIsRenderedAroundTheParentCall(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -178,9 +158,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertLessThan(strpos($bodyCode, '$bar = 2;'), strpos($bodyCode, 'parent::__construct'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noResultIsAssignedOrReturnedByTheProxyConstructor(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPublicConstructor::class);
@@ -193,9 +171,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('return', $bodyCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeReturnsAnEmptyStringIfNoCodeWasAdded(): void
     {
         $proxyConstructor = $this->createProxyConstructorFor(ClassWithPrivateConstructor::class);
@@ -205,9 +181,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertSame('', $proxyConstructor->generate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function neitherParentCallNorVisibilityEnforcementCodeIsRenderedIfTheOriginalClassHasNoConstructor(): void
     {
         $proxyConstructor = new ProxyConstructorGenerator();
@@ -221,9 +195,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringContainsString('$foo = 1;', $bodyCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noParentCallIsRenderedIfTheOriginalClassIsUnknown(): void
     {
         $proxyConstructor = new ProxyConstructorGenerator();
@@ -232,9 +204,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('parent::__construct', $proxyConstructor->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureThrowsAnException(): void
     {
         $this->expectException(\BadMethodCallException::class);
@@ -243,9 +213,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         ProxyConstructorGenerator::copyMethodSignature(new MethodReflection(ClassWithPublicConstructor::class, '__construct'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theDocBlockMarksTheConstructorAsAutogeneratedAndKeepsTheOriginalDocumentation(): void
     {
         $docBlock = $this->createProxyConstructorFor(ClassWithPublicConstructor::class)->getDocBlock();
@@ -255,9 +223,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringContainsString('Some documentation for this constructor', $docBlock->getSourceContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theDocBlockMarksTheConstructorAsAutogeneratedIfTheOriginalHasNoDocumentation(): void
     {
         $docBlock = $this->createProxyConstructorFor(ClassWithPrivateConstructor::class)->getDocBlock();
@@ -266,9 +232,7 @@ class ProxyConstructorGeneratorTest extends UnitTestCase
         self::assertStringContainsString(ProxyClassBuilder::AUTOGENERATED_PROXY_METHOD_COMMENT, $docBlock->getSourceContent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aConstructorCreatedWithoutReflectionIsAlsoMarkedAsAutogenerated(): void
     {
         $docBlock = (new ProxyConstructorGenerator())->getDocBlock();

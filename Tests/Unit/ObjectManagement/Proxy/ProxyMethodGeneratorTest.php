@@ -11,7 +11,8 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Laminas\Code\Reflection\MethodReflection;
 use Neos\Flow\ObjectManagement\Proxy\ProxyMethodGenerator;
 use Neos\Flow\Tests\Unit\ObjectManagement\Fixture\ClassWithVariousMethods;
@@ -31,18 +32,14 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         return ProxyMethodGenerator::copyMethodSignatureAndDocblock(new MethodReflection(ClassWithVariousMethods::class, $methodName));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeReturnsAnEmptyStringIfNoCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
         self::assertSame('', $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeReturnsAnEmptyStringIfOnlyWhitespaceWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -51,18 +48,14 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame('', $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function willBeRenderedReturnsFalseIfNoCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
         self::assertFalse($proxyMethod->willBeRendered());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function willBeRenderedReturnsTrueIfPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -70,9 +63,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertTrue($proxyMethod->willBeRendered());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function willBeRenderedReturnsTrueIfPostParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -80,18 +71,14 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertTrue($proxyMethod->willBeRendered());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateReturnsAnEmptyStringIfNoCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
         self::assertSame('', $proxyMethod->generate());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function preParentCallCodeIsRenderedBeforeTheParentCall(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -104,9 +91,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertLessThan(strpos($bodyCode, 'parent::'), strpos($bodyCode, '$foo = 1;'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function multiplePiecesOfAddedCodeAreRenderedInTheOrderTheyWereAdded(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -122,9 +107,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertLessThan(strpos($bodyCode, '$fourth = 4;'), strpos($bodyCode, '$third = 3;'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function postParentCallCodeLeadsToTheParentCallResultBeingAssignedAndReturned(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -139,9 +122,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertLessThan(strpos($bodyCode, 'return $result;'), strpos($bodyCode, '$bar = 2;'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodsWithoutAReturnTypeAreTreatedLikeMethodsReturningAValue(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithoutReturnType');
@@ -162,10 +143,8 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider voidAndNeverReturnTypesDataProvider
-     */
+    #[DataProvider('voidAndNeverReturnTypesDataProvider')]
+    #[Test]
     public function neitherReturnStatementNorResultAssignmentIsRenderedForVoidAndNeverReturnTypes(string $methodName): void
     {
         $proxyMethod = $this->createProxyMethodFor($methodName);
@@ -184,10 +163,9 @@ class ProxyMethodGeneratorTest extends UnitTestCase
      *       call to the parent method is skipped entirely as long as no post parent call
      *       code was added – which arguably is a bug, because the original method is then
      *       never executed.
-     *
-     * @test
-     * @dataProvider voidAndNeverReturnTypesDataProvider
      */
+    #[DataProvider('voidAndNeverReturnTypesDataProvider')]
+    #[Test]
     public function noParentCallIsRenderedForVoidAndNeverReturnTypesIfOnlyPreParentCallCodeExists(string $methodName): void
     {
         $proxyMethod = $this->createProxyMethodFor($methodName);
@@ -196,9 +174,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noParentCallIsRenderedIfTheOriginalClassIsUnknown(): void
     {
         $proxyMethod = new ProxyMethodGenerator('someMethod');
@@ -207,9 +183,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nullIsAssignedAsResultIfTheOriginalClassIsUnknownButPostParentCallCodeExists(): void
     {
         $proxyMethod = new ProxyMethodGenerator('someMethod');
@@ -223,9 +197,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('parent::', $bodyCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noParentCallIsRenderedIfTheOriginalClassDoesNotHaveTheMethod(): void
     {
         $proxyMethod = new ProxyMethodGenerator('nonExistingMethod');
@@ -235,9 +207,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('parent::', $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockCopiesParameterNamesAndTypes(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -253,9 +223,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame('string', (string)$proxyMethod->getReturnType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockCopiesTheByReferenceFlagOfParameters(): void
     {
         $parameters = $this->createProxyMethodFor('methodWithParameters')->getParameters();
@@ -264,27 +232,21 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertTrue($parameters['fourth']->getPassedByReference());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockCopiesTheStaticFlag(): void
     {
         self::assertTrue($this->createProxyMethodFor('staticMethod')->isStatic());
         self::assertFalse($this->createProxyMethodFor('methodWithParameters')->isStatic());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockCopiesTheVisibility(): void
     {
         self::assertSame(ProxyMethodGenerator::VISIBILITY_PUBLIC, $this->createProxyMethodFor('methodWithParameters')->getVisibility());
         self::assertSame(ProxyMethodGenerator::VISIBILITY_PROTECTED, $this->createProxyMethodFor('protectedMethod')->getVisibility());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockCopiesTheDocBlockIfThereIsOne(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -292,25 +254,19 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame('Some documentation for this method', $proxyMethod->getDocBlock()->getShortDescription());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockLeavesTheDocBlockEmptyIfTheOriginalMethodHasNone(): void
     {
         self::assertNull($this->createProxyMethodFor('staticMethod')->getDocBlock());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockRemembersTheOriginalClassName(): void
     {
         self::assertSame(ClassWithVariousMethods::class, $this->createProxyMethodFor('methodWithParameters')->getFullOriginalClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function copyMethodSignatureAndDocblockRendersAttributesOfTheOriginalMethod(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithAttribute');
@@ -322,9 +278,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionCopiesTheMethodSignature(): void
     {
         $proxyMethod = ProxyMethodGenerator::fromReflection(new MethodReflection(ClassWithVariousMethods::class, 'methodWithParameters'));
@@ -334,9 +288,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertTrue($proxyMethod->getParameters()['fourth']->getPassedByReference());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionCopiesTheStaticFlagAndTheOriginalClassName(): void
     {
         $proxyMethod = ProxyMethodGenerator::fromReflection(new MethodReflection(ClassWithVariousMethods::class, 'staticMethod'));
@@ -350,9 +302,8 @@ class ProxyMethodGeneratorTest extends UnitTestCase
      *       fromReflection() also copies the body of the original method, which means that the
      *       resulting proxy method is rendered even if no code was added. This method is currently
      *       not used by any of the proxy class builders.
-     *
-     * @test
      */
+    #[Test]
     public function fromReflectionAlsoCopiesTheOriginalMethodBody(): void
     {
         $proxyMethod = ProxyMethodGenerator::fromReflection(new MethodReflection(ClassWithVariousMethods::class, 'staticMethod'));
@@ -361,9 +312,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertTrue($proxyMethod->willBeRendered());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromReflectionRendersAttributesOfTheOriginalMethod(): void
     {
         $proxyMethod = ProxyMethodGenerator::fromReflection(new MethodReflection(ClassWithVariousMethods::class, 'methodWithAttribute'));
@@ -375,9 +324,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setFullOriginalClassNameOverridesTheOriginalClassName(): void
     {
         $proxyMethod = new ProxyMethodGenerator('someMethod');
@@ -387,9 +334,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame(ClassWithVariousMethods::class, $proxyMethod->getFullOriginalClassName());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodParametersCodeRendersTheParameterNamesOnlyByDefault(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -400,9 +345,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodParametersCodeRendersTypesAndDefaultValuesIfRequested(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -413,9 +356,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function buildMethodParametersCodeReturnsAnEmptyStringIfTheClassOrMethodIsUnknown(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -425,9 +366,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame('', $proxyMethod->buildMethodParametersCode(ClassWithVariousMethods::class, 'nonExistingMethod', false));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generateRendersTheCompleteMethodIncludingSignatureAndBody(): void
     {
         $proxyMethod = $this->createProxyMethodFor('methodWithParameters');
@@ -441,9 +380,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringContainsString('return parent::methodWithParameters(', $code);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithReturnStatementIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomething', 'string');
@@ -454,9 +391,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringContainsString('return parent::doSomething();', $bodyCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutReturnStatementForVoidMethodsIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomethingWithoutReturningAnything', 'void');
@@ -465,9 +400,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n    parent::doSomethingWithoutReturningAnything();\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutReturnStatementForNeverMethodsIfOnlyPreParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('failForSure', 'never');
@@ -476,9 +409,7 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertSame("\$foo = 1;\n    parent::failForSure();\n", $proxyMethod->renderBodyCode());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function renderBodyCodeRendersParentCallWithoutAssignmentForVoidMethodsIfPreAndPostParentCallCodeWasAdded(): void
     {
         $proxyMethod = $this->createProxyMethodGenerator('doSomethingWithoutReturningAnything', 'void');

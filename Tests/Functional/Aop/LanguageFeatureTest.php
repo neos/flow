@@ -11,7 +11,7 @@ namespace Neos\Flow\Tests\Functional\Aop;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Aop\ProxyInterface as AopProxyInterface;
 use Neos\Flow\ObjectManagement\Proxy\ProxyInterface;
 use Neos\Flow\Tests\Functional\Aop\Fixtures\CountableAndLabelableFixture;
@@ -31,9 +31,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
  */
 class LanguageFeatureTest extends FunctionalTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function generatorMethodCanBeAdvisedByABeforeAdvice(): void
     {
         $targetClass = new TargetClassWithGeneratorMethods();
@@ -47,9 +45,8 @@ class LanguageFeatureTest extends FunctionalTestCase
     /**
      * The around advice must pass the generator object through, so that the
      * caller can still iterate over it.
-     *
-     * @test
      */
+    #[Test]
     public function generatorMethodCanBeAdvisedByAnAroundAdvice(): void
     {
         $targetClass = new TargetClassWithGeneratorMethods();
@@ -63,9 +60,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame([1, 2, 3, 4], iterator_to_array($generator));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithIntersectionTypedArgumentCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithIntersectionTypes();
@@ -73,9 +68,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame('advised: fixture:1', $targetClass->describe(new CountableAndLabelableFixture('fixture')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithIntersectionTypedArgumentAndReturnTypeCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithIntersectionTypes();
@@ -88,9 +81,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame(2, $result->countItems());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function intersectionTypesStayEnforceableInAdvisedMethods(): void
     {
         $targetClass = new TargetClassWithIntersectionTypes();
@@ -100,9 +91,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         $targetClass->describe(new \stdClass());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithDnfTypedArgumentCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithDnfTypes();
@@ -111,9 +100,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame('advised: fixture:1', $targetClass->describe(new CountableAndLabelableFixture('fixture')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodWithDnfTypedArgumentAndReturnTypeCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithDnfTypes();
@@ -132,9 +119,8 @@ class LanguageFeatureTest extends FunctionalTestCase
     /**
      * A pointcut expression whose class name pattern also matches an enum must
      * not break the compile run – enums simply cannot be proxied.
-     *
-     * @test
      */
+    #[Test]
     public function pointcutExpressionMatchingEnumMethodsLeavesTheEnumUntouched(): void
     {
         LanguageFeatureTestingAspect::$numberOfLabelAdviceInvocations = [];
@@ -146,9 +132,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame([], LanguageFeatureTestingAspect::$numberOfLabelAdviceInvocations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pointcutExpressionMatchingEnumMethodsStillAdvisesRegularClasses(): void
     {
         LanguageFeatureTestingAspect::$numberOfLabelAdviceInvocations = [];
@@ -159,9 +143,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame([LabeledFixtureThing::class => 1], LanguageFeatureTestingAspect::$numberOfLabelAdviceInvocations);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function adviceIsAlsoInvokedWhenTheMethodIsCalledThroughAFirstClassCallable(): void
     {
         $targetClass = new TargetClassForFirstClassCallables();
@@ -172,9 +154,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame(1, $targetClass->numberOfInvocations, 'The original method should have been invoked exactly once');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function magicToStringMethodCanBeAdvised(): void
     {
         $targetClass = new TargetClassWithToStringMethod();
@@ -183,9 +163,7 @@ class LanguageFeatureTest extends FunctionalTestCase
         self::assertSame('advised plain', "{$targetClass}");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodComingFromARegularTraitCanBeAdvised(): void
     {
         $targetClass = new TargetClassUsingATrait();

@@ -380,9 +380,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame($object->getToken(), $object->getToken());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatorMethodsOfProxiedClassesCanBeIterated(): void
     {
         $object = $this->objectManager->get(ClassWithGeneratorMethods::class);
@@ -393,9 +391,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame(['a' => 1, 'b' => 2], iterator_to_array($object->generateKeyedValues()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatorMethodsOfProxiedClassesCanDelegateWithYieldFrom(): void
     {
         $object = $this->objectManager->get(ClassWithGeneratorMethods::class);
@@ -405,9 +401,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame(['item-zero', 'item-one', 'item-two', 'item-three'], $actualItems);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function generatorsOfProxiedClassesCanReceiveValuesAndReturnAResult(): void
     {
         $object = $this->objectManager->get(ClassWithGeneratorMethods::class);
@@ -426,9 +420,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame(12, $generator->getReturn());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function firstClassCallablesCanBeCreatedFromMethodsOfProxiedInstances(): void
     {
         $object = $this->objectManager->get(ClassWithFirstClassCallables::class);
@@ -442,9 +434,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame('HELLO!', $shouter('hello'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function firstClassCallablesCreatedInsideProxiedClassesCanBeCalled(): void
     {
         $object = $this->objectManager->get(ClassWithFirstClassCallables::class);
@@ -455,9 +445,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame(['Hello Alice', 'Hello Bob'], $object->greetAll(['Alice', 'Bob']));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pureIntersectionTypesWorkInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithIntersectionTypes::class);
@@ -471,9 +459,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame('abc-123: Zaphod', $object->describe($subject));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pureIntersectionTypesArePreservedInProxiedClasses(): void
     {
         $reflectionClass = new ClassReflection(ClassWithIntersectionTypes::class);
@@ -483,9 +469,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertInstanceOf(\ReflectionIntersectionType::class, $reflectionClass->getMethod('setSubject')->getParameters()[0]->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pureIntersectionTypesAreStillEnforcedInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithIntersectionTypes::class);
@@ -495,9 +479,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         $object->describe(new PrototypeClassA());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typedClassConstantsWorkInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithTypedConstants::class);
@@ -511,9 +493,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame([1, 2, 3], $object->getNumbers());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function typesOfClassConstantsAreVisibleThroughReflectionOnTheProxiedClass(): void
     {
         self::assertSame('int', (string)(new \ReflectionClassConstant(ClassWithTypedConstants::class, 'ANSWER'))->getType());
@@ -521,9 +501,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame('array', (string)(new \ReflectionClassConstant(ClassWithTypedConstants::class, 'NUMBERS'))->getType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constantsDeclaredInTraitsWorkInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassUsingTraitWithConstants::class);
@@ -535,9 +513,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame(42, $object->getAnswerFromTrait());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodsAnnotatedWithOverrideAttributeWorkInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithOverrideAttribute::class);
@@ -548,9 +524,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame('a very polite greeting provider', $object->describe());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function overrideAttributeIsStillVisibleThroughReflectionOnTheProxiedClass(): void
     {
         $reflectionClass = new ClassReflection(ClassWithOverrideAttribute::class);
@@ -559,9 +533,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertCount(1, $reflectionClass->getMethod('describe')->getAttributes(\Override::class));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newWithoutParenthesesWorksInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithNewWithoutParentheses::class);
@@ -576,9 +548,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertSame('described: a changed value', $object->describe(), 'The original instance must not be affected');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function newSelfInsideProxiedClassesCreatesFullyInitializedProxyInstances(): void
     {
         $object = $this->objectManager->get(ClassWithNewWithoutParentheses::class);
@@ -589,9 +559,7 @@ final class ProxyCompilerTest extends FunctionalTestCase
         self::assertInstanceOf(SingletonClassA::class, $newInstance->getSingletonA());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dynamicClassConstantFetchWorksInProxiedClasses(): void
     {
         $object = $this->objectManager->get(ClassWithDynamicConstantFetch::class);

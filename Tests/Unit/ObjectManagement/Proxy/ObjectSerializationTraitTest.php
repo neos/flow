@@ -11,7 +11,8 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Doctrine\Common\Collections\ArrayCollection;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ObjectManagement\Configuration\Configuration;
@@ -98,9 +99,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         $this->mockPersistenceManager->method('getIdentifierByObject')->with($entity)->willReturn($identifier);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function ordinaryPropertiesAreSerialized(): void
     {
         $propertiesToSerialize = $this->subject->serializeRelatedEntities();
@@ -109,17 +108,13 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertContains('arrayProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function staticPropertiesAreNotSerialized(): void
     {
         self::assertNotContains('staticProperty', $this->subject->serializeRelatedEntities());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function transientPropertiesAreNotSerialized(): void
     {
         $propertiesToSerialize = $this->subject->serializeRelatedEntities(['transientProperty']);
@@ -128,17 +123,13 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertContains('simpleProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function injectedPropertiesAreNotSerialized(): void
     {
         self::assertNotContains('injectedProperty', $this->subject->serializeRelatedEntities());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theInternalBookkeepingPropertiesAreNotSerialized(): void
     {
         $propertiesToSerialize = $this->subject->serializeRelatedEntities();
@@ -152,9 +143,8 @@ class ObjectSerializationTraitTest extends UnitTestCase
     /**
      * The container itself must be serialized, otherwise the related entities could not be
      * restored on wakeup.
-     *
-     * @test
      */
+    #[Test]
     public function theRelatedEntitiesContainerIsSerialized(): void
     {
         self::assertContains('Flow_Persistence_RelatedEntitiesContainer', $this->subject->serializeRelatedEntities());
@@ -168,10 +158,8 @@ class ObjectSerializationTraitTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider nonSerializableScopesDataProvider
-     */
+    #[DataProvider('nonSerializableScopesDataProvider')]
+    #[Test]
     public function singletonAndSessionScopedObjectsAreNotSerialized(int $scope): void
     {
         $this->subject->objectProperty = new SomeImplementation();
@@ -182,9 +170,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertNotContains('objectProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function prototypeScopedObjectsAreSerialized(): void
     {
         $this->subject->objectProperty = new SomeImplementation();
@@ -195,9 +181,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertContains('objectProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function dependencyProxiesAreNotSerialized(): void
     {
         $this->subject->objectProperty = new DependencyProxy(SomeImplementation::class, static fn () => new SomeImplementation());
@@ -207,9 +191,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertNotContains('objectProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theClassNameIsDeterminedFromThePropertyTypeIfNoVarTagExists(): void
     {
         $this->subject->typedObjectProperty = new SomeImplementation();
@@ -218,9 +200,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertNotContains('typedObjectProperty', $this->subject->serializeRelatedEntities());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theVarTagTakesPrecedenceOverThePropertyTypeAndIsNormalized(): void
     {
         $this->subject->typedObjectProperty = new SomeImplementation();
@@ -232,9 +212,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertNotContains('typedObjectProperty', $propertiesToSerialize);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theObjectNameIsLookedUpIfTheDeterminedClassNameIsNotRegistered(): void
     {
         $this->subject->typedObjectProperty = new SomeImplementation();
@@ -245,9 +223,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertNotContains('typedObjectProperty', $this->subject->serializeRelatedEntities());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function persistedEntitiesAreStoredInTheContainerAndNotSerialized(): void
     {
         $entity = new SomeEntity();
@@ -271,9 +247,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doctrineProxiesAreTreatedLikeEntities(): void
     {
         $entity = new SomeEntityDoctrineProxy();
@@ -287,9 +261,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame(SomeEntity::class, iterator_to_array($this->subject->Flow_Persistence_RelatedEntitiesContainer)[0]['c']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function entitiesWhichHaveNotBeenPersistedYetAreSerializedLikeOrdinaryObjects(): void
     {
         $this->subject->entityProperty = new SomeEntity();
@@ -302,9 +274,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame([], iterator_to_array($this->subject->Flow_Persistence_RelatedEntitiesContainer));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function entitiesInsideArraysAreStoredInTheContainerAndReplacedByNull(): void
     {
         $entity = new SomeEntity();
@@ -323,9 +293,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame('the-identifier', $entityInformations[0]['i']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function entitiesInsideNestedArraysAreStoredWithTheirFullPath(): void
     {
         $entity = new SomeEntity();
@@ -339,9 +307,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame('first.second', iterator_to_array($this->subject->Flow_Persistence_RelatedEntitiesContainer)[0]['p']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function entitiesInsideDoctrineCollectionsAreStoredInTheContainer(): void
     {
         $entity = new SomeEntity();
@@ -359,9 +325,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame('first', $entityInformations[0]['p']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function anExceptionIsThrownIfAnEntityIsFoundButNoContainerExists(): void
     {
         $entity = new SomeEntity();
@@ -374,9 +338,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         $this->subject->serializeRelatedEntities();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRelatedEntitiesRestoresEntitiesAtTheStoredPaths(): void
     {
         $entity = new SomeEntity();
@@ -396,9 +358,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame($restoredEntity, $this->subject->entityProperty);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRelatedEntitiesResetsTheContainer(): void
     {
         $entity = new SomeEntity();
@@ -413,9 +373,7 @@ class ObjectSerializationTraitTest extends UnitTestCase
         self::assertSame([], iterator_to_array($this->subject->Flow_Persistence_RelatedEntitiesContainer));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setRelatedEntitiesDoesNothingIfNoContainerExists(): void
     {
         $this->mockPersistenceManager->expects(self::never())->method('getObjectByIdentifier');

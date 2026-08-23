@@ -11,7 +11,7 @@ namespace Neos\Flow\Tests\Unit\ObjectManagement\Proxy;
  * information, please view the LICENSE file which was distributed with this
  * source code.
  */
-
+use PHPUnit\Framework\Attributes\Test;
 use Neos\Flow\Core\Bootstrap;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
 use Neos\Flow\ObjectManagement\Proxy\RelatedEntitiesContainer;
@@ -50,17 +50,13 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         Bootstrap::$staticObjectManager = $this->originalStaticObjectManager;
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function aNewContainerIsEmpty(): void
     {
         self::assertSame([], iterator_to_array((new RelatedEntitiesContainer())->getIterator()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityStoresPropertyNamePathClassNameAndIdentifier(): void
     {
         $entity = new SomeEntity();
@@ -83,9 +79,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityUsesTheObjectNameOfTheGivenEntity(): void
     {
         $entity = new SomeEntity();
@@ -98,9 +92,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame('Some.Package:SomeEntity', iterator_to_array($container->getIterator())[0]['c']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityUsesTheParentClassNameForDoctrineProxies(): void
     {
         $this->mockObjectManager->expects(self::never())->method('getObjectNameByClassName');
@@ -112,9 +104,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame(SomeEntity::class, iterator_to_array($container->getIterator())[0]['c']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityFallsBackToTheDoctrineProxyIdentifierIfThePersistenceManagerDoesNotKnowTheObject(): void
     {
         $this->mockPersistenceManager->method('getIdentifierByObject')->willReturn(null);
@@ -125,9 +115,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame('identifier-from-doctrine-proxy', iterator_to_array($container->getIterator())[0]['i']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityStoresMultipleEntitiesInTheOrderTheyWereAdded(): void
     {
         $this->mockObjectManager->method('getObjectNameByClassName')->willReturn(SomeEntity::class);
@@ -146,9 +134,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame('someOtherProperty', $entityInformations[1]['n']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function appendRelatedEntityOverwritesAnEntryWithTheSamePropertyNameAndPath(): void
     {
         $this->mockObjectManager->method('getObjectNameByClassName')->willReturn(SomeEntity::class);
@@ -164,9 +150,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame('second', $entityInformations[0]['i']);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resetRemovesAllPreviouslyAddedEntities(): void
     {
         $this->mockObjectManager->method('getObjectNameByClassName')->willReturn(SomeEntity::class);
@@ -181,9 +165,7 @@ class RelatedEntitiesContainerTest extends UnitTestCase
         self::assertSame([], iterator_to_array($container->getIterator()));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function theContainerCanBeIteratedDirectly(): void
     {
         $this->mockObjectManager->method('getObjectNameByClassName')->willReturn(SomeEntity::class);
