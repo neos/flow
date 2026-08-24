@@ -254,7 +254,8 @@ class PluralsReader
     protected function generateRulesets(): void
     {
         $model = $this->cldrRepository->getModel('supplemental/plurals');
-        $pluralRulesSet = $model->getRawArray('plurals');
+        $pluralRulesSet = $model === false ? [] : $model->getRawArray('plurals');
+        $pluralRulesSet = $pluralRulesSet === false ? [] : $pluralRulesSet;
 
         $index = 0;
         foreach ($pluralRulesSet as $pluralRulesNodeString => $pluralRules) {
