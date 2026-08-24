@@ -158,22 +158,6 @@ class ProxyMethodGeneratorTest extends UnitTestCase
         self::assertStringNotContainsString('return', $bodyCode);
     }
 
-    /**
-     * Note: This documents the current behavior. For methods returning void or never, the
-     *       call to the parent method is skipped entirely as long as no post parent call
-     *       code was added – which arguably is a bug, because the original method is then
-     *       never executed.
-     */
-    #[DataProvider('voidAndNeverReturnTypesDataProvider')]
-    #[Test]
-    public function noParentCallIsRenderedForVoidAndNeverReturnTypesIfOnlyPreParentCallCodeExists(string $methodName): void
-    {
-        $proxyMethod = $this->createProxyMethodFor($methodName);
-        $proxyMethod->addPreParentCallCode('$foo = 1;');
-
-        self::assertSame("\$foo = 1;\n", $proxyMethod->renderBodyCode());
-    }
-
     #[Test]
     public function noParentCallIsRenderedIfTheOriginalClassIsUnknown(): void
     {
