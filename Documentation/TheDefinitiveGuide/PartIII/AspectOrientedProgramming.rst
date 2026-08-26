@@ -298,6 +298,13 @@ aspect.
 	This can be explicitly disabled with a ``@Flow\Proxy(false)`` annotation on the
 	class in question.
 
+.. Note::
+	Methods returning by reference (``public function &foo()``) cannot be advised:
+	the return value travels through the advice chain by value, therefore the
+	reference would be lost silently. Instead of changing the semantics of such a
+	method, Flow refuses to build the interceptor code and throws an exception
+	while compiling the proxy classes.
+
 Pointcuts
 =========
 

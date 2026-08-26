@@ -170,7 +170,10 @@ class ProxyMethodGenerator extends MethodGenerator
                     $code .= '    ' . $callParentMethodCode;
                 }
             } else {
-                $code .= '$result = ' . ($callParentMethodCode === '' ? "null;\n" : $callParentMethodCode);
+                # A method returning by reference must assign the parent call by reference as well,
+                # otherwise the "return $result;" below would return a copy instead of the reference:
+                $referenceOperator = ($this->returnsReference() ? '&' : '');
+                $code .= '$result = ' . ($callParentMethodCode === '' ? "null;\n" : $referenceOperator . $callParentMethodCode);
             }
             $code .= $this->addedPostParentCallCode;
             if (!$returnTypeIsVoidOrNever) {

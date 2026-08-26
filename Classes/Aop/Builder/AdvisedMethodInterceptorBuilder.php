@@ -48,6 +48,12 @@ class AdvisedMethodInterceptorBuilder extends AbstractMethodInterceptorBuilder
         if ($declaringClassName !== $targetClassName) {
             $originalMethod = MethodGenerator::copyMethodSignature(new \Laminas\Code\Reflection\MethodReflection($declaringClassName, $methodName));
             $proxyMethod->setParameters($originalMethod->getParameters());
+            $methodReturnsReference = $originalMethod->returnsReference();
+        } else {
+            $methodReturnsReference = $proxyMethod->returnsReference();
+        }
+        if ($methodReturnsReference) {
+            throw new Exception(sprintf('The %s cannot build interceptor code for method %s::%s() because it returns by reference: references cannot be preserved through an advice chain, so the advised method would silently return a copy instead of the original reference. Please remove the advice for this method, or exclude the class from proxying by adding a #[Flow\Proxy(false)] attribute.', __CLASS__, $targetClassName, $methodName), 1785837971);
         }
 
         $groupedAdvices = $methodMetaInformation[$methodName]['groupedAdvices'];
