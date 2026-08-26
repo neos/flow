@@ -305,6 +305,15 @@ aspect.
 	method, Flow refuses to build the interceptor code and throws an exception
 	while compiling the proxy classes.
 
+.. Note::
+	Classes declared ``readonly`` cannot be advised: the woven advice code needs
+	mutable state (the advice chains and the re-entrance flags), which a readonly
+	class does not allow. Flow refuses to build such a proxy class and throws an
+	exception while compiling the proxy classes. Either remove the advice for that
+	class or drop the ``readonly`` modifier. Note that this also applies to a
+	readonly class annotated with ``@Flow\Scope("session")``, because the session
+	scope implicitly pulls in Flow's lazy loading aspect.
+
 Pointcuts
 =========
 
