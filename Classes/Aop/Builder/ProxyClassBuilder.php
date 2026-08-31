@@ -26,6 +26,7 @@ use Neos\Flow\Aop\PropertyIntroduction;
 use Neos\Flow\Aop\TraitIntroduction;
 use Neos\Flow\Log\Utility\LogEnvironment;
 use Neos\Flow\ObjectManagement\CompileTimeObjectManager;
+use Neos\Flow\ObjectManagement\Configuration\Configuration as ObjectConfiguration;
 use Neos\Flow\ObjectManagement\Exception\CannotBuildObjectException;
 use Neos\Flow\ObjectManagement\Proxy\Compiler;
 use Neos\Flow\ObjectManagement\Proxy\ProxyMethodGenerator;
@@ -416,6 +417,10 @@ class ProxyClassBuilder
             return false;
         }
 
+        if ($this->reflectionService->isClassReadonly($targetClassName)) {
+            throw $this->buildReadonlyClassException($targetClassName);
+        }
+
         $proxyClass = $this->compiler->getProxyClass($targetClassName);
         if ($proxyClass === false) {
             return false;
@@ -463,6 +468,33 @@ class ProxyClassBuilder
         $proxyClass->addProperty('Flow_Aop_Proxy_methodIsInAdviceMode', 'array()');
 
         return true;
+    }
+
+    /**
+     * Renders the exception which is thrown when advices, introductions or a trait would have to be woven
+     * into a readonly class.
+     *
+     * The woven advice code needs mutable state (the advice chains and the re-entrance flags), which a
+     * readonly class does not allow – the resulting proxy class would be invalid PHP.
+     *
+     * @param class-string $targetClassName Name of the readonly target class
+     */
+    protected function buildReadonlyClassException(string $targetClassName): Exception
+    {
+        if ($this->isClassSessionScoped($targetClassName)) {
+            return new Exception(sprintf('The %s cannot build an AOP proxy for the readonly class %s because readonly classes cannot be session-scoped: the session scope pulls in Flow\'s lazy loading aspect and the woven advice code requires mutable state which readonly classes do not allow. Please remove the #[Flow\Scope("session")] attribute from this class, or drop the readonly modifier.', __CLASS__, $targetClassName), 1787734303);
+        }
+        return new Exception(sprintf('The %s cannot build an AOP proxy for the readonly class %s because the woven advice code requires mutable state which readonly classes do not allow. Please remove the advice for this class, do not use aspects targeting it, or drop the readonly modifier.', __CLASS__, $targetClassName), 1787734304);
+    }
+
+    /**
+     * Checks whether the given class is configured to have the object scope "session".
+     *
+     * @param class-string $className
+     */
+    protected function isClassSessionScoped(string $className): bool
+    {
+        return in_array($className, $this->objectManager->getClassNamesByScope(ObjectConfiguration::SCOPE_SESSION), true);
     }
 
     /**

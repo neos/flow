@@ -260,6 +260,7 @@ class PluralsReader
             throw new InvalidPluralRuleException('Missing plural rule model for supplemental/plurals', 1744411434);
         }
         $pluralRulesSet = $model->getRawArray('plurals');
+        $pluralRulesSet = $pluralRulesSet === false ? [] : $pluralRulesSet;
 
         $index = 0;
         foreach ($pluralRulesSet as $pluralRulesNodeString => $pluralRules) {

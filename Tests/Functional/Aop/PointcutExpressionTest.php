@@ -18,7 +18,7 @@ use Neos\Flow\Tests\FunctionalTestCase;
 use PHPUnit\Framework\Attributes\Test;
 
 /**
- * Test suite for poincut expression related features
+ * Test suite for pointcut expression related features
  *
  */
 final class PointcutExpressionTest extends FunctionalTestCase

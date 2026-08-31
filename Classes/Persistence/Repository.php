@@ -173,7 +173,7 @@ abstract class Repository implements RepositoryInterface
      *  'bar' => \Neos\Flow\Persistence\QueryInterface::ORDER_DESCENDING
      * )
      *
-     * @param array<string,QueryInterface::ORDER_ASCENDING|QueryInterface::ORDER_DESCENDING> $defaultOrderings The property names to order by by default
+     * @param array<string,QueryInterface::ORDER_ASCENDING|QueryInterface::ORDER_DESCENDING> $defaultOrderings The property names to "order by" by default
      * @return void
      * @api
      */

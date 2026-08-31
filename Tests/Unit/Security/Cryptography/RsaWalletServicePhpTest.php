@@ -21,7 +21,7 @@ use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 
 /**
- * Testcase for for the PHP (OpenSSL) based RSAWalletService
+ * Testcase for the PHP (OpenSSL) based RSAWalletService
  */
 #[RequiresFunction('openssl_pkey_new')]
 final class RsaWalletServicePhpTest extends UnitTestCase

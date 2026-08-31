@@ -109,7 +109,7 @@ class Scripts
 
     /**
      * Register the class loader into the Doctrine AnnotationRegistry so
-     * the DocParser is able to load annation classes from packages.
+     * the DocParser is able to load annotation classes from packages.
      *
      * @param Bootstrap $bootstrap
      * @return void
@@ -960,7 +960,7 @@ class Scripts
         // if the configured PHP binary is empty here, the file does not exist.
         if ($configuredPhpBinaryPathAndFilename === false || strlen($configuredPhpBinaryPathAndFilename) === 0) {
             throw new Exception\SubProcessException(
-                sprintf('The configured PHP binary "%s" via setting the "Neos.Flow.core.phpBinaryPathAndFilename" doesnt exist.', $phpBinaryPathAndFilename),
+                sprintf('The configured PHP binary "%s" via setting the "Neos.Flow.core.phpBinaryPathAndFilename" doesn\'t exist.', $phpBinaryPathAndFilename),
                 1689676923331
             );
         }
@@ -1040,7 +1040,7 @@ class Scripts
         if (!$versionsAlmostEqual($phpInformation['version'], PHP_VERSION)) {
             throw new FlowException(sprintf(
                 'You are executing Neos/Flow with a PHP version different from the one Flow is configured to use internally. ' .
-                'Flow is running with with PHP "%s", while the PHP version Flow is configured to use for subrequests is "%s". Make sure to configure Flow to ' .
+                'Flow is running with PHP "%s", while the PHP version Flow is configured to use for subrequests is "%s". Make sure to configure Flow to ' .
                 'use the same PHP version by setting the "Neos.Flow.core.phpBinaryPathAndFilename" configuration option to a PHP-CLI binary of the version ' .
                 '%s. Flush the caches by removing the folder Data/Temporary before executing Flow/Neos again.',
                 PHP_VERSION,

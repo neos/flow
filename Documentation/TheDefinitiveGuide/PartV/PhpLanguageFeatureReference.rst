@@ -369,13 +369,17 @@ PHP 8.2
      - Partial
      - 9.0
      - Constructor injection works; the proxy class preserves the ``readonly``
-       modifier since Flow 9.2. Combining a readonly class with AOP advices
-       fails, because the woven proxy code requires additional (non-readonly)
-       properties (`#3591
+       modifier since Flow 9.2. Combining a readonly class with AOP advices is
+       not supported, because the woven proxy code requires additional
+       (non-readonly) properties (`#3591
        <https://github.com/neos/flow-development-collection/issues/3591>`_).
+       Since Flow 9.2 this is refused with a clear exception while compiling the
+       proxy classes instead of producing a proxy class which crashes with a
+       fatal error when it is loaded.
        Serialization of readonly classes works as long as no advice applies;
        since the session scope introduces the lazy loading aspect, readonly
-       classes currently cannot be session-scoped. See also `#3282
+       classes cannot be session-scoped – that case is refused with a dedicated
+       message as well. See also `#3282
        <https://github.com/neos/flow-development-collection/issues/3282>`_.
    * - DNF types (``(A&B)|C``)
      - Yes
@@ -585,7 +589,8 @@ can be used in classes which are excluded from proxy building (see
   `#3589 <https://github.com/neos/flow-development-collection/issues/3589>`_
 * Return by reference from proxied methods —
   `#3590 <https://github.com/neos/flow-development-collection/issues/3590>`_
-* AOP advices on ``readonly`` classes —
+* AOP advices on ``readonly`` classes (refused at compile time with an
+  explanatory exception) —
   `#3591 <https://github.com/neos/flow-development-collection/issues/3591>`_
 * ``final public static`` methods with ``Flow\CompileStatic`` —
   `#3592 <https://github.com/neos/flow-development-collection/issues/3592>`_

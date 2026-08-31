@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Testcase for for Neos\Flow\Security\Policy\Role
+ * Testcase for Neos\Flow\Security\Policy\Role
  */
 final class RoleTest extends UnitTestCase
 {
