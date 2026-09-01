@@ -91,7 +91,7 @@ final class SessionManagerTest extends UnitTestCase
     }
 
     /**
-     * @test for #1674
+     * test for #1674
      * @throws
      */
     #[Test]
