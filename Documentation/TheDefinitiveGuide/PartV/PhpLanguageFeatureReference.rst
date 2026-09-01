@@ -74,13 +74,13 @@ Long-standing language features
      - The ``final`` modifier is removed from the renamed original class and
        re-added to the proxy class, so the class remains final for userland code.
    * - ``final`` methods
-     - Partial
+     - Yes
      - Yes
      - –
      - ≤ 8.3
-     - Supported for advised methods. Known limitation: ``final public static``
-       methods in combination with ``Flow\CompileStatic`` lead to a fatal error
-       in ``Production`` context (`#3592
+     - Supported for advised methods. Since Flow 9.0 this includes all modifier
+       combinations, such as ``final public static`` methods with
+       ``Flow\CompileStatic`` (`#3592
        <https://github.com/neos/flow-development-collection/issues/3592>`_).
    * - ``abstract`` classes and methods
      - Yes
@@ -111,22 +111,27 @@ Long-standing language features
      - ≤ 8.3
      - Reference semantics are preserved, including signal/slot arguments.
    * - Return by reference (``function &foo()``)
-     - No
+     - Yes
      - No
      - –
-     - –
-     - The generated proxy method breaks the reference when delegating to the
-       original implementation (`#3590
+     - 9.2
+     - The generated proxy method preserves the reference when delegating to
+       the original implementation (`#3590
        <https://github.com/neos/flow-development-collection/issues/3590>`_).
+       Advised methods returning by reference are refused with an explanatory
+       exception while compiling, because the reference cannot be preserved
+       through an advice chain.
    * - Variadic parameters (``...$items``)
-     - Partial
-     - No
+     - Yes
+     - Yes
      - –
-     - –
-     - Supported in constructors. In other proxied or advised methods, the
-       generated code currently passes the arguments as a single array instead
-       of unpacking them (`#3589
-       <https://github.com/neos/flow-development-collection/issues/3589>`_).
+     - 9.0
+     - Supported since Flow 9.0 (`#3589
+       <https://github.com/neos/flow-development-collection/issues/3589>`_):
+       the generated code unpacks variadic arguments in parent calls and when
+       a join point invocation reaches the original method. Known remaining
+       gap: variadic methods of session-scoped objects, when called through
+       the lazy session object proxy.
    * - Generators (``yield``, ``yield from``)
      - Yes
      - Yes
@@ -179,9 +184,7 @@ Long-standing language features
      - Yes
      - –
      - ≤ 8.3
-     - One known edge case in the code generator can skip the call to the
-       original method for ``void`` and ``never`` methods (`#3597
-       <https://github.com/neos/flow-development-collection/issues/3597>`_).
+     - No known limitations.
    * - ``declare(strict_types=1)``
      - Yes
      - Yes
@@ -304,9 +307,7 @@ PHP 8.1
      - Yes
      - –
      - 9.0
-     - Supported including before, after-throwing and around advices. See
-       `#3597 <https://github.com/neos/flow-development-collection/issues/3597>`_
-       for an edge case in the code generator.
+     - Supported including before, after-throwing and around advices.
    * - Pure intersection types (``A&B``)
      - Yes
      - Yes
@@ -585,23 +586,17 @@ can be used in classes which are excluded from proxy building (see
 
 * ``self`` as a parameter, return or property type declaration —
   `#3581 <https://github.com/neos/flow-development-collection/issues/3581>`_
-* Variadic parameters in advised or proxied methods (constructors work) —
-  `#3589 <https://github.com/neos/flow-development-collection/issues/3589>`_
-* Return by reference from proxied methods —
+* Advised methods returning by reference (refused at compile time with an
+  explanatory exception) —
   `#3590 <https://github.com/neos/flow-development-collection/issues/3590>`_
 * AOP advices on ``readonly`` classes (refused at compile time with an
   explanatory exception) —
   `#3591 <https://github.com/neos/flow-development-collection/issues/3591>`_
-* ``final public static`` methods with ``Flow\CompileStatic`` —
-  `#3592 <https://github.com/neos/flow-development-collection/issues/3592>`_
 * ``new`` expressions as parameter default values —
   `#2968 <https://github.com/neos/flow-development-collection/issues/2968>`_
 * ``__serialize()`` / ``__unserialize()`` in classes relying on Flow's generated
   serialization logic —
   `#3593 <https://github.com/neos/flow-development-collection/issues/3593>`_
-* ``void`` / ``never`` methods which only receive pre parent call code can skip
-  the original method —
-  `#3597 <https://github.com/neos/flow-development-collection/issues/3597>`_
 * Attributes on method parameters and class properties (not reproduced in the
   proxy) —
   `#3594 <https://github.com/neos/flow-development-collection/issues/3594>`_
