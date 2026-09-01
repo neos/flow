@@ -320,10 +320,8 @@ final class CompilerTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider finalMethodDeclarationExamples()
-     */
+    #[Test]
+    #[DataProvider('finalMethodDeclarationExamples')]
     public function commentOutFinalKeywordForMethodsHandlesAllModifierCombinations(string $methodDeclaration, string $expectedMethodDeclaration): void
     {
         $classCode = "class SomeClass_Original\n{\n" . $methodDeclaration . "\n    {\n    }\n}\n";
@@ -333,9 +331,7 @@ final class CompilerTest extends UnitTestCase
         self::assertStringContainsString($expectedMethodDeclaration, $actualClassCode);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function commentOutFinalKeywordForMethodsLeavesMethodsAloneWhichAreNotPartOfTheProxyClass(): void
     {
         $classCode = "class SomeClass_Original\n{\n    final public static function someMethod(): string\n    {\n    }\n}\n";
